@@ -251,19 +251,16 @@ def wordnet_relation(left: str, right: str) -> str | None:
     if not left.isascii() or not right.isascii() or not left.isalpha() or not right.isalpha():
         return None
     try:
-        import nltk
         from nltk.corpus import wordnet as wn
-
-        try:
-            wn.synsets("dog")
-        except LookupError:
-            nltk.download("wordnet", quiet=True)
-            nltk.download("omw-1.4", quiet=True)
-    except Exception:
+        wn.synsets("dog")
+    except (ImportError, LookupError):
         return None
 
-    left_synsets = wn.synsets(left)
-    right_synsets = wn.synsets(right)
+    try:
+        left_synsets = wn.synsets(left)
+        right_synsets = wn.synsets(right)
+    except LookupError:
+        return None
     if not left_synsets or not right_synsets:
         return None
 
