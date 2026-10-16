@@ -1,0 +1,40 @@
+cd /Users/antonio/Desktop/repositorios/GraphNLI-AXb
+
+poetry shell
+
+--- Unica seed
+
+PYTHONPATH=src python scripts/run_experiment.py \
+  --model-name bert-base-multilingual-cased \
+  --models pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1 \
+  --seeds 42 \
+  --epochs 3 \
+  --train-languages en \
+  --eval-languages en \
+  --device mps \
+  --output-dir runs
+
+python scripts/summarize_runs.py runs/experiment_001/summary.json
+
+poetry run graphnli-train \
+  --model-name microsoft/deberta-base \
+  --models piig_v1,pair_cls \
+  --training-protocol mnli \
+  --train-limit 2000 \
+  --seeds 42 \
+  --epochs 6 \
+  --device mps \
+  --lr 1e-5 \
+  --batch-size 16 \
+  --eval-languages en \
+  --selection-metric nli3/macro_f1 \
+  --patience 2 \
+  --output-dir runs
+
+--- multiseed
+
+PYTHONPATH=src python scripts/run_experiment.py \
+  --models pair_cls,bi_encoder,lexical_gcn,lexical_gat,dige_v1 \
+  --seeds 1000,1001,1002,1003,1004 \
+  --epochs 3 \
+  --output-dir runs/multiseed

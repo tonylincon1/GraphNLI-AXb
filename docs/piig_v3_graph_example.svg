@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <style>
+    text { font-family: Arial, sans-serif; fill: #17202a; }
+    .title { font-size: 24px; font-weight: bold; }
+    .sub { font-size: 16px; }
+    .label { font-size: 14px; font-weight: bold; }
+    .small { font-size: 13px; }
+    .edge { stroke: #55758f; stroke-width: 2.5; }
+  </style>
+  <rect width="1200" height="650" fill="#ffffff"/>
+  <text x="40" y="45" class="title">PIIG v3: conditional antecedent state as a graph feature</text>
+  <text x="40" y="75" class="sub">P: If Pedro has a donkey, then he beats it.   H: Pedro beats his donkey.</text>
+  <line x1="285" y1="230" x2="715" y2="230" class="edge"/>
+  <line x1="285" y1="230" x2="500" y2="380" class="edge"/>
+  <line x1="715" y1="230" x2="500" y2="380" class="edge"/>
+  <line x1="285" y1="230" x2="500" y2="520" class="edge"/>
+  <line x1="715" y1="230" x2="500" y2="520" class="edge"/>
+  <rect x="135" y="165" width="300" height="130" rx="6" fill="#dceef7" stroke="#1f4d70" stroke-width="2"/>
+  <text x="285" y="205" text-anchor="middle" class="label">Premise phrase</text>
+  <text x="285" y="232" text-anchor="middle" class="small">if Pedro has a donkey,</text>
+  <text x="285" y="252" text-anchor="middle" class="small">then he beats it</text>
+  <rect x="565" y="165" width="300" height="130" rx="6" fill="#dceef7" stroke="#1f4d70" stroke-width="2"/>
+  <text x="715" y="205" text-anchor="middle" class="label">Hypothesis phrase</text>
+  <text x="715" y="235" text-anchor="middle" class="small">Pedro beats his donkey</text>
+  <rect x="300" y="340" width="400" height="85" rx="6" fill="#e7f2db" stroke="#4d7c48" stroke-width="2"/>
+  <text x="500" y="375" text-anchor="middle" class="label">conditional_direction</text>
+  <text x="500" y="400" text-anchor="middle" class="small">a consequence needs observed antecedent evidence</text>
+  <rect x="255" y="480" width="490" height="95" rx="6" fill="#f9e2df" stroke="#a74436" stroke-width="2"/>
+  <text x="500" y="518" text-anchor="middle" class="label">conditional_antecedent_unobserved</text>
+  <text x="500" y="544" text-anchor="middle" class="small">consequent aligns; antecedent is not established</text>
+  <text x="40" y="620" class="sub">The model receives both nodes as features. GAT and cross-attention learn their weight; no node directly fixes the NLI label.</text>
+</svg>

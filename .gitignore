@@ -1,0 +1,14 @@
+# Local datasets, caches, and experiment artifacts are reproducible downloads.
+data/
+runs/
+
+# Python and notebook runtime files.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+
+# Poetry environments and local configuration.
+.venv/
+poetry.toml
