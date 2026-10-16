@@ -72,6 +72,10 @@ class BiEncoderClassifier(PairClassifier):
 
 class GraphMixin:
     def init_graph_modules(self, hidden: int, dropout: float):
+        input_embedding_dim = getattr(self.encoder.get_input_embeddings(), "embedding_dim", hidden)
+        self.node_input_projection = (
+            nn.Identity() if input_embedding_dim == hidden else nn.Linear(input_embedding_dim, hidden, bias=False)
+        )
         self.node_type_embedding = nn.Embedding(len(NODE_TYPES), hidden)
         self.relation_embedding = nn.Embedding(len(RELATIONS), hidden)
         self.graph_dropout = nn.Dropout(dropout)
@@ -81,6 +85,7 @@ class GraphMixin:
         emb = self.encoder.get_input_embeddings()(batch["node_input_ids"])
         mask = batch["node_attention_mask"].unsqueeze(-1)
         nodes = (emb * mask).sum(2) / mask.sum(2).clamp(min=1)
+        nodes = self.node_input_projection(nodes)
         nodes = nodes + self.node_type_embedding(batch["node_type_ids"])
         return nodes
 
@@ -1294,6 +1299,10 @@ class PIIGV1Classifier(PairClassifier):
         super().__init__(model_name, dropout, num_labels)
         hidden = self.encoder.config.hidden_size
         self.aux_weight = aux_weight
+        input_embedding_dim = getattr(self.encoder.get_input_embeddings(), "embedding_dim", hidden)
+        self.proof_input_projection = (
+            nn.Identity() if input_embedding_dim == hidden else nn.Linear(input_embedding_dim, hidden, bias=False)
+        )
         self.proof_type_embedding = nn.Embedding(len(PROOF_NODE_TYPES), hidden)
         self.proof_graph_layers = nn.ModuleList([ProofGraphAttentionLayer(hidden, dropout) for _ in range(graph_layers)])
         self.proof_cross_attention = nn.MultiheadAttention(hidden, num_heads=8, dropout=dropout, batch_first=True)
@@ -1326,6 +1335,7 @@ class PIIGV1Classifier(PairClassifier):
         embeddings = self.encoder.get_input_embeddings()(batch["proof_input_ids"])
         token_mask = batch["proof_attention_mask"].unsqueeze(-1)
         nodes = (embeddings * token_mask).sum(dim=2) / token_mask.sum(dim=2).clamp(min=1)
+        nodes = self.proof_input_projection(nodes)
         return nodes + self.proof_type_embedding(batch["proof_type_ids"])
 
     @staticmethod
