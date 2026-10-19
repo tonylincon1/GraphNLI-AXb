@@ -16,12 +16,18 @@ from graphnli_axb.data import project_root
 DUMP_URL = "https://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-pages-articles.xml.bz2"
 CHECKSUM_URL = "https://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-md5sums.txt"
 CHUNK_SIZE = 1024 * 1024
+USER_AGENT = "GraphNLI-AXb/0.4 (research dump downloader)"
 
 
 def expected_md5(url: str, filename: str) -> str:
-    with urllib.request.urlopen(url, timeout=30) as response:
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/plain"})
+    with urllib.request.urlopen(request, timeout=30) as response:
         text = response.read().decode("utf-8")
     match = re.search(rf"^([0-9a-fA-F]{{32}})\s+\*?{re.escape(filename)}$", text, flags=re.MULTILINE)
+    # The `latest` URL redirects to a dated snapshot, while md5sums records
+    # the snapshot filename rather than the stable `latest` alias.
+    if not match and filename.endswith("-latest-pages-articles.xml.bz2"):
+        match = re.search(r"^([0-9a-fA-F]{32})\s+\*?enwiktionary-\d{8}-pages-articles\.xml\.bz2$", text, flags=re.MULTILINE)
     if not match:
         raise RuntimeError(f"Could not find {filename} in {url}")
     return match.group(1).lower()
@@ -38,7 +44,7 @@ def file_md5(path: Path) -> str:
 def download(url: str, destination: Path) -> None:
     partial = destination.with_suffix(destination.suffix + ".part")
     offset = partial.stat().st_size if partial.exists() else 0
-    headers = {"User-Agent": "GraphNLI-AXb/0.4 (research dump downloader)"}
+    headers = {"User-Agent": USER_AGENT}
     if offset:
         headers["Range"] = f"bytes={offset}-"
     request = urllib.request.Request(url, headers=headers)
