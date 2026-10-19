@@ -46,7 +46,7 @@ Initial one-seed comparison:
 
 ```bash
 poetry run graphnli-train \
-  --models pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3 \
+  --models pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4 \
   --seeds 42 \
   --epochs 1 \
   --selection-metric binary/mcc \
@@ -112,6 +112,7 @@ The default architecture variants are:
 - `piig_v1`: Proof-Informed Information Injection Graph with cross-attention, version 1.
 - `piig_v2`: PIIG with verified and typed Wikidata fact-token injection, version 2.
 - `piig_v3`: PIIG with scope-conditioned conditional, quantifier, and disjunction evidence, version 3.
+- `piig_v4`: PIIG with cached Wiktionary gloss and lexical-relation evidence, version 4.
 
 There are also two simple graph ablations available:
 

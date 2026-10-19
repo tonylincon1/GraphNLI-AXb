@@ -17,6 +17,7 @@ from .graph import (
     wordnet_relation,
 )
 from .wikidata import WIKIDATA_RELATIONS, WikidataSpec
+from .wiktionary import WiktionarySpec, entry_summary
 
 
 PROOF_NODE_TYPES = [
@@ -35,10 +36,22 @@ PROOF_NODE_TYPES = [
     "external_knowledge",
     "external_fact",
     "entity_type_path",
+    "wiktionary_entry",
+    "wiktionary_gloss",
+    "wiktionary_relation",
 ]
 PROOF_NODE_TYPE_TO_ID = {name: index for index, name in enumerate(PROOF_NODE_TYPES)}
 
-PROOF_RELATIONS = ["none", "self", "phrase_pair", "phrase_evidence", "phrase_knowledge", "evidence_knowledge"]
+PROOF_RELATIONS = [
+    "none",
+    "self",
+    "phrase_pair",
+    "phrase_evidence",
+    "phrase_knowledge",
+    "evidence_knowledge",
+    "phrase_lexicon",
+    "evidence_lexicon",
+]
 PROOF_REL_TO_ID = {name: index for index, name in enumerate(PROOF_RELATIONS)}
 
 PROOF_TARGETS = [
@@ -57,8 +70,14 @@ V3_PROOF_TARGETS = PROOF_TARGETS + [
     "conditional_antecedent_observed",
     "conditional_antecedent_unobserved",
 ]
+V4_PROOF_TARGETS = PROOF_TARGETS + [
+    "wiktionary_entry_path",
+    "wiktionary_gloss_path",
+    "wiktionary_relation_path",
+]
 PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(PROOF_TARGETS)}
 V3_PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(V3_PROOF_TARGETS)}
+V4_PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(V4_PROOF_TARGETS)}
 
 
 @dataclass(frozen=True)
@@ -160,14 +179,19 @@ def build_proof_graph(
     sentence1: str,
     sentence2: str,
     wikidata: WikidataSpec,
+    wiktionary: WiktionarySpec | None = None,
     max_nodes: int = 12,
     knowledge_mode: str = "v1",
 ) -> ProofGraphSpec:
     lexical = build_graph(sentence1, sentence2, max_nodes=32)
     texts = [f"premise phrase: {key_phrase(sentence1)}", f"hypothesis phrase: {key_phrase(sentence2)}"]
     types = ["premise_phrase", "hypothesis_phrase"]
-    target_names = V3_PROOF_TARGETS if knowledge_mode == "v3" else PROOF_TARGETS
-    target_to_id = V3_PROOF_TARGET_TO_ID if knowledge_mode == "v3" else PROOF_TARGET_TO_ID
+    if knowledge_mode == "v3":
+        target_names, target_to_id = V3_PROOF_TARGETS, V3_PROOF_TARGET_TO_ID
+    elif knowledge_mode == "v4":
+        target_names, target_to_id = V4_PROOF_TARGETS, V4_PROOF_TARGET_TO_ID
+    else:
+        target_names, target_to_id = PROOF_TARGETS, PROOF_TARGET_TO_ID
     targets = np.zeros(len(target_names), dtype=np.float32)
 
     premise_count = sum(side == 0 for side in lexical.node_side_ids)
@@ -177,13 +201,35 @@ def build_proof_graph(
     premise_types = set(lexical.node_type_ids[:premise_count])
     hypothesis_types = set(lexical.node_type_ids[premise_count:])
 
-    def add(name: str, text: str) -> None:
+    def add(name: str, text: str) -> bool:
         if len(texts) >= max_nodes:
-            return
+            return False
         texts.append(text)
         types.append(name)
         if name in target_to_id:
             targets[target_to_id[name]] = 1.0
+        return True
+
+    # Glosses expose lexical meaning as evidence tokens. Their presence does
+    # not assert entailment: cross-attention learns whether a cached sense is
+    # relevant to this particular premise-hypothesis pair.
+    if knowledge_mode == "v4" and wiktionary:
+        for entry in wiktionary.entries:
+            if len(texts) >= max_nodes:
+                break
+            term = entry.get("matched_term") or entry.get("term") or "term"
+            if add("wiktionary_entry", entry_summary(entry)):
+                targets[target_to_id["wiktionary_entry_path"]] = 1.0
+            senses = entry.get("senses") or []
+            if senses and senses[0].get("gloss"):
+                if add("wiktionary_gloss", f"wiktionary gloss: {term}: {senses[0]['gloss']}"):
+                    targets[target_to_id["wiktionary_gloss_path"]] = 1.0
+        for pair in wiktionary.pairs:
+            if add(
+                "wiktionary_relation",
+                f"wiktionary relation: {pair['premise_term']} {pair['relation']} {pair['hypothesis_term']}",
+            ):
+                targets[target_to_id["wiktionary_relation_path"]] = 1.0
 
     if has_bridge:
         add("lexical_bridge", "evidence lexical bridge across premise and hypothesis")
@@ -243,18 +289,19 @@ def build_proof_graph(
                 add("disjunction_scope", "evidence disjunction scope: alternatives require contextual resolution")
                 break
 
-    has_type = bool(wikidata.relations[WIKIDATA_RELATIONS.index("wikidata_has_type")])
-    same_entity = bool(wikidata.relations[WIKIDATA_RELATIONS.index("wikidata_same_entity")])
-    entries = wikidata.entries or [None] * len(wikidata.texts)
-    for text, active, entry in zip(wikidata.texts, wikidata.mask, entries):
-        if active and len(texts) < max_nodes:
-            add("external_knowledge", f"external knowledge: {text}")
-        if knowledge_mode == "v2" and active and entry:
-            for fact in (entry.get("facts") or [])[:3]:
-                add("external_fact", f"external fact: {entry.get('label', 'entity')} {fact.get('property', '')} {fact.get('value', '')}")
-                targets[target_to_id["external_fact_path"]] = 1.0
-    if has_type and same_entity:
-        add("entity_type_path", "evidence entity type path from linked external knowledge")
+    if knowledge_mode != "v4":
+        has_type = bool(wikidata.relations[WIKIDATA_RELATIONS.index("wikidata_has_type")])
+        same_entity = bool(wikidata.relations[WIKIDATA_RELATIONS.index("wikidata_same_entity")])
+        entries = wikidata.entries or [None] * len(wikidata.texts)
+        for text, active, entry in zip(wikidata.texts, wikidata.mask, entries):
+            if active and len(texts) < max_nodes:
+                add("external_knowledge", f"external knowledge: {text}")
+            if knowledge_mode == "v2" and active and entry:
+                for fact in (entry.get("facts") or [])[:3]:
+                    add("external_fact", f"external fact: {entry.get('label', 'entity')} {fact.get('property', '')} {fact.get('value', '')}")
+                    targets[target_to_id["external_fact_path"]] = 1.0
+        if has_type and same_entity:
+            add("entity_type_path", "evidence entity type path from linked external knowledge")
 
     node_count = len(texts)
     edges = np.zeros((node_count, node_count), dtype=np.int64)
@@ -262,7 +309,12 @@ def build_proof_graph(
         edges[index, index] = PROOF_REL_TO_ID["self"]
     edges[0, 1] = edges[1, 0] = PROOF_REL_TO_ID["phrase_pair"]
     for index, node_type in enumerate(types[2:], start=2):
-        relation = "phrase_knowledge" if node_type in {"external_knowledge", "external_fact", "entity_type_path"} else "phrase_evidence"
+        if node_type in {"external_knowledge", "external_fact", "entity_type_path"}:
+            relation = "phrase_knowledge"
+        elif node_type in {"wiktionary_entry", "wiktionary_gloss", "wiktionary_relation"}:
+            relation = "phrase_lexicon"
+        else:
+            relation = "phrase_evidence"
         rel_id = PROOF_REL_TO_ID[relation]
         edges[0, index] = edges[index, 0] = rel_id
         edges[1, index] = edges[index, 1] = rel_id
@@ -270,6 +322,8 @@ def build_proof_graph(
         for right in range(left + 1, node_count):
             if types[left] in {"external_knowledge", "external_fact"} or types[right] in {"external_knowledge", "external_fact"}:
                 edges[left, right] = edges[right, left] = PROOF_REL_TO_ID["evidence_knowledge"]
+            elif types[left] in {"wiktionary_entry", "wiktionary_gloss", "wiktionary_relation"} or types[right] in {"wiktionary_entry", "wiktionary_gloss", "wiktionary_relation"}:
+                edges[left, right] = edges[right, left] = PROOF_REL_TO_ID["evidence_lexicon"]
 
     return ProofGraphSpec(
         texts=texts,

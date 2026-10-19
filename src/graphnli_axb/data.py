@@ -14,6 +14,7 @@ from .graph import LOGIC_NODE_TYPE_IDS, RELATIONS, build_graph
 from .labels import LABEL_TO_ID_3, LABEL_TO_ID_BINARY, normalize_label
 from .proof_graph import PROOF_NODE_TYPES, build_proof_graph
 from .wikidata import WIKIDATA_RELATIONS, build_wikidata_spec, load_wikidata_cache
+from .wiktionary import build_wiktionary_spec, load_wiktionary_cache
 
 
 XNLI_LANGUAGES = (
@@ -195,6 +196,8 @@ class NLIGraphDataset(Dataset):
         max_wikidata_entities: int,
         max_wikidata_len: int,
         wikidata_cache_path: Path | None = None,
+        wiktionary_cache_path: Path | None = None,
+        max_wiktionary_entries: int = 2,
         include_piig: bool = False,
         piig_version: str = "v1",
         max_proof_nodes: int = 12,
@@ -208,6 +211,8 @@ class NLIGraphDataset(Dataset):
         self.max_wikidata_entities = max_wikidata_entities
         self.max_wikidata_len = max_wikidata_len
         self.wikidata_cache = load_wikidata_cache(wikidata_cache_path)
+        self.wiktionary_cache = load_wiktionary_cache(wiktionary_cache_path)
+        self.max_wiktionary_entries = max_wiktionary_entries
         self.include_piig = include_piig
         self.piig_version = piig_version
         self.max_proof_nodes = max_proof_nodes
@@ -306,6 +311,12 @@ class NLIGraphDataset(Dataset):
             self.wikidata_cache,
             max_entities=self.max_wikidata_entities,
         )
+        wiktionary = build_wiktionary_spec(
+            row.sentence1,
+            row.sentence2,
+            self.wiktionary_cache,
+            max_entries=self.max_wiktionary_entries,
+        )
         wikidata_enc = self.tokenizer(
             wikidata.texts[: self.max_wikidata_entities],
             truncation=True,
@@ -342,6 +353,7 @@ class NLIGraphDataset(Dataset):
                 row.sentence1,
                 row.sentence2,
                 wikidata,
+                wiktionary=wiktionary,
                 max_nodes=self.max_proof_nodes,
                 knowledge_mode=self.piig_version,
             )

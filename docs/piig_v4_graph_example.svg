@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="560" viewBox="0 0 1180 560">
+  <rect width="1180" height="560" fill="#ffffff"/>
+  <style>text{font-family:Arial,sans-serif;fill:#17202a}.title{font-size:24px;font-weight:bold}.label{font-size:15px;font-weight:bold}.small{font-size:13px}.node{stroke:#24577a;stroke-width:2}</style>
+  <text x="36" y="42" class="title">PIIG v4: Gloss-Grounded Proof Graph</text>
+  <text x="36" y="70" class="small">Premise: A dog is sleeping.   Hypothesis: An animal is sleeping.</text>
+  <line x1="210" y1="245" x2="505" y2="245" stroke="#4d6f8e" stroke-width="3"/>
+  <text x="332" y="232" class="small">phrase_pair</text>
+  <line x1="210" y1="270" x2="355" y2="395" stroke="#497c68" stroke-width="3"/>
+  <line x1="505" y1="270" x2="720" y2="395" stroke="#497c68" stroke-width="3"/>
+  <line x1="355" y1="395" x2="720" y2="395" stroke="#497c68" stroke-width="3"/>
+  <text x="472" y="380" class="small">evidence_lexicon</text>
+  <line x1="210" y1="270" x2="210" y2="465" stroke="#497c68" stroke-width="2"/>
+  <line x1="505" y1="270" x2="505" y2="465" stroke="#497c68" stroke-width="2"/>
+  <rect x="70" y="195" width="190" height="80" rx="6" fill="#ddecf4" class="node"/>
+  <text x="165" y="228" text-anchor="middle" class="label">Premise phrase</text><text x="165" y="250" text-anchor="middle" class="small">a dog is sleeping</text>
+  <rect x="455" y="195" width="190" height="80" rx="6" fill="#ddecf4" class="node"/>
+  <text x="550" y="228" text-anchor="middle" class="label">Hypothesis phrase</text><text x="550" y="250" text-anchor="middle" class="small">an animal is sleeping</text>
+  <rect x="265" y="365" width="180" height="65" rx="6" fill="#e5f2df" class="node"/>
+  <text x="355" y="392" text-anchor="middle" class="label">Wiktionary entry</text><text x="355" y="414" text-anchor="middle" class="small">dog, noun</text>
+  <rect x="630" y="365" width="180" height="65" rx="6" fill="#e5f2df" class="node"/>
+  <text x="720" y="392" text-anchor="middle" class="label">Wiktionary entry</text><text x="720" y="414" text-anchor="middle" class="small">animal, noun</text>
+  <rect x="438" y="445" width="240" height="70" rx="6" fill="#fff0cc" class="node"/>
+  <text x="558" y="472" text-anchor="middle" class="label">Wiktionary relation</text><text x="558" y="495" text-anchor="middle" class="small">dog hypernym animal</text>
+  <text x="860" y="215" class="label">Proof nodes</text>
+  <text x="860" y="245" class="small">- lexical bridge</text><text x="860" y="270" class="small">- upward generalization</text>
+  <text x="860" y="315" class="small">The attention mechanism receives all</text><text x="860" y="337" class="small">nodes and learns their relevance. No</text><text x="860" y="359" class="small">relation directly forces entailment.</text>
+</svg>

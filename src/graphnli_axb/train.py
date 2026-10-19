@@ -66,6 +66,9 @@ def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False
     wikidata_cache_path = Path(args.wikidata_cache) if args.wikidata_cache else None
     if wikidata_cache_path is not None and not wikidata_cache_path.is_absolute():
         wikidata_cache_path = project_root() / wikidata_cache_path
+    wiktionary_cache_path = Path(args.wiktionary_cache) if args.wiktionary_cache else None
+    if wiktionary_cache_path is not None and not wiktionary_cache_path.is_absolute():
+        wiktionary_cache_path = project_root() / wiktionary_cache_path
     dataset = NLIGraphDataset(
         rows,
         tokenizer,
@@ -75,6 +78,8 @@ def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False
         max_wikidata_entities=args.max_wikidata_entities,
         max_wikidata_len=args.max_wikidata_len,
         wikidata_cache_path=wikidata_cache_path,
+        wiktionary_cache_path=wiktionary_cache_path,
+        max_wiktionary_entries=args.max_wiktionary_entries,
         include_piig=include_piig,
         piig_version=piig_version,
         max_proof_nodes=args.max_proof_nodes,
@@ -293,11 +298,14 @@ def _proof_explanation_record(batch: dict, output, item_index: int) -> dict:
 
 @torch.no_grad()
 def save_piig_explanations(model, loader, device: torch.device, output_dir: Path) -> None:
-    """Save the first AX-b example for every available logical subtype."""
+    """Save subtype graphs plus explicit Wiktionary-covered examples when present."""
     model.eval()
     output_dir.mkdir(parents=True, exist_ok=True)
     seen_logic = set()
     manifest = []
+    wiktionary_dir = output_dir / "wiktionary_examples"
+    wiktionary_manifest = []
+    wiktionary_node_types = {"wiktionary_entry", "wiktionary_gloss", "wiktionary_relation"}
     for batch in loader:
         batch = move_batch(batch, device)
         batch["return_proof_attention"] = True
@@ -305,23 +313,37 @@ def save_piig_explanations(model, loader, device: torch.device, output_dir: Path
         if output.proof_node_importance is None or output.proof_graph_attention is None:
             raise RuntimeError("PIIG model did not return proof-graph attention for explanation.")
         for item_index, logic in enumerate(batch["logic"]):
-            if logic in seen_logic:
+            needs_logic_example = logic not in seen_logic
+            needs_wiktionary_example = len(wiktionary_manifest) < 3
+            if not needs_logic_example and not needs_wiktionary_example:
                 continue
-            seen_logic.add(logic)
             record = _proof_explanation_record(batch, output, item_index)
             filename = _logic_filename(logic)
-            path = output_dir / filename
-            path.with_suffix(".json").write_text(json.dumps(record, indent=2), encoding="utf-8")
-            _write_proof_graph_svg(path.with_suffix(".svg"), record)
-            manifest.append({"logic": logic, "uid": record["uid"], "file": f"{filename}.svg"})
+            if needs_logic_example:
+                seen_logic.add(logic)
+                path = output_dir / filename
+                path.with_suffix(".json").write_text(json.dumps(record, indent=2), encoding="utf-8")
+                _write_proof_graph_svg(path.with_suffix(".svg"), record)
+                manifest.append({"logic": logic, "uid": record["uid"], "file": f"{filename}.svg"})
+            if needs_wiktionary_example and any(node["type"] in wiktionary_node_types for node in record["nodes"]):
+                wiktionary_dir.mkdir(parents=True, exist_ok=True)
+                external_filename = f"wiktionary_{len(wiktionary_manifest) + 1:02d}_{filename}"
+                external_path = wiktionary_dir / external_filename
+                external_path.with_suffix(".json").write_text(json.dumps(record, indent=2), encoding="utf-8")
+                _write_proof_graph_svg(external_path.with_suffix(".svg"), record)
+                wiktionary_manifest.append(
+                    {"logic": logic, "uid": record["uid"], "file": f"{external_filename}.svg"}
+                )
     (output_dir / "index.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    if wiktionary_manifest:
+        (wiktionary_dir / "index.json").write_text(json.dumps(wiktionary_manifest, indent=2), encoding="utf-8")
 
 
 def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, eval_sets: dict, args) -> dict:
     set_seed(seed)
     device = resolve_device(args.device)
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
-    include_piig = variant in {"piig_v1", "piig_v2", "piig_v3"}
+    include_piig = variant in {"piig_v1", "piig_v2", "piig_v3", "piig_v4"}
     piig_version = variant.removeprefix("piig_") if include_piig else "v1"
     train_loader = make_loader(train_rows, tokenizer, args, shuffle=True, include_piig=include_piig, piig_version=piig_version)
     val_loader = make_loader(val_rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version)
@@ -463,7 +485,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output-dir", default="runs", help="Base directory where experiment_XXX folders are created.")
     parser.add_argument("--experiment-prefix", default="experiment", help="Prefix for incremental experiment folders.")
     parser.add_argument("--model-name", default="xlm-roberta-base")
-    parser.add_argument("--models", default="pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3")
+    parser.add_argument("--models", default="pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4")
     parser.add_argument("--seeds", default="42")
     parser.add_argument("--train-languages", default="en", help="Used only by the legacy XNLI-dev training protocol.")
     parser.add_argument(
@@ -491,6 +513,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-proof-nodes", type=int, default=12)
     parser.add_argument("--max-proof-len", type=int, default=32)
     parser.add_argument("--wikidata-cache", default="data/cache/wikidata_entities.jsonl")
+    parser.add_argument("--wiktionary-cache", default="data/cache/wiktionary_entries.jsonl")
+    parser.add_argument("--max-wiktionary-entries", type=int, default=2)
     parser.add_argument(
         "--save-piig-explanations",
         action=argparse.BooleanOptionalAction,
