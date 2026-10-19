@@ -26,6 +26,11 @@ poetry run python scripts/download_datasets.py --with-mnli
 `--with-optional` downloads both MultiNLI and XNLI-MT. XNLI-MT is only needed
 for later translate-train/translate-test comparisons.
 
+For PIIG v4's fully local Wiktionary workflow, download the official English
+dump with `poetry run python scripts/download_wiktionary_dump.py`, then follow
+the extraction and cache-indexing instructions in
+[the PIIG v4 architecture notes](docs/piig_v4_architecture.md#complete-local-dump).
+
 ## Direction
 
 GloSeGAT starts from a target word, retrieves WordNet/OMW candidate senses, and

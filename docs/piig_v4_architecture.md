@@ -79,6 +79,56 @@ The builder uses the Wiktionary REST definition endpoint and falls back to the
 MediaWiki parse endpoint. If a network rejects the default identifier, pass a
 descriptive value with `--user-agent`.
 
+### Complete Local Dump
+
+For a fully local source, download the official English Wiktionary
+`pages-articles` dump with checksum verification and resume support:
+
+```bash
+poetry run python scripts/download_wiktionary_dump.py
+```
+
+This stores the compressed dump at:
+
+```text
+data/raw/wiktionary/enwiktionary-latest-pages-articles.xml.bz2
+```
+
+The raw XML dump needs an extractor because Wiktionary definitions use
+templates and Lua modules. Use a current checkout of
+[`wiktextract`](https://github.com/tatuylonen/wiktextract), which extracts
+English glosses and lexical linkages:
+
+```bash
+git clone https://github.com/tatuylonen/wiktextract.git data/tools/wiktextract
+poetry run pip install -e data/tools/wiktextract
+poetry run wiktwords \
+  --all \
+  --language-code en \
+  --edition en \
+  --num-processes 1 \
+  --out data/raw/wiktionary/enwiktionary_en.jsonl \
+  data/raw/wiktionary/enwiktionary-latest-pages-articles.xml.bz2
+```
+
+`--num-processes 1` is a conservative setting for a Mac. The extraction is
+slow and produces a large JSONL file, but it runs entirely from the local dump.
+Then derive the compact task-oriented cache that v4 uses at runtime:
+
+```bash
+poetry run python scripts/build_wiktionary_cache_from_jsonl.py \
+  --input data/raw/wiktionary/enwiktionary_en.jsonl \
+  --sources mnli,axb,xnli \
+  --languages en \
+  --max-examples 10000 \
+  --max-terms 4
+```
+
+The final `data/cache/wiktionary_entries.jsonl` contains only terms occurring
+in the selected NLI sources. This is intentional: the complete dump remains
+available locally, while the `DataLoader` only loads the small retrieval cache
+needed for reproducible training.
+
 ## Encoding and Objective
 
 v4 uses the same injection mechanism as v1:
