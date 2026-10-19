@@ -101,7 +101,7 @@ English glosses and lexical linkages:
 
 ```bash
 git clone https://github.com/tatuylonen/wiktextract.git data/tools/wiktextract
-poetry run pip install -e data/tools/wiktextract
+poetry add --group wiktionary-dump ./data/tools/wiktextract
 poetry run wiktwords \
   --all \
   --language-code en \
