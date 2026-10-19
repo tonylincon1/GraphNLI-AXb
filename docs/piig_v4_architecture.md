@@ -103,7 +103,7 @@ English glosses and lexical linkages:
 git clone https://github.com/tatuylonen/wiktextract.git data/tools/wiktextract
 poetry add --group wiktionary-dump ./data/tools/wiktextract
 poetry run wiktwords \
-  --all \
+  --linkages \
   --language-code en \
   --edition en \
   --num-processes 1 \
