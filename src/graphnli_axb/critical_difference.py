@@ -22,6 +22,7 @@ DISPLAY_NAMES = {
     "pair_cls": "Pair classifier",
     "piig_v4": "Our approach",
     "piig_v5": "Our approach v5",
+    "piig_v6": "Our approach v6",
 }
 
 

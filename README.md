@@ -53,7 +53,7 @@ Initial one-seed comparison:
 
 ```bash
 poetry run graphnli-train \
-  --models pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4 \
+  --models pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4,piig_v6 \
   --seeds 42 \
   --epochs 1 \
   --selection-metric binary/mcc \
@@ -142,6 +142,7 @@ The default architecture variants are:
 - `piig_v3`: PIIG with scope-conditioned conditional, quantifier, and disjunction evidence, version 3.
 - `piig_v4`: PIIG with cached Wiktionary gloss and lexical-relation evidence, version 4.
 - `piig_v5`: PIIG v4 with explicit scope, polarity, monotonicity, disjunction, numeric, and directional lexical evidence.
+- `piig_v6`: PIIG v4 with pair-conditioned word anchors and typed hybrid proof-graph edges.
 
 See [PIIG v5 architecture notes](docs/piig_v5_architecture.md) for the
 scope-aware graph nodes and training command.

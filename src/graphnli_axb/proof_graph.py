@@ -46,6 +46,8 @@ PROOF_NODE_TYPES = [
     "disjunction_scope_evidence",
     "numeric_relation_evidence",
     "directed_lexical_relation",
+    "premise_word",
+    "hypothesis_word",
 ]
 PROOF_NODE_TYPE_TO_ID = {name: index for index, name in enumerate(PROOF_NODE_TYPES)}
 
@@ -58,6 +60,12 @@ PROOF_RELATIONS = [
     "evidence_knowledge",
     "phrase_lexicon",
     "evidence_lexicon",
+    "phrase_word",
+    "word_alignment",
+    "word_lexicon",
+    "word_evidence",
+    "typed_support",
+    "typed_contradiction",
 ]
 PROOF_REL_TO_ID = {name: index for index, name in enumerate(PROOF_RELATIONS)}
 
@@ -94,6 +102,13 @@ PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(PROOF_TARGETS)}
 V3_PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(V3_PROOF_TARGETS)}
 V4_PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(V4_PROOF_TARGETS)}
 V5_PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(V5_PROOF_TARGETS)}
+V6_PROOF_TARGETS = V4_PROOF_TARGETS + [
+    "hybrid_word_path",
+    "word_alignment_path",
+    "typed_support_path",
+    "typed_contradiction_path",
+]
+V6_PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(V6_PROOF_TARGETS)}
 
 
 @dataclass(frozen=True)
@@ -135,6 +150,51 @@ def conditional_overlap_ratio(left: List[str], right: List[str]) -> float:
     if not left_content:
         return 0.0
     return len(left_content & right_content) / len(left_content)
+
+
+def select_v6_word_nodes(sentence1: str, sentence2: str, lexical, limit: int = 4) -> List[tuple[str, str]]:
+    """Select a small, pair-conditioned set of word anchors for the hybrid graph."""
+    premise_count = sum(side == 0 for side in lexical.node_side_ids)
+    cross_edges = lexical.edge_types[:premise_count, premise_count:]
+    lexical_relations = {
+        REL_TO_ID[name] for name in ("identity", "synonym", "antonym", "hypernym", "hyponym")
+    }
+    cross_tokens: set[str] = set()
+    for left_index, row in enumerate(cross_edges):
+        for right_index, relation_id in enumerate(row):
+            if int(relation_id) in lexical_relations:
+                cross_tokens.add(lexical.node_texts[left_index])
+                cross_tokens.add(lexical.node_texts[premise_count + right_index])
+
+    logical_anchors = {
+        "not", "never", "no", "none", "nothing", "every", "all", "each", "some", "any",
+        "if", "then", "or", "and",
+    }
+    candidates: List[tuple[int, int, str, str]] = []
+    for side, text in (("premise_word", sentence1), ("hypothesis_word", sentence2)):
+        seen: set[str] = set()
+        for position, token in enumerate(simple_tokens(text)):
+            if token in seen or (token in STOPWORDS and token not in logical_anchors):
+                continue
+            seen.add(token)
+            score = 0
+            if token in cross_tokens:
+                score += 3
+            if token in logical_anchors:
+                score += 2
+            if token not in STOPWORDS:
+                score += 1
+            candidates.append((score, -position, side, token))
+
+    selected: List[tuple[str, str]] = []
+    for side in ("premise_word", "hypothesis_word"):
+        side_candidates = sorted(
+            (candidate for candidate in candidates if candidate[2] == side),
+            key=lambda item: (item[0], item[1]),
+            reverse=True,
+        )
+        selected.extend((side, token) for _, _, _, token in side_candidates[: max(1, limit // 2)])
+    return selected[:limit]
 
 
 def conditional_parts(tokens: List[str]) -> tuple[List[str], List[str]] | None:
@@ -208,6 +268,8 @@ def build_proof_graph(
         target_names, target_to_id = V4_PROOF_TARGETS, V4_PROOF_TARGET_TO_ID
     elif knowledge_mode == "v5":
         target_names, target_to_id = V5_PROOF_TARGETS, V5_PROOF_TARGET_TO_ID
+    elif knowledge_mode == "v6":
+        target_names, target_to_id = V6_PROOF_TARGETS, V6_PROOF_TARGET_TO_ID
     else:
         target_names, target_to_id = PROOF_TARGETS, PROOF_TARGET_TO_ID
     targets = np.zeros(len(target_names), dtype=np.float32)
@@ -228,10 +290,16 @@ def build_proof_graph(
             targets[target_to_id[name]] = 1.0
         return True
 
+    if knowledge_mode == "v6":
+        word_nodes = select_v6_word_nodes(sentence1, sentence2, lexical)
+        for node_type, token in word_nodes:
+            if add(node_type, f"{node_type.replace('_', ' ')}: {token}"):
+                targets[target_to_id["hybrid_word_path"]] = 1.0
+
     # Glosses expose lexical meaning as evidence tokens. Their presence does
     # not assert entailment: cross-attention learns whether a cached sense is
     # relevant to this particular premise-hypothesis pair.
-    if knowledge_mode in {"v4", "v5"} and wiktionary:
+    if knowledge_mode in {"v4", "v5", "v6"} and wiktionary:
         for entry in wiktionary.entries:
             if len(texts) >= max_nodes:
                 break
@@ -352,7 +420,7 @@ def build_proof_graph(
                 add("disjunction_scope", "evidence disjunction scope: alternatives require contextual resolution")
                 break
 
-    if knowledge_mode not in {"v4", "v5"}:
+    if knowledge_mode not in {"v4", "v5", "v6"}:
         has_type = bool(wikidata.relations[WIKIDATA_RELATIONS.index("wikidata_has_type")])
         same_entity = bool(wikidata.relations[WIKIDATA_RELATIONS.index("wikidata_same_entity")])
         entries = wikidata.entries or [None] * len(wikidata.texts)
@@ -376,6 +444,8 @@ def build_proof_graph(
             relation = "phrase_knowledge"
         elif node_type in {"wiktionary_entry", "wiktionary_gloss", "wiktionary_relation"}:
             relation = "phrase_lexicon"
+        elif node_type in {"premise_word", "hypothesis_word"}:
+            relation = "phrase_word"
         else:
             relation = "phrase_evidence"
         rel_id = PROOF_REL_TO_ID[relation]
@@ -387,6 +457,48 @@ def build_proof_graph(
                 edges[left, right] = edges[right, left] = PROOF_REL_TO_ID["evidence_knowledge"]
             elif types[left] in {"wiktionary_entry", "wiktionary_gloss", "wiktionary_relation"} or types[right] in {"wiktionary_entry", "wiktionary_gloss", "wiktionary_relation"}:
                 edges[left, right] = edges[right, left] = PROOF_REL_TO_ID["evidence_lexicon"]
+
+    if knowledge_mode == "v6":
+        word_types = {"premise_word", "hypothesis_word"}
+        lexicon_types = {"wiktionary_entry", "wiktionary_gloss", "wiktionary_relation"}
+        evidence_types = set(types) - {"premise_phrase", "hypothesis_phrase"} - word_types - lexicon_types
+        word_indices = [index for index, node_type in enumerate(types) if node_type in word_types]
+        lexicon_indices = [index for index, node_type in enumerate(types) if node_type in lexicon_types]
+        evidence_indices = [index for index, node_type in enumerate(types) if node_type in evidence_types]
+        word_relation_found = False
+        for index in word_indices:
+            phrase_index = 0 if types[index] == "premise_word" else 1
+            edges[index, phrase_index] = edges[phrase_index, index] = PROOF_REL_TO_ID["phrase_word"]
+            for lexicon_index in lexicon_indices:
+                edges[index, lexicon_index] = edges[lexicon_index, index] = PROOF_REL_TO_ID["word_lexicon"]
+            for evidence_index in evidence_indices:
+                edges[index, evidence_index] = edges[evidence_index, index] = PROOF_REL_TO_ID["word_evidence"]
+
+        for left in word_indices:
+            if types[left] != "premise_word":
+                continue
+            for right in word_indices:
+                if types[right] != "hypothesis_word":
+                    continue
+                left_token = texts[left].split(":", 1)[-1].strip()
+                right_token = texts[right].split(":", 1)[-1].strip()
+                relation = wordnet_relation(left_token, right_token)
+                if relation == "identity":
+                    edge_relation = "word_alignment"
+                    target_name = "word_alignment_path"
+                elif relation in {"synonym", "hypernym", "hyponym"}:
+                    edge_relation = "typed_support"
+                    target_name = "typed_support_path"
+                elif relation == "antonym":
+                    edge_relation = "typed_contradiction"
+                    target_name = "typed_contradiction_path"
+                else:
+                    continue
+                edges[left, right] = edges[right, left] = PROOF_REL_TO_ID[edge_relation]
+                targets[target_to_id[target_name]] = 1.0
+                word_relation_found = True
+        if word_relation_found:
+            targets[target_to_id["word_alignment_path"]] = 1.0
 
     return ProofGraphSpec(
         texts=texts,

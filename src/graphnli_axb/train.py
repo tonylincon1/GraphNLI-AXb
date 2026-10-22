@@ -346,7 +346,7 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
     set_seed(seed)
     device = resolve_device(args.device)
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
-    include_piig = variant in {"piig_v1", "piig_v2", "piig_v3", "piig_v4", "piig_v5"}
+    include_piig = variant in {"piig_v1", "piig_v2", "piig_v3", "piig_v4", "piig_v5", "piig_v6"}
     piig_version = variant.removeprefix("piig_") if include_piig else "v1"
     train_loader = make_loader(train_rows, tokenizer, args, shuffle=True, include_piig=include_piig, piig_version=piig_version)
     val_loader = make_loader(val_rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version)
@@ -496,7 +496,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Existing experiment directory to continue. Completed model/seed results are skipped.",
     )
     parser.add_argument("--model-name", default="xlm-roberta-base")
-    parser.add_argument("--models", default="pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4")
+    parser.add_argument("--models", default="pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4,piig_v6")
     parser.add_argument("--seeds", default="42")
     parser.add_argument("--train-languages", default="en", help="Used only by the legacy XNLI-dev training protocol.")
     parser.add_argument(
