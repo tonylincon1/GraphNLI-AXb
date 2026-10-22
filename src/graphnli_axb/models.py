@@ -8,6 +8,7 @@ import torch.nn.functional as F
 from transformers import AutoModel
 
 from .graph import LOGIC_NODE_TYPE_IDS, NODE_TYPES, NODE_TYPE_TO_ID, RELATIONS
+from .logicpath import LOGICPATH_NODE_TYPES, LOGICPATH_RELATIONS, TRANSFORMATIONS
 from .proof_graph import (
     PROOF_NODE_TYPES,
     PROOF_RELATIONS,
@@ -1485,6 +1486,86 @@ class PIIGV6Classifier(PIIGV4Classifier):
         )
 
 
+class LogicPathGraphAttentionLayer(nn.Module):
+    def __init__(self, hidden: int, dropout: float):
+        super().__init__()
+        self.query = nn.Linear(hidden, hidden, bias=False)
+        self.key = nn.Linear(hidden, hidden, bias=False)
+        self.value = nn.Linear(hidden, hidden, bias=False)
+        self.relation_bias = nn.Embedding(len(LOGICPATH_RELATIONS), 1)
+        self.dropout = nn.Dropout(dropout)
+        self.norm = nn.LayerNorm(hidden)
+
+    def forward(self, nodes: torch.Tensor, edge_types: torch.Tensor, node_mask: torch.Tensor) -> torch.Tensor:
+        scores = torch.matmul(self.query(nodes), self.key(nodes).transpose(1, 2)) / (nodes.size(-1) ** 0.5)
+        scores = scores + self.relation_bias(edge_types).squeeze(-1)
+        visible = (edge_types > 0) & node_mask.unsqueeze(1) & node_mask.unsqueeze(2)
+        scores = scores.masked_fill(~visible, -1e4)
+        attention = torch.softmax(scores, dim=-1)
+        messages = torch.matmul(attention, self.value(nodes))
+        return self.norm(nodes + self.dropout(F.gelu(messages)))
+
+
+class LogicPathV1Classifier(PairClassifier):
+    """Transformer plus a dynamic graph of premise-to-hypothesis transformations."""
+
+    def __init__(self, model_name: str, dropout: float, num_labels: int = 3, graph_layers: int = 2, aux_weight: float = 0.15):
+        super().__init__(model_name, dropout, num_labels)
+        hidden = self.encoder.config.hidden_size
+        self.aux_weight = aux_weight
+        input_embedding_dim = getattr(self.encoder.get_input_embeddings(), "embedding_dim", hidden)
+        self.logicpath_input_projection = (
+            nn.Identity() if input_embedding_dim == hidden else nn.Linear(input_embedding_dim, hidden, bias=False)
+        )
+        self.logicpath_type_embedding = nn.Embedding(len(LOGICPATH_NODE_TYPES), hidden)
+        self.logicpath_layers = nn.ModuleList([LogicPathGraphAttentionLayer(hidden, dropout) for _ in range(graph_layers)])
+        self.logicpath_transform_head = nn.Sequential(
+            nn.LayerNorm(hidden),
+            nn.Linear(hidden, hidden // 2),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden // 2, len(TRANSFORMATIONS)),
+        )
+        self.logicpath_inverse_head = nn.Linear(hidden, len(TRANSFORMATIONS))
+        feature_dim = hidden * 4 + len(TRANSFORMATIONS) * 2
+        self.classifier = nn.Sequential(
+            nn.LayerNorm(feature_dim),
+            nn.Linear(feature_dim, hidden),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden, num_labels),
+        )
+
+    @staticmethod
+    def pool(nodes: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+        weights = mask.unsqueeze(-1).float()
+        return (nodes * weights).sum(dim=1) / weights.sum(dim=1).clamp(min=1)
+
+    def logicpath_nodes(self, batch: dict) -> torch.Tensor:
+        embeddings = self.encoder.get_input_embeddings()(batch["logicpath_input_ids"])
+        token_mask = batch["logicpath_attention_mask"].unsqueeze(-1)
+        nodes = (embeddings * token_mask).sum(dim=2) / token_mask.sum(dim=2).clamp(min=1)
+        nodes = self.logicpath_input_projection(nodes)
+        return nodes + self.logicpath_type_embedding(batch["logicpath_type_ids"])
+
+    def forward(self, batch: dict) -> ModelOutput:
+        pair, _ = self.encode_pair(batch)
+        nodes = self.logicpath_nodes(batch)
+        for layer in self.logicpath_layers:
+            nodes = layer(nodes, batch["logicpath_edge_types"], batch["logicpath_mask"])
+        graph = self.pool(nodes, batch["logicpath_mask"])
+        transform_logits = self.logicpath_transform_head(graph)
+        inverse_logits = self.logicpath_inverse_head(graph)
+        features = torch.cat(
+            [pair, graph, (pair - graph).abs(), pair * graph, transform_logits.sigmoid(), inverse_logits.sigmoid()],
+            dim=-1,
+        )
+        logits = self.classifier(features)
+        transformation_loss = F.binary_cross_entropy_with_logits(transform_logits, batch["logicpath_targets"])
+        inverse_loss = F.binary_cross_entropy_with_logits(inverse_logits, batch["logicpath_inverse_targets"])
+        return ModelOutput(logits=logits, aux_loss=(transformation_loss + inverse_loss) * self.aux_weight)
+
+
 def build_model(variant: str, model_name: str, dropout: float, graph_layers: int, aux_weight: float) -> nn.Module:
     if variant == "pair_cls":
         return PairClassifier(model_name, dropout)
@@ -1530,4 +1611,6 @@ def build_model(variant: str, model_name: str, dropout: float, graph_layers: int
         return PIIGV5Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     if variant == "piig_v6":
         return PIIGV6Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
+    if variant == "logicpath_v1":
+        return LogicPathV1Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     raise ValueError(f"Unknown model variant: {variant}")

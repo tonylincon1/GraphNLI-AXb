@@ -143,6 +143,7 @@ The default architecture variants are:
 - `piig_v4`: PIIG with cached Wiktionary gloss and lexical-relation evidence, version 4.
 - `piig_v5`: PIIG v4 with explicit scope, polarity, monotonicity, disjunction, numeric, and directional lexical evidence.
 - `piig_v6`: PIIG v4 with pair-conditioned word anchors and typed hybrid proof-graph edges.
+- `logicpath_v1`: dynamic transformation graph Transformer with inverse-path supervision.
 
 See [PIIG v5 architecture notes](docs/piig_v5_architecture.md) for the
 scope-aware graph nodes and training command.

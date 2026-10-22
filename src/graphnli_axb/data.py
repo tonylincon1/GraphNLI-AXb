@@ -12,6 +12,7 @@ from torch.utils.data import Dataset
 
 from .graph import LOGIC_NODE_TYPE_IDS, RELATIONS, build_graph
 from .labels import LABEL_TO_ID_3, LABEL_TO_ID_BINARY, normalize_label
+from .logicpath import build_logicpath_graph
 from .proof_graph import PROOF_NODE_TYPES, build_proof_graph
 from .wikidata import WIKIDATA_RELATIONS, build_wikidata_spec, load_wikidata_cache
 from .wiktionary import build_wiktionary_spec, load_wiktionary_cache
@@ -219,6 +220,9 @@ class NLIGraphDataset(Dataset):
         piig_version: str = "v1",
         max_proof_nodes: int = 12,
         max_proof_len: int = 32,
+        include_logicpath: bool = False,
+        max_logicpath_nodes: int = 24,
+        max_logicpath_len: int = 24,
     ):
         self.rows = list(rows)
         self.tokenizer = tokenizer
@@ -234,6 +238,9 @@ class NLIGraphDataset(Dataset):
         self.piig_version = piig_version
         self.max_proof_nodes = max_proof_nodes
         self.max_proof_len = max_proof_len
+        self.include_logicpath = include_logicpath
+        self.max_logicpath_nodes = max_logicpath_nodes
+        self.max_logicpath_len = max_logicpath_len
 
     def __len__(self) -> int:
         return len(self.rows)
@@ -393,6 +400,31 @@ class NLIGraphDataset(Dataset):
             proof_edge_types = torch.zeros((self.max_proof_nodes, self.max_proof_nodes), dtype=torch.long)
             proof_edge_types[:proof_count, :proof_count] = torch.tensor(proof.edge_types, dtype=torch.long)
 
+        if self.include_logicpath:
+            logicpath = build_logicpath_graph(
+                row.sentence1,
+                row.sentence2,
+                max_nodes=self.max_logicpath_nodes,
+            )
+            logicpath_count = len(logicpath.texts)
+            logicpath_enc = self.tokenizer(
+                logicpath.texts,
+                truncation=True,
+                max_length=self.max_logicpath_len,
+                padding="max_length",
+                return_tensors="pt",
+            )
+            logicpath_input_ids = torch.zeros((self.max_logicpath_nodes, self.max_logicpath_len), dtype=torch.long)
+            logicpath_attention_mask = torch.zeros((self.max_logicpath_nodes, self.max_logicpath_len), dtype=torch.long)
+            logicpath_input_ids[:logicpath_count] = logicpath_enc["input_ids"][:logicpath_count]
+            logicpath_attention_mask[:logicpath_count] = logicpath_enc["attention_mask"][:logicpath_count]
+            logicpath_type_ids = torch.zeros(self.max_logicpath_nodes, dtype=torch.long)
+            logicpath_type_ids[:logicpath_count] = torch.tensor(logicpath.node_type_ids, dtype=torch.long)
+            logicpath_mask = torch.zeros(self.max_logicpath_nodes, dtype=torch.bool)
+            logicpath_mask[:logicpath_count] = True
+            logicpath_edge_types = torch.zeros((self.max_logicpath_nodes, self.max_logicpath_nodes), dtype=torch.long)
+            logicpath_edge_types[:logicpath_count, :logicpath_count] = torch.tensor(logicpath.edge_types, dtype=torch.long)
+
         item = {key: value.squeeze(0) for key, value in enc.items()}
         item["kbert_input_ids"] = kbert_enc["input_ids"].squeeze(0)
         item["kbert_attention_mask"] = kbert_enc["attention_mask"].squeeze(0)
@@ -437,13 +469,26 @@ class NLIGraphDataset(Dataset):
                     "proof_texts": proof.texts,
                 }
             )
+        if self.include_logicpath:
+            item.update(
+                {
+                    "logicpath_input_ids": logicpath_input_ids,
+                    "logicpath_attention_mask": logicpath_attention_mask,
+                    "logicpath_type_ids": logicpath_type_ids,
+                    "logicpath_mask": logicpath_mask,
+                    "logicpath_edge_types": logicpath_edge_types,
+                    "logicpath_targets": torch.tensor(logicpath.targets, dtype=torch.float),
+                    "logicpath_inverse_targets": torch.tensor(logicpath.inverse_targets, dtype=torch.float),
+                    "logicpath_texts": logicpath.texts,
+                }
+            )
         return item
 
 
 def collate_nli(batch: List[dict]) -> dict:
     tensor_keys = [key for key, value in batch[0].items() if torch.is_tensor(value)]
     out = {key: torch.stack([item[key] for item in batch]) for key in tensor_keys}
-    for key in ["uid", "dataset", "logic", "language", "proof_texts"]:
+    for key in ["uid", "dataset", "logic", "language", "proof_texts", "logicpath_texts"]:
         if key not in batch[0]:
             continue
         out[key] = [item[key] for item in batch]
