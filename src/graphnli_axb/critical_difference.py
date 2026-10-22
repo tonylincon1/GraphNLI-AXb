@@ -21,6 +21,7 @@ DISPLAY_NAMES = {
     "kgnli_dual": "KGNLI",
     "pair_cls": "Pair classifier",
     "piig_v4": "Our approach",
+    "piig_v5": "Our approach v5",
 }
 
 
@@ -243,7 +244,11 @@ def _write_combined_plot(output_dir: Path, results: dict[str, object]) -> None:
     figure, axes = plt.subplots(1, len(results), figsize=(16, 5.2), squeeze=False)
     axes_flat = axes[0]
     for axis, (split, result) in zip(axes_flat, results.items()):
-        if isinstance(result, tuple) and result[0] == "exploratory":
+        if (
+            isinstance(result, tuple)
+            and len(result) == 4
+            and result[0] == "exploratory"
+        ):
             _draw_exploratory_axis(axis, result[1], result[2], result[3])
         else:
             plot_stats(result, allow_insignificant=True, ax=axis)
