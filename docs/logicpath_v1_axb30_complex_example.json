@@ -1,0 +1,409 @@
+{
+  "uid": "axb-30",
+  "dataset": "axb",
+  "logic": "Double negation",
+  "language": "en",
+  "prediction_3": 2,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.5162367820739746,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.4636201858520508,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.5314158797264099,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.5405744910240173,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.5175526738166809,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.46890074014663696,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.4361434280872345,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.5034307837486267,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.5376314520835876,
+      "target": 1.0
+    },
+    "numeric_change": {
+      "score": 0.5199399590492249,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.5454215407371521,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: If the pipeline tokenization scheme does not correspond to the one that was used when a model was created, a negative impact on the pipeline results would be expected.",
+      "type": "premise_state",
+      "importance": 0.11535298824310303
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: If the pipeline tokenization scheme does not correspond to the one that was used when a model was created, a negative impact on the pipeline results would not be unexpected.",
+      "type": "hypothesis_state",
+      "importance": 0.1014292761683464
+    },
+    {
+      "id": 2,
+      "text": "premise unit: if",
+      "type": "premise_unit",
+      "importance": 0.04392843693494797
+    },
+    {
+      "id": 3,
+      "text": "premise unit: pipeline",
+      "type": "premise_unit",
+      "importance": 0.04389015957713127
+    },
+    {
+      "id": 4,
+      "text": "premise unit: tokenization",
+      "type": "premise_unit",
+      "importance": 0.043960731476545334
+    },
+    {
+      "id": 5,
+      "text": "premise unit: scheme",
+      "type": "premise_unit",
+      "importance": 0.04388682544231415
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: if",
+      "type": "hypothesis_unit",
+      "importance": 0.04542505368590355
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: pipeline",
+      "type": "hypothesis_unit",
+      "importance": 0.045449599623680115
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: tokenization",
+      "type": "hypothesis_unit",
+      "importance": 0.045430269092321396
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: scheme",
+      "type": "hypothesis_unit",
+      "importance": 0.045428041368722916
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: if -> if",
+      "type": "transformation",
+      "importance": 0.05156490206718445
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: pipeline -> pipeline",
+      "type": "transformation",
+      "importance": 0.051568664610385895
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: tokenization -> tokenization",
+      "type": "transformation",
+      "importance": 0.05156845971941948
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: scheme -> scheme",
+      "type": "transformation",
+      "importance": 0.05161122977733612
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: not -> not",
+      "type": "transformation",
+      "importance": 0.043895646929740906
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: correspond -> correspond",
+      "type": "transformation",
+      "importance": 0.04389889910817146
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: one -> one",
+      "type": "transformation",
+      "importance": 0.04390735924243927
+    },
+    {
+      "id": 17,
+      "text": "transformation lexical_identity: used -> used",
+      "type": "transformation",
+      "importance": 0.043908633291721344
+    },
+    {
+      "id": 18,
+      "text": "transformation conditional_alignment: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.043894872069358826
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.022644219920039177
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.21880340576171875
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.21919192373752594
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.21838870644569397
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.2187618464231491
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.11137983947992325
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.11120079457759857
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.11134561896324158
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.11147862672805786
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.17750990390777588
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.17726366221904755
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.17712675034999847
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.17726194858551025
+    },
+    {
+      "source": 0,
+      "target": 18,
+      "relation": "operation",
+      "attention": 0.17767968773841858
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.222305029630661
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.22237622737884521
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.22211608290672302
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.2222198247909546
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.08633572608232498
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.08607485890388489
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.08611467480659485
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.08622264862060547
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.13778948783874512
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.13812324404716492
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.13782131671905518
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.13796448707580566
+    },
+    {
+      "source": 1,
+      "target": 18,
+      "relation": "operation",
+      "attention": 0.13819476962089539
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.13505122065544128
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.237824946641922
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.13484065234661102
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.23750372231006622
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.1352659910917282
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.2381470501422882
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.13480442762374878
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.23785777390003204
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.20311635732650757
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.2034323662519455
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.20340240001678467
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.20341643691062927
+    }
+  ]
+}

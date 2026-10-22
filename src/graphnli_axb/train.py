@@ -426,7 +426,7 @@ def _write_logicpath_graph_svg(path: Path, record: dict) -> None:
         '<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}.column{font-size:14px;font-weight:bold;fill:#52616b}.edge-label{font-size:10px;fill:#52616b}</style>',
         '<rect width="100%" height="100%" fill="#ffffff"/>',
         f'<text x="30" y="32" class="title">LogicPath v1 transformation graph | {html.escape(record["uid"])}</text>',
-        f'<text x="30" y="54" class="small">Prediction: {record["prediction_3"]} | label: {record["label_3"]} | arrows show transformation flow; width shows attention.</text>',
+        f'<text x="30" y="54" class="small">Binary prediction: {record["prediction_binary"]} | binary label: {record["label_binary"]} | arrows show transformation flow; width shows attention.</text>',
     ]
     for node_type, (x, label) in columns.items():
         parts.append(f'<text x="{x}" y="92" text-anchor="middle" class="column">{html.escape(label)}</text>')
