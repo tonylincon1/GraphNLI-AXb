@@ -32,6 +32,9 @@ class ModelOutput:
     proof_node_importance: torch.Tensor | None = None
     proof_graph_attention: torch.Tensor | None = None
     proof_cross_attention: torch.Tensor | None = None
+    logicpath_node_importance: torch.Tensor | None = None
+    logicpath_graph_attention: torch.Tensor | None = None
+    logicpath_transform_logits: torch.Tensor | None = None
 
 
 class PairClassifier(nn.Module):
@@ -1496,14 +1499,23 @@ class LogicPathGraphAttentionLayer(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.norm = nn.LayerNorm(hidden)
 
-    def forward(self, nodes: torch.Tensor, edge_types: torch.Tensor, node_mask: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self,
+        nodes: torch.Tensor,
+        edge_types: torch.Tensor,
+        node_mask: torch.Tensor,
+        return_attention: bool = False,
+    ) -> torch.Tensor | tuple[torch.Tensor, torch.Tensor]:
         scores = torch.matmul(self.query(nodes), self.key(nodes).transpose(1, 2)) / (nodes.size(-1) ** 0.5)
         scores = scores + self.relation_bias(edge_types).squeeze(-1)
         visible = (edge_types > 0) & node_mask.unsqueeze(1) & node_mask.unsqueeze(2)
         scores = scores.masked_fill(~visible, -1e4)
         attention = torch.softmax(scores, dim=-1)
         messages = torch.matmul(attention, self.value(nodes))
-        return self.norm(nodes + self.dropout(F.gelu(messages)))
+        updated = self.norm(nodes + self.dropout(F.gelu(messages)))
+        if return_attention:
+            return updated, attention
+        return updated
 
 
 class LogicPathV1Classifier(PairClassifier):
@@ -1551,8 +1563,19 @@ class LogicPathV1Classifier(PairClassifier):
     def forward(self, batch: dict) -> ModelOutput:
         pair, _ = self.encode_pair(batch)
         nodes = self.logicpath_nodes(batch)
+        capture_attention = bool(batch.get("return_logicpath_attention", False))
+        graph_attentions = []
         for layer in self.logicpath_layers:
-            nodes = layer(nodes, batch["logicpath_edge_types"], batch["logicpath_mask"])
+            if capture_attention:
+                nodes, attention = layer(
+                    nodes,
+                    batch["logicpath_edge_types"],
+                    batch["logicpath_mask"],
+                    return_attention=True,
+                )
+                graph_attentions.append(attention)
+            else:
+                nodes = layer(nodes, batch["logicpath_edge_types"], batch["logicpath_mask"])
         graph = self.pool(nodes, batch["logicpath_mask"])
         transform_logits = self.logicpath_transform_head(graph)
         inverse_logits = self.logicpath_inverse_head(graph)
@@ -1563,7 +1586,22 @@ class LogicPathV1Classifier(PairClassifier):
         logits = self.classifier(features)
         transformation_loss = F.binary_cross_entropy_with_logits(transform_logits, batch["logicpath_targets"])
         inverse_loss = F.binary_cross_entropy_with_logits(inverse_logits, batch["logicpath_inverse_targets"])
-        return ModelOutput(logits=logits, aux_loss=(transformation_loss + inverse_loss) * self.aux_weight)
+        if not capture_attention:
+            return ModelOutput(
+                logits=logits,
+                aux_loss=(transformation_loss + inverse_loss) * self.aux_weight,
+            )
+        graph_attention = torch.stack(graph_attentions)
+        raw_importance = graph_attention.mean(dim=(0, 3)) + graph_attention.mean(dim=(0, 2))
+        raw_importance = raw_importance * batch["logicpath_mask"].float()
+        importance = raw_importance / raw_importance.sum(dim=-1, keepdim=True).clamp(min=1e-8)
+        return ModelOutput(
+            logits=logits,
+            aux_loss=(transformation_loss + inverse_loss) * self.aux_weight,
+            logicpath_node_importance=importance,
+            logicpath_graph_attention=graph_attention,
+            logicpath_transform_logits=transform_logits,
+        )
 
 
 def build_model(variant: str, model_name: str, dropout: float, graph_layers: int, aux_weight: float) -> nn.Module:

@@ -31,6 +31,7 @@ from .data import (
     split_train_validation,
 )
 from .graph import RELATIONS
+from .logicpath import LOGICPATH_NODE_TYPES, LOGICPATH_RELATIONS, TRANSFORMATIONS
 from .proof_graph import PROOF_NODE_TYPES, PROOF_RELATIONS
 from .metrics import (
     binary_axb_metrics,
@@ -345,6 +346,140 @@ def save_piig_explanations(model, loader, device: torch.device, output_dir: Path
         (wiktionary_dir / "index.json").write_text(json.dumps(wiktionary_manifest, indent=2), encoding="utf-8")
 
 
+def _logicpath_explanation_record(batch: dict, output, item_index: int) -> dict:
+    valid_nodes = int(batch["logicpath_mask"][item_index].sum().item())
+    texts = batch["logicpath_texts"][item_index][:valid_nodes]
+    importance = output.logicpath_node_importance[item_index, :valid_nodes].detach().cpu().tolist()
+    edge_types = batch["logicpath_edge_types"][item_index, :valid_nodes, :valid_nodes].detach().cpu().numpy()
+    attention = output.logicpath_graph_attention[:, item_index, :valid_nodes, :valid_nodes].mean(dim=0).detach().cpu().numpy()
+    nodes = [
+        {
+            "id": index,
+            "text": text,
+            "type": LOGICPATH_NODE_TYPES[int(batch["logicpath_type_ids"][item_index, index].item())],
+            "importance": float(importance[index]),
+        }
+        for index, text in enumerate(texts)
+    ]
+    edges = []
+    for source in range(valid_nodes):
+        for target in range(source + 1, valid_nodes):
+            relation_id = int(edge_types[source, target] or edge_types[target, source])
+            if relation_id == 0:
+                continue
+            edges.append(
+                {
+                    "source": source,
+                    "target": target,
+                    "relation": LOGICPATH_RELATIONS[relation_id],
+                    "attention": float((attention[source, target] + attention[target, source]) / 2),
+                }
+            )
+    transform_scores = output.logicpath_transform_logits[item_index].sigmoid().detach().cpu().tolist()
+    transform_targets = batch["logicpath_targets"][item_index].detach().cpu().tolist()
+    return {
+        "uid": batch["uid"][item_index],
+        "dataset": batch["dataset"][item_index],
+        "logic": batch["logic"][item_index],
+        "language": batch["language"][item_index],
+        "prediction_3": int(output.logits.argmax(dim=-1)[item_index].item()),
+        "label_3": int(batch["labels_3"][item_index].item()),
+        "prediction_binary": int(output.logits.argmax(dim=-1)[item_index].item() != 0),
+        "label_binary": int(batch["labels_binary"][item_index].item()),
+        "transformations": {
+            name: {"score": float(transform_scores[index]), "target": float(transform_targets[index])}
+            for index, name in enumerate(TRANSFORMATIONS)
+        },
+        "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+        "nodes": nodes,
+        "edges": edges,
+    }
+
+
+def _write_logicpath_graph_svg(path: Path, record: dict) -> None:
+    nodes = record["nodes"]
+    edges = record["edges"]
+    width = 1320
+    height = max(660, 270 + len(nodes) * 68)
+    center_x, center_y = 430, height // 2 + 30
+    radius = min(250, max(145, 42 * len(nodes)))
+    positions = []
+    for index in range(len(nodes)):
+        angle = -np.pi / 2 + 2 * np.pi * index / max(len(nodes), 1)
+        positions.append((center_x + radius * np.cos(angle), center_y + radius * np.sin(angle)))
+    parts = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+        '<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}</style>',
+        '<rect width="100%" height="100%" fill="#ffffff"/>',
+        f'<text x="30" y="32" class="title">LogicPath v1 transformation graph | {html.escape(record["uid"])}</text>',
+        f'<text x="30" y="54" class="small">Prediction: {record["prediction_3"]} | label: {record["label_3"]} | edge width: Graph Transformer attention.</text>',
+    ]
+    for edge in edges:
+        x1, y1 = positions[edge["source"]]
+        x2, y2 = positions[edge["target"]]
+        opacity = min(0.92, 0.15 + edge["attention"] * 2.5)
+        stroke = 1 + edge["attention"] * 7
+        color = "#9c3f3f" if edge["relation"] == "contradicts" else "#4d6f8e"
+        parts.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{color}" stroke-width="{stroke:.2f}" stroke-opacity="{opacity:.2f}"/>')
+    for index, node in enumerate(nodes):
+        x, y = positions[index]
+        score = node["importance"]
+        red = int(245 - 120 * score)
+        green = int(250 - 55 * score)
+        blue = int(255 - 20 * score)
+        parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="32" fill="rgb({red},{green},{blue})" stroke="#1f4d70" stroke-width="2"/>')
+        parts.append(f'<text x="{x:.1f}" y="{y - 3:.1f}" text-anchor="middle" class="node">N{index}</text>')
+        parts.append(f'<text x="{x:.1f}" y="{y + 13:.1f}" text-anchor="middle" class="small">{score:.3f}</text>')
+    legend_x = 790
+    parts.append(f'<text x="{legend_x}" y="92" class="title">Nodes and transformations</text>')
+    for index, node in enumerate(nodes):
+        y = 122 + index * 62
+        parts.append(f'<circle cx="{legend_x + 10}" cy="{y - 4}" r="7" fill="#6b9bc3"/>')
+        parts.append(f'<text x="{legend_x + 26}" y="{y}" class="node">N{index} | {html.escape(node["type"])} | {node["importance"]:.3f}</text>')
+        for line_index, line in enumerate(_svg_label(node["text"], max_chars=48, max_lines=2)):
+            parts.append(f'<text x="{legend_x + 26}" y="{y + 16 * (line_index + 1)}" class="small">{html.escape(line)}</text>')
+    parts.append(f'<text x="30" y="{height - 24}" class="small">Node score: normalized mean incoming/outgoing relation-aware attention. Red edges indicate contradiction relations.</text>')
+    parts.append("</svg>")
+    path.write_text("\n".join(parts), encoding="utf-8")
+
+
+@torch.no_grad()
+def save_logicpath_explanations(model, loader, device: torch.device, output_dir: Path) -> None:
+    """Save one graph per AX-b subtype plus transformation-rich examples."""
+    model.eval()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    seen_logic = set()
+    transformation_dir = output_dir / "transformation_examples"
+    transformation_manifest = []
+    manifest = []
+    for batch in loader:
+        batch = move_batch(batch, device)
+        batch["return_logicpath_attention"] = True
+        output = model(batch)
+        if output.logicpath_node_importance is None or output.logicpath_graph_attention is None:
+            raise RuntimeError("LogicPath model did not return graph attention for explanation.")
+        for item_index, logic in enumerate(batch["logic"]):
+            record = _logicpath_explanation_record(batch, output, item_index)
+            filename = _logic_filename(logic)
+            if logic not in seen_logic:
+                seen_logic.add(logic)
+                path = output_dir / filename
+                path.with_suffix(".json").write_text(json.dumps(record, indent=2), encoding="utf-8")
+                _write_logicpath_graph_svg(path.with_suffix(".svg"), record)
+                manifest.append({"logic": logic, "uid": record["uid"], "file": f"{filename}.svg"})
+            active_transformations = [name for name, values in record["transformations"].items() if values["target"]]
+            if active_transformations and len(transformation_manifest) < 5:
+                transformation_dir.mkdir(parents=True, exist_ok=True)
+                name = f"transformation_{len(transformation_manifest) + 1:02d}_{filename}"
+                path = transformation_dir / name
+                path.with_suffix(".json").write_text(json.dumps(record, indent=2), encoding="utf-8")
+                _write_logicpath_graph_svg(path.with_suffix(".svg"), record)
+                transformation_manifest.append({"logic": logic, "transformations": active_transformations, "uid": record["uid"], "file": f"{name}.svg"})
+    (output_dir / "index.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    if transformation_manifest:
+        (transformation_dir / "index.json").write_text(json.dumps(transformation_manifest, indent=2), encoding="utf-8")
+
+
 def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, eval_sets: dict, args) -> dict:
     set_seed(seed)
     device = resolve_device(args.device)
@@ -420,6 +555,8 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
         save_predictions(out_dir / f"predictions_{name}.csv", predictions)
         if include_piig and args.save_piig_explanations and name == args.piig_explain_split:
             save_piig_explanations(model, loader, device, out_dir / "explanations" / name)
+        if include_logicpath and args.save_piig_explanations and name == args.piig_explain_split:
+            save_logicpath_explanations(model, loader, device, out_dir / "explanations" / name)
 
     result = {
         "variant": variant,
