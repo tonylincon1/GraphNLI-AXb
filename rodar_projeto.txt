@@ -16,18 +16,22 @@ PYTHONPATH=src python scripts/run_experiment.py \
 
 python scripts/summarize_runs.py runs/experiment_001/summary.json
 
+--resume-dir runs/experiment_022 \
+
 poetry run graphnli-train \
-  --model-name microsoft/deberta-base \
-  --models piig_v1,pair_cls \
+  --model-name bert-base-multilingual-cased \
+  --models piig_v5 \
   --training-protocol mnli \
-  --train-limit 2000 \
+  --train-manifest data/manifests/mnli_train_2000_stratified.jsonl \
   --seeds 42 \
-  --epochs 6 \
+  --seeds 1001,1002,1003,1004,1005 \
+  --epochs 8 \
   --device mps \
   --lr 1e-5 \
-  --batch-size 16 \
+  --batch-size 32 \
   --eval-languages en \
   --selection-metric nli3/macro_f1 \
+  --wiktionary-cache data/cache/wiktionary_entries_mnli.jsonl \
   --patience 2 \
   --output-dir runs
 

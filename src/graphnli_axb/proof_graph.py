@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from typing import List
 
@@ -39,6 +40,12 @@ PROOF_NODE_TYPES = [
     "wiktionary_entry",
     "wiktionary_gloss",
     "wiktionary_relation",
+    "negation_scope_evidence",
+    "quantifier_polarity_evidence",
+    "monotonicity_direction",
+    "disjunction_scope_evidence",
+    "numeric_relation_evidence",
+    "directed_lexical_relation",
 ]
 PROOF_NODE_TYPE_TO_ID = {name: index for index, name in enumerate(PROOF_NODE_TYPES)}
 
@@ -75,9 +82,18 @@ V4_PROOF_TARGETS = PROOF_TARGETS + [
     "wiktionary_gloss_path",
     "wiktionary_relation_path",
 ]
+V5_PROOF_TARGETS = V4_PROOF_TARGETS + [
+    "negation_scope_path",
+    "quantifier_polarity_path",
+    "monotonicity_direction_path",
+    "disjunction_scope_path",
+    "numeric_relation_path",
+    "directed_lexical_relation_path",
+]
 PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(PROOF_TARGETS)}
 V3_PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(V3_PROOF_TARGETS)}
 V4_PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(V4_PROOF_TARGETS)}
+V5_PROOF_TARGET_TO_ID = {name: index for index, name in enumerate(V5_PROOF_TARGETS)}
 
 
 @dataclass(frozen=True)
@@ -190,6 +206,8 @@ def build_proof_graph(
         target_names, target_to_id = V3_PROOF_TARGETS, V3_PROOF_TARGET_TO_ID
     elif knowledge_mode == "v4":
         target_names, target_to_id = V4_PROOF_TARGETS, V4_PROOF_TARGET_TO_ID
+    elif knowledge_mode == "v5":
+        target_names, target_to_id = V5_PROOF_TARGETS, V5_PROOF_TARGET_TO_ID
     else:
         target_names, target_to_id = PROOF_TARGETS, PROOF_TARGET_TO_ID
     targets = np.zeros(len(target_names), dtype=np.float32)
@@ -213,7 +231,7 @@ def build_proof_graph(
     # Glosses expose lexical meaning as evidence tokens. Their presence does
     # not assert entailment: cross-attention learns whether a cached sense is
     # relevant to this particular premise-hypothesis pair.
-    if knowledge_mode == "v4" and wiktionary:
+    if knowledge_mode in {"v4", "v5"} and wiktionary:
         for entry in wiktionary.entries:
             if len(texts) >= max_nodes:
                 break
@@ -230,6 +248,51 @@ def build_proof_graph(
                 f"wiktionary relation: {pair['premise_term']} {pair['relation']} {pair['hypothesis_term']}",
             ):
                 targets[target_to_id["wiktionary_relation_path"]] = 1.0
+
+    if knowledge_mode == "v5":
+        premise_tokens = simple_tokens(sentence1)
+        hypothesis_tokens = simple_tokens(sentence2)
+        premise_polarity = "negated" if 2 in premise_types else "affirmed"
+        hypothesis_polarity = "negated" if 2 in hypothesis_types else "affirmed"
+        if 2 in premise_types or 2 in hypothesis_types:
+            add(
+                "negation_scope_evidence",
+                f"evidence negation scope: premise is {premise_polarity}; hypothesis is {hypothesis_polarity}",
+            )
+        contexts = quantifier_context(sentence1, sentence2)
+        if contexts:
+            add("quantifier_polarity_evidence", f"evidence quantifier polarity: {'; '.join(contexts)}")
+        monotone_tokens = sorted((set(premise_tokens) | set(hypothesis_tokens)) & (UNIVERSALS | DOWNWARD_MONOTONE))
+        if monotone_tokens:
+            direction = "downward" if set(monotone_tokens) & DOWNWARD_MONOTONE else "upward"
+            add(
+                "monotonicity_direction",
+                f"evidence monotonicity direction: {direction} under {' '.join(monotone_tokens)}",
+            )
+        for source, other in ((sentence1, sentence2), (sentence2, sentence1)):
+            status = disjunction_status(source, other)
+            if status:
+                add(
+                    "disjunction_scope_evidence",
+                    f"evidence disjunction scope: {status}; alternatives are not interchangeable",
+                )
+                break
+        premise_numbers = re.findall(r"\d+(?:\.\d+)?", sentence1)
+        hypothesis_numbers = re.findall(r"\d+(?:\.\d+)?", sentence2)
+        if premise_numbers or hypothesis_numbers:
+            add(
+                "numeric_relation_evidence",
+                f"evidence numeric relation: premise numbers {premise_numbers or ['none']}; hypothesis numbers {hypothesis_numbers or ['none']}",
+            )
+        relation_names = [
+            name for name in ("identity", "synonym", "antonym", "hypernym", "hyponym")
+            if REL_TO_ID[name] in cross_relation_ids
+        ]
+        if relation_names:
+            add(
+                "directed_lexical_relation",
+                f"evidence directed lexical relation from premise to hypothesis: {', '.join(relation_names)}",
+            )
 
     if has_bridge:
         add("lexical_bridge", "evidence lexical bridge across premise and hypothesis")
@@ -289,7 +352,7 @@ def build_proof_graph(
                 add("disjunction_scope", "evidence disjunction scope: alternatives require contextual resolution")
                 break
 
-    if knowledge_mode != "v4":
+    if knowledge_mode not in {"v4", "v5"}:
         has_type = bool(wikidata.relations[WIKIDATA_RELATIONS.index("wikidata_has_type")])
         same_entity = bool(wikidata.relations[WIKIDATA_RELATIONS.index("wikidata_same_entity")])
         entries = wikidata.entries or [None] * len(wikidata.texts)

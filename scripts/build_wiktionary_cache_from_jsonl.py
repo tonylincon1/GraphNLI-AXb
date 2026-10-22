@@ -10,7 +10,7 @@ from pathlib import Path
 from tqdm.auto import tqdm
 
 from graphnli_axb.data import load_axb, load_mnli, load_xnli, project_root
-from graphnli_axb.wiktionary import extract_lexical_candidates, normalize_term
+from graphnli_axb.wiktionary import compact_wiktextract_entry, extract_lexical_candidates, normalize_term
 
 
 def collect_terms(data_dir: Path, languages: list[str], sources: list[str], max_examples: int, max_terms: int) -> set[str]:
@@ -34,38 +34,6 @@ def collect_terms(data_dir: Path, languages: list[str], sources: list[str], max_
         for text in (row.sentence1, row.sentence2):
             terms.update(extract_lexical_candidates(text, max_terms))
     return terms
-
-
-def words(values) -> list[str]:
-    result = []
-    for value in values or []:
-        word = value.get("word") if isinstance(value, dict) else value
-        if word and normalize_term(str(word)) not in {normalize_term(item) for item in result}:
-            result.append(str(word))
-    return result
-
-
-def compact_entry(row: dict) -> dict | None:
-    word = row.get("word")
-    if not word or row.get("lang_code") != "en" or row.get("redirect"):
-        return None
-    senses = []
-    linkages = {name: words(row.get(name)) for name in ("synonyms", "antonyms", "hypernyms", "hyponyms")}
-    for sense in row.get("senses") or []:
-        glosses = sense.get("glosses") or sense.get("raw_glosses") or []
-        gloss = str(glosses[0]).strip() if glosses else ""
-        if not gloss:
-            continue
-        values = {
-            name: words(sense.get(name)) or linkages[name]
-            for name in ("synonyms", "antonyms", "hypernyms", "hyponyms")
-        }
-        senses.append({"pos": row.get("pos", ""), "gloss": gloss, **values})
-        if len(senses) >= 3:
-            break
-    if not senses:
-        return None
-    return {"term": word, "aliases": [word], "language": "en", "senses": senses, "verified": True, "source": "wiktextract_dump"}
 
 
 def open_jsonl(path: Path):
@@ -102,7 +70,7 @@ def main() -> None:
         for line in tqdm(handle, desc="Indexing Wiktextract JSONL", unit="entry"):
             if not line.strip():
                 continue
-            row = compact_entry(json.loads(line))
+            row = compact_wiktextract_entry(json.loads(line))
             if row and normalize_term(row["term"]) in wanted:
                 found.setdefault(normalize_term(row["term"]), row)
     with output.open("w", encoding="utf-8") as handle:

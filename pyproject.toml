@@ -13,6 +13,7 @@ dependencies = [
   "tqdm>=4.66",
   "nltk>=3.8",
   "tiktoken (>=0.14.0,<0.15.0)",
+  "autorank (>=1.3.0,<2.0.0)",
 ]
 
 [project.scripts]
@@ -24,3 +25,8 @@ packages = [{ include = "graphnli_axb", from = "src" }]
 [build-system]
 requires = ["poetry-core>=1.8.0"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+wiktionary-dump = [
+    "wiktextract @ file:///Users/antonio/Desktop/repositorios/GraphNLI-AXb/data/tools/wiktextract"
+]

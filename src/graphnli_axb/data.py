@@ -121,6 +121,23 @@ def load_mnli(data_root: Path, split: str) -> List[NLIExample]:
     return rows
 
 
+def load_nli_manifest(path: Path) -> List[NLIExample]:
+    """Load a fixed, reproducible NLI training subset written as JSONL."""
+    rows: List[NLIExample] = []
+    with path.open("r", encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, start=1):
+            if not line.strip():
+                continue
+            try:
+                row = json.loads(line)
+                rows.append(NLIExample(**row))
+            except (TypeError, ValueError, KeyError) as exc:
+                raise ValueError(f"Invalid NLI manifest row {line_number}: {path}") from exc
+    if not rows:
+        raise ValueError(f"NLI manifest is empty: {path}")
+    return rows
+
+
 def load_axb(data_root: Path) -> List[NLIExample]:
     path = data_root / "raw" / "superglue_axb" / "AX-b" / "AX-b.jsonl"
     rows: List[NLIExample] = []

@@ -8,7 +8,7 @@ import torch.nn.functional as F
 from transformers import AutoModel
 
 from .graph import LOGIC_NODE_TYPE_IDS, NODE_TYPES, NODE_TYPE_TO_ID, RELATIONS
-from .proof_graph import PROOF_NODE_TYPES, PROOF_RELATIONS, PROOF_TARGETS, V3_PROOF_TARGETS, V4_PROOF_TARGETS
+from .proof_graph import PROOF_NODE_TYPES, PROOF_RELATIONS, PROOF_TARGETS, V3_PROOF_TARGETS, V4_PROOF_TARGETS, V5_PROOF_TARGETS
 from .wikidata import WIKIDATA_RELATIONS
 
 
@@ -1447,6 +1447,21 @@ class PIIGV4Classifier(PIIGV1Classifier):
         )
 
 
+class PIIGV5Classifier(PIIGV4Classifier):
+    """PIIG with explicit scope, polarity, numeric, and directional evidence nodes."""
+
+    def __init__(self, model_name: str, dropout: float, num_labels: int = 3, graph_layers: int = 2, aux_weight: float = 0.15):
+        PIIGV1Classifier.__init__(
+            self,
+            model_name,
+            dropout,
+            num_labels=num_labels,
+            graph_layers=graph_layers,
+            aux_weight=aux_weight,
+            proof_target_count=len(V5_PROOF_TARGETS),
+        )
+
+
 def build_model(variant: str, model_name: str, dropout: float, graph_layers: int, aux_weight: float) -> nn.Module:
     if variant == "pair_cls":
         return PairClassifier(model_name, dropout)
@@ -1488,4 +1503,6 @@ def build_model(variant: str, model_name: str, dropout: float, graph_layers: int
         return PIIGV3Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     if variant == "piig_v4":
         return PIIGV4Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
+    if variant == "piig_v5":
+        return PIIGV5Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     raise ValueError(f"Unknown model variant: {variant}")

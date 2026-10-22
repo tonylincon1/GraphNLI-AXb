@@ -30,6 +30,8 @@ For PIIG v4's fully local Wiktionary workflow, download the official English
 dump with `poetry run python scripts/download_wiktionary_dump.py`, then follow
 the extraction and cache-indexing instructions in
 [the PIIG v4 architecture notes](docs/piig_v4_architecture.md#complete-local-dump).
+For a strict MNLI-only cache that does not inspect AX-b or XNLI examples,
+follow the [MNLI-only cache instructions](docs/piig_v4_architecture.md#strict-mnli-only-cache).
 
 ## Direction
 
@@ -78,6 +80,27 @@ English-only iteration, or any comma-separated subset such as `en,es,fr,de`.
 MultiNLI, AX-b, and the original GLUE AX diagnostic are English-only; XNLI is
 the multilingual evaluation dataset already included in this workspace.
 
+For a controlled architecture comparison, create a fixed stratified training
+manifest once and reuse it for every model and training seed:
+
+```bash
+poetry run python scripts/create_mnli_subset.py \
+  --limit 2000 \
+  --seed 42 \
+  --output data/manifests/mnli_train_2000_stratified.jsonl
+```
+
+This produces 667 entailment, 667 neutral, and 666 contradiction examples.
+Use the manifest during training with `--train-manifest`; when it is set, the
+training seed no longer changes which examples are selected:
+
+```bash
+poetry run graphnli-train \
+  --models piig_v4,pair_cls,kgnli_dual,kganet_rel_gat,kbert_injection \
+  --seeds 1001,1002,1003,1004,1005 \
+  --train-manifest data/manifests/mnli_train_2000_stratified.jsonl
+```
+
 Each run creates a new incremental experiment folder:
 
 ```text
@@ -118,6 +141,10 @@ The default architecture variants are:
 - `piig_v2`: PIIG with verified and typed Wikidata fact-token injection, version 2.
 - `piig_v3`: PIIG with scope-conditioned conditional, quantifier, and disjunction evidence, version 3.
 - `piig_v4`: PIIG with cached Wiktionary gloss and lexical-relation evidence, version 4.
+- `piig_v5`: PIIG v4 with explicit scope, polarity, monotonicity, disjunction, numeric, and directional lexical evidence.
+
+See [PIIG v5 architecture notes](docs/piig_v5_architecture.md) for the
+scope-aware graph nodes and training command.
 
 There are also two simple graph ablations available:
 
@@ -158,3 +185,69 @@ binary entailment/not-entailment objective. You can override it with
 `--selection-metric nli3/macro_f1` when you want XNLI-style 3-class selection.
 Early stopping is disabled by default; set `--patience 2` to stop a
 model/seed after two validation epochs without improvement.
+
+To continue an interrupted experiment, pass its existing directory with
+`--resume-dir`. Completed model/seed results are skipped, and interrupted
+training resumes by running only the model/seed combinations still missing
+from the experiment directory. The original run configuration is loaded
+automatically:
+
+```bash
+poetry run graphnli-train \
+  --resume-dir runs/experiment_022 \
+  --models piig_v4,pair_cls,kbert_injection,kganet_rel_gat,kgnli_dual \
+  --seeds 1001,1002,1003,1005 \
+  --epochs 8 \
+  --lr 1e-5 \
+  --selection-metric nli3/macro_f1 \
+  --patience 2 \
+  --wiktionary-cache data/cache/wiktionary_entries_mnli.jsonl \
+  --device mps
+```
+
+The resume command reads `resume_config.json` (or `run_config.json`) to recover
+the original models, seeds, data, and optimization settings. Explicit command
+line flags override the saved configuration. Since only completed
+model/seed runs are persisted, an interrupted model/seed starts from epoch 1;
+completed results are preserved and are not repeated.
+
+At the end of every experiment, the trainer also writes
+`critical_difference/`. It contains one Friedman/Nemenyi critical-difference
+report per evaluation split, using seeds as paired blocks. The statistical
+analysis and the SVG diagram are generated with `autorank`:
+
+```text
+critical_difference/
+|-- axb.svg
+|-- axb.json
+|-- axb_ranks.csv
+|-- xnli_test_en.svg
+|-- xnli_test_en.json
+|-- xnli_test_en_ranks.csv
+|-- combined.svg
+```
+
+The default ranking metric is `binary/mcc`. Override it with
+`--cd-metric binary/macro_f1` or generate reports manually with:
+
+```bash
+poetry run python scripts/critical_difference.py \
+  runs/experiment_022/summary.json \
+  --metric binary/mcc
+```
+
+The SVG uses the conventional horizontal Demšar-style layout: mean ranks are
+placed on a left-to-right rank axis, rank 1 is best, and thick horizontal bars
+connect models whose pairwise rank distance is within the Nemenyi critical
+difference. The red segment at the bottom shows the CD scale. The JSON also
+stores these groups under `non_significant_groups`.
+Each individual SVG has a dataset title, and `combined.svg` places the AX-b
+and XNLI diagrams side by side for direct visual comparison.
+
+With only one seed, the report records `insufficient_blocks`; at least two
+paired seeds are needed for a statistical test. The critical-difference plot
+is descriptive until the Friedman test is significant at the selected alpha.
+When fewer than five paired seeds are available, the generator writes an
+`exploratory_insufficient_blocks` diagram with the mean ranks and an
+illustrative Nemenyi CD, but it does not report a Friedman p-value because
+`autorank` requires at least five paired observations.

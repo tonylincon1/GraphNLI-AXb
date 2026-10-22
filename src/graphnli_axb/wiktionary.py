@@ -53,6 +53,53 @@ def extract_lexical_candidates(text: str, max_terms: int) -> List[str]:
     return terms
 
 
+def wiktextract_words(values) -> List[str]:
+    """Normalize a Wiktextract linkage field into distinct display terms."""
+    result = []
+    seen = set()
+    for value in values or []:
+        word = value.get("word") if isinstance(value, dict) else value
+        if not word:
+            continue
+        normalized = normalize_term(str(word))
+        if normalized and normalized not in seen:
+            seen.add(normalized)
+            result.append(str(word))
+    return result
+
+
+def compact_wiktextract_entry(row: dict) -> dict | None:
+    """Keep the small lexical subset of one Wiktextract JSON record for PIIG."""
+    word = row.get("word")
+    if not word or row.get("lang_code") != "en" or row.get("redirect"):
+        return None
+    relation_names = ("synonyms", "antonyms", "hypernyms", "hyponyms")
+    fallback_linkages = {name: wiktextract_words(row.get(name)) for name in relation_names}
+    senses = []
+    for sense in row.get("senses") or []:
+        glosses = sense.get("glosses") or sense.get("raw_glosses") or []
+        gloss = str(glosses[0]).strip() if glosses else ""
+        if not gloss:
+            continue
+        values = {
+            name: wiktextract_words(sense.get(name)) or fallback_linkages[name]
+            for name in relation_names
+        }
+        senses.append({"pos": row.get("pos", ""), "gloss": gloss, **values})
+        if len(senses) >= 3:
+            break
+    if not senses:
+        return None
+    return {
+        "term": word,
+        "aliases": [word],
+        "language": "en",
+        "senses": senses,
+        "verified": True,
+        "source": "wiktextract_dump",
+    }
+
+
 def load_wiktionary_cache(path: Path | None) -> Dict[str, dict]:
     if path is None or not path.exists():
         return {}

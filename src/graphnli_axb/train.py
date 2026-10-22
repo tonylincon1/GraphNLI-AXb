@@ -7,6 +7,7 @@ import json
 import os
 import random
 import re
+import sys
 import time
 from pathlib import Path
 from typing import Dict, List
@@ -24,6 +25,7 @@ from .data import (
     load_axb,
     load_glue_ax_unlabeled,
     load_mnli,
+    load_nli_manifest,
     load_xnli,
     project_root,
     split_train_validation,
@@ -38,6 +40,7 @@ from .metrics import (
     grouped_direct_binary_metrics,
 )
 from .models import build_model
+from .critical_difference import generate_critical_difference_reports
 
 
 def set_seed(seed: int) -> None:
@@ -343,7 +346,7 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
     set_seed(seed)
     device = resolve_device(args.device)
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
-    include_piig = variant in {"piig_v1", "piig_v2", "piig_v3", "piig_v4"}
+    include_piig = variant in {"piig_v1", "piig_v2", "piig_v3", "piig_v4", "piig_v5"}
     piig_version = variant.removeprefix("piig_") if include_piig else "v1"
     train_loader = make_loader(train_rows, tokenizer, args, shuffle=True, include_piig=include_piig, piig_version=piig_version)
     val_loader = make_loader(val_rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version)
@@ -356,6 +359,9 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
         graph_layers=args.graph_layers,
         aux_weight=args.aux_weight,
     ).to(device)
+
+    out_dir = Path(args.output_dir) / variant / f"seed_{seed}"
+    out_dir.mkdir(parents=True, exist_ok=True)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     total_steps = max(1, len(train_loader) * args.epochs)
@@ -397,13 +403,13 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
             epochs_without_improvement += 1
             if args.patience > 0 and epochs_without_improvement >= args.patience:
                 stopped_epoch = epoch
-                break
+        if stopped_epoch:
+            break
 
     if best["state"] is not None:
         model.load_state_dict(best["state"])
 
     eval_results = {}
-    out_dir = Path(args.output_dir) / variant / f"seed_{seed}"
     for name, loader in eval_loaders.items():
         metrics, predictions = evaluate(model, loader, device)
         eval_results[name] = metrics
@@ -484,6 +490,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--data-dir", default="data", help="Project data directory.")
     parser.add_argument("--output-dir", default="runs", help="Base directory where experiment_XXX folders are created.")
     parser.add_argument("--experiment-prefix", default="experiment", help="Prefix for incremental experiment folders.")
+    parser.add_argument(
+        "--resume-dir",
+        default=None,
+        help="Existing experiment directory to continue. Completed model/seed results are skipped.",
+    )
     parser.add_argument("--model-name", default="xlm-roberta-base")
     parser.add_argument("--models", default="pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4")
     parser.add_argument("--seeds", default="42")
@@ -530,12 +541,19 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--aux-weight", type=float, default=0.15)
     parser.add_argument("--selection-metric", default="binary/mcc", help="Validation metric used for checkpoint selection.")
     parser.add_argument("--patience", type=int, default=0, help="Early stop after this many non-improving validation epochs. 0 disables early stopping.")
+    parser.add_argument("--cd-metric", default="binary/mcc", help="Metric used for critical-difference ranking reports.")
+    parser.add_argument("--cd-alpha", type=float, default=0.05, help="Alpha level for Friedman/Nemenyi reports.")
     parser.add_argument("--val-fraction", type=float, default=0.15, help="Validation fraction for xnli_dev_legacy only.")
     parser.add_argument(
         "--train-limit",
         type=int,
         default=60000,
         help="Stratified training cap; 0 uses all MultiNLI examples.",
+    )
+    parser.add_argument(
+        "--train-manifest",
+        default=None,
+        help="Fixed JSONL training subset. When set, train-limit and seed-based sampling are bypassed.",
     )
     parser.add_argument("--eval-limit", type=int, default=0, help="0 means no limit.")
     parser.add_argument("--num-workers", type=int, default=0)
@@ -547,12 +565,34 @@ def build_arg_parser() -> argparse.ArgumentParser:
 def main() -> None:
     args = build_arg_parser().parse_args()
     root = project_root()
+    output_base_dir = (root / args.output_dir).resolve()
+    if args.resume_dir:
+        resume_path = Path(args.resume_dir)
+        experiment_dir = (resume_path if resume_path.is_absolute() else root / resume_path).resolve()
+        if not experiment_dir.is_dir():
+            raise FileNotFoundError(f"Resume experiment directory not found: {experiment_dir}")
+        saved_config_path = experiment_dir / "resume_config.json"
+        if not saved_config_path.exists():
+            saved_config_path = experiment_dir / "run_config.json"
+        if saved_config_path.exists():
+            saved_config = json.loads(saved_config_path.read_text(encoding="utf-8"))
+            provided_flags = set(sys.argv[1:])
+            for key, value in saved_config.items():
+                flag = f"--{key.replace('_', '-')}"
+                if key in {"output_dir", "output_base_dir", "resume_dir"} or flag in provided_flags:
+                    continue
+                if hasattr(args, key):
+                    setattr(args, key, value)
+            print(f"loaded resume configuration: {saved_config_path}")
+        print(f"resuming experiment_dir: {experiment_dir}")
+    else:
+        experiment_dir = create_incremental_experiment_dir(output_base_dir, args.experiment_prefix)
     data_root = root / args.data_dir
     output_base_dir = (root / args.output_dir).resolve()
-    experiment_dir = create_incremental_experiment_dir(output_base_dir, args.experiment_prefix)
     args.output_base_dir = str(output_base_dir)
     args.output_dir = str(experiment_dir)
-    (experiment_dir / "run_config.json").write_text(json.dumps(vars(args), indent=2), encoding="utf-8")
+    config_name = "resume_config.json" if args.resume_dir else "run_config.json"
+    (experiment_dir / config_name).write_text(json.dumps(vars(args), indent=2), encoding="utf-8")
     print(f"experiment_dir: {experiment_dir}")
 
     seeds = [int(seed) for seed in parse_csv(args.seeds)]
@@ -563,7 +603,13 @@ def main() -> None:
     all_results = []
     for seed in seeds:
         if args.training_protocol == "mnli":
-            train_rows = maybe_limit(load_mnli(data_root, "train"), args.train_limit, seed)
+            if args.train_manifest:
+                manifest_path = Path(args.train_manifest)
+                if not manifest_path.is_absolute():
+                    manifest_path = root / manifest_path
+                train_rows = load_nli_manifest(manifest_path)
+            else:
+                train_rows = maybe_limit(load_mnli(data_root, "train"), args.train_limit, seed)
             val_rows = load_mnli(data_root, "dev_matched")
         else:
             train_source = load_xnli(data_root, "dev", train_languages)
@@ -577,11 +623,19 @@ def main() -> None:
         eval_sets["axb"] = maybe_limit(load_axb(data_root), args.eval_limit, seed)
 
         for variant in variants:
+            result_path = experiment_dir / variant / f"seed_{seed}" / "result.json"
+            if result_path.exists():
+                print(f"Skipping completed {variant}/seed{seed}: {result_path}")
+                all_results.append(json.loads(result_path.read_text(encoding="utf-8")))
+                continue
             result = train_one(args.model_name, variant, seed, train_rows, val_rows, eval_sets, args)
             all_results.append(result)
 
     summary_path = Path(args.output_dir) / "summary.json"
     summary_path.write_text(json.dumps(all_results, indent=2), encoding="utf-8")
+    cd_dir = Path(args.output_dir) / "critical_difference"
+    reports = generate_critical_difference_reports(summary_path, cd_dir, args.cd_metric, args.cd_alpha)
+    print(f"wrote {cd_dir} ({len(reports)} split reports)")
     print(f"wrote {summary_path}")
 
 

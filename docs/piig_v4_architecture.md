@@ -96,38 +96,69 @@ data/raw/wiktionary/enwiktionary-latest-pages-articles.xml.bz2
 
 The raw XML dump needs an extractor because Wiktionary definitions use
 templates and Lua modules. Use a current checkout of
-[`wiktextract`](https://github.com/tatuylonen/wiktextract), which extracts
-English glosses and lexical linkages:
+[`wiktextract`](https://github.com/tatuylonen/wiktextract). The recommended
+project workflow does **not** export every Wiktionary entry. It first prepares
+Wiktextract's local database from the dump and then extracts only candidate
+lexical terms found in the selected NLI sources:
 
 ```bash
 git clone https://github.com/tatuylonen/wiktextract.git data/tools/wiktextract
 poetry add --group wiktionary-dump ./data/tools/wiktextract
-poetry run wiktwords \
-  --linkages \
-  --language-code en \
-  --edition en \
-  --num-processes 1 \
-  --out data/raw/wiktionary/enwiktionary_en.jsonl \
-  data/raw/wiktionary/enwiktionary-latest-pages-articles.xml.bz2
-```
-
-`--num-processes 1` is a conservative setting for a Mac. The extraction is
-slow and produces a large JSONL file, but it runs entirely from the local dump.
-Then derive the compact task-oriented cache that v4 uses at runtime:
-
-```bash
-poetry run python scripts/build_wiktionary_cache_from_jsonl.py \
-  --input data/raw/wiktionary/enwiktionary_en.jsonl \
+poetry run python scripts/extract_wiktionary_task_terms.py \
+  --dump data/raw/wiktionary/enwiktionary-latest-pages-articles.xml.bz2 \
   --sources mnli,axb,xnli \
   --languages en \
   --max-examples 10000 \
-  --max-terms 4
+  --max-terms 4 \
+  --num-processes 1 \
+  --batch-size 64
 ```
 
-The final `data/cache/wiktionary_entries.jsonl` contains only terms occurring
-in the selected NLI sources. This is intentional: the complete dump remains
-available locally, while the `DataLoader` only loads the small retrieval cache
-needed for reproducible training.
+`--num-processes 1` is a conservative setting for a Mac. On its first run,
+the command creates `data/cache/wiktextract_en.db`; this is the one-time local
+preparation step. It then queries the database in batches and writes only the
+small cache used by PIIG:
+
+```bash
+data/cache/wiktionary_entries.jsonl
+```
+
+The final cache contains only task terms, not all Wiktionary pages. This is
+intentional: the complete dump remains available locally, while the
+`DataLoader` loads only the small retrieval cache needed for reproducible
+training. To cover all rows in the chosen datasets, use `--max-examples 0`.
+
+### Strict MNLI-Only Cache
+
+For a strict evaluation protocol that does not inspect AX-b or XNLI examples
+when selecting Wiktionary terms, create a separate cache from MNLI training
+sentences only:
+
+```bash
+poetry run python scripts/extract_wiktionary_task_terms.py \
+  --dump data/raw/wiktionary/enwiktionary-latest-pages-articles.xml.bz2 \
+  --db-path data/cache/wiktextract_en.db \
+  --out data/cache/wiktionary_entries_mnli.jsonl \
+  --sources mnli \
+  --languages en \
+  --max-examples 0 \
+  --max-terms 4 \
+  --num-processes 1 \
+  --batch-size 64
+```
+
+Here `mnli` refers to the local `train` split. The existing
+`wiktionary_entries.jsonl` is not modified. Use the new file during training:
+
+```bash
+poetry run graphnli-train \
+  --models piig_v4 \
+  --seeds 42 \
+  --wiktionary-cache data/cache/wiktionary_entries_mnli.jsonl
+```
+
+If a complete Wiktextract JSONL was already produced, the older
+`scripts/build_wiktionary_cache_from_jsonl.py` remains available to compact it.
 
 ## Encoding and Objective
 
