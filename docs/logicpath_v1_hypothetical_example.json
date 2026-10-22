@@ -1,0 +1,259 @@
+{
+  "uid": "hypothetical-logicpath-001",
+  "dataset": "axb",
+  "logic": "Universal",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": 0,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.4064830243587494,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.44080471992492676,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.4669472277164459,
+      "target": 1.0
+    },
+    "hyponym_specialization": {
+      "score": 0.5057026147842407,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.595446765422821,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.5312048196792603,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.4595392048358917,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.4859471917152405,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.4784885048866272,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.4893989861011505,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.45634227991104126,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Every dog sleeps.",
+      "type": "premise_state",
+      "importance": 0.09598822146654129
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Every animal sleeps.",
+      "type": "hypothesis_state",
+      "importance": 0.08989418298006058
+    },
+    {
+      "id": 2,
+      "text": "premise unit: every",
+      "type": "premise_unit",
+      "importance": 0.0922161191701889
+    },
+    {
+      "id": 3,
+      "text": "premise unit: dog",
+      "type": "premise_unit",
+      "importance": 0.09221126139163971
+    },
+    {
+      "id": 4,
+      "text": "premise unit: sleeps",
+      "type": "premise_unit",
+      "importance": 0.09223941713571548
+    },
+    {
+      "id": 5,
+      "text": "hypothesis unit: every",
+      "type": "hypothesis_unit",
+      "importance": 0.0940183624625206
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: animal",
+      "type": "hypothesis_unit",
+      "importance": 0.09400492161512375
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: sleeps",
+      "type": "hypothesis_unit",
+      "importance": 0.09400290995836258
+    },
+    {
+      "id": 8,
+      "text": "transformation lexical_identity: every -> every",
+      "type": "transformation",
+      "importance": 0.08512526005506516
+    },
+    {
+      "id": 9,
+      "text": "transformation hypernym_generalization: dog -> animal",
+      "type": "transformation",
+      "importance": 0.08514861017465591
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: sleeps -> sleeps",
+      "type": "transformation",
+      "importance": 0.08515077829360962
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.042112693190574646
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.07713352143764496
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.07713718712329865
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.07697436213493347
+    },
+    {
+      "source": 0,
+      "target": 8,
+      "relation": "operation",
+      "attention": 0.05272626504302025
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.05247943848371506
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.05261597782373428
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.03912102431058884
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.039217229932546616
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.039083246141672134
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "operation",
+      "attention": 0.04568231850862503
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.04588982090353966
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.045609716325998306
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "lexical_relation",
+      "attention": 0.008479236625134945
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "relation": "operation",
+      "attention": 0.0396752692759037
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.008478553034365177
+    },
+    {
+      "source": 3,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.039574675261974335
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.008480696938931942
+    },
+    {
+      "source": 4,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.03968077898025513
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "operation",
+      "attention": 0.036621611565351486
+    },
+    {
+      "source": 6,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.036595411598682404
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.036536380648612976
+    }
+  ]
+}
