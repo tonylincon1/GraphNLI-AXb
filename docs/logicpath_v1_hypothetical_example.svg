@@ -1,98 +1,95 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="1018" viewBox="0 0 1320 1018">
-<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}</style>
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="700" viewBox="0 0 1500 700">
+<defs><marker id="arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#4d6f8e"/></marker><marker id="red-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#a33d3d"/></marker></defs>
+<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}.column{font-size:14px;font-weight:bold;fill:#52616b}.edge-label{font-size:10px;fill:#52616b}</style>
 <rect width="100%" height="100%" fill="#ffffff"/>
 <text x="30" y="32" class="title">LogicPath v1 transformation graph | hypothetical-logicpath-001</text>
-<text x="30" y="54" class="small">Prediction: 0 | label: 0 | edge width: Graph Transformer attention.</text>
-<line x1="430.0" y1="289.0" x2="565.2" y2="328.7" stroke="#4d6f8e" stroke-width="1.29" stroke-opacity="0.26"/>
-<line x1="430.0" y1="289.0" x2="657.4" y2="435.1" stroke="#4d6f8e" stroke-width="1.54" stroke-opacity="0.34"/>
-<line x1="430.0" y1="289.0" x2="677.5" y2="574.6" stroke="#4d6f8e" stroke-width="1.54" stroke-opacity="0.34"/>
-<line x1="430.0" y1="289.0" x2="618.9" y2="702.7" stroke="#4d6f8e" stroke-width="1.54" stroke-opacity="0.34"/>
-<line x1="430.0" y1="289.0" x2="182.5" y2="574.6" stroke="#4d6f8e" stroke-width="1.37" stroke-opacity="0.28"/>
-<line x1="430.0" y1="289.0" x2="202.6" y2="435.1" stroke="#4d6f8e" stroke-width="1.37" stroke-opacity="0.28"/>
-<line x1="430.0" y1="289.0" x2="294.8" y2="328.7" stroke="#4d6f8e" stroke-width="1.37" stroke-opacity="0.28"/>
-<line x1="565.2" y1="328.7" x2="500.4" y2="778.9" stroke="#4d6f8e" stroke-width="1.27" stroke-opacity="0.25"/>
-<line x1="565.2" y1="328.7" x2="359.6" y2="778.9" stroke="#4d6f8e" stroke-width="1.27" stroke-opacity="0.25"/>
-<line x1="565.2" y1="328.7" x2="241.1" y2="702.7" stroke="#4d6f8e" stroke-width="1.27" stroke-opacity="0.25"/>
-<line x1="565.2" y1="328.7" x2="182.5" y2="574.6" stroke="#4d6f8e" stroke-width="1.32" stroke-opacity="0.26"/>
-<line x1="565.2" y1="328.7" x2="202.6" y2="435.1" stroke="#4d6f8e" stroke-width="1.32" stroke-opacity="0.26"/>
-<line x1="565.2" y1="328.7" x2="294.8" y2="328.7" stroke="#4d6f8e" stroke-width="1.32" stroke-opacity="0.26"/>
-<line x1="657.4" y1="435.1" x2="500.4" y2="778.9" stroke="#4d6f8e" stroke-width="1.06" stroke-opacity="0.17"/>
-<line x1="657.4" y1="435.1" x2="182.5" y2="574.6" stroke="#4d6f8e" stroke-width="1.28" stroke-opacity="0.25"/>
-<line x1="677.5" y1="574.6" x2="359.6" y2="778.9" stroke="#4d6f8e" stroke-width="1.06" stroke-opacity="0.17"/>
-<line x1="677.5" y1="574.6" x2="202.6" y2="435.1" stroke="#4d6f8e" stroke-width="1.28" stroke-opacity="0.25"/>
-<line x1="618.9" y1="702.7" x2="241.1" y2="702.7" stroke="#4d6f8e" stroke-width="1.06" stroke-opacity="0.17"/>
-<line x1="618.9" y1="702.7" x2="294.8" y2="328.7" stroke="#4d6f8e" stroke-width="1.28" stroke-opacity="0.25"/>
-<line x1="500.4" y1="778.9" x2="182.5" y2="574.6" stroke="#4d6f8e" stroke-width="1.26" stroke-opacity="0.24"/>
-<line x1="359.6" y1="778.9" x2="202.6" y2="435.1" stroke="#4d6f8e" stroke-width="1.26" stroke-opacity="0.24"/>
-<line x1="241.1" y1="702.7" x2="294.8" y2="328.7" stroke="#4d6f8e" stroke-width="1.26" stroke-opacity="0.24"/>
-<circle cx="430.0" cy="289.0" r="32" fill="rgb(233,244,253)" stroke="#1f4d70" stroke-width="2"/>
-<text x="430.0" y="286.0" text-anchor="middle" class="node">N0</text>
-<text x="430.0" y="302.0" text-anchor="middle" class="small">0.096</text>
-<circle cx="565.2" cy="328.7" r="32" fill="rgb(234,245,253)" stroke="#1f4d70" stroke-width="2"/>
-<text x="565.2" y="325.7" text-anchor="middle" class="node">N1</text>
-<text x="565.2" y="341.7" text-anchor="middle" class="small">0.090</text>
-<circle cx="657.4" cy="435.1" r="32" fill="rgb(233,244,253)" stroke="#1f4d70" stroke-width="2"/>
-<text x="657.4" y="432.1" text-anchor="middle" class="node">N2</text>
-<text x="657.4" y="448.1" text-anchor="middle" class="small">0.092</text>
-<circle cx="677.5" cy="574.6" r="32" fill="rgb(233,244,253)" stroke="#1f4d70" stroke-width="2"/>
-<text x="677.5" y="571.6" text-anchor="middle" class="node">N3</text>
-<text x="677.5" y="587.6" text-anchor="middle" class="small">0.092</text>
-<circle cx="618.9" cy="702.7" r="32" fill="rgb(233,244,253)" stroke="#1f4d70" stroke-width="2"/>
-<text x="618.9" y="699.7" text-anchor="middle" class="node">N4</text>
-<text x="618.9" y="715.7" text-anchor="middle" class="small">0.092</text>
-<circle cx="500.4" cy="778.9" r="32" fill="rgb(233,244,253)" stroke="#1f4d70" stroke-width="2"/>
-<text x="500.4" y="775.9" text-anchor="middle" class="node">N5</text>
-<text x="500.4" y="791.9" text-anchor="middle" class="small">0.094</text>
-<circle cx="359.6" cy="778.9" r="32" fill="rgb(233,244,253)" stroke="#1f4d70" stroke-width="2"/>
-<text x="359.6" y="775.9" text-anchor="middle" class="node">N6</text>
-<text x="359.6" y="791.9" text-anchor="middle" class="small">0.094</text>
-<circle cx="241.1" cy="702.7" r="32" fill="rgb(233,244,253)" stroke="#1f4d70" stroke-width="2"/>
-<text x="241.1" y="699.7" text-anchor="middle" class="node">N7</text>
-<text x="241.1" y="715.7" text-anchor="middle" class="small">0.094</text>
-<circle cx="182.5" cy="574.6" r="32" fill="rgb(234,245,253)" stroke="#1f4d70" stroke-width="2"/>
-<text x="182.5" y="571.6" text-anchor="middle" class="node">N8</text>
-<text x="182.5" y="587.6" text-anchor="middle" class="small">0.085</text>
-<circle cx="202.6" cy="435.1" r="32" fill="rgb(234,245,253)" stroke="#1f4d70" stroke-width="2"/>
-<text x="202.6" y="432.1" text-anchor="middle" class="node">N9</text>
-<text x="202.6" y="448.1" text-anchor="middle" class="small">0.085</text>
-<circle cx="294.8" cy="328.7" r="32" fill="rgb(234,245,253)" stroke="#1f4d70" stroke-width="2"/>
-<text x="294.8" y="325.7" text-anchor="middle" class="node">N10</text>
-<text x="294.8" y="341.7" text-anchor="middle" class="small">0.085</text>
-<text x="790" y="92" class="title">Nodes and transformations</text>
-<circle cx="800" cy="118" r="7" fill="#6b9bc3"/>
-<text x="816" y="122" class="node">N0 | premise_state | 0.096</text>
-<text x="816" y="138" class="small">premise state: Every dog sleeps.</text>
-<circle cx="800" cy="180" r="7" fill="#6b9bc3"/>
-<text x="816" y="184" class="node">N1 | hypothesis_state | 0.090</text>
-<text x="816" y="200" class="small">hypothesis state: Every animal sleeps.</text>
-<circle cx="800" cy="242" r="7" fill="#6b9bc3"/>
-<text x="816" y="246" class="node">N2 | premise_unit | 0.092</text>
-<text x="816" y="262" class="small">premise unit: every</text>
-<circle cx="800" cy="304" r="7" fill="#6b9bc3"/>
-<text x="816" y="308" class="node">N3 | premise_unit | 0.092</text>
-<text x="816" y="324" class="small">premise unit: dog</text>
-<circle cx="800" cy="366" r="7" fill="#6b9bc3"/>
-<text x="816" y="370" class="node">N4 | premise_unit | 0.092</text>
-<text x="816" y="386" class="small">premise unit: sleeps</text>
-<circle cx="800" cy="428" r="7" fill="#6b9bc3"/>
-<text x="816" y="432" class="node">N5 | hypothesis_unit | 0.094</text>
-<text x="816" y="448" class="small">hypothesis unit: every</text>
-<circle cx="800" cy="490" r="7" fill="#6b9bc3"/>
-<text x="816" y="494" class="node">N6 | hypothesis_unit | 0.094</text>
-<text x="816" y="510" class="small">hypothesis unit: animal</text>
-<circle cx="800" cy="552" r="7" fill="#6b9bc3"/>
-<text x="816" y="556" class="node">N7 | hypothesis_unit | 0.094</text>
-<text x="816" y="572" class="small">hypothesis unit: sleeps</text>
-<circle cx="800" cy="614" r="7" fill="#6b9bc3"/>
-<text x="816" y="618" class="node">N8 | transformation | 0.085</text>
-<text x="816" y="634" class="small">transformation lexical_identity: every -&gt; every</text>
-<circle cx="800" cy="676" r="7" fill="#6b9bc3"/>
-<text x="816" y="680" class="node">N9 | transformation | 0.085</text>
-<text x="816" y="696" class="small">transformation hypernym_generalization: dog -&gt;</text>
-<text x="816" y="712" class="small">animal</text>
-<circle cx="800" cy="738" r="7" fill="#6b9bc3"/>
-<text x="816" y="742" class="node">N10 | transformation | 0.085</text>
-<text x="816" y="758" class="small">transformation lexical_identity: sleeps -&gt;</text>
-<text x="816" y="774" class="small">sleeps</text>
-<text x="30" y="994" class="small">Node score: normalized mean incoming/outgoing relation-aware attention. Red edges indicate contradiction relations.</text>
+<text x="30" y="54" class="small">Prediction: 0 | label: 0 | arrows show transformation flow; width shows attention.</text>
+<text x="120" y="92" text-anchor="middle" class="column">Premise</text>
+<text x="390" y="92" text-anchor="middle" class="column">Premise units</text>
+<text x="720" y="92" text-anchor="middle" class="column">Transformations</text>
+<text x="1050" y="92" text-anchor="middle" class="column">Hypothesis units</text>
+<text x="1380" y="92" text-anchor="middle" class="column">Hypothesis</text>
+<line x1="198.0" y1="375.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.29" stroke-opacity="0.26" marker-end="url(#arrow)"/>
+<text x="750.0" y="370.0" text-anchor="middle" class="edge-label">supports</text>
+<line x1="198.0" y1="375.0" x2="312.0" y2="225.0" stroke="#4d6f8e" stroke-width="1.54" stroke-opacity="0.34" marker-end="url(#arrow)"/>
+<text x="255.0" y="295.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="198.0" y1="375.0" x2="312.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.54" stroke-opacity="0.34" marker-end="url(#arrow)"/>
+<text x="255.0" y="370.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="198.0" y1="375.0" x2="312.0" y2="525.0" stroke="#4d6f8e" stroke-width="1.54" stroke-opacity="0.34" marker-end="url(#arrow)"/>
+<text x="255.0" y="445.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="198.0" y1="375.0" x2="642.0" y2="225.0" stroke="#4d6f8e" stroke-width="1.37" stroke-opacity="0.28" marker-end="url(#arrow)"/>
+<text x="420.0" y="295.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="198.0" y1="375.0" x2="642.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.37" stroke-opacity="0.28" marker-end="url(#arrow)"/>
+<text x="420.0" y="370.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="198.0" y1="375.0" x2="642.0" y2="525.0" stroke="#4d6f8e" stroke-width="1.37" stroke-opacity="0.28" marker-end="url(#arrow)"/>
+<text x="420.0" y="445.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="1128.0" y1="225.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.27" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="1215.0" y="295.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="1128.0" y1="375.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.27" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="1215.0" y="370.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="1128.0" y1="525.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.27" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="1215.0" y="445.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="798.0" y1="225.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.32" stroke-opacity="0.26" marker-end="url(#arrow)"/>
+<text x="1050.0" y="295.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="375.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.32" stroke-opacity="0.26" marker-end="url(#arrow)"/>
+<text x="1050.0" y="370.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="525.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.32" stroke-opacity="0.26" marker-end="url(#arrow)"/>
+<text x="1050.0" y="445.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="468.0" y1="225.0" x2="972.0" y2="225.0" stroke="#4d6f8e" stroke-width="1.06" stroke-opacity="0.17" marker-end="url(#arrow)"/>
+<text x="720.0" y="220.0" text-anchor="middle" class="edge-label">lexical_relation</text>
+<line x1="468.0" y1="225.0" x2="642.0" y2="225.0" stroke="#4d6f8e" stroke-width="1.28" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="555.0" y="220.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="468.0" y1="375.0" x2="972.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.06" stroke-opacity="0.17" marker-end="url(#arrow)"/>
+<text x="720.0" y="370.0" text-anchor="middle" class="edge-label">lexical_relation</text>
+<line x1="468.0" y1="375.0" x2="642.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.28" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="555.0" y="370.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="468.0" y1="525.0" x2="972.0" y2="525.0" stroke="#4d6f8e" stroke-width="1.06" stroke-opacity="0.17" marker-end="url(#arrow)"/>
+<text x="720.0" y="520.0" text-anchor="middle" class="edge-label">lexical_relation</text>
+<line x1="468.0" y1="525.0" x2="642.0" y2="525.0" stroke="#4d6f8e" stroke-width="1.28" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="555.0" y="520.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="225.0" x2="972.0" y2="225.0" stroke="#4d6f8e" stroke-width="1.26" stroke-opacity="0.24" marker-end="url(#arrow)"/>
+<text x="885.0" y="220.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="375.0" x2="972.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.26" stroke-opacity="0.24" marker-end="url(#arrow)"/>
+<text x="885.0" y="370.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="525.0" x2="972.0" y2="525.0" stroke="#4d6f8e" stroke-width="1.26" stroke-opacity="0.24" marker-end="url(#arrow)"/>
+<text x="885.0" y="520.0" text-anchor="middle" class="edge-label">operation</text>
+<rect x="38.0" y="343.0" width="164" height="64" rx="6" fill="#e8f3fb" stroke="#1f4d70" stroke-width="2"/>
+<text x="120.0" y="368.0" text-anchor="middle" class="node">N0 | 0.096</text>
+<text x="120.0" y="385.0" text-anchor="middle" class="small">premise state: Every dog</text>
+<text x="120.0" y="399.0" text-anchor="middle" class="small">sleeps.</text>
+<rect x="1298.0" y="343.0" width="164" height="64" rx="6" fill="#e8f3fb" stroke="#1f4d70" stroke-width="2"/>
+<text x="1380.0" y="368.0" text-anchor="middle" class="node">N1 | 0.090</text>
+<text x="1380.0" y="385.0" text-anchor="middle" class="small">hypothesis state: Every</text>
+<text x="1380.0" y="399.0" text-anchor="middle" class="small">animal sleeps.</text>
+<rect x="308.0" y="193.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="390.0" y="218.0" text-anchor="middle" class="node">N2 | 0.092</text>
+<text x="390.0" y="235.0" text-anchor="middle" class="small">premise unit: every</text>
+<rect x="308.0" y="343.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="390.0" y="368.0" text-anchor="middle" class="node">N3 | 0.092</text>
+<text x="390.0" y="385.0" text-anchor="middle" class="small">premise unit: dog</text>
+<rect x="308.0" y="493.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="390.0" y="518.0" text-anchor="middle" class="node">N4 | 0.092</text>
+<text x="390.0" y="535.0" text-anchor="middle" class="small">premise unit: sleeps</text>
+<rect x="968.0" y="193.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1050.0" y="218.0" text-anchor="middle" class="node">N5 | 0.094</text>
+<text x="1050.0" y="235.0" text-anchor="middle" class="small">hypothesis unit: every</text>
+<rect x="968.0" y="343.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1050.0" y="368.0" text-anchor="middle" class="node">N6 | 0.094</text>
+<text x="1050.0" y="385.0" text-anchor="middle" class="small">hypothesis unit: animal</text>
+<rect x="968.0" y="493.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1050.0" y="518.0" text-anchor="middle" class="node">N7 | 0.094</text>
+<text x="1050.0" y="535.0" text-anchor="middle" class="small">hypothesis unit: sleeps</text>
+<rect x="638.0" y="193.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="218.0" text-anchor="middle" class="node">N8 | 0.085</text>
+<text x="720.0" y="235.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="249.0" text-anchor="middle" class="small">lexical_identity: ever...</text>
+<rect x="638.0" y="343.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="368.0" text-anchor="middle" class="node">N9 | 0.085</text>
+<text x="720.0" y="385.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="399.0" text-anchor="middle" class="small">hypernym_generalizatio...</text>
+<rect x="638.0" y="493.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="518.0" text-anchor="middle" class="node">N10 | 0.085</text>
+<text x="720.0" y="535.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="549.0" text-anchor="middle" class="small">lexical_identity: slee...</text>
+<text x="30" y="676" class="small">Node score: normalized relation-aware attention. Red arrows indicate contradiction relations.</text>
 </svg>

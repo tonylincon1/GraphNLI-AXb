@@ -83,7 +83,7 @@ The graph size is controlled by `--max-logicpath-nodes` and
 `--max-logicpath-len`.
 
 When `--save-piig-explanations` is enabled, the evaluation step saves one JSON
-and SVG graph per AX-b subtype under
+and layered, left-to-right SVG graph per AX-b subtype under
 `explanations/axb/`. It also saves up to five transformation-rich examples in
 `explanations/axb/transformation_examples/`. The SVG node colors and edge
 widths reflect the normalized Graph Transformer attention.

@@ -397,48 +397,67 @@ def _logicpath_explanation_record(batch: dict, output, item_index: int) -> dict:
 
 
 def _write_logicpath_graph_svg(path: Path, record: dict) -> None:
+    """Render a directed, layered transformation flow instead of a circular graph."""
     nodes = record["nodes"]
     edges = record["edges"]
-    width = 1320
-    height = max(660, 270 + len(nodes) * 68)
-    center_x, center_y = 430, height // 2 + 30
-    radius = min(250, max(145, 42 * len(nodes)))
-    positions = []
-    for index in range(len(nodes)):
-        angle = -np.pi / 2 + 2 * np.pi * index / max(len(nodes), 1)
-        positions.append((center_x + radius * np.cos(angle), center_y + radius * np.sin(angle)))
+    width = 1500
+    columns = {
+        "premise_state": (120, "Premise"),
+        "premise_unit": (390, "Premise units"),
+        "transformation": (720, "Transformations"),
+        "hypothesis_unit": (1050, "Hypothesis units"),
+        "hypothesis_state": (1380, "Hypothesis"),
+    }
+    grouped = {node_type: [] for node_type in columns}
+    for index, node in enumerate(nodes):
+        grouped.setdefault(node["type"], []).append(index)
+    max_column_nodes = max((len(indices) for indices in grouped.values()), default=1)
+    height = max(700, 210 + max_column_nodes * 105)
+    positions = {}
+    for node_type, indices in grouped.items():
+        x = columns.get(node_type, (720, node_type))[0]
+        step = (height - 250) / max(len(indices), 1)
+        for order, index in enumerate(indices):
+            positions[index] = (x, 150 + step * (order + 0.5))
+    rank = {node_type: order for order, node_type in enumerate(columns)}
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
-        '<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}</style>',
+        '<defs><marker id="arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#4d6f8e"/></marker><marker id="red-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#a33d3d"/></marker></defs>',
+        '<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}.column{font-size:14px;font-weight:bold;fill:#52616b}.edge-label{font-size:10px;fill:#52616b}</style>',
         '<rect width="100%" height="100%" fill="#ffffff"/>',
         f'<text x="30" y="32" class="title">LogicPath v1 transformation graph | {html.escape(record["uid"])}</text>',
-        f'<text x="30" y="54" class="small">Prediction: {record["prediction_3"]} | label: {record["label_3"]} | edge width: Graph Transformer attention.</text>',
+        f'<text x="30" y="54" class="small">Prediction: {record["prediction_3"]} | label: {record["label_3"]} | arrows show transformation flow; width shows attention.</text>',
     ]
+    for node_type, (x, label) in columns.items():
+        parts.append(f'<text x="{x}" y="92" text-anchor="middle" class="column">{html.escape(label)}</text>')
     for edge in edges:
-        x1, y1 = positions[edge["source"]]
-        x2, y2 = positions[edge["target"]]
+        source = nodes[edge["source"]]
+        target = nodes[edge["target"]]
+        source_index, target_index = edge["source"], edge["target"]
+        if rank.get(source["type"], 2) > rank.get(target["type"], 2):
+            source_index, target_index = target_index, source_index
+        x1, y1 = positions[source_index]
+        x2, y2 = positions[target_index]
+        x1 += 78 if x2 >= x1 else -78
+        x2 -= 78 if x2 >= x1 else -78
         opacity = min(0.92, 0.15 + edge["attention"] * 2.5)
         stroke = 1 + edge["attention"] * 7
         color = "#9c3f3f" if edge["relation"] == "contradicts" else "#4d6f8e"
-        parts.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{color}" stroke-width="{stroke:.2f}" stroke-opacity="{opacity:.2f}"/>')
+        marker = "red-arrow" if edge["relation"] == "contradicts" else "arrow"
+        parts.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{color}" stroke-width="{stroke:.2f}" stroke-opacity="{opacity:.2f}" marker-end="url(#{marker})"/>')
+        label_x = (x1 + x2) / 2
+        label_y = (y1 + y2) / 2 - 5
+        parts.append(f'<text x="{label_x:.1f}" y="{label_y:.1f}" text-anchor="middle" class="edge-label">{html.escape(edge["relation"])}</text>')
     for index, node in enumerate(nodes):
         x, y = positions[index]
         score = node["importance"]
-        red = int(245 - 120 * score)
-        green = int(250 - 55 * score)
-        blue = int(255 - 20 * score)
-        parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="32" fill="rgb({red},{green},{blue})" stroke="#1f4d70" stroke-width="2"/>')
-        parts.append(f'<text x="{x:.1f}" y="{y - 3:.1f}" text-anchor="middle" class="node">N{index}</text>')
-        parts.append(f'<text x="{x:.1f}" y="{y + 13:.1f}" text-anchor="middle" class="small">{score:.3f}</text>')
-    legend_x = 790
-    parts.append(f'<text x="{legend_x}" y="92" class="title">Nodes and transformations</text>')
-    for index, node in enumerate(nodes):
-        y = 122 + index * 62
-        parts.append(f'<circle cx="{legend_x + 10}" cy="{y - 4}" r="7" fill="#6b9bc3"/>')
-        parts.append(f'<text x="{legend_x + 26}" y="{y}" class="node">N{index} | {html.escape(node["type"])} | {node["importance"]:.3f}</text>')
-        for line_index, line in enumerate(_svg_label(node["text"], max_chars=48, max_lines=2)):
-            parts.append(f'<text x="{legend_x + 26}" y="{y + 16 * (line_index + 1)}" class="small">{html.escape(line)}</text>')
-    parts.append(f'<text x="30" y="{height - 24}" class="small">Node score: normalized mean incoming/outgoing relation-aware attention. Red edges indicate contradiction relations.</text>')
+        fill = "#e8f3fb" if node["type"] in {"premise_state", "hypothesis_state"} else "#f7f1df" if node["type"] == "transformation" else "#eef5ee"
+        x_left, x_right = x - 82, x + 82
+        parts.append(f'<rect x="{x_left:.1f}" y="{y - 32:.1f}" width="164" height="64" rx="6" fill="{fill}" stroke="#1f4d70" stroke-width="2"/>')
+        parts.append(f'<text x="{x:.1f}" y="{y - 7:.1f}" text-anchor="middle" class="node">N{index} | {score:.3f}</text>')
+        for line_index, line in enumerate(_svg_label(node["text"], max_chars=25, max_lines=2)):
+            parts.append(f'<text x="{x:.1f}" y="{y + 10 + 14 * line_index:.1f}" text-anchor="middle" class="small">{html.escape(line)}</text>')
+    parts.append(f'<text x="30" y="{height - 24}" class="small">Node score: normalized relation-aware attention. Red arrows indicate contradiction relations.</text>')
     parts.append("</svg>")
     path.write_text("\n".join(parts), encoding="utf-8")
 
