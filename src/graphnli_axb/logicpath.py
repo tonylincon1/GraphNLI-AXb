@@ -18,6 +18,7 @@ from .graph import (
     simple_tokens,
     wordnet_relation,
 )
+from .wiktionary import build_wiktionary_spec
 
 
 LOGICPATH_NODE_TYPES = [
@@ -39,6 +40,17 @@ LOGICPATH_RELATIONS = [
     "operation",
 ]
 LOGICPATH_REL_TO_ID = {name: index for index, name in enumerate(LOGICPATH_RELATIONS)}
+
+LOGICPATH_V2_NODE_TYPES = LOGICPATH_NODE_TYPES + [
+    "wiktionary_entry",
+    "wiktionary_gloss",
+]
+LOGICPATH_V2_NODE_TYPE_TO_ID = {name: index for index, name in enumerate(LOGICPATH_V2_NODE_TYPES)}
+LOGICPATH_V2_RELATIONS = LOGICPATH_RELATIONS + [
+    "wiktionary_evidence",
+    "wiktionary_relation",
+]
+LOGICPATH_V2_REL_TO_ID = {name: index for index, name in enumerate(LOGICPATH_V2_RELATIONS)}
 
 TRANSFORMATIONS = [
     "lexical_identity",
@@ -115,8 +127,16 @@ def _detect_transformations(left: str, right: str) -> List[tuple[str, str, str, 
     return transformations
 
 
-def build_logicpath_graph(sentence1: str, sentence2: str, max_nodes: int = 24) -> LogicPathGraphSpec:
-    """Build a pair-conditioned graph of transformations from sentence1 to sentence2."""
+def _base_logicpath_graph(
+    sentence1: str,
+    sentence2: str,
+    max_nodes: int,
+    node_types: list[str],
+    relation_ids: dict[str, int],
+    wiktionary_cache: dict | None = None,
+    max_wiktionary_entries: int = 0,
+) -> LogicPathGraphSpec:
+    """Build a pair-conditioned transformation graph, optionally with lexical evidence."""
     premise_units = _unit_tokens(sentence1)
     hypothesis_units = _unit_tokens(sentence2)
     transformations = _detect_transformations(sentence1, sentence2)
@@ -142,6 +162,29 @@ def build_logicpath_graph(sentence1: str, sentence2: str, max_nodes: int = 24) -
         types.append("transformation")
         kept_transformations.append((name, left, right, relation, len(texts) - 1))
 
+    wiktionary = None
+    wiktionary_entries = []
+    if wiktionary_cache is not None and max_wiktionary_entries > 0 and len(texts) < max_nodes:
+        wiktionary = build_wiktionary_spec(
+            sentence1,
+            sentence2,
+            wiktionary_cache,
+            max_entries=max_wiktionary_entries,
+        )
+        for entry in wiktionary.entries:
+            if len(texts) + 2 > max_nodes:
+                break
+            term = entry.get("matched_term") or entry.get("term") or "term"
+            sense = (entry.get("senses") or [{}])[0]
+            gloss = sense.get("gloss") or ""
+            entry_index = len(texts)
+            texts.append(f"wiktionary entry: {term}")
+            types.append("wiktionary_entry")
+            gloss_index = len(texts)
+            texts.append(f"wiktionary gloss: {gloss or term}")
+            types.append("wiktionary_gloss")
+            wiktionary_entries.append((term, entry_index, gloss_index))
+
     targets = np.zeros(len(TRANSFORMATIONS), dtype=np.float32)
     for name, *_ in kept_transformations:
         targets[TRANSFORMATION_TO_ID[name]] = 1.0
@@ -157,14 +200,14 @@ def build_logicpath_graph(sentence1: str, sentence2: str, max_nodes: int = 24) -
     node_count = len(texts)
     edges = np.zeros((node_count, node_count), dtype=np.int64)
     for index in range(node_count):
-        edges[index, index] = LOGICPATH_REL_TO_ID["self"]
-    edges[0, 1] = edges[1, 0] = LOGICPATH_REL_TO_ID["supports"]
+        edges[index, index] = relation_ids["self"]
+    edges[0, 1] = edges[1, 0] = relation_ids["supports"]
     premise_indices = [index for index, node_type in enumerate(types) if node_type == "premise_unit"]
     hypothesis_indices = [index for index, node_type in enumerate(types) if node_type == "hypothesis_unit"]
     for index in premise_indices:
-        edges[0, index] = edges[index, 0] = LOGICPATH_REL_TO_ID["contains"]
+        edges[0, index] = edges[index, 0] = relation_ids["contains"]
     for index in hypothesis_indices:
-        edges[1, index] = edges[index, 1] = LOGICPATH_REL_TO_ID["contains"]
+        edges[1, index] = edges[index, 1] = relation_ids["contains"]
 
     unit_index = {
         ("premise", texts[index].split(":", 1)[-1].strip()): index for index in premise_indices
@@ -173,26 +216,68 @@ def build_logicpath_graph(sentence1: str, sentence2: str, max_nodes: int = 24) -
         ("hypothesis", texts[index].split(":", 1)[-1].strip()): index for index in hypothesis_indices
     })
     for name, left, right, relation, transformation_index in kept_transformations:
-        edges[transformation_index, 0] = edges[0, transformation_index] = LOGICPATH_REL_TO_ID["operation"]
-        edges[transformation_index, 1] = edges[1, transformation_index] = LOGICPATH_REL_TO_ID["operation"]
+        edges[transformation_index, 0] = edges[0, transformation_index] = relation_ids["operation"]
+        edges[transformation_index, 1] = edges[1, transformation_index] = relation_ids["operation"]
         if ("premise", left) in unit_index:
             source = unit_index[("premise", left)]
-            edges[source, transformation_index] = edges[transformation_index, source] = LOGICPATH_REL_TO_ID["contradicts" if "contradiction" in name or "flip" in name else "operation"]
+            edges[source, transformation_index] = edges[transformation_index, source] = relation_ids["contradicts" if "contradiction" in name or "flip" in name else "operation"]
         if ("hypothesis", right) in unit_index:
             target = unit_index[("hypothesis", right)]
-            edges[target, transformation_index] = edges[transformation_index, target] = LOGICPATH_REL_TO_ID["contradicts" if "contradiction" in name or "flip" in name else "operation"]
+            edges[target, transformation_index] = edges[transformation_index, target] = relation_ids["contradicts" if "contradiction" in name or "flip" in name else "operation"]
 
     for left in premise_indices:
         for right in hypothesis_indices:
             left_token = texts[left].split(":", 1)[-1].strip()
             right_token = texts[right].split(":", 1)[-1].strip()
             if wordnet_relation(left_token, right_token):
-                edges[left, right] = edges[right, left] = LOGICPATH_REL_TO_ID["lexical_relation"]
+                edges[left, right] = edges[right, left] = relation_ids["lexical_relation"]
+
+    # Link cached dictionary evidence to the matching lexical unit and its gloss.
+    if wiktionary_entries:
+        for term, entry_index, gloss_index in wiktionary_entries:
+            for side, unit in unit_index.items():
+                if side[1] != term:
+                    continue
+                edges[unit, entry_index] = edges[entry_index, unit] = relation_ids["wiktionary_evidence"]
+            edges[entry_index, gloss_index] = edges[gloss_index, entry_index] = relation_ids["wiktionary_evidence"]
+        if wiktionary is not None:
+            entry_by_term = {term: index for term, index, _ in wiktionary_entries}
+            for pair in wiktionary.pairs:
+                left = entry_by_term.get(pair["premise_term"])
+                right = entry_by_term.get(pair["hypothesis_term"])
+                if left is not None and right is not None:
+                    edges[left, right] = edges[right, left] = relation_ids["wiktionary_relation"]
 
     return LogicPathGraphSpec(
         texts=texts,
-        node_type_ids=[LOGICPATH_NODE_TYPE_TO_ID[node_type] for node_type in types],
+        node_type_ids=[{name: index for index, name in enumerate(node_types)}[node_type] for node_type in types],
         edge_types=edges,
         targets=targets,
         inverse_targets=inverse_targets,
+    )
+
+
+
+
+def build_logicpath_graph(sentence1: str, sentence2: str, max_nodes: int = 24) -> LogicPathGraphSpec:
+    return _base_logicpath_graph(
+        sentence1, sentence2, max_nodes, LOGICPATH_NODE_TYPES, LOGICPATH_REL_TO_ID
+    )
+
+
+def build_logicpath_v2_graph(
+    sentence1: str,
+    sentence2: str,
+    wiktionary_cache: dict,
+    max_nodes: int = 32,
+    max_wiktionary_entries: int = 2,
+) -> LogicPathGraphSpec:
+    return _base_logicpath_graph(
+        sentence1,
+        sentence2,
+        max_nodes,
+        LOGICPATH_V2_NODE_TYPES,
+        LOGICPATH_V2_REL_TO_ID,
+        wiktionary_cache=wiktionary_cache,
+        max_wiktionary_entries=max_wiktionary_entries,
     )

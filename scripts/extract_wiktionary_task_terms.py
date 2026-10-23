@@ -22,6 +22,14 @@ from graphnli_axb.data import project_root
 from graphnli_axb.wiktionary import compact_wiktextract_entry, normalize_term
 
 
+# Editions accepted by the wiktextract build vendored in this project. Some
+# Wiktionary dumps exist but are not supported by this parser in dump mode.
+WIKTEXTRACT_DUMP_EDITIONS = {
+    "cs", "de", "el", "en", "es", "fr", "id", "it", "ja", "ko",
+    "ku", "ms", "nl", "pl", "pt", "ru", "simple", "sv", "th", "tr", "vi", "zh",
+}
+
+
 def prepare_database(command: list[str]) -> None:
     """Run Wiktextract's one-time dump pass with visible elapsed time.
 
@@ -67,12 +75,13 @@ def write_cache(path: Path, found: dict[str, dict]) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--dump", default="data/raw/wiktionary/enwiktionary-latest-pages-articles.xml.bz2")
-    parser.add_argument("--db-path", default="data/cache/wiktextract_en.db")
-    parser.add_argument("--out", default="data/cache/wiktionary_entries.jsonl")
+    parser.add_argument("--dump", default=None)
+    parser.add_argument("--db-path", default=None)
+    parser.add_argument("--out", default=None)
     parser.add_argument("--data-dir", default="data")
     parser.add_argument("--languages", default="en")
     parser.add_argument("--sources", default="mnli,axb,xnli")
+    parser.add_argument("--manifests", default="", help="Comma-separated JSONL manifests with premise/hypothesis fields.")
     parser.add_argument("--max-examples", type=int, default=10000)
     parser.add_argument("--max-terms", type=int, default=4)
     parser.add_argument("--batch-size", type=int, default=64)
@@ -82,20 +91,35 @@ def main() -> None:
 
     root = project_root()
     resolve = lambda value: Path(value) if Path(value).is_absolute() else root / value
-    dump, db_path, output = resolve(args.dump), resolve(args.db_path), resolve(args.out)
+    languages = [item.strip() for item in args.languages.split(",") if item.strip()]
+    if len(languages) != 1:
+        raise ValueError("The local dump workflow processes one Wiktionary edition at a time; pass one --languages value.")
+    language = languages[0]
+    if language not in WIKTEXTRACT_DUMP_EDITIONS:
+        supported = ", ".join(sorted(WIKTEXTRACT_DUMP_EDITIONS))
+        raise ValueError(
+            f"The installed wiktextract does not support the {language!r} edition "
+            f"in local-dump mode. Supported editions: {supported}. "
+            "Use scripts/build_wiktionary_cache.py for this language, or install "
+            "a wiktextract version that supports its dump."
+        )
+    dump_value = args.dump or f"data/raw/wiktionary/{language}wiktionary-latest-pages-articles.xml.bz2"
+    db_value = args.db_path or f"data/cache/wiktextract_{language}.db"
+    out_value = args.out or f"data/cache/wiktionary_entries_{language}.jsonl"
+    dump, db_path, output = resolve(dump_value), resolve(db_value), resolve(out_value)
     if not dump.exists():
         raise FileNotFoundError(f"Wiktionary dump not found: {dump}")
     if args.batch_size < 1:
         raise ValueError("--batch-size must be positive")
-    languages = [item.strip() for item in args.languages.split(",") if item.strip()]
     sources = [item.strip() for item in args.sources.split(",") if item.strip()]
-    invalid = sorted(set(sources) - {"mnli", "axb", "xnli"})
+    manifests = []
+    for value in [item.strip() for item in args.manifests.split(",") if item.strip()]:
+        path = Path(value)
+        manifests.append(path if path.is_absolute() else root / path)
+    invalid = sorted(set(sources) - {"sick", "mnli", "axb", "xnli"})
     if invalid:
         raise ValueError(f"Unsupported sources: {', '.join(invalid)}")
-    if languages != ["en"]:
-        raise ValueError("The local enwiktionary workflow currently supports --languages en only.")
-
-    wanted = collect_terms(root / args.data_dir, languages, sources, args.max_examples, args.max_terms)
+    wanted = collect_terms(root / args.data_dir, languages, sources, args.max_examples, args.max_terms, manifests)
     found = load_existing_cache(output, wanted)
     titles = sorted(wanted - set(found))
     print(
@@ -108,8 +132,8 @@ def main() -> None:
         db_path.unlink()
     if not db_path.exists():
         prepare_database([
-            "wiktwords", "--edition", "en", "--db-path", str(db_path),
-            "--num-processes", str(args.num_processes), "--skip-extraction", str(dump),
+            "wiktwords", "--edition", language, "--db-path", str(db_path),
+            "--num-processes", str(args.num_processes), str(dump),
         ])
 
     batches = range(0, len(titles), args.batch_size)
@@ -121,8 +145,8 @@ def main() -> None:
         with tempfile.TemporaryDirectory(prefix="graphnli-wiktionary-") as temporary_dir:
             temporary_output = Path(temporary_dir) / "entries.jsonl"
             command = [
-                "wiktwords", "--edition", "en", "--db-path", str(db_path),
-                "--language-code", "en", "--linkages", "--num-processes", str(args.num_processes),
+                "wiktwords", "--edition", language, "--db-path", str(db_path),
+                "--language-code", language, "--linkages", "--num-processes", str(args.num_processes),
                 "--quiet", "--out", str(temporary_output),
             ]
             for title in batch:
@@ -132,7 +156,7 @@ def main() -> None:
                 for line in handle:
                     if not line.strip():
                         continue
-                    entry = compact_wiktextract_entry(json.loads(line))
+                    entry = compact_wiktextract_entry(json.loads(line), language=language)
                     if entry and normalize_term(entry["term"]) in wanted:
                         found.setdefault(normalize_term(entry["term"]), entry)
         write_cache(output, found)

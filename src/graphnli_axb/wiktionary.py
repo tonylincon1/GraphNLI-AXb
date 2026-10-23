@@ -18,11 +18,14 @@ WIKTIONARY_RELATIONS = [
     "wiktionary_hyponym",
 ]
 
-TOKEN_RE = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?")
+# Unicode-aware lexical candidates so Portuguese and other XNLI languages keep
+# accented and non-ASCII alphabetic tokens.
+TOKEN_RE = re.compile(r"[^\W\d_]+(?:'[^\W\d_]+)?", flags=re.UNICODE)
 LEXICAL_STOPWORDS = {
     "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "has", "have", "he", "her", "him",
     "in", "is", "it", "its", "of", "on", "or", "she", "that", "the", "their", "they", "this", "to", "was",
     "were", "will", "with", "would", "you", "your",
+    "a", "ao", "aos", "as", "com", "da", "das", "de", "do", "dos", "e", "em", "na", "nas", "no", "nos", "o", "os", "para", "por", "que", "se",
 }
 LEXICAL_RELATION_NAMES = ("synonym", "antonym", "hypernym", "hyponym")
 
@@ -68,10 +71,10 @@ def wiktextract_words(values) -> List[str]:
     return result
 
 
-def compact_wiktextract_entry(row: dict) -> dict | None:
+def compact_wiktextract_entry(row: dict, language: str = "en") -> dict | None:
     """Keep the small lexical subset of one Wiktextract JSON record for PIIG."""
     word = row.get("word")
-    if not word or row.get("lang_code") != "en" or row.get("redirect"):
+    if not word or row.get("lang_code") != language or row.get("redirect"):
         return None
     relation_names = ("synonyms", "antonyms", "hypernyms", "hyponyms")
     fallback_linkages = {name: wiktextract_words(row.get(name)) for name in relation_names}
@@ -93,7 +96,7 @@ def compact_wiktextract_entry(row: dict) -> dict | None:
     return {
         "term": word,
         "aliases": [word],
-        "language": "en",
+        "language": language,
         "senses": senses,
         "verified": True,
         "source": "wiktextract_dump",
@@ -104,17 +107,19 @@ def load_wiktionary_cache(path: Path | None) -> Dict[str, dict]:
     if path is None or not path.exists():
         return {}
     cache = {}
-    with path.open("r", encoding="utf-8") as handle:
-        for line in handle:
-            if not line.strip():
-                continue
-            row = json.loads(line)
-            term = row.get("term") or row.get("word") or row.get("title")
-            if not term:
-                continue
-            cache[normalize_term(term)] = row
-            for alias in row.get("aliases") or []:
-                cache[normalize_term(alias)] = row
+    paths = sorted(path.glob("*.jsonl")) if path.is_dir() else [path]
+    for cache_path in paths:
+        with cache_path.open("r", encoding="utf-8") as handle:
+            for line in handle:
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                term = row.get("term") or row.get("word") or row.get("title")
+                if not term:
+                    continue
+                cache[normalize_term(term)] = row
+                for alias in row.get("aliases") or []:
+                    cache[normalize_term(alias)] = row
     return cache
 
 

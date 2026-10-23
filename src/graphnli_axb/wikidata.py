@@ -55,17 +55,19 @@ def load_wikidata_cache(path: Path | None) -> Dict[str, dict]:
     if path is None or not path.exists():
         return {}
     cache = {}
-    with path.open("r", encoding="utf-8") as handle:
-        for line in handle:
-            if not line.strip():
-                continue
-            row = json.loads(line)
-            label = row.get("label") or row.get("title") or row.get("entity")
-            if not label:
-                continue
-            cache[normalize_entity(label)] = row
-        for alias in row.get("aliases") or []:
-            cache[normalize_entity(alias)] = row
+    paths = sorted(path.glob("*.jsonl")) if path.is_dir() else [path]
+    for cache_path in paths:
+        with cache_path.open("r", encoding="utf-8") as handle:
+            for line in handle:
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                label = row.get("label") or row.get("title") or row.get("entity")
+                if not label:
+                    continue
+                cache[normalize_entity(label)] = row
+                for alias in row.get("aliases") or []:
+                    cache[normalize_entity(alias)] = row
     return cache
 
 

@@ -31,7 +31,13 @@ from .data import (
     split_train_validation,
 )
 from .graph import RELATIONS
-from .logicpath import LOGICPATH_NODE_TYPES, LOGICPATH_RELATIONS, TRANSFORMATIONS
+from .logicpath import (
+    LOGICPATH_NODE_TYPES,
+    LOGICPATH_RELATIONS,
+    LOGICPATH_V2_NODE_TYPES,
+    LOGICPATH_V2_RELATIONS,
+    TRANSFORMATIONS,
+)
 from .proof_graph import PROOF_NODE_TYPES, PROOF_RELATIONS
 from .metrics import (
     binary_axb_metrics,
@@ -66,7 +72,7 @@ def move_batch(batch: dict, device: torch.device) -> dict:
     return {key: value.to(device) if torch.is_tensor(value) else value for key, value in batch.items()}
 
 
-def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False, piig_version: str = "v1", include_logicpath: bool = False) -> DataLoader:
+def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False, piig_version: str = "v1", include_logicpath: bool = False, logicpath_version: str = "v1") -> DataLoader:
     wikidata_cache_path = Path(args.wikidata_cache) if args.wikidata_cache else None
     if wikidata_cache_path is not None and not wikidata_cache_path.is_absolute():
         wikidata_cache_path = project_root() / wikidata_cache_path
@@ -89,6 +95,7 @@ def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False
         max_proof_nodes=args.max_proof_nodes,
         max_proof_len=args.max_proof_len,
         include_logicpath=include_logicpath,
+        logicpath_version=logicpath_version,
         max_logicpath_nodes=args.max_logicpath_nodes,
         max_logicpath_len=args.max_logicpath_len,
     )
@@ -352,11 +359,14 @@ def _logicpath_explanation_record(batch: dict, output, item_index: int) -> dict:
     importance = output.logicpath_node_importance[item_index, :valid_nodes].detach().cpu().tolist()
     edge_types = batch["logicpath_edge_types"][item_index, :valid_nodes, :valid_nodes].detach().cpu().numpy()
     attention = output.logicpath_graph_attention[:, item_index, :valid_nodes, :valid_nodes].mean(dim=0).detach().cpu().numpy()
+    logicpath_version = batch.get("logicpath_version", ["v1"])[item_index]
+    node_type_names = LOGICPATH_V2_NODE_TYPES if logicpath_version == "v2" else LOGICPATH_NODE_TYPES
+    relation_names = LOGICPATH_V2_RELATIONS if logicpath_version == "v2" else LOGICPATH_RELATIONS
     nodes = [
         {
             "id": index,
             "text": text,
-            "type": LOGICPATH_NODE_TYPES[int(batch["logicpath_type_ids"][item_index, index].item())],
+            "type": node_type_names[int(batch["logicpath_type_ids"][item_index, index].item())],
             "importance": float(importance[index]),
         }
         for index, text in enumerate(texts)
@@ -371,7 +381,7 @@ def _logicpath_explanation_record(batch: dict, output, item_index: int) -> dict:
                 {
                     "source": source,
                     "target": target,
-                    "relation": LOGICPATH_RELATIONS[relation_id],
+                    "relation": relation_names[relation_id],
                     "attention": float((attention[source, target] + attention[target, source]) / 2),
                 }
             )
@@ -382,6 +392,7 @@ def _logicpath_explanation_record(batch: dict, output, item_index: int) -> dict:
         "dataset": batch["dataset"][item_index],
         "logic": batch["logic"][item_index],
         "language": batch["language"][item_index],
+        "logicpath_version": logicpath_version,
         "prediction_3": int(output.logits.argmax(dim=-1)[item_index].item()),
         "label_3": int(batch["labels_3"][item_index].item()),
         "prediction_binary": int(output.logits.argmax(dim=-1)[item_index].item() != 0),
@@ -400,14 +411,27 @@ def _write_logicpath_graph_svg(path: Path, record: dict) -> None:
     """Render a directed, layered transformation flow instead of a circular graph."""
     nodes = record["nodes"]
     edges = record["edges"]
-    width = 1500
-    columns = {
-        "premise_state": (120, "Premise"),
-        "premise_unit": (390, "Premise units"),
-        "transformation": (720, "Transformations"),
-        "hypothesis_unit": (1050, "Hypothesis units"),
-        "hypothesis_state": (1380, "Hypothesis"),
-    }
+    has_wiktionary = any(node["type"].startswith("wiktionary_") for node in nodes)
+    if has_wiktionary:
+        width = 1770
+        columns = {
+            "premise_state": (100, "Premise"),
+            "premise_unit": (350, "Premise units"),
+            "wiktionary_entry": (635, "Wiktionary"),
+            "wiktionary_gloss": (635, "Wiktionary"),
+            "transformation": (930, "Transformations"),
+            "hypothesis_unit": (1260, "Hypothesis units"),
+            "hypothesis_state": (1580, "Hypothesis"),
+        }
+    else:
+        width = 1500
+        columns = {
+            "premise_state": (120, "Premise"),
+            "premise_unit": (390, "Premise units"),
+            "transformation": (720, "Transformations"),
+            "hypothesis_unit": (1050, "Hypothesis units"),
+            "hypothesis_state": (1380, "Hypothesis"),
+        }
     grouped = {node_type: [] for node_type in columns}
     for index, node in enumerate(nodes):
         grouped.setdefault(node["type"], []).append(index)
@@ -425,7 +449,7 @@ def _write_logicpath_graph_svg(path: Path, record: dict) -> None:
         '<defs><marker id="arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#4d6f8e"/></marker><marker id="red-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#a33d3d"/></marker></defs>',
         '<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}.column{font-size:14px;font-weight:bold;fill:#52616b}.edge-label{font-size:10px;fill:#52616b}</style>',
         '<rect width="100%" height="100%" fill="#ffffff"/>',
-        f'<text x="30" y="32" class="title">LogicPath v1 transformation graph | {html.escape(record["uid"])}</text>',
+        f'<text x="30" y="32" class="title">LogicPath {html.escape(record.get("logicpath_version", "v1"))} transformation graph | {html.escape(record["uid"])}</text>',
         f'<text x="30" y="54" class="small">Binary prediction: {record["prediction_binary"]} | binary label: {record["label_binary"]} | arrows show transformation flow; width shows attention.</text>',
     ]
     for node_type, (x, label) in columns.items():
@@ -504,11 +528,12 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
     device = resolve_device(args.device)
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     include_piig = variant in {"piig_v1", "piig_v2", "piig_v3", "piig_v4", "piig_v5", "piig_v6"}
-    include_logicpath = variant == "logicpath_v1"
+    include_logicpath = variant in {"logicpath_v1", "logicpath_v2"}
+    logicpath_version = variant.removeprefix("logicpath_") if include_logicpath else "v1"
     piig_version = variant.removeprefix("piig_") if include_piig else "v1"
-    train_loader = make_loader(train_rows, tokenizer, args, shuffle=True, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath)
-    val_loader = make_loader(val_rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath)
-    eval_loaders = {name: make_loader(rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath) for name, rows in eval_sets.items()}
+    train_loader = make_loader(train_rows, tokenizer, args, shuffle=True, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version)
+    val_loader = make_loader(val_rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version)
+    eval_loaders = {name: make_loader(rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version) for name, rows in eval_sets.items()}
 
     model = build_model(
         variant=variant,
@@ -656,7 +681,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Existing experiment directory to continue. Completed model/seed results are skipped.",
     )
     parser.add_argument("--model-name", default="xlm-roberta-base")
-    parser.add_argument("--models", default="pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4,piig_v6,logicpath_v1")
+    parser.add_argument("--models", default="pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4,piig_v6,logicpath_v1,logicpath_v2")
     parser.add_argument("--seeds", default="42")
     parser.add_argument("--train-languages", default="en", help="Used only by the legacy XNLI-dev training protocol.")
     parser.add_argument(
@@ -683,7 +708,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-wikidata-len", type=int, default=32)
     parser.add_argument("--max-proof-nodes", type=int, default=12)
     parser.add_argument("--max-proof-len", type=int, default=32)
-    parser.add_argument("--max-logicpath-nodes", type=int, default=24)
+    parser.add_argument("--max-logicpath-nodes", type=int, default=32)
     parser.add_argument("--max-logicpath-len", type=int, default=24)
     parser.add_argument("--wikidata-cache", default="data/cache/wikidata_entities.jsonl")
     parser.add_argument("--wiktionary-cache", default="data/cache/wiktionary_entries.jsonl")

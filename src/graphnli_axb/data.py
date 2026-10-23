@@ -12,7 +12,7 @@ from torch.utils.data import Dataset
 
 from .graph import LOGIC_NODE_TYPE_IDS, RELATIONS, build_graph
 from .labels import LABEL_TO_ID_3, LABEL_TO_ID_BINARY, normalize_label
-from .logicpath import build_logicpath_graph
+from .logicpath import build_logicpath_graph, build_logicpath_v2_graph
 from .proof_graph import PROOF_NODE_TYPES, build_proof_graph
 from .wikidata import WIKIDATA_RELATIONS, build_wikidata_spec, load_wikidata_cache
 from .wiktionary import build_wiktionary_spec, load_wiktionary_cache
@@ -221,6 +221,7 @@ class NLIGraphDataset(Dataset):
         max_proof_nodes: int = 12,
         max_proof_len: int = 32,
         include_logicpath: bool = False,
+        logicpath_version: str = "v1",
         max_logicpath_nodes: int = 24,
         max_logicpath_len: int = 24,
     ):
@@ -239,6 +240,7 @@ class NLIGraphDataset(Dataset):
         self.max_proof_nodes = max_proof_nodes
         self.max_proof_len = max_proof_len
         self.include_logicpath = include_logicpath
+        self.logicpath_version = logicpath_version
         self.max_logicpath_nodes = max_logicpath_nodes
         self.max_logicpath_len = max_logicpath_len
 
@@ -401,11 +403,20 @@ class NLIGraphDataset(Dataset):
             proof_edge_types[:proof_count, :proof_count] = torch.tensor(proof.edge_types, dtype=torch.long)
 
         if self.include_logicpath:
-            logicpath = build_logicpath_graph(
-                row.sentence1,
-                row.sentence2,
-                max_nodes=self.max_logicpath_nodes,
-            )
+            if self.logicpath_version == "v2":
+                logicpath = build_logicpath_v2_graph(
+                    row.sentence1,
+                    row.sentence2,
+                    self.wiktionary_cache,
+                    max_nodes=self.max_logicpath_nodes,
+                    max_wiktionary_entries=self.max_wiktionary_entries,
+                )
+            else:
+                logicpath = build_logicpath_graph(
+                    row.sentence1,
+                    row.sentence2,
+                    max_nodes=self.max_logicpath_nodes,
+                )
             logicpath_count = len(logicpath.texts)
             logicpath_enc = self.tokenizer(
                 logicpath.texts,
@@ -480,6 +491,7 @@ class NLIGraphDataset(Dataset):
                     "logicpath_targets": torch.tensor(logicpath.targets, dtype=torch.float),
                     "logicpath_inverse_targets": torch.tensor(logicpath.inverse_targets, dtype=torch.float),
                     "logicpath_texts": logicpath.texts,
+                    "logicpath_version": self.logicpath_version,
                 }
             )
         return item
@@ -488,7 +500,7 @@ class NLIGraphDataset(Dataset):
 def collate_nli(batch: List[dict]) -> dict:
     tensor_keys = [key for key, value in batch[0].items() if torch.is_tensor(value)]
     out = {key: torch.stack([item[key] for item in batch]) for key in tensor_keys}
-    for key in ["uid", "dataset", "logic", "language", "proof_texts", "logicpath_texts"]:
+    for key in ["uid", "dataset", "logic", "language", "proof_texts", "logicpath_texts", "logicpath_version"]:
         if key not in batch[0]:
             continue
         out[key] = [item[key] for item in batch]

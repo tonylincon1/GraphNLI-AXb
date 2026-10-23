@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download the official English Wiktionary articles dump with resume support."""
+"""Download an official Wiktionary articles dump with resume support."""
 from __future__ import annotations
 
 import argparse
@@ -13,13 +13,11 @@ from tqdm.auto import tqdm
 from graphnli_axb.data import project_root
 
 
-DUMP_URL = "https://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-pages-articles.xml.bz2"
-CHECKSUM_URL = "https://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-md5sums.txt"
 CHUNK_SIZE = 1024 * 1024
 USER_AGENT = "GraphNLI-AXb/0.4 (research dump downloader)"
 
 
-def expected_md5(url: str, filename: str) -> str:
+def expected_md5(url: str, filename: str, language: str) -> str:
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/plain"})
     with urllib.request.urlopen(request, timeout=30) as response:
         text = response.read().decode("utf-8")
@@ -27,7 +25,11 @@ def expected_md5(url: str, filename: str) -> str:
     # The `latest` URL redirects to a dated snapshot, while md5sums records
     # the snapshot filename rather than the stable `latest` alias.
     if not match and filename.endswith("-latest-pages-articles.xml.bz2"):
-        match = re.search(r"^([0-9a-fA-F]{32})\s+\*?enwiktionary-\d{8}-pages-articles\.xml\.bz2$", text, flags=re.MULTILINE)
+        match = re.search(
+            rf"^([0-9a-fA-F]{{32}})\s+\*?{re.escape(language)}wiktionary-\d{{8}}-pages-articles\.xml\.bz2$",
+            text,
+            flags=re.MULTILINE,
+        )
     if not match:
         raise RuntimeError(f"Could not find {filename} in {url}")
     return match.group(1).lower()
@@ -41,7 +43,7 @@ def file_md5(path: Path) -> str:
     return digest.hexdigest()
 
 
-def download(url: str, destination: Path) -> None:
+def download(url: str, destination: Path, language: str) -> None:
     partial = destination.with_suffix(destination.suffix + ".part")
     offset = partial.stat().st_size if partial.exists() else 0
     headers = {"User-Agent": USER_AGENT}
@@ -60,7 +62,7 @@ def download(url: str, destination: Path) -> None:
             initial=offset,
             unit="B",
             unit_scale=True,
-            desc="Downloading enwiktionary dump",
+            desc=f"Downloading {language}wiktionary dump",
         ) as progress:
             while block := response.read(CHUNK_SIZE):
                 handle.write(block)
@@ -70,22 +72,31 @@ def download(url: str, destination: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out", default="data/raw/wiktionary/enwiktionary-latest-pages-articles.xml.bz2")
-    parser.add_argument("--url", default=DUMP_URL)
-    parser.add_argument("--checksum-url", default=CHECKSUM_URL)
+    parser.add_argument("--language", default="en", help="Wiktionary language edition, e.g. en, pt, es, de.")
+    parser.add_argument("--out", default=None)
+    parser.add_argument("--url", default=None)
+    parser.add_argument("--checksum-url", default=None)
     parser.add_argument("--no-verify", action="store_true")
     args = parser.parse_args()
 
+    language = args.language.strip().lower()
+    if not re.fullmatch(r"[a-z-]+", language):
+        raise ValueError(f"Invalid Wiktionary language code: {language}")
+    filename = f"{language}wiktionary-latest-pages-articles.xml.bz2"
+    dump_url = args.url or f"https://dumps.wikimedia.org/{language}wiktionary/latest/{filename}"
+    checksum_url = args.checksum_url or f"https://dumps.wikimedia.org/{language}wiktionary/latest/{language}wiktionary-latest-md5sums.txt"
+    output_name = args.out or f"data/raw/wiktionary/{filename}"
+
     root = project_root()
-    output = Path(args.out)
+    output = Path(output_name)
     if not output.is_absolute():
         output = root / output
     output.parent.mkdir(parents=True, exist_ok=True)
     if not output.exists():
-        download(args.url, output)
+        download(dump_url, output, language)
 
     if not args.no_verify:
-        expected = expected_md5(args.checksum_url, output.name)
+        expected = expected_md5(checksum_url, output.name, language)
         actual = file_md5(output)
         if actual != expected:
             raise RuntimeError(f"Checksum mismatch for {output}: expected {expected}, got {actual}")

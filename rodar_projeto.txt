@@ -19,12 +19,12 @@ python scripts/summarize_runs.py runs/experiment_001/summary.json
 --resume-dir runs/experiment_022 \
 
 poetry run graphnli-train \
-  --model-name bert-base-multilingual-cased \
-  --models piig_v5 \
+  --model-name roberta-base \
+  --models pair_cls,piig_v4,logicpath_v2,kbert_injection,kganet_rel_gat,kgnli_dual \
   --training-protocol mnli \
   --train-manifest data/manifests/mnli_train_2000_stratified.jsonl \
   --seeds 42 \
-  --seeds 1001,1002,1003,1004,1005 \
+  --seeds 1001 \
   --epochs 8 \
   --device mps \
   --lr 1e-5 \
@@ -42,3 +42,7 @@ PYTHONPATH=src python scripts/run_experiment.py \
   --seeds 1000,1001,1002,1003,1004 \
   --epochs 3 \
   --output-dir runs/multiseed
+
+
+
+poetry run graphnli-pipeline configs/experiment_0001.yaml

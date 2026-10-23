@@ -26,10 +26,11 @@ FACT_PROPERTIES = {
 
 
 class WikidataClient:
-    def __init__(self, user_agent: str, retries: int, timeout: float):
+    def __init__(self, user_agent: str, retries: int, timeout: float, language: str = "en"):
         self.user_agent = user_agent
         self.retries = retries
         self.timeout = timeout
+        self.language = language
 
     def request_json(self, params: dict) -> dict:
         url = API + "?" + urllib.parse.urlencode(params)
@@ -54,7 +55,7 @@ class WikidataClient:
 
     def search_entity(self, label: str) -> dict | None:
         data = self.request_json(
-            {"action": "wbsearchentities", "format": "json", "language": "en", "uselang": "en", "type": "item", "limit": 1, "search": label}
+            {"action": "wbsearchentities", "format": "json", "language": self.language, "uselang": self.language, "type": "item", "limit": 1, "search": label}
         )
         results = data.get("search") or []
         if not results:
@@ -76,11 +77,12 @@ class WikidataClient:
         if not qids:
             return {}
         data = self.request_json(
-            {"action": "wbgetentities", "format": "json", "ids": "|".join(sorted(set(qids))[:50]), "props": "labels", "languages": "en"}
+            {"action": "wbgetentities", "format": "json", "ids": "|".join(sorted(set(qids))[:50]), "props": "labels", "languages": f"{self.language}|en"}
         )
         labels = {}
         for qid, entity in (data.get("entities") or {}).items():
-            label = ((entity.get("labels") or {}).get("en") or {}).get("value")
+            labels = entity.get("labels") or {}
+            label = ((labels.get(self.language) or labels.get("en")) or {}).get("value")
             if label:
                 labels[qid] = label
         return labels
@@ -119,7 +121,7 @@ def enrich_entity(client: WikidataClient, query_label: str) -> dict | None:
     }
 
 
-def collect_entities(data_dir: Path, languages: list[str], sources: list[str], max_examples: int, max_entities: int) -> list[str]:
+def collect_entities(data_dir: Path, languages: list[str], sources: list[str], max_examples: int, max_entities: int, manifests: list[Path] | None = None) -> list[str]:
     row_groups = []
     if "mnli" in sources:
         row_groups.append(load_mnli(data_dir, "train"))
@@ -130,6 +132,18 @@ def collect_entities(data_dir: Path, languages: list[str], sources: list[str], m
         for split in ["dev", "test"]:
             xnli_rows.extend(load_xnli(data_dir, split, languages))
         row_groups.append(xnli_rows)
+    for manifest in manifests or []:
+        manifest_rows = []
+        with manifest.open("r", encoding="utf-8") as handle:
+            for line in handle:
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                sentence1 = row.get("sentence1", row.get("premise", row.get("sentence_A")))
+                sentence2 = row.get("sentence2", row.get("hypothesis", row.get("sentence_B")))
+                if sentence1 and sentence2:
+                    manifest_rows.append((str(sentence1), str(sentence2)))
+        row_groups.append(manifest_rows)
     if max_examples > 0:
         base, remainder = divmod(max_examples, len(row_groups))
         rows = []
@@ -139,7 +153,8 @@ def collect_entities(data_dir: Path, languages: list[str], sources: list[str], m
         rows = [row for group in row_groups for row in group]
     seen = {}
     for row in rows:
-        for text in [row.sentence1, row.sentence2]:
+        texts = (row if isinstance(row, tuple) else (row.sentence1, row.sentence2))
+        for text in texts:
             for entity in extract_entity_candidates(text, max_entities):
                 seen.setdefault(normalize_entity(entity), entity)
     return sorted(seen.values(), key=str.lower)
@@ -151,6 +166,7 @@ def main() -> None:
     parser.add_argument("--out", default="data/cache/wikidata_entities.jsonl")
     parser.add_argument("--languages", default="en")
     parser.add_argument("--sources", default="mnli,axb,xnli", help="Comma-separated: mnli, axb, xnli.")
+    parser.add_argument("--manifests", default="", help="Comma-separated JSONL manifests with premise/hypothesis fields.")
     parser.add_argument("--max-examples", type=int, default=10000, help="0 uses every selected source row.")
     parser.add_argument("--max-entities", type=int, default=4)
     parser.add_argument("--sleep", type=float, default=0.10)
@@ -169,49 +185,58 @@ def main() -> None:
     if invalid:
         raise ValueError(f"Unsupported sources: {', '.join(invalid)}")
 
-    existing = set()
-    if out_path.exists():
-        with out_path.open("r", encoding="utf-8") as handle:
-            for line in handle:
-                if line.strip():
-                    row = json.loads(line)
-                    for alias in row.get("aliases") or [row.get("label", "")]:
-                        existing.add(normalize_entity(alias))
+    manifests = []
+    for value in [item.strip() for item in args.manifests.split(",") if item.strip()]:
+        path = Path(value)
+        manifests.append(path if path.is_absolute() else root / path)
 
-    client = WikidataClient(args.user_agent, args.retries, args.timeout)
-    entities = collect_entities(data_dir, languages, sources, args.max_examples, args.max_entities)
-    cached = 0
-    found = 0
-    missing = 0
-    failed = 0
-    with out_path.open("a", encoding="utf-8") as out:
-        progress = tqdm(entities, desc="Building Wikidata cache", unit="entity")
-        for entity in progress:
-            key = normalize_entity(entity)
-            if key in existing:
-                cached += 1
+    for language in languages:
+        language_out = Path(str(out_path).format(language=language))
+        if len(languages) > 1 and "{language}" not in str(out_path):
+            language_out = out_path.with_name(f"{out_path.stem}_{language}{out_path.suffix}")
+        language_out.parent.mkdir(parents=True, exist_ok=True)
+        existing = set()
+        if language_out.exists():
+            with language_out.open("r", encoding="utf-8") as handle:
+                for line in handle:
+                    if line.strip():
+                        row = json.loads(line)
+                        for alias in row.get("aliases") or [row.get("label", "")]:
+                            existing.add(normalize_entity(alias))
+
+        client = WikidataClient(args.user_agent, args.retries, args.timeout, language=language)
+        language_sources = sources if language == "en" else [source for source in sources if source == "xnli"]
+        entities = collect_entities(data_dir, [language], language_sources, args.max_examples, args.max_entities, manifests)
+        cached = found = missing = failed = 0
+        with language_out.open("a", encoding="utf-8") as out:
+            progress = tqdm(entities, desc=f"Building Wikidata cache [{language}]", unit="entity")
+            for entity in progress:
+                key = normalize_entity(entity)
+                if key in existing:
+                    cached += 1
+                    progress.set_postfix(cached=cached, found=found, missing=missing, failed=failed)
+                    continue
+                try:
+                    row = enrich_entity(client, entity)
+                except Exception as error:
+                    failed += 1
+                    progress.write(f"warning: {entity}: {error}")
+                    progress.set_postfix(cached=cached, found=found, missing=missing, failed=failed)
+                    continue
+                if row is None:
+                    missing += 1
+                    progress.write(f"not found: {entity}")
+                    progress.set_postfix(cached=cached, found=found, missing=missing, failed=failed)
+                    continue
+                row["language"] = language
+                out.write(json.dumps(row, ensure_ascii=False) + "\n")
+                out.flush()
+                for alias in row["aliases"]:
+                    existing.add(normalize_entity(alias))
+                found += 1
                 progress.set_postfix(cached=cached, found=found, missing=missing, failed=failed)
-                continue
-            try:
-                row = enrich_entity(client, entity)
-            except Exception as error:
-                failed += 1
-                progress.write(f"warning: {entity}: {error}")
-                progress.set_postfix(cached=cached, found=found, missing=missing, failed=failed)
-                continue
-            if row is None:
-                missing += 1
-                progress.write(f"not found: {entity}")
-                progress.set_postfix(cached=cached, found=found, missing=missing, failed=failed)
-                continue
-            out.write(json.dumps(row, ensure_ascii=False) + "\n")
-            out.flush()
-            for alias in row["aliases"]:
-                existing.add(normalize_entity(alias))
-            found += 1
-            progress.set_postfix(cached=cached, found=found, missing=missing, failed=failed)
-            time.sleep(args.sleep)
-    print(f"wrote {out_path} | cached={cached}, found={found}, missing={missing}, failed={failed}")
+                time.sleep(args.sleep)
+        print(f"wrote {language_out} | cached={cached}, found={found}, missing={missing}, failed={failed}")
 
 
 if __name__ == "__main__":

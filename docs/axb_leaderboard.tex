@@ -1,0 +1,476 @@
+% AX-b literature leaderboard.
+% Compile with: pdflatex docs/axb_leaderboard.tex
+\documentclass[10pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{graphicx}
+
+\title{Natural Language Inference Literature Leaderboards}
+\author{GraphNLI-AXb project}
+\date{October 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Scope and protocol}
+
+This document summarizes published results for Natural Language Inference
+(NLI) benchmarks used in the GraphNLI-AXb project. NLI evaluates whether a
+hypothesis is entailed by, contradicts, or is neutral with respect to a
+premise. The covered resources span English, multilingual and Portuguese
+evaluation settings: SICK, XNLI, ASSIN, ASSIN2, InferBR and AX-b.
+
+The tables are organized by dataset because their label spaces, splits and
+evaluation protocols are different. SICK, XNLI and InferBR generally use
+three-way classification and report accuracy. ASSIN uses the three classes
+entailment, paraphrase and neutral, while ASSIN2 uses binary entailment versus
+non-entailment. Portuguese studies commonly report accuracy and macro-F1.
+
+Results are ranked only within a table and only when their metric and protocol
+are sufficiently aligned. In particular, zero-shot, translate-train,
+translate-test and supervised fine-tuning are reported explicitly rather than
+being silently combined. Values marked as development, cross-dataset transfer
+or a different metric are contextual references and should not be interpreted
+as direct leaderboard entries.
+
+\section*{AX-b}
+
+AX-b (Broadcoverage Diagnostics) is a diagnostic NLI set derived from GLUE
+Diagnostics and included in SuperGLUE. It focuses on linguistic phenomena
+such as negation, quantifiers, conjunction, conditionals, monotonicity and
+temporal reasoning. SuperGLUE maps contradiction and neutral to the binary
+label \texttt{not\_entailment}, so AX-b is evaluated with Matthews
+correlation coefficient (MCC) rather than three-way accuracy
+\cite{wang2019superglue}.
+
+The official leaderboard reports MCC multiplied by 100. Thus, a leaderboard
+value of 72.9 corresponds to MCC $=0.729$ on the usual $[-1,1]$ scale. The
+accuracy table is kept separate because OpenCompass reports a different metric
+and protocol.
+
+Table~\ref{tab:literature} collects the strongest publicly documented AX-b
+references found in the literature review. Results are deliberately not
+merged into a single numerical ranking when the metric or evaluation protocol
+changes. In particular, the 2024 PanGu-$\pi$ paper reports accuracy through
+OpenCompass \cite{opencompass2023}, whereas the official SuperGLUE diagnostic
+uses MCC.
+
+\subsection*{MCC leaderboard}
+\small
+\begin{longtable}{@{}c c p{3.7cm} p{2.5cm} c p{4.3cm}@{}}
+\caption{AX-b literature leaderboard. MCC values are multiplied by 100, as in
+the official SuperGLUE leaderboard.}\label{tab:literature}\\
+\toprule
+\textbf{Rank} & \textbf{Year} & \textbf{System} & \textbf{Total parameters} & \textbf{AX-b MCC} & \textbf{Primary reference or provenance} \\
+\midrule
+1 & 2019 & SuperGLUE human baseline & -- & 76.6 & Human reference \cite{wang2019superglue} \\
+2 & 2021 & PAI Albert & N/D & 75.6 & Official leaderboard submission; primary paper not located \\
+3 & 2023 & PaLM 540B & 540B & 72.9 & Total size is documented in the literature \cite{tedeschi2023superhuman} \\
+4 & 2022 & ST-MoE-32B & 269B & 72.3 & Total size reported in the SPoT comparison table; sparse model \cite{fedus2022stmoe,vu2022spot} \\
+5 & 2021 & T5 + UDG & 11B & 69.1 & Total size reported in the SPoT comparison table \cite{wang2021udg,vu2022spot} \\
+6 & 2021 & ERNIE 3.0 & 12B & 68.6 & Total size reported in the SPoT comparison table \cite{sun2021ernie,vu2022spot} \\
+7 & 2021 & Turing NLR v5 & 5.4B & 67.8 & Total size reported in the SPoT comparison table \cite{gao2021tnlr,vu2022spot} \\
+8 & 2022 & SPoT (Frozen T5 1.1) & 11B & 66.9 & Total size reported by the authors \cite{vu2022spot} \\
+9 & 2021 & DeBERTa / TuringNLRv4 & 3.1B & 66.7 & Total size reported in the SPoT comparison table \cite{he2021deberta,vu2022spot} \\
+10 & 2020 & T5 & 11B & 65.6 & Total size reported in the SPoT comparison table \cite{raffel2020t5,vu2022spot} \\
+11 & 2023 & RoBERTa-iCETS & N/D & 61.8 & Official leaderboard submission; primary paper not located \\
+12 & 2022 & RoBERTa-mtl-adv & N/D & 58.5 & Official leaderboard submission; primary paper not located \\
+13 & 2021 & NEZHA-Plus & N/D & 58.0 & Official leaderboard submission; primary paper not located \\
+14 & 2019 & Facebook RoBERTa & N/D & 57.9 & Official model variant and tuning details are not specified in the leaderboard row \cite{liu2019roberta} \\
+15 & 2022 & RoBERTa (ensemble) & N/D & 57.6 & Official leaderboard submission; exact ensemble composition not documented \\
+16 & 2020 & Snorkel & N/D & 47.6 & Official leaderboard submission, version 1.9 \\
+17 & 2019 & BERT++ & N/D & 38.0 & Original baseline; exact parameterization is not separately reported \cite{wang2019superglue} \\
+18 & 2021 & iPET (ALBERT), 32 examples & N/D & 36.2 & Primary paper; exact leaderboard checkpoint parameterization is not separately reported \cite{schick2021ipet} \\
+19 & 2021 & FSL++ (ALBERT), 32 examples & N/D & 35.9 & Official leaderboard submission; primary paper not located \\
+20 & 2020 & BERT-mtl & N/D & 29.6 & Official leaderboard submission; exact backbone size not documented \\
+21 & 2019 & BERT-large & 340M & 23.0 & BERT-Large size documented in the baseline setup \cite{wang2019superglue,devlin2019bert} \\
+22 & 2020 & GPT-3 few-shot & 175B & 21.1 & Total size reported in the SPoT comparison table \cite{brown2020gpt3,vu2022spot} \\
+23 & 2019 & Most Frequent Class & -- & 0.0 & Original baseline \cite{wang2019superglue} \\
+24 & 2021 & ADAPET (ALBERT), few-shot & N/D & -0.4 & Primary paper; exact leaderboard checkpoint parameterization is not separately reported \cite{tam2021adapet} \\
+25 & 2023 & Vega v2 & N/D & -0.4 & Primary technical report; exact submitted checkpoint size is not stated in the leaderboard row \cite{wang2022vega} \\
+26 & 2021 & INSTALL (ALBERT), few-shot & N/D & -0.4 & Official leaderboard submission; primary paper not located \\
+27 & 2021 & WARP (ALBERT-XXL), few-shot & 223M & -0.4 & Total size reported in the SPoT comparison table \cite{vu2022spot} \\
+28 & 2019 & CBoW & 15M & -0.4 & Total size reported in the SPoT comparison table \cite{vu2022spot} \\
+29 & 2021 & Select-step-by-step & N/D & -0.4 & Official leaderboard submission; primary paper not located \\
+\bottomrule
+\end{longtable}
+
+\subsection*{Accuracy leaderboard}
+\begin{longtable}{@{}c c p{3.7cm} p{2.5cm} c p{4.3cm}@{}}
+\caption{AX-b results reported with accuracy rather than MCC. Values are
+reported by Tang et al.~\cite{tang2024tinylm} using OpenCompass
+\cite{opencompass2023}. These values must not be ranked together with
+Table~\ref{tab:literature}.}\label{tab:accuracy}\\
+\toprule
+\textbf{Rank} & \textbf{Year} & \textbf{System} & \textbf{Total parameters} & \textbf{AX-b accuracy} & \textbf{Primary reference or provenance} \\
+\midrule
+1 & 2024 & PanGu-$\pi$-1.5B Pro & 1.5B & 67.93 & Model size documented in the primary paper; OpenCompass accuracy, not MCC \cite{tang2024tinylm,opencompass2023} \\
+2 & 2024 & Qwen-1.8B & 1.8B & 57.79 & Model size documented in the primary paper; OpenCompass accuracy, not MCC \cite{tang2024tinylm,opencompass2023} \\
+3 & 2024 & MobileLLaMA-2.7B & 2.7B & 55.80 & Model size is part of the evaluated model identifier; OpenCompass accuracy, not MCC \cite{opencompass2023} \\
+4 & 2024 & RWKV-5-1.5B & 1.5B & 54.05 & Model size is part of the evaluated model identifier; OpenCompass accuracy, not MCC \cite{opencompass2023} \\
+5 & 2024 & Open-LLaMA-3B & 3B & 52.72 & Model size is part of the evaluated model identifier; OpenCompass accuracy, not MCC \cite{opencompass2023} \\
+6 & 2022 & BLOOM-1B1, one-shot & 1.1B & 52.72 & One-shot evaluation; BigScience artifact \cite{bigscience2022bloom} \\
+7 & 2024 & Chinese-LLaMA2-1.3B & 1.3B & 47.46 & Model size is part of the evaluated model identifier; OpenCompass accuracy, not MCC \cite{opencompass2023} \\
+8 & 2024 & TinyLLaMA-1.1B & 1.1B & 45.47 & Model size is part of the evaluated model identifier; OpenCompass accuracy, not MCC \cite{opencompass2023} \\
+9 & 2024 & MobileLLaMA-1.4B & 1.4B & 45.20 & Model size is part of the evaluated model identifier; OpenCompass accuracy, not MCC \cite{opencompass2023} \\
+10 & 2024 & Phi-1.3B & 1.3B & 44.20 & Model size is part of the evaluated model identifier; OpenCompass accuracy, not MCC \cite{opencompass2023} \\
+11 & 2024 & Sheared-LLaMA-1.3B & 1.3B & 43.57 & Model size is part of the evaluated model identifier; OpenCompass accuracy, not MCC \cite{opencompass2023} \\
+11 & 2024 & Phi-2.7B & 2.7B & 43.57 & Model size is part of the evaluated model identifier; OpenCompass accuracy, not MCC \cite{opencompass2023} \\
+13 & 2024 & PanGu-$\pi$-1B & 1B & 43.48 & Model size documented in the primary paper; OpenCompass accuracy, not MCC \cite{tang2024tinylm,opencompass2023} \\
+\bottomrule
+\end{longtable}
+
+\section*{SICK}
+\begin{longtable}{@{}c p{3.2cm} p{3.2cm} p{3.0cm} c p{3.0cm}@{}}
+\caption{SICK test-set leaderboard. All systems are trained on the original
+SICK training split and evaluated on the original three-way SICK test set.}
+\label{tab:sick-literature}\\
+\toprule
+\textbf{Rank} & \textbf{Year} & \textbf{System} & \textbf{Parameters} & \textbf{Accuracy} & \textbf{Reference} \\
+\midrule
+1 & 2023 & RoBERTa-Large & 355M & 91.50 & Sharma et al. \cite{sharma2023nli} \\
+2 & 2023 & RoBERTa-Large & 355M & 90.5 & Kalouli et al. \cite{kalouli2023sick} \\
+3 & 2023 & ALBERT-Large & 17M & 89.85 & Sharma et al. \cite{sharma2023nli} \\
+4 & 2023 & BERT-Large & 340M & 89.85 & Sharma et al. \cite{sharma2023nli} \\
+5 & 2023 & BERT-Base & 110M & 85.71 & Sharma et al. \cite{sharma2023nli} \\
+6 & 2023 & BERT-Large & 340M & 85.3 & Kalouli et al. \cite{kalouli2023sick} \\
+7 & 2023 & DAM & 382K & 83.37 & Sharma et al. \cite{sharma2023nli} \\
+8 & 2023 & ESIM & 4.3M & 80.81 & Sharma et al. \cite{sharma2023nli} \\
+\bottomrule
+\end{longtable}
+
+The Sharma et al. results are an independent reimplementation study, while
+Kalouli et al. use SICK to analyze annotation regimes. The small numerical
+difference between the two RoBERTa/BERT evaluations should therefore not be
+interpreted as a strict leaderboard improvement.
+
+\section*{XNLI}
+\begin{longtable}{@{}c p{3.1cm} p{2.9cm} p{2.7cm} c p{3.5cm}@{}}
+\caption{XNLI average accuracy across the 15 official languages.}
+\label{tab:xnli-literature}\\
+\toprule
+\textbf{Rank} & \textbf{Year} & \textbf{System} & \textbf{Protocol} & \textbf{Accuracy} & \textbf{Reference} \\
+\midrule
+1 & 2025 & Gemma 2 9B + FLARE & Translate-train & 85.01 & Borchert et al. \cite{borchert2025flare} \\
+2 & 2023 & RoBERTa-Large + NLLB & Translate-test & 83.8 & Artetxe et al. \cite{artetxe2023mt} \\
+3 & 2022 & XLM-R-Large + PCT & Full-shot + translate-train-all & 83.6 & Qi et al. \cite{qi2022pct} \\
+4 & 2020 & XLM-R-Large & Translate-train-all & 82.4 & Conneau et al. \cite{conneau2020xlmr} \\
+5 & 2020 & XLM-R-Large & Zero-shot transfer & 79.2 & Xue et al. \cite{xue2021mt5} \\
+6 & 2020 & mBERT & Zero-shot transfer & 65.4 & Xue et al. \cite{xue2021mt5} \\
+\bottomrule
+\end{longtable}
+
+The XNLI table intentionally exposes the protocol. Translate-train and
+translate-test use additional machine-translated inputs, whereas zero-shot
+transfer uses English training data and evaluates directly in the target
+languages. These regimes should be compared only within the same protocol.
+
+\section*{ASSIN}
+\begin{longtable}{@{}c p{3.2cm} p{3.4cm} c c c p{3.2cm}@{}}
+\caption{ASSIN three-class NLI leaderboard on the combined Portuguese
+European/Brazilian test setting. The classes are entailment, paraphrase and
+neutral.}
+\label{tab:assin-literature}\\
+\toprule
+\textbf{Rank} & \textbf{Year} & \textbf{System} & \textbf{Parameters} & \textbf{Accuracy} & \textbf{Macro-F1} & \textbf{Reference} \\
+\midrule
+1 & 2020 & ptBERT-Large fine-tuned & 335M & 91.0 & 82.0 & Fialho et al. \cite{fialho2020} \\
+2 & 2020 & ptBERT-Base fine-tuned & 110M & 90.0 & 81.0 & Fialho et al. \cite{fialho2020} \\
+3 & 2020 & mBERT-Base fine-tuned & 178M & 90.0 & 80.0 & Fialho et al. \cite{fialho2020} \\
+4 & 2016 & ASSIN challenge best system & N/D & 83.85 & 71.0 & Fonseca et al. \cite{fonseca2016assin} \\
+\bottomrule
+\end{longtable}
+
+ASSIN is not identical to the binary NLI formulation used by ASSIN2 or
+InferBR. In particular, paraphrase is a separate class here; it should not be
+collapsed into neutral when comparing these values.
+
+\section*{ASSIN2}
+\begin{longtable}{@{}c p{3.1cm} p{3.4cm} c c c p{3.0cm}@{}}
+\caption{ASSIN2 binary NLI leaderboard. The task labels are entailment and
+non-entailment; the official test split is used.}
+\label{tab:assin2-literature}\\
+\toprule
+\textbf{Rank} & \textbf{Year} & \textbf{System} & \textbf{Parameters} & \textbf{Accuracy} & \textbf{Macro-F1} & \textbf{Reference} \\
+\midrule
+1 & 2020 & BERTimbau-Large fine-tuned & 335M & 90.0 & 90.0 & Souza et al. \cite{souza2020bertimbau} \\
+2 & 2026 & BERTomelo-Large fine-tuned & N/D & 89.26 & 89.21 & Oliveira et al. \cite{oliveira2026bertomelo} \\
+3 & 2020 & BERTimbau-Base fine-tuned & 110M & 89.2 & 89.2 & Souza et al. \cite{souza2020bertimbau} \\
+4 & 2020 & mBERT fine-tuned & 178M & 86.8 & 86.8 & Souza et al. \cite{souza2020bertimbau} \\
+5 & 2020 & mBERT + RoBERTa-Large ensemble & N/D & 88.3 & 88.3 & Rodrigues et al. \cite{rodrigues2020assin2} \\
+\bottomrule
+\end{longtable}
+
+NorBERTo reports approximately 0.904 entailment F1 on ASSIN2, but this is a
+per-class F1 rather than macro-F1. It is therefore recorded as a recent
+reference, not inserted into the ranking above \cite{silva2026norberto}.
+
+\section*{InferBR}
+\begin{longtable}{@{}c p{3.2cm} p{3.5cm} c c c p{3.0cm}@{}}
+\caption{InferBR three-class NLI leaderboard. Results are from the original
+InferBR evaluation protocol, with BERTimbau fine-tuned on each dataset's
+training and validation splits.}
+\label{tab:inferbr-literature}\\
+\toprule
+\textbf{Rank} & \textbf{Year} & \textbf{System} & \textbf{Parameters} & \textbf{Accuracy} & \textbf{Macro-F1} & \textbf{Reference} \\
+\midrule
+1 & 2024 & BERTimbau fine-tuned on InferBR & N/D & 90.0 & 90.0 & Bencke et al. \cite{bencke2024inferbr} \\
+2 & 2024 & BERTimbau trained on SICK-BR, tested on InferBR & N/D & 60.0 & 58.0 & Bencke et al. \cite{bencke2024inferbr} \\
+3 & 2024 & BERTimbau trained on InferBR, tested on SICK-BR & N/D & 64.0 & 63.0 & Bencke et al. \cite{bencke2024inferbr} \\
+\bottomrule
+\end{longtable}
+
+The cross-dataset rows are included as transfer references, not as direct
+InferBR leaderboard entries. They illustrate the domain shift between
+synthetically generated InferBR examples and SICK-BR examples.
+
+Here ``Total parameters'' refers to the complete model size. ``N/D'' means
+that the primary source or official submission does not document the total
+parameter count for that exact entry; it is intentionally not inferred from
+the model name. For sparse models, total parameters include all experts. The leaderboard is a historical snapshot and mixes official submissions,
+human references, few-shot systems, and baselines. The 2024--2026 review found
+no newer peer-reviewed result with a clearly documented official AX-b MCC above
+72.9; recent papers often omit AX-b or report a different metric and split.
+
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+
+\bibitem{wang2019superglue}
+Alex Wang, Yada Pruksachatkun, Nikita Nangia, Amanpreet Singh, Julian
+Michael, Felix Hill, Omer Levy, and Samuel R. Bowman.
+\newblock SuperGLUE: A stickier benchmark for general-purpose language
+understanding systems.
+\newblock In \emph{NeurIPS}, 2019. \url{https://arxiv.org/abs/1905.00537}.
+
+\bibitem{devlin2019bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova.
+\newblock BERT: Pre-training of deep bidirectional transformers for language understanding.
+\newblock In \emph{NAACL}, 2019. \url{https://aclanthology.org/N19-1423/}.
+
+\bibitem{tedeschi2023superhuman}
+Simone Tedeschi, Johan Bos, Thierry Declerck, Jan Hajic, Daniel Hershcovich,
+Eduard H. Hovy, Alexander Koller, Simon Krek, Steven Schockaert, Rico Sennrich,
+Ekaterina Shutova, and Roberto Navigli.
+\newblock What's the meaning of superhuman performance in today's NLU?
+\newblock In \emph{ACL}, 2023. \url{https://aclanthology.org/2023.acl-long.697/}.
+
+\bibitem{fedus2022stmoe}
+William Fedus et al.
+\newblock ST-MoE: Designing stable and transferable sparse expert models.
+\newblock \emph{arXiv preprint arXiv:2202.08906}, 2022.
+\url{https://arxiv.org/abs/2202.08906}.
+
+\bibitem{wang2021udg}
+Zirui Wang, Adams Wei Yu, Orhan Firat, and Yuan Cao.
+\newblock Towards zero-label language learning.
+\newblock \emph{arXiv preprint arXiv:2109.09193}, 2021.
+\url{https://arxiv.org/abs/2109.09193}.
+
+\bibitem{sun2021ernie}
+Yu Sun et al.
+\newblock ERNIE 3.0: Large-scale knowledge enhanced pre-training for language understanding and generation.
+\newblock \emph{arXiv preprint arXiv:2107.02137}, 2021.
+\url{https://arxiv.org/abs/2107.02137}.
+
+\bibitem{gao2021tnlr}
+Jianfeng Gao and Saurabh Tiwary.
+\newblock Efficiently and effectively scaling up language model pretraining for best language representation model on GLUE and SuperGLUE.
+\newblock Microsoft Research technical report, 2021.
+\url{https://www.microsoft.com/en-us/research/blog/efficiently-and-effectively-scaling-up-language-model-pretraining-for-best-language-representation-model-on-glue-and-superglue/}.
+
+\bibitem{vu2022spot}
+Tu Vu et al.
+\newblock SPoT: Better frozen model adaptation through soft prompt transfer.
+\newblock In \emph{ACL}, 2022.
+\url{https://aclanthology.org/2022.acl-long.346/}.
+
+\bibitem{he2021deberta}
+Pengcheng He et al.
+\newblock DeBERTa: Decoding-enhanced BERT with disentangled attention.
+\newblock In \emph{ICLR}, 2021.
+\url{https://openreview.net/forum?id=XPZIaotutsD}.
+
+\bibitem{raffel2020t5}
+Colin Raffel et al.
+\newblock Exploring the limits of transfer learning with a unified text-to-text transformer.
+\newblock \emph{Journal of Machine Learning Research}, 2020.
+\url{https://jmlr.org/papers/v21/20-074.html}.
+
+\bibitem{liu2019roberta}
+Yinhan Liu et al.
+\newblock RoBERTa: A robustly optimized BERT pretraining approach.
+\newblock \emph{arXiv preprint arXiv:1907.11692}, 2019.
+\url{https://arxiv.org/abs/1907.11692}.
+
+\bibitem{schick2021ipet}
+Timo Schick and Hinrich Schütze.
+\newblock Exploiting cloze questions for few-shot text classification and natural language inference.
+\newblock In \emph{EACL}, 2021.
+\url{https://aclanthology.org/2021.eacl-main.20/}.
+
+\bibitem{brown2020gpt3}
+Tom B. Brown et al.
+\newblock Language models are few-shot learners.
+\newblock In \emph{NeurIPS}, 2020.
+\url{https://papers.nips.cc/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html}.
+
+\bibitem{tam2021adapet}
+David Tam et al.
+\newblock Improving and simplifying pattern exploiting training.
+\newblock In \emph{EMNLP}, 2021.
+\url{https://aclanthology.org/2021.emnlp-main.407/}.
+
+\bibitem{wang2022vega}
+Zirui Wang et al.
+\newblock Toward efficient language model pretraining and downstream adaptation via self-evolution: A case study on SuperGLUE.
+\newblock \emph{arXiv preprint arXiv:2212.01853}, 2022.
+\url{https://arxiv.org/abs/2212.01853}.
+
+\bibitem{laskar2023chatgpt}
+Md Tahmid Rahman Laskar, M. Saiful Bari, Mizanur Rahman, Md Amran Hossen
+Bhuiyan, Shafiq Joty, and Jimmy Xiangji Huang.
+\newblock A systematic study and comprehensive evaluation of ChatGPT on
+benchmark datasets.
+\newblock In \emph{Findings of ACL}, 2023.
+\url{https://aclanthology.org/2023.findings-acl.29/}.
+
+\bibitem{tang2024tinylm}
+Zhenyu Tang et al.
+\newblock Rethinking optimization and architecture for tiny language models.
+\newblock In \emph{ICML}, 2024.
+\url{https://openreview.net/forum?id=mHIEOZtDDF}.
+
+\bibitem{shi2024dept}
+Zhengxiang Shi and Aldo Lipani.
+\newblock DEPT: Decomposed prompt tuning for parameter-efficient fine-tuning.
+\newblock In \emph{ICLR}, 2024.
+\url{https://proceedings.iclr.cc/paper_files/paper/2024/file/e352b765e625934ce86919995e2371aa-Paper-Conference.pdf}.
+
+\bibitem{opencompass2023}
+OpenCompass Contributors.
+\newblock OpenCompass: A universal evaluation platform for foundation models.
+\newblock Technical report, 2023.
+\url{https://github.com/open-compass/opencompass}.
+
+\bibitem{bigscience2022bloom}
+BigScience Workshop.
+\newblock BLOOM: A 176B-parameter open-access multilingual language model.
+\newblock \emph{arXiv preprint arXiv:2211.05100}, 2022.
+\url{https://arxiv.org/abs/2211.05100}.
+The associated one-shot evaluation artifacts are available at
+\url{https://huggingface.co/datasets/bigscience/evaluation-results/discussions/5/files}.
+
+\bibitem{anempirical2025merging}
+An empirical survey of model merging algorithms.
+\newblock In \emph{PACLIC}, 2025.
+\url{https://aclanthology.org/anthology-files/pdf/paclic/2025.paclic-1.24.pdf}.
+
+\bibitem{marelli2014sick}
+Stefano Marelli et al.
+\newblock A SICK cure for the evaluation of compositional distributional semantic models.
+\newblock In \emph{LREC}, 2014.
+\url{https://aclanthology.org/L14-1314/}.
+
+\bibitem{kalouli2023sick}
+Aikaterini-Lida Kalouli, Hai Hu, Alexander F. Webb, Lawrence S. Moss, and
+Valeria de Paiva.
+\newblock Curing the SICK and Other NLI Maladies.
+\newblock \emph{Computational Linguistics}, 49(1), 2023.
+\url{https://aclanthology.org/2023.cl-1.5/}.
+
+\bibitem{sharma2023nli}
+Saurabh Sharma et al.
+\newblock Evaluating deep learning techniques for natural language inference.
+\newblock \emph{Applied Sciences}, 13(4), 2023.
+\url{https://www.mdpi.com/2076-3417/13/4/2577}.
+
+\bibitem{conneau2018xnli}
+Alexis Conneau et al.
+\newblock XNLI: Evaluating cross-lingual sentence representations.
+\newblock In \emph{EMNLP}, 2018.
+\url{https://aclanthology.org/D18-1269/}.
+
+\bibitem{conneau2020xlmr}
+Alexis Conneau et al.
+\newblock Unsupervised cross-lingual representation learning at scale.
+\newblock In \emph{ACL}, 2020.
+\url{https://aclanthology.org/2020.acl-main.747/}.
+
+\bibitem{qi2022pct}
+Kunxun Qi, Hai Wan, Jianfeng Du, and Haolan Chen.
+\newblock Enhancing cross-lingual natural language inference by prompt-learning
+from cross-lingual templates.
+\newblock In \emph{ACL}, 2022.
+\url{https://aclanthology.org/2022.acl-long.134/}.
+
+\bibitem{artetxe2023mt}
+Mikel Artetxe, Vedanuj Goswami, Shruti Bhosale, Angela Fan, and Luke
+Zettlemoyer.
+\newblock Revisiting machine translation for cross-lingual classification.
+\newblock In \emph{EMNLP}, 2023.
+\url{https://aclanthology.org/2023.emnlp-main.399/}.
+
+\bibitem{borchert2025flare}
+Philipp Borchert, Ivan Vuli\'c, Marie-Francine Moens, and Jochen De Weerdt.
+\newblock Language fusion for parameter-efficient cross-lingual transfer.
+\newblock In \emph{ICLR}, 2025.
+\url{https://openreview.net/forum?id=2e6cb95570c91a50feba8b5e6469b6835de7e576}.
+
+\bibitem{xue2021mt5}
+Linting Xue et al.
+\newblock mT5: A massively multilingual pre-trained text-to-text transformer.
+\newblock In \emph{NAACL}, 2021.
+\url{https://aclanthology.org/2021.naacl-main.41/}.
+
+\bibitem{fialho2020}
+Pedro Fialho, Lu\'isa Coheur, and Paulo Quaresma.
+\newblock Benchmarking natural language inference and semantic textual similarity for Portuguese.
+\newblock \emph{Information}, 11(10), 2020.
+\url{https://doi.org/10.3390/info11100484}.
+
+\bibitem{fonseca2016assin}
+Erick Rocha Fonseca, Leandro Borges dos Santos, Marcelo Criscuolo, and
+Sandra Maria Alu\'isio.
+\newblock Overview of the evaluation of semantic similarity and textual inference.
+\newblock \emph{Linguam\'atica}, 8(2), 2016.
+\url{https://www.linguamatica.com/index.php/linguamatica/article/view/v8n2-1}.
+
+\bibitem{souza2020bertimbau}
+F\'abio Souza, Rodrigo Nogueira, and Roberto Lotufo.
+\newblock BERTimbau: Pretrained BERT models for Brazilian Portuguese.
+\newblock In \emph{BRACIS}, 2020.
+\url{https://doi.org/10.1007/978-3-030-61377-8_28}.
+
+\bibitem{rodrigues2020assin2}
+Rodrigues et al.
+\newblock ASSIN2 shared-task systems for Portuguese textual entailment.
+\newblock In \emph{ASSIN2 shared task}, 2020.
+\url{https://sites.google.com/view/assin2}.
+
+\bibitem{oliveira2026bertomelo}
+Renn\^e Ruan Alves Oliveira, Gustavo Cordeiro Galv\~ao Van Erven, and Lu\'is
+Paulo Faina Garcia.
+\newblock BERTomelo: Your Portuguese encoder best friend.
+\newblock \emph{arXiv preprint arXiv:2606.28999}, 2026.
+\url{https://arxiv.org/abs/2606.28999}.
+
+\bibitem{silva2026norberto}
+Enzo S. N. Silva et al.
+\newblock NorBERTo: A ModernBERT model trained for Portuguese with 331 billion tokens corpus.
+\newblock \emph{arXiv preprint arXiv:2605.00086}, 2026.
+\url{https://arxiv.org/abs/2605.00086}.
+
+\bibitem{bencke2024inferbr}
+Luciana Bencke, Francielle V. Pereira, Moniele K. Santos, and Viviane P. Moreira.
+\newblock InferBR: A natural language inference dataset in Portuguese.
+\newblock In \emph{LREC-COLING}, 2024.
+\url{https://aclanthology.org/2024.lrec-main.793/}.
+
+\end{thebibliography}
+
+\end{document}

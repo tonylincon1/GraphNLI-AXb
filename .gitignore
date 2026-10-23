@@ -2,6 +2,14 @@
 data/
 runs/
 
+# Compact Wiktionary caches used by the reproducible Portuguese/SICK runs.
+!data/
+data/*
+!data/cache/
+data/cache/*
+!data/cache/wiktionary_entries_pt.jsonl
+!data/cache/wiktionary_entries_sick_train_en.jsonl
+
 # Python and notebook runtime files.
 __pycache__/
 *.py[cod]

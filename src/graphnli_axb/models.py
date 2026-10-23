@@ -8,7 +8,13 @@ import torch.nn.functional as F
 from transformers import AutoModel
 
 from .graph import LOGIC_NODE_TYPE_IDS, NODE_TYPES, NODE_TYPE_TO_ID, RELATIONS
-from .logicpath import LOGICPATH_NODE_TYPES, LOGICPATH_RELATIONS, TRANSFORMATIONS
+from .logicpath import (
+    LOGICPATH_NODE_TYPES,
+    LOGICPATH_RELATIONS,
+    LOGICPATH_V2_NODE_TYPES,
+    LOGICPATH_V2_RELATIONS,
+    TRANSFORMATIONS,
+)
 from .proof_graph import (
     PROOF_NODE_TYPES,
     PROOF_RELATIONS,
@@ -1490,12 +1496,12 @@ class PIIGV6Classifier(PIIGV4Classifier):
 
 
 class LogicPathGraphAttentionLayer(nn.Module):
-    def __init__(self, hidden: int, dropout: float):
+    def __init__(self, hidden: int, dropout: float, relation_count: int = len(LOGICPATH_RELATIONS)):
         super().__init__()
         self.query = nn.Linear(hidden, hidden, bias=False)
         self.key = nn.Linear(hidden, hidden, bias=False)
         self.value = nn.Linear(hidden, hidden, bias=False)
-        self.relation_bias = nn.Embedding(len(LOGICPATH_RELATIONS), 1)
+        self.relation_bias = nn.Embedding(relation_count, 1)
         self.dropout = nn.Dropout(dropout)
         self.norm = nn.LayerNorm(hidden)
 
@@ -1521,16 +1527,18 @@ class LogicPathGraphAttentionLayer(nn.Module):
 class LogicPathV1Classifier(PairClassifier):
     """Transformer plus a dynamic graph of premise-to-hypothesis transformations."""
 
-    def __init__(self, model_name: str, dropout: float, num_labels: int = 3, graph_layers: int = 2, aux_weight: float = 0.15):
+    def __init__(self, model_name: str, dropout: float, num_labels: int = 3, graph_layers: int = 2, aux_weight: float = 0.15, node_types=None, relations=None):
         super().__init__(model_name, dropout, num_labels)
         hidden = self.encoder.config.hidden_size
         self.aux_weight = aux_weight
+        self.logicpath_node_types = node_types or LOGICPATH_NODE_TYPES
+        self.logicpath_relations = relations or LOGICPATH_RELATIONS
         input_embedding_dim = getattr(self.encoder.get_input_embeddings(), "embedding_dim", hidden)
         self.logicpath_input_projection = (
             nn.Identity() if input_embedding_dim == hidden else nn.Linear(input_embedding_dim, hidden, bias=False)
         )
-        self.logicpath_type_embedding = nn.Embedding(len(LOGICPATH_NODE_TYPES), hidden)
-        self.logicpath_layers = nn.ModuleList([LogicPathGraphAttentionLayer(hidden, dropout) for _ in range(graph_layers)])
+        self.logicpath_type_embedding = nn.Embedding(len(self.logicpath_node_types), hidden)
+        self.logicpath_layers = nn.ModuleList([LogicPathGraphAttentionLayer(hidden, dropout, relation_count=len(self.logicpath_relations)) for _ in range(graph_layers)])
         self.logicpath_transform_head = nn.Sequential(
             nn.LayerNorm(hidden),
             nn.Linear(hidden, hidden // 2),
@@ -1604,6 +1612,21 @@ class LogicPathV1Classifier(PairClassifier):
         )
 
 
+class LogicPathV2Classifier(LogicPathV1Classifier):
+    """LogicPath v1 augmented with pair-conditioned Wiktionary evidence nodes."""
+
+    def __init__(self, model_name: str, dropout: float, num_labels: int = 3, graph_layers: int = 2, aux_weight: float = 0.15):
+        super().__init__(
+            model_name,
+            dropout,
+            num_labels=num_labels,
+            graph_layers=graph_layers,
+            aux_weight=aux_weight,
+            node_types=LOGICPATH_V2_NODE_TYPES,
+            relations=LOGICPATH_V2_RELATIONS,
+        )
+
+
 def build_model(variant: str, model_name: str, dropout: float, graph_layers: int, aux_weight: float) -> nn.Module:
     if variant == "pair_cls":
         return PairClassifier(model_name, dropout)
@@ -1651,4 +1674,6 @@ def build_model(variant: str, model_name: str, dropout: float, graph_layers: int
         return PIIGV6Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     if variant == "logicpath_v1":
         return LogicPathV1Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
+    if variant == "logicpath_v2":
+        return LogicPathV2Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     raise ValueError(f"Unknown model variant: {variant}")
