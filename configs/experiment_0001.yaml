@@ -37,7 +37,7 @@ training:
 tuning:
   trials: 10
   seed: 42
-  epochs: 3
+  epochs: 5
   selection_metric: nli3/macro_f1
   search_space:
     lr: {type: float, low: 0.000003, high: 0.00003, log: true}
@@ -78,15 +78,20 @@ pipelines:
     enabled: true
     batch_size: 64
     model_names: [neuralmind/bert-base-portuguese-cased]
-    variants: [pair_cls, piig_v4, logicpath_v2]
+    variants: [pair_cls, piig_v4, piig_pt_lkb_v1, logicpath_v2, logicpath_pt_lkb_v1]
     training:
-      wiktionary_cache: data/cache/wiktionary_pt.jsonl
+      wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+      pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
     train:
       datasets:
         - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_train.jsonl, split: train}
+        - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: train}
+        - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: train}
     validation:
       datasets:
         - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_dev.jsonl, split: dev}
+        - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: dev}
+        - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: dev}
     test:
       - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: test}
       - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: test}

@@ -222,6 +222,7 @@ class NLIGraphDataset(Dataset):
         max_proof_len: int = 32,
         include_logicpath: bool = False,
         logicpath_version: str = "v1",
+        logicpath_lexicon: str = "Wiktionary",
         max_logicpath_nodes: int = 24,
         max_logicpath_len: int = 24,
     ):
@@ -241,6 +242,7 @@ class NLIGraphDataset(Dataset):
         self.max_proof_len = max_proof_len
         self.include_logicpath = include_logicpath
         self.logicpath_version = logicpath_version
+        self.logicpath_lexicon = logicpath_lexicon
         self.max_logicpath_nodes = max_logicpath_nodes
         self.max_logicpath_len = max_logicpath_len
 
@@ -410,6 +412,7 @@ class NLIGraphDataset(Dataset):
                     self.wiktionary_cache,
                     max_nodes=self.max_logicpath_nodes,
                     max_wiktionary_entries=self.max_wiktionary_entries,
+                    lexicon_name=self.logicpath_lexicon,
                 )
             else:
                 logicpath = build_logicpath_graph(

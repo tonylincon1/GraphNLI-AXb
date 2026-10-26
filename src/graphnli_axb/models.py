@@ -1495,6 +1495,10 @@ class PIIGV6Classifier(PIIGV4Classifier):
         )
 
 
+class PIIGPTLKBV1Classifier(PIIGV4Classifier):
+    """PIIG v4 using typed Portuguese PT-LexicalSemantics relations."""
+
+
 class LogicPathGraphAttentionLayer(nn.Module):
     def __init__(self, hidden: int, dropout: float, relation_count: int = len(LOGICPATH_RELATIONS)):
         super().__init__()
@@ -1627,6 +1631,10 @@ class LogicPathV2Classifier(LogicPathV1Classifier):
         )
 
 
+class LogicPathPTLKBV1Classifier(LogicPathV2Classifier):
+    """LogicPath v2 using typed Portuguese PT-LexicalSemantics evidence."""
+
+
 def build_model(variant: str, model_name: str, dropout: float, graph_layers: int, aux_weight: float) -> nn.Module:
     if variant == "pair_cls":
         return PairClassifier(model_name, dropout)
@@ -1672,8 +1680,12 @@ def build_model(variant: str, model_name: str, dropout: float, graph_layers: int
         return PIIGV5Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     if variant == "piig_v6":
         return PIIGV6Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
+    if variant == "piig_pt_lkb_v1":
+        return PIIGPTLKBV1Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     if variant == "logicpath_v1":
         return LogicPathV1Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     if variant == "logicpath_v2":
         return LogicPathV2Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
+    if variant == "logicpath_pt_lkb_v1":
+        return LogicPathPTLKBV1Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     raise ValueError(f"Unknown model variant: {variant}")

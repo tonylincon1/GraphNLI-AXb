@@ -18,7 +18,7 @@ from .graph import (
     simple_tokens,
     wordnet_relation,
 )
-from .wiktionary import build_wiktionary_spec
+from .wiktionary import build_wiktionary_spec, entry_summary
 
 
 LOGICPATH_NODE_TYPES = [
@@ -135,6 +135,7 @@ def _base_logicpath_graph(
     relation_ids: dict[str, int],
     wiktionary_cache: dict | None = None,
     max_wiktionary_entries: int = 0,
+    lexicon_name: str = "Wiktionary",
 ) -> LogicPathGraphSpec:
     """Build a pair-conditioned transformation graph, optionally with lexical evidence."""
     premise_units = _unit_tokens(sentence1)
@@ -175,13 +176,14 @@ def _base_logicpath_graph(
             if len(texts) + 2 > max_nodes:
                 break
             term = entry.get("matched_term") or entry.get("term") or "term"
-            sense = (entry.get("senses") or [{}])[0]
-            gloss = sense.get("gloss") or ""
             entry_index = len(texts)
-            texts.append(f"wiktionary entry: {term}")
+            texts.append(f"{lexicon_name} entry: {term}")
             types.append("wiktionary_entry")
             gloss_index = len(texts)
-            texts.append(f"wiktionary gloss: {gloss or term}")
+            summary = entry_summary(entry)
+            if lexicon_name != "Wiktionary" and summary.startswith("PT-LKB entry:"):
+                summary = summary.replace("PT-LKB entry:", f"{lexicon_name} entry:", 1)
+            texts.append(summary)
             types.append("wiktionary_gloss")
             wiktionary_entries.append((term, entry_index, gloss_index))
 
@@ -271,6 +273,7 @@ def build_logicpath_v2_graph(
     wiktionary_cache: dict,
     max_nodes: int = 32,
     max_wiktionary_entries: int = 2,
+    lexicon_name: str = "Wiktionary",
 ) -> LogicPathGraphSpec:
     return _base_logicpath_graph(
         sentence1,
@@ -280,4 +283,5 @@ def build_logicpath_v2_graph(
         LOGICPATH_V2_REL_TO_ID,
         wiktionary_cache=wiktionary_cache,
         max_wiktionary_entries=max_wiktionary_entries,
+        lexicon_name=lexicon_name,
     )

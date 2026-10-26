@@ -16,6 +16,18 @@ WIKTIONARY_RELATIONS = [
     "wiktionary_antonym",
     "wiktionary_hypernym",
     "wiktionary_hyponym",
+    "wiktionary_part",
+    "wiktionary_whole",
+    "wiktionary_member",
+    "wiktionary_group",
+    "wiktionary_origin",
+    "wiktionary_purpose",
+    "wiktionary_causes",
+    "wiktionary_describes",
+    "wiktionary_about",
+    "wiktionary_similar_property",
+    "wiktionary_used_with",
+    "wiktionary_property_part",
 ]
 
 # Unicode-aware lexical candidates so Portuguese and other XNLI languages keep
@@ -134,6 +146,12 @@ def _sense_values(entry: dict, key: str) -> set[str]:
 def relation_between(left_term: str, left_entry: dict, right_term: str, right_entry: dict) -> str | None:
     """Find explicit cached lexical evidence, never infer a relation from a label."""
     left_key, right_key = normalize_term(left_term), normalize_term(right_term)
+    if left_entry.get("source") == "pt_lexical_semantics" or right_entry.get("source") == "pt_lexical_semantics":
+        for sense in left_entry.get("senses") or []:
+            for relation in sense.get("relations") or []:
+                if normalize_term(str(relation.get("term", ""))) == right_key:
+                    return str(relation.get("relation"))
+        return None
     if right_key in _sense_values(left_entry, "synonyms") or left_key in _sense_values(right_entry, "synonyms"):
         return "synonym"
     if right_key in _sense_values(left_entry, "antonyms") or left_key in _sense_values(right_entry, "antonyms"):
@@ -153,7 +171,14 @@ def entry_summary(entry: dict) -> str:
     sense = senses[0]
     pos = sense.get("pos") or ""
     gloss = sense.get("gloss") or ""
-    return " ".join(piece for piece in ["wiktionary entry:", str(term), str(pos), str(gloss)] if piece).strip()
+    if entry.get("source") == "pt_lexical_semantics":
+        relation_text = "; ".join(
+            f"{item.get('relation', 'relation')} {item.get('term', '')} resources={item.get('resources', 0)}"
+            for item in (sense.get("relations") or [])[:3]
+        )
+        gloss = f"{gloss}; {relation_text}" if relation_text else gloss
+    prefix = "PT-LKB entry:" if entry.get("source") == "pt_lexical_semantics" else "wiktionary entry:"
+    return " ".join(piece for piece in [prefix, str(term), str(pos), str(gloss)] if piece).strip()
 
 
 def build_wiktionary_spec(

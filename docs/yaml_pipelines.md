@@ -54,6 +54,33 @@ The Portuguese paths in the example YAML are deliberately explicit. Put the
 official splits at those paths, or change the paths without changing the
 runner.
 
+### PT-LKB variant
+
+`piig_pt_lkb_v1` keeps the PIIG proof graph and Transformer cross-attention,
+but uses typed relations from PT-LexicalSemantics instead of the Portuguese
+Wiktionary cache. The cache preserves relation type, number of supporting
+resources, and the BERT/GPT lexical scores. Build a cache filtered by the
+InferBR training split with:
+
+```bash
+poetry run python scripts/build_pt_lkb_cache.py \
+  --input data/raw/pt_lexical_semantics/triplos_pesados_norm.tsv.zip \
+  --manifests data/raw/portuguese/inferbr_train.jsonl \
+  --out data/cache/pt_lkb_relations.jsonl \
+  --max-terms 8 \
+  --min-resources 1
+```
+
+The Portuguese pipeline includes this variant alongside `piig_v4`, allowing
+the effect of the lexical resource to be measured without changing the
+logical evidence graph.
+
+`logicpath_pt_lkb_v1` provides the analogous controlled comparison for
+LogicPath. It keeps the transformation graph of `logicpath_v2` and replaces
+its Wiktionary evidence nodes with PT-LKB evidence nodes. Use it alongside
+`logicpath_v2` to compare Wiktionary and PT-LexicalSemantics with the same
+encoder and auxiliary objectives.
+
 To create the manifests from the available dataset mirrors, run:
 
 ```bash
@@ -114,7 +141,9 @@ Portuguese and the other Wiktionary editions.
 Tuning happens independently for every `model_name` and architecture
 `variant`. The default is 10 trials using a three-epoch tuning run and the
 validation `nli3/macro_f1`. The best hyperparameters are then reused for all
-final seeds (10 by default in the example). Set `tuning.trials` and
+final seeds (10 by default in the example). Each tuning directory also has a
+persistent `optuna.db` SQLite study, so an interrupted tuning run continues
+with the remaining trials instead of restarting from trial 0. Set `tuning.trials` and
 `tuning.epochs` to change the cost, or replace `tuning.search_space` to tune
 other parameters.
 
@@ -125,6 +154,7 @@ runs/experiment_001/
   config.yaml
   english/
     tuning/roberta-base/pair_cls/study.json
+    tuning/roberta-base/pair_cls/optuna.db
     roberta-base/pair_cls/seed_42/result.json
     summary.json
   english_multilingual/

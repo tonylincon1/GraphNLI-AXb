@@ -72,7 +72,7 @@ def move_batch(batch: dict, device: torch.device) -> dict:
     return {key: value.to(device) if torch.is_tensor(value) else value for key, value in batch.items()}
 
 
-def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False, piig_version: str = "v1", include_logicpath: bool = False, logicpath_version: str = "v1") -> DataLoader:
+def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False, piig_version: str = "v1", include_logicpath: bool = False, logicpath_version: str = "v1", logicpath_lexicon: str = "Wiktionary") -> DataLoader:
     wikidata_cache_path = Path(args.wikidata_cache) if args.wikidata_cache else None
     if wikidata_cache_path is not None and not wikidata_cache_path.is_absolute():
         wikidata_cache_path = project_root() / wikidata_cache_path
@@ -96,6 +96,7 @@ def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False
         max_proof_len=args.max_proof_len,
         include_logicpath=include_logicpath,
         logicpath_version=logicpath_version,
+        logicpath_lexicon=logicpath_lexicon,
         max_logicpath_nodes=args.max_logicpath_nodes,
         max_logicpath_len=args.max_logicpath_len,
     )
@@ -527,13 +528,18 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
     set_seed(seed)
     device = resolve_device(args.device)
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
-    include_piig = variant in {"piig_v1", "piig_v2", "piig_v3", "piig_v4", "piig_v5", "piig_v6"}
-    include_logicpath = variant in {"logicpath_v1", "logicpath_v2"}
-    logicpath_version = variant.removeprefix("logicpath_") if include_logicpath else "v1"
-    piig_version = variant.removeprefix("piig_") if include_piig else "v1"
-    train_loader = make_loader(train_rows, tokenizer, args, shuffle=True, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version)
-    val_loader = make_loader(val_rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version)
-    eval_loaders = {name: make_loader(rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version) for name, rows in eval_sets.items()}
+    include_piig = variant in {"piig_v1", "piig_v2", "piig_v3", "piig_v4", "piig_v5", "piig_v6", "piig_pt_lkb_v1"}
+    include_logicpath = variant in {"logicpath_v1", "logicpath_v2", "logicpath_pt_lkb_v1"}
+    logicpath_version = "v2" if variant == "logicpath_pt_lkb_v1" else (variant.removeprefix("logicpath_") if include_logicpath else "v1")
+    logicpath_lexicon = "PT-LKB" if variant == "logicpath_pt_lkb_v1" else "Wiktionary"
+    piig_version = "v4" if variant == "piig_pt_lkb_v1" else (variant.removeprefix("piig_") if include_piig else "v1")
+    original_wiktionary_cache = args.wiktionary_cache
+    if variant in {"piig_pt_lkb_v1", "logicpath_pt_lkb_v1"} and getattr(args, "pt_lkb_cache", None):
+        args.wiktionary_cache = args.pt_lkb_cache
+    train_loader = make_loader(train_rows, tokenizer, args, shuffle=True, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon)
+    val_loader = make_loader(val_rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon)
+    eval_loaders = {name: make_loader(rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon) for name, rows in eval_sets.items()}
+    args.wiktionary_cache = original_wiktionary_cache
 
     model = build_model(
         variant=variant,
@@ -681,7 +687,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Existing experiment directory to continue. Completed model/seed results are skipped.",
     )
     parser.add_argument("--model-name", default="xlm-roberta-base")
-    parser.add_argument("--models", default="pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4,piig_v6,logicpath_v1,logicpath_v2")
+    parser.add_argument("--models", default="pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4,piig_v6,piig_pt_lkb_v1,logicpath_v1,logicpath_v2,logicpath_pt_lkb_v1")
     parser.add_argument("--seeds", default="42")
     parser.add_argument("--train-languages", default="en", help="Used only by the legacy XNLI-dev training protocol.")
     parser.add_argument(
@@ -712,6 +718,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-logicpath-len", type=int, default=24)
     parser.add_argument("--wikidata-cache", default="data/cache/wikidata_entities.jsonl")
     parser.add_argument("--wiktionary-cache", default="data/cache/wiktionary_entries.jsonl")
+    parser.add_argument("--pt-lkb-cache", default="data/cache/pt_lkb_relations.jsonl")
     parser.add_argument("--max-wiktionary-entries", type=int, default=2)
     parser.add_argument(
         "--save-piig-explanations",

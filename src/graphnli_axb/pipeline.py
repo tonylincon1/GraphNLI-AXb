@@ -156,7 +156,15 @@ def tune_variant(model_name: str, variant: str, train_rows, val_rows, base_confi
     tune_config["epochs"] = int(tuning.get("epochs", tune_config.get("epochs", 3)))
     tune_config["save_piig_explanations"] = False
     metric = tuning.get("selection_metric", tune_config.get("selection_metric", "nli3/macro_f1"))
-    study = optuna.create_study(direction="maximize", study_name=f"{variant}-{model_name.replace('/', '_')}")
+    work_dir.mkdir(parents=True, exist_ok=True)
+    storage_path = (work_dir / "optuna.db").resolve()
+    study = optuna.create_study(
+        direction="maximize",
+        study_name="study",
+        storage=f"sqlite:///{storage_path}",
+        load_if_exists=True,
+        sampler=optuna.samplers.TPESampler(seed=seed),
+    )
 
     def objective(trial: optuna.Trial) -> float:
         params = _suggest(trial, tuning.get("search_space", {}), tune_config)
@@ -167,9 +175,14 @@ def tune_variant(model_name: str, variant: str, train_rows, val_rows, base_confi
         trial.set_user_attr("best_epoch", result["best_epoch"])
         return value if math.isfinite(value) else -1.0
 
-    study.optimize(objective, n_trials=trials)
+    completed_trials = sum(trial.state == optuna.trial.TrialState.COMPLETE for trial in study.trials)
+    remaining_trials = max(0, trials - completed_trials)
+    if remaining_trials:
+        study.optimize(objective, n_trials=remaining_trials)
     return {
         "model_name": model_name, "variant": variant, "trials": trials, "seed": seed,
+        "completed_trials": sum(trial.state == optuna.trial.TrialState.COMPLETE for trial in study.trials),
+        "storage": str(storage_path),
         "selection_metric": metric, "best_value": study.best_value,
         "best_params": study.best_params,
         "trials_table": [dict(t.params, value=t.value, state=t.state.name) for t in study.trials],
