@@ -20,3 +20,6 @@ __pycache__/
 # Poetry environments and local configuration.
 .venv/
 poetry.toml
+
+
+docs/remote_training_guide.txt
