@@ -86,13 +86,13 @@ pipelines:
     train:
       datasets:
         - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_train.jsonl, split: train}
-        - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: train}
-        - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: train}
+        - {dataset: manifest, name: assin, path: data/raw/portuguese/assin_train.jsonl, split: train}
+        - {dataset: manifest, name: assin2, path: data/raw/portuguese/assin2_train.jsonl, split: train}
     validation:
       datasets:
         - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_dev.jsonl, split: dev}
-        - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: dev}
-        - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: dev}
+        - {dataset: manifest, name: assin, path: data/raw/portuguese/assin_dev.jsonl, split: dev}
+        - {dataset: manifest, name: assin2, path: data/raw/portuguese/assin2_dev.jsonl, split: dev}
     test:
       - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: test}
       - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: test}

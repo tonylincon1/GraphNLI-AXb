@@ -6,12 +6,12 @@
   "completed_trials": 5,
   "storage": "/home/antoniosrn/GraphNLI-AXb/runs/experiment_0001/portuguese/tuning/neuralmind__bert-base-portuguese-cased/pair_cls/trials/optuna.db",
   "selection_metric": "nli3/macro_f1",
-  "best_value": 0.7274241934406414,
+  "best_value": 0.9023385628358557,
   "best_params": {
-    "lr": 2.0396887264773367e-05,
-    "dropout": 0.10308477766956904,
-    "weight_decay": 0.0003511356313970409,
-    "warmup_ratio": 0.027510676478015073
+    "lr": 1.1973917635685022e-05,
+    "dropout": 0.22701814444901136,
+    "weight_decay": 0.00011527987128232407,
+    "warmup_ratio": 0.14548647782429913
   },
   "trials_table": [
     {
@@ -19,23 +19,7 @@
       "dropout": 0.28767857660247903,
       "weight_decay": 0.015702970884055395,
       "warmup_ratio": 0.08979877262955549,
-      "value": null,
-      "state": "FAIL"
-    },
-    {
-      "lr": 7.106591851092237e-06,
-      "dropout": 0.28767857660247903,
-      "weight_decay": 0.015702970884055395,
-      "warmup_ratio": 0.08979877262955549,
-      "value": null,
-      "state": "FAIL"
-    },
-    {
-      "lr": 7.106591851092237e-06,
-      "dropout": 0.28767857660247903,
-      "weight_decay": 0.015702970884055395,
-      "warmup_ratio": 0.08979877262955549,
-      "value": 0.7210572709187167,
+      "value": 0.8856585175425756,
       "state": "COMPLETE"
     },
     {
@@ -43,7 +27,7 @@
       "dropout": 0.08899863008405066,
       "weight_decay": 0.00014936568554617635,
       "warmup_ratio": 0.12992642186624026,
-      "value": 0.7010830638509037,
+      "value": 0.8645376882952268,
       "state": "COMPLETE"
     },
     {
@@ -51,7 +35,7 @@
       "dropout": 0.22701814444901136,
       "weight_decay": 0.00011527987128232407,
       "warmup_ratio": 0.14548647782429913,
-      "value": 0.7247188752772805,
+      "value": 0.9023385628358557,
       "state": "COMPLETE"
     },
     {
@@ -59,7 +43,7 @@
       "dropout": 0.10308477766956904,
       "weight_decay": 0.0003511356313970409,
       "warmup_ratio": 0.027510676478015073,
-      "value": 0.7274241934406414,
+      "value": 0.8953226756462881,
       "state": "COMPLETE"
     },
     {
@@ -67,7 +51,7 @@
       "dropout": 0.18118910790805948,
       "weight_decay": 0.0019762189340280074,
       "warmup_ratio": 0.043684371029706286,
-      "value": 0.7130439577666742,
+      "value": 0.8773816720126121,
       "state": "COMPLETE"
     }
   ]
