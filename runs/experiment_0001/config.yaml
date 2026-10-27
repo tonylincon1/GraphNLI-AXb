@@ -1,0 +1,100 @@
+data_dir: data
+output_dir: runs
+
+variants: [pair_cls, piig_v4, logicpath_v2, kbert_injection, kganet_rel_gat, kgnli_dual]
+model_name: roberta-base
+seeds: [1001,1002,1003,1004,1005]
+
+training:
+  epochs: 8
+  batch_size: 4
+  lr: 0.00001
+  weight_decay: 0.01
+  warmup_ratio: 0.06
+  dropout: 0.15
+  max_len: 160
+  max_nodes: 32
+  max_node_len: 8
+  max_wikidata_entities: 8
+  max_wikidata_len: 32
+  max_proof_nodes: 12
+  max_proof_len: 32
+  max_logicpath_nodes: 32
+  max_logicpath_len: 24
+  wikidata_cache: data/cache/wikidata_entities.jsonl
+  wiktionary_cache: data/cache/wiktionary_entries_mnli.jsonl
+  max_wiktionary_entries: 2
+  graph_layers: 2
+  aux_weight: 0.15
+  selection_metric: nli3/macro_f1
+  patience: 2
+  cd_metric: binary/mcc
+  cd_alpha: 0.05
+  num_workers: 0
+  device: mps
+  max_grad_norm: 1.0
+
+tuning:
+  trials: 5
+  seed: 42
+  epochs: 5
+  selection_metric: nli3/macro_f1
+  search_space:
+    lr: {type: float, low: 0.000003, high: 0.00003, log: true}
+    dropout: {type: float, low: 0.05, high: 0.30}
+    weight_decay: {type: float, low: 0.0001, high: 0.10, log: true}
+    warmup_ratio: {type: float, low: 0.0, high: 0.15}
+
+pipelines:
+  english:
+    enabled: false
+    batch_size: 32
+    model_names: [roberta-base]
+    variants: [pair_cls, piig_v4, logicpath_v2, kbert_injection, kganet_rel_gat, kgnli_dual]
+    training:
+      wiktionary_cache: data/cache/wiktionary_entries_sick_train_en.jsonl
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test:
+      - {name: sick_test, dataset: sick, split: test}
+      - {name: xnli_test_en, dataset: xnli, split: test, languages: [en]}
+      - {name: axb, dataset: axb, split: test}
+    save_explanations: true
+
+  english_multilingual:
+    enabled: false
+    batch_size: 16
+    model_names: [xlm-roberta-base]
+    variants: [pair_cls, piig_v4, logicpath_v2, kbert_injection, kganet_rel_gat, kgnli_dual]
+    training:
+      wiktionary_cache: data/cache/wiktionary_multilingual.jsonl
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test:
+      - {name: xnli_test_all, dataset: xnli, split: test, languages: [all]}
+    save_explanations: true
+
+  portuguese:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [neuralmind/bert-base-portuguese-cased]
+    variants: [pair_cls, piig_v4, piig_pt_lkb_v1, logicpath_v2, logicpath_pt_lkb_v1]
+    training:
+      wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+      pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
+    train:
+      datasets:
+        - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_train.jsonl, split: train}
+        - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: train}
+        - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: train}
+    validation:
+      datasets:
+        - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_dev.jsonl, split: dev}
+        - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: dev}
+        - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: dev}
+    test:
+      - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: test}
+      - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: test}
+      - {name: inferbr_test, dataset: manifest, path: data/raw/portuguese/inferbr_test.jsonl, split: test}
+    save_explanations: true
