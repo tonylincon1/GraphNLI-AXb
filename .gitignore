@@ -1,6 +1,5 @@
 # Local datasets, caches, and experiment artifacts are reproducible downloads.
 data/
-runs/
 
 # Compact Wiktionary caches used by the reproducible Portuguese/SICK runs.
 !data/
