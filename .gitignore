@@ -22,3 +22,6 @@ poetry.toml
 
 
 docs/remote_training_guide.txt
+
+# Attention/explanation artifacts are kept locally and are not versioned.
+runs/**/explanations/
