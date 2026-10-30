@@ -36,6 +36,8 @@ from .logicpath import (
     LOGICPATH_RELATIONS,
     LOGICPATH_V2_NODE_TYPES,
     LOGICPATH_V2_RELATIONS,
+    LOGICPATH_V3_NODE_TYPES,
+    LOGICPATH_V3_RELATIONS,
     TRANSFORMATIONS,
 )
 from .proof_graph import PROOF_NODE_TYPES, PROOF_RELATIONS
@@ -361,8 +363,12 @@ def _logicpath_explanation_record(batch: dict, output, item_index: int) -> dict:
     edge_types = batch["logicpath_edge_types"][item_index, :valid_nodes, :valid_nodes].detach().cpu().numpy()
     attention = output.logicpath_graph_attention[:, item_index, :valid_nodes, :valid_nodes].mean(dim=0).detach().cpu().numpy()
     logicpath_version = batch.get("logicpath_version", ["v1"])[item_index]
-    node_type_names = LOGICPATH_V2_NODE_TYPES if logicpath_version == "v2" else LOGICPATH_NODE_TYPES
-    relation_names = LOGICPATH_V2_RELATIONS if logicpath_version == "v2" else LOGICPATH_RELATIONS
+    if logicpath_version in {"v2", "v3"}:
+        node_type_names = LOGICPATH_V3_NODE_TYPES if logicpath_version == "v3" else LOGICPATH_V2_NODE_TYPES
+        relation_names = LOGICPATH_V3_RELATIONS if logicpath_version == "v3" else LOGICPATH_V2_RELATIONS
+    else:
+        node_type_names = LOGICPATH_NODE_TYPES
+        relation_names = LOGICPATH_RELATIONS
     nodes = [
         {
             "id": index,
@@ -529,8 +535,13 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
     device = resolve_device(args.device)
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     include_piig = variant in {"piig_v1", "piig_v2", "piig_v3", "piig_v4", "piig_v5", "piig_v6", "piig_pt_lkb_v1"}
-    include_logicpath = variant in {"logicpath_v1", "logicpath_v2", "logicpath_pt_lkb_v1"}
-    logicpath_version = "v2" if variant == "logicpath_pt_lkb_v1" else (variant.removeprefix("logicpath_") if include_logicpath else "v1")
+    include_logicpath = variant in {"logicpath_v1", "logicpath_v2", "logicpath_pt_lkb_v1", "graph_rewrite_v1"}
+    if variant == "graph_rewrite_v1":
+        logicpath_version = "v3"
+    elif variant == "logicpath_pt_lkb_v1":
+        logicpath_version = "v2"
+    else:
+        logicpath_version = variant.removeprefix("logicpath_") if include_logicpath else "v1"
     logicpath_lexicon = "PT-LKB" if variant == "logicpath_pt_lkb_v1" else "Wiktionary"
     piig_version = "v4" if variant == "piig_pt_lkb_v1" else (variant.removeprefix("piig_") if include_piig else "v1")
     original_wiktionary_cache = args.wiktionary_cache
@@ -687,7 +698,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Existing experiment directory to continue. Completed model/seed results are skipped.",
     )
     parser.add_argument("--model-name", default="xlm-roberta-base")
-    parser.add_argument("--models", default="pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4,piig_v6,piig_pt_lkb_v1,logicpath_v1,logicpath_v2,logicpath_pt_lkb_v1")
+    parser.add_argument("--models", default="pair_cls,bi_encoder,kbert_injection,kganet_rel_gat,kgnli_dual,dige_v1,dige_v2,dige_v3,dige_v4,dige_v5,dige_v6,dige_v7,dige_v8,dige_v9,piig_v1,piig_v2,piig_v3,piig_v4,piig_v6,piig_pt_lkb_v1,logicpath_v1,logicpath_v2,logicpath_pt_lkb_v1,graph_rewrite_v1")
     parser.add_argument("--seeds", default="42")
     parser.add_argument("--train-languages", default="en", help="Used only by the legacy XNLI-dev training protocol.")
     parser.add_argument(

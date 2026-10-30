@@ -1631,6 +1631,193 @@ class LogicPathV2Classifier(LogicPathV1Classifier):
         )
 
 
+class LogicRewriteLayer(nn.Module):
+    """One differentiable, relation-conditioned graph rewrite step."""
+
+    def __init__(self, hidden: int, relation_count: int, operation_count: int, dropout: float):
+        super().__init__()
+        self.query = nn.Linear(hidden, hidden, bias=False)
+        self.key = nn.Linear(hidden, hidden, bias=False)
+        self.value = nn.Linear(hidden, hidden, bias=False)
+        self.relation_embedding = nn.Embedding(relation_count, hidden)
+        self.relation_bias = nn.Embedding(relation_count, 1)
+        self.pair_projection = nn.Linear(hidden, hidden)
+        self.operation_embedding = nn.Embedding(operation_count, hidden)
+        self.operation_projection = nn.Linear(hidden, hidden)
+        self.dropout = nn.Dropout(dropout)
+        self.norm = nn.LayerNorm(hidden)
+
+    def forward(
+        self,
+        nodes: torch.Tensor,
+        edge_types: torch.Tensor,
+        node_mask: torch.Tensor,
+        pair: torch.Tensor,
+        operation_probs: torch.Tensor,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        q = self.query(nodes)
+        k = self.key(nodes)
+        values = self.value(nodes)
+        scores = torch.matmul(q, k.transpose(1, 2)) / (nodes.size(-1) ** 0.5)
+        scores = scores + self.relation_bias(edge_types).squeeze(-1)
+        visible = (edge_types > 0) & node_mask.unsqueeze(1) & node_mask.unsqueeze(2)
+        scores = scores.masked_fill(~visible, -1e4)
+        attention = torch.softmax(scores, dim=-1)
+
+        relation_messages = values.unsqueeze(1) + self.relation_embedding(edge_types)
+        messages = (attention.unsqueeze(-1) * relation_messages).sum(dim=2)
+        operation_context = torch.matmul(operation_probs, self.operation_embedding.weight)
+        operation_context = self.operation_projection(operation_context).unsqueeze(1)
+        pair_context = self.pair_projection(pair).unsqueeze(1)
+        updated = self.norm(
+            nodes + self.dropout(F.gelu(messages + operation_context + pair_context))
+        )
+        return updated, attention
+
+
+class GraphRewriteV1Classifier(PairClassifier):
+    """Graph Rewrite v1 with a differentiable, pair-conditioned executor.
+
+    Unlike v1/v2, the graph is not only encoded and pooled. Each graph layer
+    predicts a soft distribution over logical transformations, applies the
+    corresponding operation embedding to the graph state, and passes the
+    rewritten state to the next step.
+    """
+
+    def __init__(self, model_name: str, dropout: float, num_labels: int = 3, graph_layers: int = 2, aux_weight: float = 0.15, node_types=None, relations=None):
+        super().__init__(model_name, dropout, num_labels)
+        hidden = self.encoder.config.hidden_size
+        self.aux_weight = aux_weight
+        self.logicpath_node_types = node_types or LOGICPATH_V2_NODE_TYPES
+        self.logicpath_relations = relations or LOGICPATH_V2_RELATIONS
+        input_embedding_dim = getattr(self.encoder.get_input_embeddings(), "embedding_dim", hidden)
+        self.logicpath_input_projection = (
+            nn.Identity() if input_embedding_dim == hidden else nn.Linear(input_embedding_dim, hidden, bias=False)
+        )
+        self.logicpath_type_embedding = nn.Embedding(len(self.logicpath_node_types), hidden)
+        self.rewrite_layers = nn.ModuleList(
+            [
+                LogicRewriteLayer(
+                    hidden,
+                    relation_count=len(self.logicpath_relations),
+                    operation_count=len(TRANSFORMATIONS),
+                    dropout=dropout,
+                )
+                for _ in range(graph_layers)
+            ]
+        )
+        self.operation_head = nn.Sequential(
+            nn.LayerNorm(hidden),
+            nn.Linear(hidden, hidden // 2),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden // 2, len(TRANSFORMATIONS)),
+        )
+        self.inverse_head = nn.Linear(hidden, len(TRANSFORMATIONS))
+        feature_dim = hidden * 5 + len(TRANSFORMATIONS) * 2
+        self.classifier = nn.Sequential(
+            nn.LayerNorm(feature_dim),
+            nn.Linear(feature_dim, hidden),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden, num_labels),
+        )
+
+    @staticmethod
+    def pool(nodes: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+        weights = mask.unsqueeze(-1).float()
+        return (nodes * weights).sum(dim=1) / weights.sum(dim=1).clamp(min=1)
+
+    def logicpath_nodes(self, batch: dict) -> torch.Tensor:
+        embeddings = self.encoder.get_input_embeddings()(batch["logicpath_input_ids"])
+        token_mask = batch["logicpath_attention_mask"].unsqueeze(-1)
+        nodes = (embeddings * token_mask).sum(dim=2) / token_mask.sum(dim=2).clamp(min=1)
+        nodes = self.logicpath_input_projection(nodes)
+        return nodes + self.logicpath_type_embedding(batch["logicpath_type_ids"])
+
+    def forward(self, batch: dict) -> ModelOutput:
+        pair, _ = self.encode_pair(batch)
+        nodes = self.logicpath_nodes(batch)
+        initial_graph = self.pool(nodes, batch["logicpath_mask"])
+        operation_probs = torch.zeros(
+            pair.size(0), len(TRANSFORMATIONS), device=pair.device, dtype=pair.dtype
+        )
+        operation_logits_history = []
+        inverse_logits_history = []
+        graph_attentions = []
+        for layer in self.rewrite_layers:
+            nodes, attention = layer(
+                nodes,
+                batch["logicpath_edge_types"],
+                batch["logicpath_mask"],
+                pair,
+                operation_probs,
+            )
+            state = self.pool(nodes, batch["logicpath_mask"])
+            operation_logits = self.operation_head(state)
+            inverse_logits = self.inverse_head(state)
+            operation_probs = torch.sigmoid(operation_logits)
+            operation_logits_history.append(operation_logits)
+            inverse_logits_history.append(inverse_logits)
+            graph_attentions.append(attention)
+
+        graph = self.pool(nodes, batch["logicpath_mask"])
+        transform_logits = operation_logits_history[-1]
+        inverse_logits = inverse_logits_history[-1]
+        features = torch.cat(
+            [
+                pair,
+                initial_graph,
+                graph,
+                (graph - initial_graph).abs(),
+                pair * graph,
+                torch.sigmoid(transform_logits),
+                torch.sigmoid(inverse_logits),
+            ],
+            dim=-1,
+        )
+        logits = self.classifier(features)
+        transform_targets = batch["logicpath_targets"]
+        inverse_targets = batch["logicpath_inverse_targets"]
+        transform_loss = sum(
+            F.binary_cross_entropy_with_logits(prediction, transform_targets)
+            for prediction in operation_logits_history
+        ) / len(operation_logits_history)
+        inverse_loss = sum(
+            F.binary_cross_entropy_with_logits(prediction, inverse_targets)
+            for prediction in inverse_logits_history
+        ) / len(inverse_logits_history)
+        # Encourage the rewrite trajectory to carry a non-trivial state change
+        # whenever the graph builder found a transformation.
+        active = transform_targets.any(dim=-1).float()
+        state_change = (graph - initial_graph).pow(2).mean(dim=-1)
+        rewrite_change_loss = F.relu(0.01 * active - state_change).mean()
+        aux_loss = (transform_loss + inverse_loss + 0.1 * rewrite_change_loss) * self.aux_weight
+
+        if not bool(batch.get("return_logicpath_attention", False)):
+            return ModelOutput(
+                logits=logits,
+                aux_loss=aux_loss,
+                logicpath_transform_logits=transform_logits,
+            )
+
+        graph_attention = torch.stack(graph_attentions)
+        raw_importance = graph_attention.mean(dim=(0, 3)) + graph_attention.mean(dim=(0, 2))
+        raw_importance = raw_importance * batch["logicpath_mask"].float()
+        importance = raw_importance / raw_importance.sum(dim=-1, keepdim=True).clamp(min=1e-8)
+        return ModelOutput(
+            logits=logits,
+            aux_loss=aux_loss,
+            logicpath_node_importance=importance,
+            logicpath_graph_attention=graph_attention,
+            logicpath_transform_logits=transform_logits,
+        )
+
+
+class GraphRewriteV1WiktionaryClassifier(GraphRewriteV1Classifier):
+    """Graph Rewrite v1 using the Wiktionary-backed initial graph."""
+
+
 class LogicPathPTLKBV1Classifier(LogicPathV2Classifier):
     """LogicPath v2 using typed Portuguese PT-LexicalSemantics evidence."""
 
@@ -1686,6 +1873,8 @@ def build_model(variant: str, model_name: str, dropout: float, graph_layers: int
         return LogicPathV1Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     if variant == "logicpath_v2":
         return LogicPathV2Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
+    if variant == "graph_rewrite_v1":
+        return GraphRewriteV1WiktionaryClassifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     if variant == "logicpath_pt_lkb_v1":
         return LogicPathPTLKBV1Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     raise ValueError(f"Unknown model variant: {variant}")

@@ -285,3 +285,31 @@ def build_logicpath_v2_graph(
         max_wiktionary_entries=max_wiktionary_entries,
         lexicon_name=lexicon_name,
     )
+
+
+def build_logicpath_v3_graph(
+    sentence1: str,
+    sentence2: str,
+    wiktionary_cache: dict,
+    max_nodes: int = 32,
+    max_wiktionary_entries: int = 2,
+    lexicon_name: str = "Wiktionary",
+) -> LogicPathGraphSpec:
+    """Build the v3 initial graph used by the differentiable rewrite executor.
+
+    The graph vocabulary remains compatible with v2. The architectural change
+    is in the model: relation-aware rewrite layers update node states over
+    several steps instead of only pooling a static GAT representation.
+    """
+    return build_logicpath_v2_graph(
+        sentence1,
+        sentence2,
+        wiktionary_cache,
+        max_nodes=max_nodes,
+        max_wiktionary_entries=max_wiktionary_entries,
+        lexicon_name=lexicon_name,
+    )
+
+
+LOGICPATH_V3_NODE_TYPES = LOGICPATH_V2_NODE_TYPES
+LOGICPATH_V3_RELATIONS = LOGICPATH_V2_RELATIONS

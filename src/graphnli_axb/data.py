@@ -12,7 +12,7 @@ from torch.utils.data import Dataset
 
 from .graph import LOGIC_NODE_TYPE_IDS, RELATIONS, build_graph
 from .labels import LABEL_TO_ID_3, LABEL_TO_ID_BINARY, normalize_label
-from .logicpath import build_logicpath_graph, build_logicpath_v2_graph
+from .logicpath import build_logicpath_graph, build_logicpath_v2_graph, build_logicpath_v3_graph
 from .proof_graph import PROOF_NODE_TYPES, build_proof_graph
 from .wikidata import WIKIDATA_RELATIONS, build_wikidata_spec, load_wikidata_cache
 from .wiktionary import build_wiktionary_spec, load_wiktionary_cache
@@ -407,6 +407,15 @@ class NLIGraphDataset(Dataset):
         if self.include_logicpath:
             if self.logicpath_version == "v2":
                 logicpath = build_logicpath_v2_graph(
+                    row.sentence1,
+                    row.sentence2,
+                    self.wiktionary_cache,
+                    max_nodes=self.max_logicpath_nodes,
+                    max_wiktionary_entries=self.max_wiktionary_entries,
+                    lexicon_name=self.logicpath_lexicon,
+                )
+            elif self.logicpath_version == "v3":
+                logicpath = build_logicpath_v3_graph(
                     row.sentence1,
                     row.sentence2,
                     self.wiktionary_cache,
