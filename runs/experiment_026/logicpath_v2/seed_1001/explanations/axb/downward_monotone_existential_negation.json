@@ -1,0 +1,434 @@
+{
+  "uid": "axb-814",
+  "dataset": "axb",
+  "logic": "Downward monotone;Existential;Negation",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7965063452720642,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3378348648548126,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.21609587967395782,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.20254917442798615,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.1535126268863678,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.32736071944236755,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.32756713032722473,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.3736608922481537,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.14963535964488983,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.17717811465263367,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.18257945775985718,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Regional governors could not rely on the king for help in times of crisis, and the ensuing food shortages and political disputes escalated into famines and small-scale civil wars.",
+      "type": "premise_state",
+      "importance": 0.07536694407463074
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Regional governors could not rely on anyone for help in times of crisis, and the ensuing food shortages and political disputes escalated into famines and small-scale civil wars.",
+      "type": "hypothesis_state",
+      "importance": 0.08085639774799347
+    },
+    {
+      "id": 2,
+      "text": "premise unit: regional",
+      "type": "premise_unit",
+      "importance": 0.04646185040473938
+    },
+    {
+      "id": 3,
+      "text": "premise unit: governors",
+      "type": "premise_unit",
+      "importance": 0.04642489552497864
+    },
+    {
+      "id": 4,
+      "text": "premise unit: could",
+      "type": "premise_unit",
+      "importance": 0.04646028205752373
+    },
+    {
+      "id": 5,
+      "text": "premise unit: not",
+      "type": "premise_unit",
+      "importance": 0.04644997790455818
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: regional",
+      "type": "hypothesis_unit",
+      "importance": 0.03859895095229149
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: governors",
+      "type": "hypothesis_unit",
+      "importance": 0.03862527012825012
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: could",
+      "type": "hypothesis_unit",
+      "importance": 0.03822945058345795
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: not",
+      "type": "hypothesis_unit",
+      "importance": 0.03821542114019394
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: regional -> regional",
+      "type": "transformation",
+      "importance": 0.04470532387495041
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: governors -> governors",
+      "type": "transformation",
+      "importance": 0.044697895646095276
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: could -> could",
+      "type": "transformation",
+      "importance": 0.04809313639998436
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: not -> not",
+      "type": "transformation",
+      "importance": 0.04808017238974571
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: rely -> rely",
+      "type": "transformation",
+      "importance": 0.038264475762844086
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: help -> help",
+      "type": "transformation",
+      "importance": 0.038265351206064224
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: times -> times",
+      "type": "transformation",
+      "importance": 0.038266103714704514
+    },
+    {
+      "id": 17,
+      "text": "wiktionary entry: regional",
+      "type": "wiktionary_entry",
+      "importance": 0.06465226411819458
+    },
+    {
+      "id": 18,
+      "text": "wiktionary gloss: Of, or pertaining to, a specific region or district.",
+      "type": "wiktionary_gloss",
+      "importance": 0.03731011226773262
+    },
+    {
+      "id": 19,
+      "text": "wiktionary entry: governors",
+      "type": "wiktionary_entry",
+      "importance": 0.06466283649206161
+    },
+    {
+      "id": 20,
+      "text": "wiktionary gloss: plural of governor",
+      "type": "wiktionary_gloss",
+      "importance": 0.03731280937790871
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.4222147762775421
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.1505686640739441
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.1500091850757599
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.2405286431312561
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.24051330983638763
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.047988951206207275
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.048050083220005035
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.04789362847805023
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.04800005257129669
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.07843679934740067
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.07830867171287537
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.07854975014925003
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.09703310579061508
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.096912682056427
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.09886562824249268
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.098621666431427
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.10019828379154205
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.10031992197036743
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.09977605193853378
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.09992503374814987
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.1897580623626709
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.18987861275672913
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.18958887457847595
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.3079524636268616
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.15295736491680145
+    },
+    {
+      "source": 2,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24047091603279114
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.30843332409858704
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.15262125432491302
+    },
+    {
+      "source": 3,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24045385420322418
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.33118942379951477
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.20984682440757751
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.3312413692474365
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.20951110124588013
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.16408522427082062
+    },
+    {
+      "source": 6,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.08426591753959656
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.16413183510303497
+    },
+    {
+      "source": 7,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.08449559658765793
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.19069108366966248
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.19060146808624268
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.40633654594421387
+    },
+    {
+      "source": 19,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.40592533349990845
+    }
+  ]
+}

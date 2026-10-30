@@ -1,0 +1,85 @@
+{
+  "uid": "axb-20",
+  "dataset": "axb",
+  "logic": "Negation;Conditionals",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: and if both apply they are essentially impossible",
+      "type": "premise_phrase",
+      "importance": 0.2157953977584839
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: and if both apply they are essentially possible",
+      "type": "hypothesis_phrase",
+      "importance": 0.2099696546792984
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.1878846138715744
+    },
+    {
+      "id": 3,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.1992129534482956
+    },
+    {
+      "id": 4,
+      "text": "evidence conditional direction requires an observed antecedent",
+      "type": "conditional_direction",
+      "importance": 0.18713736534118652
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.0995037853717804
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.3688201904296875
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.39062780141830444
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.24245813488960266
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.18552392721176147
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.2347397655248642
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.335469126701355
+    }
+  ]
+}

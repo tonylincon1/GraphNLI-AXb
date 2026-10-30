@@ -1,0 +1,307 @@
+{
+  "uid": "axb-446",
+  "dataset": "axb",
+  "logic": "Non-monotone",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: the latest fatal incident reported monday morning killed a 17",
+      "type": "premise_phrase",
+      "importance": 0.1118655800819397
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: the latest incident reported monday morning killed a 17 year",
+      "type": "hypothesis_phrase",
+      "importance": 0.1258629560470581
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: latest adj superlative form of late: most late",
+      "type": "wiktionary_entry",
+      "importance": 0.08237157762050629
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: latest: superlative form of late: most late",
+      "type": "wiktionary_gloss",
+      "importance": 0.11275184899568558
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: fatal adj Proceeding from, or appointed by, fate or destiny.",
+      "type": "wiktionary_entry",
+      "importance": 0.08241140842437744
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: fatal: Proceeding from, or appointed by, fate or destiny.",
+      "type": "wiktionary_gloss",
+      "importance": 0.11280704289674759
+    },
+    {
+      "id": 6,
+      "text": "evidence numeric relation: premise numbers ['17']; hypothesis numbers ['17']",
+      "type": "numeric_relation_evidence",
+      "importance": 0.09191855788230896
+    },
+    {
+      "id": 7,
+      "text": "evidence directed lexical relation from premise to hypothesis: identity",
+      "type": "directed_lexical_relation",
+      "importance": 0.09721210598945618
+    },
+    {
+      "id": 8,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.09206006675958633
+    },
+    {
+      "id": 9,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.09073889255523682
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.22415441274642944
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.08780644088983536
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.15281908214092255
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.08785565942525864
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.15315544605255127
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.10310004651546478
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.10879756510257721
+    },
+    {
+      "source": 0,
+      "target": 8,
+      "relation": "phrase_evidence",
+      "attention": 0.07177159190177917
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "relation": "phrase_evidence",
+      "attention": 0.08345115184783936
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.13752833008766174
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.1405179798603058
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.13730913400650024
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.14011484384536743
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.13471496105194092
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.19255894422531128
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "phrase_evidence",
+      "attention": 0.2033991515636444
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "phrase_evidence",
+      "attention": 0.16049787402153015
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.07118505984544754
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.04397711902856827
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.07121066004037857
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.10098487138748169
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.0778251439332962
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.04341607540845871
+    },
+    {
+      "source": 2,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.06457945704460144
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.07122630625963211
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.136026993393898
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.1018366664648056
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.053778745234012604
+    },
+    {
+      "source": 3,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.11089397221803665
+    },
+    {
+      "source": 3,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.09985334426164627
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.07125132530927658
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.10127188265323639
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.07783284038305283
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.04335921257734299
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.06470523774623871
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.10191474854946136
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.05390194058418274
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.1107606589794159
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.09986694157123566
+    }
+  ]
+}

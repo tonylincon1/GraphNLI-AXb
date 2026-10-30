@@ -1,0 +1,362 @@
+{
+  "uid": "axb-1100",
+  "dataset": "axb",
+  "logic": "Universal;Negation",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 2,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7597116827964783,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3271714746952057,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2284323275089264,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.18950651586055756,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.15714845061302185,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3414141833782196,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.24720187485218048,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.40311992168426514,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.1789497584104538,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.24600130319595337,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.24446764588356018,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: A general artificial intelligence should always come with an off switch.",
+      "type": "premise_state",
+      "importance": 0.06471802294254303
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: The new general artificial intelligence I'm developing shouldn't come with an off switch.",
+      "type": "hypothesis_state",
+      "importance": 0.0763804093003273
+    },
+    {
+      "id": 2,
+      "text": "premise unit: general",
+      "type": "premise_unit",
+      "importance": 0.05540071800351143
+    },
+    {
+      "id": 3,
+      "text": "premise unit: artificial",
+      "type": "premise_unit",
+      "importance": 0.05537554249167442
+    },
+    {
+      "id": 4,
+      "text": "premise unit: intelligence",
+      "type": "premise_unit",
+      "importance": 0.04790543019771576
+    },
+    {
+      "id": 5,
+      "text": "premise unit: should",
+      "type": "premise_unit",
+      "importance": 0.04574275389313698
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: new",
+      "type": "hypothesis_unit",
+      "importance": 0.046780817210674286
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: general",
+      "type": "hypothesis_unit",
+      "importance": 0.04921427741646767
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: artificial",
+      "type": "hypothesis_unit",
+      "importance": 0.04915975406765938
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: intelligence",
+      "type": "hypothesis_unit",
+      "importance": 0.04625802859663963
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: general -> general",
+      "type": "transformation",
+      "importance": 0.06880161166191101
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: artificial -> artificial",
+      "type": "transformation",
+      "importance": 0.06883176416158676
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: intelligence -> intelligence",
+      "type": "transformation",
+      "importance": 0.07071267068386078
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: come -> come",
+      "type": "transformation",
+      "importance": 0.04721720889210701
+    },
+    {
+      "id": 14,
+      "text": "wiktionary entry: general",
+      "type": "wiktionary_entry",
+      "importance": 0.05837169289588928
+    },
+    {
+      "id": 15,
+      "text": "wiktionary gloss: Including or involving every part or member of a given or implied entity, whole, etc.; common to all, universal.",
+      "type": "wiktionary_gloss",
+      "importance": 0.04537182301282883
+    },
+    {
+      "id": 16,
+      "text": "wiktionary entry: artificial",
+      "type": "wiktionary_entry",
+      "importance": 0.05840366333723068
+    },
+    {
+      "id": 17,
+      "text": "wiktionary gloss: Man-made; made by humans; of artifice.",
+      "type": "wiktionary_gloss",
+      "importance": 0.04535381495952606
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.04870731383562088
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.15809211134910583
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.15841293334960938
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.16177856922149658
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.3158257305622101
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.07724355906248093
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.0772932842373848
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.07710666954517365
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.09060510247945786
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.30831053853034973
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.12199696153402328
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.12212550640106201
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.1420251876115799
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.11510781943798065
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.116004578769207
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.11572366952896118
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.3300075829029083
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.1423702836036682
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.4329916834831238
+    },
+    {
+      "source": 2,
+      "target": 14,
+      "relation": "wiktionary_evidence",
+      "attention": 0.1924384981393814
+    },
+    {
+      "source": 3,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.14221324026584625
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.4326735734939575
+    },
+    {
+      "source": 3,
+      "target": 16,
+      "relation": "wiktionary_evidence",
+      "attention": 0.1924661099910736
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.15989753603935242
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.4392262101173401
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3163098096847534
+    },
+    {
+      "source": 7,
+      "target": 14,
+      "relation": "wiktionary_evidence",
+      "attention": 0.1413189172744751
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.31627702713012695
+    },
+    {
+      "source": 8,
+      "target": 16,
+      "relation": "wiktionary_evidence",
+      "attention": 0.14136697351932526
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.35181936621665955
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "relation": "wiktionary_evidence",
+      "attention": 0.29511475563049316
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.29483017325401306
+    }
+  ]
+}

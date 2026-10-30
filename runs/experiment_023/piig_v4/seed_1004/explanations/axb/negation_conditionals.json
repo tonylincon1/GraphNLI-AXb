@@ -1,0 +1,325 @@
+{
+  "uid": "axb-20",
+  "dataset": "axb",
+  "logic": "Negation;Conditionals",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: and if both apply they are essentially impossible",
+      "type": "premise_phrase",
+      "importance": 0.10514768213033676
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: and if both apply they are essentially possible",
+      "type": "hypothesis_phrase",
+      "importance": 0.10025236755609512
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: impossible adj Not possible; not able to be done or happen.",
+      "type": "wiktionary_entry",
+      "importance": 0.10536777973175049
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: impossible: Not possible; not able to be done or happen.",
+      "type": "wiktionary_gloss",
+      "importance": 0.09985889494419098
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: possible adj Able but not certain to happen; neither inevitable nor impossible.",
+      "type": "wiktionary_entry",
+      "importance": 0.10535182058811188
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: possible: Able but not certain to happen; neither inevitable nor impossible.",
+      "type": "wiktionary_gloss",
+      "importance": 0.09984244406223297
+    },
+    {
+      "id": 6,
+      "text": "wiktionary relation: impossible antonym possible",
+      "type": "wiktionary_relation",
+      "importance": 0.09952867776155472
+    },
+    {
+      "id": 7,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.09878960996866226
+    },
+    {
+      "id": 8,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.0887615978717804
+    },
+    {
+      "id": 9,
+      "text": "evidence conditional direction requires an observed antecedent",
+      "type": "conditional_direction",
+      "importance": 0.09709906578063965
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.03676873445510864
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.07380315661430359
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.0777418464422226
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.07370290905237198
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.07760590314865112
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_lexicon",
+      "attention": 0.12380988150835037
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.19333016872406006
+    },
+    {
+      "source": 0,
+      "target": 8,
+      "relation": "phrase_evidence",
+      "attention": 0.17790374159812927
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "relation": "phrase_evidence",
+      "attention": 0.15606233477592468
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.09559989720582962
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.07224039733409882
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.0955100879073143
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.07218699157238007
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_lexicon",
+      "attention": 0.08492863178253174
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.17538480460643768
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "phrase_evidence",
+      "attention": 0.1534067541360855
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "phrase_evidence",
+      "attention": 0.2028447985649109
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.10038086771965027
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.07423635572195053
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.10027109086513519
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09955474734306335
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.11131693422794342
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.12172480672597885
+    },
+    {
+      "source": 2,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.07307251542806625
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.10035008192062378
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.13388799130916595
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.10874499380588531
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.11437404155731201
+    },
+    {
+      "source": 3,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.08693939447402954
+    },
+    {
+      "source": 3,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.0844883918762207
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.10023914277553558
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09968706965446472
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.11119863390922546
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.12163500487804413
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.07323608547449112
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.10884106159210205
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.11424853652715683
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.08679533004760742
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.08464807271957397
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.08059000968933105
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.09360592812299728
+    },
+    {
+      "source": 6,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.07476356625556946
+    }
+  ]
+}

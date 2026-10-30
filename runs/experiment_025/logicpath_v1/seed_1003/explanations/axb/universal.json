@@ -1,0 +1,283 @@
+{
+  "uid": "axb-374",
+  "dataset": "axb",
+  "logic": "Universal",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7655661702156067,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3354020416736603,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.21991106867790222,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.24313762784004211,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.20494915544986725,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.313710480928421,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.2729119062423706,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.34375613927841187,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.19979172945022583,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.23681853711605072,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.21477074921131134,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Everyone has a set of principles to live by.",
+      "type": "premise_state",
+      "importance": 0.16783630847930908
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Someone has a set of principles to live by.",
+      "type": "hypothesis_state",
+      "importance": 0.11434306204319
+    },
+    {
+      "id": 2,
+      "text": "premise unit: everyone",
+      "type": "premise_unit",
+      "importance": 0.05275126174092293
+    },
+    {
+      "id": 3,
+      "text": "premise unit: set",
+      "type": "premise_unit",
+      "importance": 0.0714631900191307
+    },
+    {
+      "id": 4,
+      "text": "premise unit: principles",
+      "type": "premise_unit",
+      "importance": 0.07145750522613525
+    },
+    {
+      "id": 5,
+      "text": "premise unit: live",
+      "type": "premise_unit",
+      "importance": 0.07140800356864929
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: someone",
+      "type": "hypothesis_unit",
+      "importance": 0.0656907930970192
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: set",
+      "type": "hypothesis_unit",
+      "importance": 0.07405956089496613
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: principles",
+      "type": "hypothesis_unit",
+      "importance": 0.07408783584833145
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: live",
+      "type": "hypothesis_unit",
+      "importance": 0.07403983920812607
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: set -> set",
+      "type": "transformation",
+      "importance": 0.05431202054023743
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: principles -> principles",
+      "type": "transformation",
+      "importance": 0.05425465479493141
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: live -> live",
+      "type": "transformation",
+      "importance": 0.05429595708847046
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.288392037153244
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.49724486470222473
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.30468878149986267
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.3046061098575592
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.3045650124549866
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.23933854699134827
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.23943151533603668
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.23956391215324402
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.356042742729187
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.1938692331314087
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.19375808537006378
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.19391119480133057
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.10346555709838867
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.10363299399614334
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.10369394719600677
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.5251064300537109
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.05010741204023361
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.525303065776825
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.04992145299911499
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.5246922969818115
+    },
+    {
+      "source": 5,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.049861811101436615
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.13058693706989288
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.1305229663848877
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.13039502501487732
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "uid": "axb-366",
+  "dataset": "axb",
+  "logic": "Disjunction",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: either he has a blind trust or he has a",
+      "type": "premise_phrase",
+      "importance": 0.14728157222270966
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: he has a conflict of interest",
+      "type": "hypothesis_phrase",
+      "importance": 0.14700327813625336
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: either det Any one (of two).",
+      "type": "wiktionary_entry",
+      "importance": 0.14155824482440948
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: either: Any one (of two).",
+      "type": "wiktionary_gloss",
+      "importance": 0.14092782139778137
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: blind adj Unable to see, or only partially able to see.",
+      "type": "wiktionary_entry",
+      "importance": 0.1415404975414276
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: blind: Unable to see, or only partially able to see.",
+      "type": "wiktionary_gloss",
+      "importance": 0.14101168513298035
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.14067688584327698
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.1348579376935959
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.1036033183336258
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.0913865864276886
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.10366092622280121
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.09154722094535828
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.10098649561405182
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.11406660825014114
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.10717613250017166
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.11402925103902817
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.10715661942958832
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.16293373703956604
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.11416555196046829
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.1635073572397232
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.11407675594091415
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09368275105953217
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.11355246603488922
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.05436393991112709
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.06519027054309845
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.11346326768398285
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09327803552150726
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.0649537667632103
+    }
+  ]
+}

@@ -1,0 +1,416 @@
+{
+  "uid": "axb-346",
+  "dataset": "axb",
+  "logic": "Intervals/Numbers",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7948327660560608,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.34554803371429443,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.19929759204387665,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.17939314246177673,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.13871806859970093,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.32313716411590576,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.32661187648773193,
+      "target": 1.0
+    },
+    "conjunction_change": {
+      "score": 0.4019355773925781,
+      "target": 1.0
+    },
+    "conditional_alignment": {
+      "score": 0.14709937572479248,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.22081178426742554,
+      "target": 1.0
+    },
+    "temporal_change": {
+      "score": 0.20536330342292786,
+      "target": 1.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: I have failed my resolutions every year since 1997, and it's now 2008.",
+      "type": "premise_state",
+      "importance": 0.06812550127506256
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: I failed my resolutions in 2004.",
+      "type": "hypothesis_state",
+      "importance": 0.13090156018733978
+    },
+    {
+      "id": 2,
+      "text": "premise unit: failed",
+      "type": "premise_unit",
+      "importance": 0.044718172401189804
+    },
+    {
+      "id": 3,
+      "text": "premise unit: my",
+      "type": "premise_unit",
+      "importance": 0.04295964166522026
+    },
+    {
+      "id": 4,
+      "text": "premise unit: resolutions",
+      "type": "premise_unit",
+      "importance": 0.04473694786429405
+    },
+    {
+      "id": 5,
+      "text": "premise unit: every",
+      "type": "premise_unit",
+      "importance": 0.03856862336397171
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: failed",
+      "type": "hypothesis_unit",
+      "importance": 0.045110832899808884
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: my",
+      "type": "hypothesis_unit",
+      "importance": 0.04251409322023392
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: resolutions",
+      "type": "hypothesis_unit",
+      "importance": 0.04505900666117668
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: 2004",
+      "type": "hypothesis_unit",
+      "importance": 0.040108151733875275
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: failed -> failed",
+      "type": "transformation",
+      "importance": 0.038982756435871124
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: my -> my",
+      "type": "transformation",
+      "importance": 0.03917951136827469
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: resolutions -> resolutions",
+      "type": "transformation",
+      "importance": 0.038974981755018234
+    },
+    {
+      "id": 13,
+      "text": "transformation quantifier_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.03890792280435562
+    },
+    {
+      "id": 14,
+      "text": "transformation conjunction_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.03890595585107803
+    },
+    {
+      "id": 15,
+      "text": "transformation numeric_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.038906343281269073
+    },
+    {
+      "id": 16,
+      "text": "transformation temporal_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.038908544927835464
+    },
+    {
+      "id": 17,
+      "text": "wiktionary entry: failed",
+      "type": "wiktionary_entry",
+      "importance": 0.059427354484796524
+    },
+    {
+      "id": 18,
+      "text": "wiktionary gloss: simple past and past participle of fail",
+      "type": "wiktionary_gloss",
+      "importance": 0.03277862071990967
+    },
+    {
+      "id": 19,
+      "text": "wiktionary entry: resolutions",
+      "type": "wiktionary_entry",
+      "importance": 0.0594465471804142
+    },
+    {
+      "id": 20,
+      "text": "wiktionary gloss: plural of resolution",
+      "type": "wiktionary_gloss",
+      "importance": 0.032778915017843246
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.2386600375175476
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.22393691539764404
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.24398519098758698
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.2242146134376526
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.33481565117836
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.023919248953461647
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.023901576176285744
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.023927081376314163
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.025897521525621414
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.02591925486922264
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.02590065449476242
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.025906618684530258
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.280240535736084
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.2895652651786804
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.2802525460720062
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.33174917101860046
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.1996450573205948
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.19988888502120972
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.19991305470466614
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.23768958449363708
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.23769789934158325
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.23767003417015076
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.23763109743595123
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.28426817059516907
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.039649996906518936
+    },
+    {
+      "source": 2,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2595245838165283
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.41768723726272583
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.042903028428554535
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.28370487689971924
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.0396706759929657
+    },
+    {
+      "source": 4,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.260084331035614
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.03643494471907616
+    },
+    {
+      "source": 6,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2630314230918884
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.03768116235733032
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.03623691573739052
+    },
+    {
+      "source": 8,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2627992033958435
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.5424661636352539
+    },
+    {
+      "source": 19,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.542805552482605
+    }
+  ]
+}

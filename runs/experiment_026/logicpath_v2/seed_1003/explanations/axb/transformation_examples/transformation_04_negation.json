@@ -1,0 +1,422 @@
+{
+  "uid": "axb-3",
+  "dataset": "axb",
+  "logic": "Negation",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7815069556236267,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.337348997592926,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.22645241022109985,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.16760942339897156,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.178969144821167,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3258907198905945,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.32288941740989685,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.3952626883983612,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.20930880308151245,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.2319963127374649,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.1904992163181305,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: When you've got snow, it's really hard to learn a snow sport so we looked at all the different ways I could mimic being on snow without actually being on snow.",
+      "type": "premise_state",
+      "importance": 0.07742796093225479
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: When you've got no snow, it's really hard to learn a snow sport so we looked at all the different ways I could mimic being on snow without actually being on snow.",
+      "type": "hypothesis_state",
+      "importance": 0.048460617661476135
+    },
+    {
+      "id": 2,
+      "text": "premise unit: when",
+      "type": "premise_unit",
+      "importance": 0.055952731519937515
+    },
+    {
+      "id": 3,
+      "text": "premise unit: you've",
+      "type": "premise_unit",
+      "importance": 0.056001756340265274
+    },
+    {
+      "id": 4,
+      "text": "premise unit: got",
+      "type": "premise_unit",
+      "importance": 0.04807630926370621
+    },
+    {
+      "id": 5,
+      "text": "premise unit: snow",
+      "type": "premise_unit",
+      "importance": 0.044722866266965866
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: when",
+      "type": "hypothesis_unit",
+      "importance": 0.052106067538261414
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: you've",
+      "type": "hypothesis_unit",
+      "importance": 0.05203426256775856
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: got",
+      "type": "hypothesis_unit",
+      "importance": 0.050559159368276596
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: no",
+      "type": "hypothesis_unit",
+      "importance": 0.045953258872032166
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: when -> when",
+      "type": "transformation",
+      "importance": 0.03955155238509178
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: you've -> you've",
+      "type": "transformation",
+      "importance": 0.039548445492982864
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: got -> got",
+      "type": "transformation",
+      "importance": 0.03975475952029228
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: snow -> snow",
+      "type": "transformation",
+      "importance": 0.0429728664457798
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: it's -> it's",
+      "type": "transformation",
+      "importance": 0.04474666714668274
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: really -> really",
+      "type": "transformation",
+      "importance": 0.04474885016679764
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: hard -> hard",
+      "type": "transformation",
+      "importance": 0.04473663866519928
+    },
+    {
+      "id": 17,
+      "text": "wiktionary entry: when",
+      "type": "wiktionary_entry",
+      "importance": 0.048700232058763504
+    },
+    {
+      "id": 18,
+      "text": "wiktionary gloss: At what time? At which time? Upon which occasion or circumstance? Used to introduce direct or indirect questions about time.",
+      "type": "wiktionary_gloss",
+      "importance": 0.037620048969984055
+    },
+    {
+      "id": 19,
+      "text": "wiktionary entry: you've",
+      "type": "wiktionary_entry",
+      "importance": 0.04870220273733139
+    },
+    {
+      "id": 20,
+      "text": "wiktionary gloss: Contraction of you + have.",
+      "type": "wiktionary_gloss",
+      "importance": 0.03762274980545044
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.03937718644738197
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.30236387252807617
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.3022063374519348
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.3070530891418457
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.31726932525634766
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.036176979541778564
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.03636667877435684
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.036341309547424316
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.06166980043053627
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.07465396821498871
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.07464805245399475
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.07490257918834686
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.12744958698749542
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.12775541841983795
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.13072335720062256
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.20071321725845337
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.02778717689216137
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.0279441699385643
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.027874626219272614
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.03999825567007065
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.04572262987494469
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.04571227729320526
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.045756854116916656
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.15202340483665466
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.07729621231555939
+    },
+    {
+      "source": 2,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24942883849143982
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.1524113565683365
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.07763021439313889
+    },
+    {
+      "source": 3,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24956610798835754
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.16318289935588837
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.07921396195888519
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.11739650368690491
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.2162734866142273
+    },
+    {
+      "source": 6,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.07628300786018372
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.2153286635875702
+    },
+    {
+      "source": 7,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.07602293789386749
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.218231663107872
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2825208902359009
+    },
+    {
+      "source": 19,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2823617458343506
+    }
+  ]
+}

@@ -1,0 +1,457 @@
+{
+  "uid": "axb-386",
+  "dataset": "axb",
+  "logic": "Disjunction;Conditionals;Negation",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: either there is no bathroom in this house or it",
+      "type": "premise_phrase",
+      "importance": 0.11169382929801941
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: if there is a bathroom in this house it is",
+      "type": "hypothesis_phrase",
+      "importance": 0.10024459660053253
+    },
+    {
+      "id": 2,
+      "text": "premise word: there",
+      "type": "premise_word",
+      "importance": 0.0776267945766449
+    },
+    {
+      "id": 3,
+      "text": "premise word: bathroom",
+      "type": "premise_word",
+      "importance": 0.07765044271945953
+    },
+    {
+      "id": 4,
+      "text": "hypothesis word: there",
+      "type": "hypothesis_word",
+      "importance": 0.08667546510696411
+    },
+    {
+      "id": 5,
+      "text": "hypothesis word: bathroom",
+      "type": "hypothesis_word",
+      "importance": 0.08670812845230103
+    },
+    {
+      "id": 6,
+      "text": "wiktionary entry: bathroom noun A room containing a shower or bathtub, and (typically but not necessarily) a toilet.",
+      "type": "wiktionary_entry",
+      "importance": 0.07350403070449829
+    },
+    {
+      "id": 7,
+      "text": "wiktionary gloss: bathroom: A room containing a shower or bathtub, and (typically but not necessarily) a toilet.",
+      "type": "wiktionary_gloss",
+      "importance": 0.07328848540782928
+    },
+    {
+      "id": 8,
+      "text": "wiktionary entry: place noun An area; somewhere within an area.",
+      "type": "wiktionary_entry",
+      "importance": 0.07348643243312836
+    },
+    {
+      "id": 9,
+      "text": "wiktionary gloss: place: An area; somewhere within an area.",
+      "type": "wiktionary_gloss",
+      "importance": 0.07325904071331024
+    },
+    {
+      "id": 10,
+      "text": "wiktionary relation: bathroom synonym place",
+      "type": "wiktionary_relation",
+      "importance": 0.08293138444423676
+    },
+    {
+      "id": 11,
+      "text": "wiktionary relation: place synonym bathroom",
+      "type": "wiktionary_relation",
+      "importance": 0.08293136954307556
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.057731993496418
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_word",
+      "attention": 0.19275745749473572
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_word",
+      "attention": 0.19262534379959106
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_word",
+      "attention": 0.21007832884788513
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_word",
+      "attention": 0.2100827693939209
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_lexicon",
+      "attention": 0.125473290681839
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "phrase_lexicon",
+      "attention": 0.12381608039140701
+    },
+    {
+      "source": 0,
+      "target": 8,
+      "relation": "phrase_lexicon",
+      "attention": 0.1256713718175888
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "relation": "phrase_lexicon",
+      "attention": 0.12418962270021439
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "phrase_lexicon",
+      "attention": 0.10638469457626343
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "phrase_lexicon",
+      "attention": 0.10638469457626343
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_word",
+      "attention": 0.1318996101617813
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_word",
+      "attention": 0.13206729292869568
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_word",
+      "attention": 0.12772034108638763
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_word",
+      "attention": 0.12816549837589264
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_lexicon",
+      "attention": 0.11750064790248871
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "phrase_lexicon",
+      "attention": 0.11507590115070343
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "phrase_lexicon",
+      "attention": 0.1174519807100296
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "phrase_lexicon",
+      "attention": 0.11504346132278442
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "phrase_lexicon",
+      "attention": 0.13902190327644348
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "phrase_lexicon",
+      "attention": 0.1390218883752823
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "word_alignment",
+      "attention": 0.22187116742134094
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "word_lexicon",
+      "attention": 0.046223465353250504
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "word_lexicon",
+      "attention": 0.037009287625551224
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "relation": "word_lexicon",
+      "attention": 0.04615390673279762
+    },
+    {
+      "source": 2,
+      "target": 9,
+      "relation": "word_lexicon",
+      "attention": 0.03698126971721649
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "word_lexicon",
+      "attention": 0.07098694145679474
+    },
+    {
+      "source": 2,
+      "target": 11,
+      "relation": "word_lexicon",
+      "attention": 0.07098693400621414
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "word_alignment",
+      "attention": 0.22179904580116272
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "word_lexicon",
+      "attention": 0.04620678722858429
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "word_lexicon",
+      "attention": 0.037053994834423065
+    },
+    {
+      "source": 3,
+      "target": 8,
+      "relation": "word_lexicon",
+      "attention": 0.046138692647218704
+    },
+    {
+      "source": 3,
+      "target": 9,
+      "relation": "word_lexicon",
+      "attention": 0.03702687472105026
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "word_lexicon",
+      "attention": 0.07117171585559845
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "word_lexicon",
+      "attention": 0.07117170840501785
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "word_lexicon",
+      "attention": 0.06654738634824753
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "word_lexicon",
+      "attention": 0.035246580839157104
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "word_lexicon",
+      "attention": 0.0666409283876419
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "relation": "word_lexicon",
+      "attention": 0.035329751670360565
+    },
+    {
+      "source": 4,
+      "target": 10,
+      "relation": "word_lexicon",
+      "attention": 0.03855529800057411
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "relation": "word_lexicon",
+      "attention": 0.038555294275283813
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "word_lexicon",
+      "attention": 0.06652317941188812
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "word_lexicon",
+      "attention": 0.03533469885587692
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "word_lexicon",
+      "attention": 0.06661899387836456
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "word_lexicon",
+      "attention": 0.03541894257068634
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "relation": "word_lexicon",
+      "attention": 0.038676194846630096
+    },
+    {
+      "source": 5,
+      "target": 11,
+      "relation": "word_lexicon",
+      "attention": 0.038676198571920395
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.037450678646564484
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.05230013281106949
+    },
+    {
+      "source": 6,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.03750946372747421
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.05010369420051575
+    },
+    {
+      "source": 6,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.05010369047522545
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.037273988127708435
+    },
+    {
+      "source": 7,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.05793122947216034
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.05417729169130325
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.054177284240722656
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.03733210638165474
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.04997728019952774
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.04997728019952774
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.05408740043640137
+    },
+    {
+      "source": 9,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.05408739298582077
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.05792015790939331
+    }
+  ]
+}

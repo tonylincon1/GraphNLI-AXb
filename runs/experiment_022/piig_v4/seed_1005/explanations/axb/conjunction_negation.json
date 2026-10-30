@@ -1,0 +1,265 @@
+{
+  "uid": "axb-356",
+  "dataset": "axb",
+  "logic": "Conjunction;Negation",
+  "language": "en",
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: both doctor and patient bear some responsibility for successful care",
+      "type": "premise_phrase",
+      "importance": 0.13120470941066742
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: the doctor does not bear responsibility for successful care",
+      "type": "hypothesis_phrase",
+      "importance": 0.11389686912298203
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: both det Each of the two; one and the other; referring to two individuals or items.",
+      "type": "wiktionary_entry",
+      "importance": 0.10249307751655579
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: both: Each of the two; one and the other; referring to two individuals or items.",
+      "type": "wiktionary_gloss",
+      "importance": 0.10240136831998825
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: doctor noun A physician; a member of the medical profession; one who is trained and licensed to heal the sick or injured. The final examination and qualification may award a doctor degree in which case the post-nominal letters are DO, DPM, MD, DMD, or DDS in the US, or MBBS or BDS in the UK.",
+      "type": "wiktionary_entry",
+      "importance": 0.1025126650929451
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: doctor: A physician; a member of the medical profession; one who is trained and licensed to heal the sick or injured. The final examination and qualification may award a doctor degree in which case the post-nominal letters are DO, DPM, MD, DMD, or DDS in the US, or MBBS or BDS in the UK.",
+      "type": "wiktionary_gloss",
+      "importance": 0.10242079198360443
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.10425498336553574
+    },
+    {
+      "id": 7,
+      "text": "evidence polarity contrast from negation scope",
+      "type": "negation_conflict",
+      "importance": 0.14209507405757904
+    },
+    {
+      "id": 8,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.09872046113014221
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.1905289590358734
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.12230683863162994
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.06730329990386963
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.12254495173692703
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.06740444898605347
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.16096755862236023
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.34654414653778076
+    },
+    {
+      "source": 0,
+      "target": 8,
+      "relation": "phrase_evidence",
+      "attention": 0.15889842808246613
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.08585101366043091
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.05910723656415939
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.08576855808496475
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.059085145592689514
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.1518465131521225
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.26460713148117065
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "phrase_evidence",
+      "attention": 0.13961265981197357
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.05808001011610031
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.08161468058824539
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.05822876840829849
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.11617079377174377
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.15977776050567627
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.08307346701622009
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.05810577794909477
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.08888916671276093
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.07423394918441772
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.291085809469223
+    },
+    {
+      "source": 3,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.08703166246414185
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.05825427174568176
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.11633548140525818
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.15944170951843262
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.08306673169136047
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.07429812103509903
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.2908491790294647
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.08705968409776688
+    }
+  ]
+}

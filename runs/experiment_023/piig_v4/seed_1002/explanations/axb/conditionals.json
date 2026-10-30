@@ -1,0 +1,223 @@
+{
+  "uid": "axb-426",
+  "dataset": "axb",
+  "logic": "Conditionals",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: if pedro has a donkey then he beats it",
+      "type": "premise_phrase",
+      "importance": 0.14793965220451355
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: pedro beats his donkey",
+      "type": "hypothesis_phrase",
+      "importance": 0.13224656879901886
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: donkey noun A domestic animal, Equus asinus asinus, similar to a horse.",
+      "type": "wiktionary_entry",
+      "importance": 0.11582328379154205
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: donkey: A domestic animal, Equus asinus asinus, similar to a horse.",
+      "type": "wiktionary_gloss",
+      "importance": 0.12230849266052246
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: then adv At that time.",
+      "type": "wiktionary_entry",
+      "importance": 0.11571218818426132
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: then: At that time.",
+      "type": "wiktionary_gloss",
+      "importance": 0.12222940474748611
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.11912131309509277
+    },
+    {
+      "id": 7,
+      "text": "evidence conditional direction requires an observed antecedent",
+      "type": "conditional_direction",
+      "importance": 0.12461911141872406
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.18182885646820068
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.18623927235603333
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.2574494481086731
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.18641802668571472
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.2573900818824768
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.17645516991615295
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.15920889377593994
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.17582456767559052
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.10711634904146194
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.1755756139755249
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.1069803237915039
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.12224441766738892
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.1855657696723938
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.09225981682538986
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.04581492394208908
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.09198902547359467
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.0961141288280487
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.11403503268957138
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.09207970649003983
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.1356634795665741
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.1318904161453247
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.13626864552497864
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.09181047230958939
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09606513381004333
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.11436615139245987
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.13178852200508118
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.13670815527439117
+    }
+  ]
+}

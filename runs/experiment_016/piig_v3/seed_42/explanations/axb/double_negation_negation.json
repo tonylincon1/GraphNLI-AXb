@@ -1,0 +1,67 @@
+{
+  "uid": "axb-1012",
+  "dataset": "axb",
+  "logic": "Double negation;Negation",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: it's not the case that there is no rabbi at",
+      "type": "premise_phrase",
+      "importance": 0.26008838415145874
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: there is no rabbi at this wedding let alone behind",
+      "type": "hypothesis_phrase",
+      "importance": 0.26165804266929626
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.23939251899719238
+    },
+    {
+      "id": 3,
+      "text": "evidence quantifier polarity context: premise downward quantifier: restrictor polarity is downward; hypothesis downward quantifier: restrictor polarity is downward",
+      "type": "quantifier_polarity_context",
+      "importance": 0.2388610541820526
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.3865911364555359
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.42659610509872437
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.3008512556552887
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.33214816451072693
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.2787303924560547
+    }
+  ]
+}

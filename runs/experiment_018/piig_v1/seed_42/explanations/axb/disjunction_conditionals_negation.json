@@ -1,0 +1,85 @@
+{
+  "uid": "axb-386",
+  "dataset": "axb",
+  "logic": "Disjunction;Conditionals;Negation",
+  "language": "en",
+  "prediction_binary": 1,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: either there is no bathroom in this house or it",
+      "type": "premise_phrase",
+      "importance": 0.1871086061000824
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: if there is a bathroom in this house it is",
+      "type": "hypothesis_phrase",
+      "importance": 0.209243044257164
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.15580394864082336
+    },
+    {
+      "id": 3,
+      "text": "evidence polarity contrast from negation scope",
+      "type": "negation_conflict",
+      "importance": 0.28683894872665405
+    },
+    {
+      "id": 4,
+      "text": "evidence conditional direction requires an observed antecedent",
+      "type": "conditional_direction",
+      "importance": 0.1610054224729538
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.2378050535917282
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.2417859137058258
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.26663047075271606
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.25311899185180664
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.2547609508037567
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.4650827646255493
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.1548096090555191
+    }
+  ]
+}

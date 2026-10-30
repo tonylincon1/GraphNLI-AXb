@@ -1,0 +1,181 @@
+{
+  "uid": "axb-668",
+  "dataset": "axb",
+  "logic": "Existential;Upward monotone",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: weird that you want to show something to a stack",
+      "type": "premise_phrase",
+      "importance": 0.13739454746246338
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: weird that you want to show this video to a",
+      "type": "hypothesis_phrase",
+      "importance": 0.1409614086151123
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: weird adj Having an unusually strange character or behaviour.",
+      "type": "wiktionary_entry",
+      "importance": 0.14281632006168365
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: weird: Having an unusually strange character or behaviour.",
+      "type": "wiktionary_gloss",
+      "importance": 0.14023220539093018
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: want verb To wish for or desire (something); to feel a need or desire for; to crave, hanker, or demand.",
+      "type": "wiktionary_entry",
+      "importance": 0.14272938668727875
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: want: To wish for or desire (something); to feel a need or desire for; to crave, hanker, or demand.",
+      "type": "wiktionary_gloss",
+      "importance": 0.14020182192325592
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.15566430985927582
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.10589731484651566
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.09332677721977234
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.07580289244651794
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.09320025891065598
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.0758223682641983
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.09369433671236038
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.11322206258773804
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.065358005464077
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.11344073712825775
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.06524686515331268
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.14435291290283203
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.12136095017194748
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.1906876266002655
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.12131551653146744
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.07081249356269836
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.12128303945064545
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.05065194517374039
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.08896942436695099
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.1212327778339386
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.0708492323756218
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.088965505361557
+    }
+  ]
+}

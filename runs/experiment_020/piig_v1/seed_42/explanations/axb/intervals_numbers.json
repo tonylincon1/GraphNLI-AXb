@@ -1,0 +1,67 @@
+{
+  "uid": "axb-346",
+  "dataset": "axb",
+  "logic": "Intervals/Numbers",
+  "language": "en",
+  "prediction_binary": 1,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: i have failed my resolutions every year since 1997 and",
+      "type": "premise_phrase",
+      "importance": 0.26463136076927185
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: i failed my resolutions in 2004",
+      "type": "hypothesis_phrase",
+      "importance": 0.25136321783065796
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.22518469393253326
+    },
+    {
+      "id": 3,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.25882071256637573
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.11564028263092041
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.36776232719421387
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.41418367624282837
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.2133871167898178
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.2704913020133972
+    }
+  ]
+}

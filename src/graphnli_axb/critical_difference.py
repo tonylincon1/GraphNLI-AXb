@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from autorank import autorank, create_report, plot_stats
-from scipy.stats import rankdata, studentized_range
+from scipy.stats import rankdata, studentized_range, wilcoxon
 
 
 DISPLAY_NAMES = {
@@ -21,6 +21,8 @@ DISPLAY_NAMES = {
     "kgnli_dual": "KGNLI",
     "pair_cls": "Pair classifier",
     "piig_v4": "Our approach",
+    "piig_pt_lkb_v1": "Our approach PT-LKB",
+    "logicpath_v2": "LogicPath v2",
     "piig_v5": "Our approach v5",
     "piig_v6": "Our approach v6",
 }
@@ -67,7 +69,13 @@ def _rank_groups(ordered: list[tuple[str, float]], cd: float) -> list[list[tuple
     ]
 
 
-def _draw_exploratory_axis(axis, ranks: dict[str, float], cd: float, blocks: int) -> None:
+def _draw_exploratory_axis(
+    axis,
+    ranks: dict[str, float],
+    cd: float,
+    blocks: int,
+    p_value: float | None = None,
+) -> None:
     ordered = sorted(ranks.items(), key=lambda item: (item[1], item[0]))
     axis.set_xlim(0.8, len(ordered) + 0.2)
     axis.set_ylim(-0.55, 0.75)
@@ -86,12 +94,33 @@ def _draw_exploratory_axis(axis, ranks: dict[str, float], cd: float, blocks: int
         axis.plot(rank, 0, "o", color="#2874a6", markersize=7)
         axis.plot([rank, rank], [-0.04, y + 0.035], color="#7f8c8d", linewidth=0.8)
         axis.text(rank, y, f"{name}\n{rank:.2f}", ha="center", va="top", fontsize=8)
-    axis.text(0.02, 0.98, f"Exploratory: {blocks} seeds; autorank requires >= 5", transform=axis.transAxes, fontsize=8, va="top", color="#9c2f2f")
+    if p_value is None:
+        significance = "p-value unavailable"
+    elif p_value < 0.05:
+        significance = f"Wilcoxon p={p_value:.4f}: significant difference"
+    else:
+        significance = f"Wilcoxon p={p_value:.4f}: no significant difference"
+    axis.text(
+        0.02,
+        0.98,
+        f"{blocks} paired seeds | {significance}",
+        transform=axis.transAxes,
+        fontsize=8,
+        va="top",
+        color="#2874a6" if p_value is not None and p_value < 0.05 else "#9c2f2f",
+    )
 
 
-def _write_exploratory_plot(path: Path, ranks: dict[str, float], cd: float, title: str, blocks: int) -> None:
+def _write_exploratory_plot(
+    path: Path,
+    ranks: dict[str, float],
+    cd: float,
+    title: str,
+    blocks: int,
+    p_value: float | None = None,
+) -> None:
     figure, axis = plt.subplots(figsize=(10, 4.8))
-    _draw_exploratory_axis(axis, ranks, cd, blocks)
+    _draw_exploratory_axis(axis, ranks, cd, blocks, p_value)
     axis.set_title(title, pad=18, fontsize=14, fontweight="bold")
     figure.tight_layout()
     figure.savefig(path, format="svg", bbox_inches="tight")
@@ -138,6 +167,7 @@ def _report_for_split(
         display_variants = [DISPLAY_NAMES.get(variant, variant) for variant in variants]
         matrix = np.array([[values[variant][block] for variant in variants] for block in common_blocks], dtype=float)
         rank_matrix = np.vstack([rankdata(-row, method="average") for row in matrix])
+        p_value = float(wilcoxon(matrix[:, 0], matrix[:, 1], alternative="two-sided").pvalue) if len(variants) == 2 else None
         average_ranks = {
             display: float(rank)
             for display, rank in zip(display_variants, rank_matrix.mean(axis=0))
@@ -154,6 +184,7 @@ def _report_for_split(
             "models": display_variants,
             "friedman": {"statistic": None, "p_value": None},
             "autorank": {"available": False, "message": "autorank requires at least five paired seeds."},
+            "pairwise_wilcoxon": {"p_value": p_value, "significant_at_0_05": p_value < 0.05 if p_value is not None else None},
             "nemenyi_critical_difference": cd,
             "average_ranks": average_ranks,
             "non_significant_groups": [[variant for variant, _ in group] for group in groups],
@@ -170,9 +201,9 @@ def _report_for_split(
             writer.writerow(["model", "average_rank"])
             for variant, rank in ordered_ranks:
                 writer.writerow([variant, rank])
-        _write_exploratory_plot(output_dir / f"{stem}.svg", average_ranks, cd, f"Critical Difference: {split}", len(common_blocks))
+        _write_exploratory_plot(output_dir / f"{stem}.svg", average_ranks, cd, f"Critical Difference: {split}", len(common_blocks), p_value)
         if plot_results is not None:
-            plot_results[split] = ("exploratory", average_ranks, cd, len(common_blocks))
+            plot_results[split] = ("exploratory", average_ranks, cd, len(common_blocks), p_value)
         return report
     display_variants = [DISPLAY_NAMES.get(variant, variant) for variant in variants]
     data = pd.DataFrame(
@@ -212,6 +243,10 @@ def _report_for_split(
         "blocks": common_blocks,
         "models": display_variants,
         "friedman": {"statistic": None, "p_value": float(result.pvalue)},
+        "pairwise_wilcoxon": {
+            "p_value": float(result.pvalue) if len(variants) == 2 else None,
+            "significant_at_0_05": bool(result.pvalue < alpha) if len(variants) == 2 else None,
+        },
         "autorank": {
             "omnibus": result.omnibus,
             "posthoc": result.posthoc,
@@ -236,6 +271,25 @@ def _report_for_split(
         for variant, rank in sorted(report["average_ranks"].items(), key=lambda item: item[1]):
             writer.writerow([variant, rank])
     _write_autorank_plot(output_dir / f"{stem}.svg", result, f"Critical Difference: {split}")
+    if math.isnan(cd):
+        # autorank does not provide a Nemenyi CD for two populations and its
+        # Wilcoxon plot is empty. Keep the ranks visible with the same axis
+        # used for exploratory reports, while retaining autorank statistics.
+        _write_exploratory_plot(
+            output_dir / f"{stem}.svg",
+            average_ranks,
+            cd,
+            f"Critical Difference: {split}",
+            len(common_blocks),
+        )
+        if plot_results is not None:
+            plot_results[split] = (
+                "exploratory",
+                average_ranks,
+                cd,
+                len(common_blocks),
+                float(result.pvalue) if len(variants) == 2 else None,
+            )
     return report
 
 
@@ -247,10 +301,10 @@ def _write_combined_plot(output_dir: Path, results: dict[str, object]) -> None:
     for axis, (split, result) in zip(axes_flat, results.items()):
         if (
             isinstance(result, tuple)
-            and len(result) == 4
+            and len(result) in (4, 5)
             and result[0] == "exploratory"
         ):
-            _draw_exploratory_axis(axis, result[1], result[2], result[3])
+            _draw_exploratory_axis(axis, result[1], result[2], result[3], result[4] if len(result) == 5 else None)
         else:
             plot_stats(result, allow_insignificant=True, ax=axis)
         axis.set_title(f"{split}", pad=18, fontsize=14, fontweight="bold")

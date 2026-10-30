@@ -1,0 +1,67 @@
+{
+  "uid": "axb-22",
+  "dataset": "axb",
+  "logic": "Double negation",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: writing java is not too different from programming with handcuffs",
+      "type": "premise_phrase",
+      "importance": 0.24929849803447723
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: writing java is similar to programming with handcuffs",
+      "type": "hypothesis_phrase",
+      "importance": 0.25232309103012085
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.23200196027755737
+    },
+    {
+      "id": 3,
+      "text": "evidence polarity contrast from negation scope",
+      "type": "negation_conflict",
+      "importance": 0.26637646555900574
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.08481357246637344
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.35773706436157227
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.39708101749420166
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.159846693277359
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.40859243273735046
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "uid": "axb-418",
+  "dataset": "axb",
+  "logic": "Temporal",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: she has three questions",
+      "type": "premise_phrase",
+      "importance": 0.14124853909015656
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: she had three questions",
+      "type": "hypothesis_phrase",
+      "importance": 0.14704792201519012
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: three num A numerical value equal to 3; the number following two and preceding four.",
+      "type": "wiktionary_entry",
+      "importance": 0.1394921839237213
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: three: A numerical value equal to 3; the number following two and preceding four.",
+      "type": "wiktionary_gloss",
+      "importance": 0.14258338510990143
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: questions noun plural of question",
+      "type": "wiktionary_entry",
+      "importance": 0.13955524563789368
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: questions: plural of question",
+      "type": "wiktionary_gloss",
+      "importance": 0.14252635836601257
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.14754633605480194
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.10972020775079727
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.09726503491401672
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.07554806023836136
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.09726321697235107
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.0754532516002655
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.09330959618091583
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.10727603733539581
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.06995538622140884
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.10683950036764145
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.07016544044017792
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.13780096173286438
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.11983254551887512
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.18228869140148163
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.11991415917873383
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.07394076138734818
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.1196247786283493
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.06200263649225235
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09179013222455978
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.11970249563455582
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.0738392323255539
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.0918862596154213
+    }
+  ]
+}

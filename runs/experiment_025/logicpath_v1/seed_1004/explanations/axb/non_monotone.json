@@ -1,0 +1,379 @@
+{
+  "uid": "axb-446",
+  "dataset": "axb",
+  "logic": "Non-monotone",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.8064879179000854,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3720545470714569,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2881145477294922,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.2490634322166443,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.1944960653781891,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.35169172286987305,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.31587761640548706,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.4214039146900177,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.2070782631635666,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.26006293296813965,
+      "target": 1.0
+    },
+    "temporal_change": {
+      "score": 0.21075184643268585,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: The latest fatal incident, reported Monday morning, killed a 17-year-old boy and wounded a woman.",
+      "type": "premise_state",
+      "importance": 0.11719173192977905
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: The latest incident, reported Monday morning, killed a 17-year-old boy and wounded a woman.",
+      "type": "hypothesis_state",
+      "importance": 0.12592484056949615
+    },
+    {
+      "id": 2,
+      "text": "premise unit: latest",
+      "type": "premise_unit",
+      "importance": 0.04249297082424164
+    },
+    {
+      "id": 3,
+      "text": "premise unit: fatal",
+      "type": "premise_unit",
+      "importance": 0.04578211158514023
+    },
+    {
+      "id": 4,
+      "text": "premise unit: incident",
+      "type": "premise_unit",
+      "importance": 0.04250708967447281
+    },
+    {
+      "id": 5,
+      "text": "premise unit: reported",
+      "type": "premise_unit",
+      "importance": 0.04251527786254883
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: latest",
+      "type": "hypothesis_unit",
+      "importance": 0.05047700181603432
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: incident",
+      "type": "hypothesis_unit",
+      "importance": 0.05049993097782135
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: reported",
+      "type": "hypothesis_unit",
+      "importance": 0.05051065981388092
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: monday",
+      "type": "hypothesis_unit",
+      "importance": 0.04534393548965454
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: latest -> latest",
+      "type": "transformation",
+      "importance": 0.06256373971700668
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: incident -> incident",
+      "type": "transformation",
+      "importance": 0.06252822279930115
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: reported -> reported",
+      "type": "transformation",
+      "importance": 0.06248725205659866
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: monday -> monday",
+      "type": "transformation",
+      "importance": 0.05243976414203644
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: morning -> morning",
+      "type": "transformation",
+      "importance": 0.03669042885303497
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: killed -> killed",
+      "type": "transformation",
+      "importance": 0.03668195754289627
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: 17 -> 17",
+      "type": "transformation",
+      "importance": 0.036689840257167816
+    },
+    {
+      "id": 17,
+      "text": "transformation numeric_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.03667318448424339
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.036879148334264755
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.04831075668334961
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.25000348687171936
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.04818940535187721
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.04824700951576233
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.1616176962852478
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.16155464947223663
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.16142664849758148
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.18616345524787903
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.27472376823425293
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.2747449576854706
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.2747577428817749
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.2746533155441284
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.04101134464144707
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.040951333940029144
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.041108157485723495
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.04865923523902893
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.23253560066223145
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.23255738615989685
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.2330697625875473
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.24891358613967896
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.2970818281173706
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.2968166470527649
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.2970142960548401
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.2969211935997009
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.2791341543197632
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3417621850967407
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.2796817421913147
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.3414697051048279
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.2800667881965637
+    },
+    {
+      "source": 5,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.34109899401664734
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.37781181931495667
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.3775230944156647
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.376848965883255
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.4700673222541809
+    }
+  ]
+}

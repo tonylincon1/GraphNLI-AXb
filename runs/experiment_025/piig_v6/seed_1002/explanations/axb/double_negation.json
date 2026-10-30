@@ -1,0 +1,457 @@
+{
+  "uid": "axb-22",
+  "dataset": "axb",
+  "logic": "Double negation",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: writing java is not too different from programming with handcuffs",
+      "type": "premise_phrase",
+      "importance": 0.08955077826976776
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: writing java is similar to programming with handcuffs",
+      "type": "hypothesis_phrase",
+      "importance": 0.08585043996572495
+    },
+    {
+      "id": 2,
+      "text": "premise word: writing",
+      "type": "premise_word",
+      "importance": 0.09426166117191315
+    },
+    {
+      "id": 3,
+      "text": "premise word: java",
+      "type": "premise_word",
+      "importance": 0.09424158185720444
+    },
+    {
+      "id": 4,
+      "text": "hypothesis word: writing",
+      "type": "hypothesis_word",
+      "importance": 0.07376962900161743
+    },
+    {
+      "id": 5,
+      "text": "hypothesis word: java",
+      "type": "hypothesis_word",
+      "importance": 0.07376738637685776
+    },
+    {
+      "id": 6,
+      "text": "wiktionary entry: different adj Not the same; exhibiting a difference.",
+      "type": "wiktionary_entry",
+      "importance": 0.08335763216018677
+    },
+    {
+      "id": 7,
+      "text": "wiktionary gloss: different: Not the same; exhibiting a difference.",
+      "type": "wiktionary_gloss",
+      "importance": 0.07765406370162964
+    },
+    {
+      "id": 8,
+      "text": "wiktionary entry: similar adj Having traits or characteristics in common; alike, allied, comparable.",
+      "type": "wiktionary_entry",
+      "importance": 0.08341805636882782
+    },
+    {
+      "id": 9,
+      "text": "wiktionary gloss: similar: Having traits or characteristics in common; alike, allied, comparable.",
+      "type": "wiktionary_gloss",
+      "importance": 0.07771363854408264
+    },
+    {
+      "id": 10,
+      "text": "wiktionary relation: different antonym similar",
+      "type": "wiktionary_relation",
+      "importance": 0.08367405831813812
+    },
+    {
+      "id": 11,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.08274108171463013
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.23215624690055847
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_word",
+      "attention": 0.1266619712114334
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_word",
+      "attention": 0.12670506536960602
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_word",
+      "attention": 0.06619670987129211
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_word",
+      "attention": 0.06624998152256012
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_lexicon",
+      "attention": 0.06405072659254074
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "phrase_lexicon",
+      "attention": 0.0539078488945961
+    },
+    {
+      "source": 0,
+      "target": 8,
+      "relation": "phrase_lexicon",
+      "attention": 0.06415928155183792
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "relation": "phrase_lexicon",
+      "attention": 0.05401093512773514
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "phrase_lexicon",
+      "attention": 0.07672025263309479
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "phrase_evidence",
+      "attention": 0.1396113783121109
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_word",
+      "attention": 0.08322181552648544
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_word",
+      "attention": 0.08323174715042114
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_word",
+      "attention": 0.0626068115234375
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_word",
+      "attention": 0.06260135769844055
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_lexicon",
+      "attention": 0.0727459266781807
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "phrase_lexicon",
+      "attention": 0.05357648432254791
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "phrase_lexicon",
+      "attention": 0.07258301973342896
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "phrase_lexicon",
+      "attention": 0.05347109213471413
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "phrase_lexicon",
+      "attention": 0.06997980177402496
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "phrase_evidence",
+      "attention": 0.09662339091300964
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "word_alignment",
+      "attention": 0.10717682540416718
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "word_lexicon",
+      "attention": 0.18428876996040344
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "word_lexicon",
+      "attention": 0.14720894396305084
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "relation": "word_lexicon",
+      "attention": 0.18439790606498718
+    },
+    {
+      "source": 2,
+      "target": 9,
+      "relation": "word_lexicon",
+      "attention": 0.14733049273490906
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "word_lexicon",
+      "attention": 0.10019873082637787
+    },
+    {
+      "source": 2,
+      "target": 11,
+      "relation": "word_evidence",
+      "attention": 0.12399178743362427
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "word_alignment",
+      "attention": 0.10737684369087219
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "word_lexicon",
+      "attention": 0.18426008522510529
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "word_lexicon",
+      "attention": 0.14696118235588074
+    },
+    {
+      "source": 3,
+      "target": 8,
+      "relation": "word_lexicon",
+      "attention": 0.18436932563781738
+    },
+    {
+      "source": 3,
+      "target": 9,
+      "relation": "word_lexicon",
+      "attention": 0.14708298444747925
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "word_lexicon",
+      "attention": 0.1001562774181366
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "word_evidence",
+      "attention": 0.12396091222763062
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "word_lexicon",
+      "attention": 0.07594435662031174
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "word_lexicon",
+      "attention": 0.0661727711558342
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "word_lexicon",
+      "attention": 0.07616698741912842
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "relation": "word_lexicon",
+      "attention": 0.06633450090885162
+    },
+    {
+      "source": 4,
+      "target": 10,
+      "relation": "word_lexicon",
+      "attention": 0.10460662841796875
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "relation": "word_evidence",
+      "attention": 0.08703503757715225
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "word_lexicon",
+      "attention": 0.0761503353714943
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "word_lexicon",
+      "attention": 0.06583955138921738
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "word_lexicon",
+      "attention": 0.07637326419353485
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "word_lexicon",
+      "attention": 0.06600004434585571
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "relation": "word_lexicon",
+      "attention": 0.10452697426080704
+    },
+    {
+      "source": 5,
+      "target": 11,
+      "relation": "word_evidence",
+      "attention": 0.08698007464408875
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.05182892084121704
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.041556380689144135
+    },
+    {
+      "source": 6,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.05190613120794296
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.04768284782767296
+    },
+    {
+      "source": 6,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.05940789356827736
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.05173848941922188
+    },
+    {
+      "source": 7,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.037873804569244385
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.051427822560071945
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.0503048412501812
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.05181543529033661
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.04760665446519852
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.05940365791320801
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.051375120878219604
+    },
+    {
+      "source": 9,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.05030616745352745
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.05254267901182175
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "uid": "axb-1100",
+  "dataset": "axb",
+  "logic": "Universal;Negation",
+  "language": "en",
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: a general artificial intelligence should always come with an off",
+      "type": "premise_phrase",
+      "importance": 0.3463216722011566
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: the new general artificial intelligence i'm developing shouldn't come with",
+      "type": "hypothesis_phrase",
+      "importance": 0.32238176465034485
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.33129656314849854
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.22272460162639618
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.33995380997657776
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.07696988433599472
+    }
+  ]
+}

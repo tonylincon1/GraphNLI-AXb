@@ -1,0 +1,121 @@
+{
+  "uid": "axb-666",
+  "dataset": "axb",
+  "logic": "Existential;Negation",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: you\u2019re walking through the woods there\u2019s no one around and",
+      "type": "premise_phrase",
+      "importance": 0.17731423676013947
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: you\u2019re walking through the woods there are lurkers are around",
+      "type": "hypothesis_phrase",
+      "importance": 0.16162019968032837
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.12285831570625305
+    },
+    {
+      "id": 3,
+      "text": "evidence polarity contrast from negation scope",
+      "type": "negation_conflict",
+      "importance": 0.14940094947814941
+    },
+    {
+      "id": 4,
+      "text": "evidence lexical generalization candidate; validity depends on quantifier polarity",
+      "type": "lexical_generalization_candidate",
+      "importance": 0.1378570944070816
+    },
+    {
+      "id": 5,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.12220374494791031
+    },
+    {
+      "id": 6,
+      "text": "evidence quantifier polarity context: premise downward quantifier: restrictor polarity is downward",
+      "type": "quantifier_polarity_context",
+      "importance": 0.1287454515695572
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.2581080496311188
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.31169378757476807
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.3403880298137665
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.15416821837425232
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_evidence",
+      "attention": 0.3344086706638336
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.22815705835819244
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.218591570854187
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.3718879222869873
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.11677079647779465
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_evidence",
+      "attention": 0.1531747430562973
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.21590551733970642
+    }
+  ]
+}

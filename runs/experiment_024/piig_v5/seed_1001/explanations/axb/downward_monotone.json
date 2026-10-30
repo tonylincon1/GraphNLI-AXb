@@ -1,0 +1,391 @@
+{
+  "uid": "axb-62",
+  "dataset": "axb",
+  "logic": "Downward monotone",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: we consider all context words as positive examples and sample",
+      "type": "premise_phrase",
+      "importance": 0.10112311691045761
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: we consider all words as positive examples and sample negatives",
+      "type": "hypothesis_phrase",
+      "importance": 0.1123034805059433
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: consider verb To think about seriously.",
+      "type": "wiktionary_entry",
+      "importance": 0.07135209441184998
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: consider: To think about seriously.",
+      "type": "wiktionary_gloss",
+      "importance": 0.09502658247947693
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: all det Every individual or anything of the given class, with no exceptions (the noun or noun phrase denoting the class must be plural or uncountable).",
+      "type": "wiktionary_entry",
+      "importance": 0.07133962959051132
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: all: Every individual or anything of the given class, with no exceptions (the noun or noun phrase denoting the class must be plural or uncountable).",
+      "type": "wiktionary_gloss",
+      "importance": 0.09508981555700302
+    },
+    {
+      "id": 6,
+      "text": "evidence quantifier polarity: premise universal quantifier: restrictor downward, scope upward; hypothesis universal quantifier: restrictor downward, scope upward",
+      "type": "quantifier_polarity_evidence",
+      "importance": 0.07392892241477966
+    },
+    {
+      "id": 7,
+      "text": "evidence monotonicity direction: downward under all at",
+      "type": "monotonicity_direction",
+      "importance": 0.07641488313674927
+    },
+    {
+      "id": 8,
+      "text": "evidence directed lexical relation from premise to hypothesis: identity, hypernym, hyponym",
+      "type": "directed_lexical_relation",
+      "importance": 0.08202314376831055
+    },
+    {
+      "id": 9,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.07290025055408478
+    },
+    {
+      "id": 10,
+      "text": "evidence upward generalization through hyponym to hypernym",
+      "type": "upward_generalization",
+      "importance": 0.07470694184303284
+    },
+    {
+      "id": 11,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.07379119098186493
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.19355152547359467
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.08084283769130707
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.144618421792984
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.08062053471803665
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.14482277631759644
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.11964724957942963
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.11641460657119751
+    },
+    {
+      "source": 0,
+      "target": 8,
+      "relation": "phrase_evidence",
+      "attention": 0.10806481540203094
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "relation": "phrase_evidence",
+      "attention": 0.06961498409509659
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "phrase_evidence",
+      "attention": 0.07462133467197418
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "phrase_evidence",
+      "attention": 0.08309230953454971
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.1181471198797226
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.125369593501091
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.11864155530929565
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.1258045732975006
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.1147245466709137
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.1062125563621521
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "phrase_evidence",
+      "attention": 0.18761269748210907
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "phrase_evidence",
+      "attention": 0.19815532863140106
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "phrase_evidence",
+      "attention": 0.11800393462181091
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "phrase_evidence",
+      "attention": 0.1575259417295456
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.06020296737551689
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.03580394387245178
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.0601370595395565
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.08298264443874359
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.05850021168589592
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.06780064105987549
+    },
+    {
+      "source": 2,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.03846992552280426
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.1449865996837616
+    },
+    {
+      "source": 2,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.058375172317028046
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.060334861278533936
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.11979854106903076
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.07768034934997559
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.11312519013881683
+    },
+    {
+      "source": 3,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.05236983299255371
+    },
+    {
+      "source": 3,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.10888902097940445
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.0784621387720108
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.09702613949775696
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.06026758253574371
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.08305411040782928
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.05854148417711258
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.06763450801372528
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.038580961525440216
+    },
+    {
+      "source": 4,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.14547543227672577
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.05829266086220741
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.07771140336990356
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.11323760449886322
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.05228325352072716
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.10895972698926926
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.07878196239471436
+    },
+    {
+      "source": 5,
+      "target": 11,
+      "relation": "evidence_lexicon",
+      "attention": 0.09686397761106491
+    }
+  ]
+}

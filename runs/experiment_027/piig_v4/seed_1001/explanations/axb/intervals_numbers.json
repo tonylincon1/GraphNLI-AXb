@@ -1,0 +1,223 @@
+{
+  "uid": "axb-346",
+  "dataset": "axb",
+  "logic": "Intervals/Numbers",
+  "language": "en",
+  "prediction_binary": 1,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: i have failed my resolutions every year since 1997 and",
+      "type": "premise_phrase",
+      "importance": 0.1440064162015915
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: i failed my resolutions in 2004",
+      "type": "hypothesis_phrase",
+      "importance": 0.13373059034347534
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: failed verb simple past and past participle of fail",
+      "type": "wiktionary_entry",
+      "importance": 0.1154673770070076
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: failed: simple past and past participle of fail",
+      "type": "wiktionary_gloss",
+      "importance": 0.12832269072532654
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: resolutions noun plural of resolution",
+      "type": "wiktionary_entry",
+      "importance": 0.11582240462303162
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: resolutions: plural of resolution",
+      "type": "wiktionary_gloss",
+      "importance": 0.12869465351104736
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.11343148350715637
+    },
+    {
+      "id": 7,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.12052438408136368
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.2947528064250946
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.1306690275669098
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.13001221418380737
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.13022270798683167
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.12997034192085266
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.18194939196109772
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.1728765368461609
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.10107650607824326
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.17655757069587708
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.10211925208568573
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.17855270206928253
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.12660932540893555
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.12514452636241913
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.09212978184223175
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.06289196014404297
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.09055447578430176
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09234240651130676
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.13713917136192322
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.0919463112950325
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.11551745980978012
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.16404420137405396
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.21657255291938782
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.09038186073303223
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09188218414783478
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.13690917193889618
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.16326215863227844
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.21658074855804443
+    }
+  ]
+}

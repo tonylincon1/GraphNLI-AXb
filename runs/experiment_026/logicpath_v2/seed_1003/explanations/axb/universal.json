@@ -1,0 +1,338 @@
+{
+  "uid": "axb-374",
+  "dataset": "axb",
+  "logic": "Universal",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7503077387809753,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3031332492828369,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.18505297601222992,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.13633081316947937,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.15648005902767181,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.2645570635795593,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.28553134202957153,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.3511444926261902,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.17967940866947174,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.21046681702136993,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.17854562401771545,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Everyone has a set of principles to live by.",
+      "type": "premise_state",
+      "importance": 0.08297549188137054
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Someone has a set of principles to live by.",
+      "type": "hypothesis_state",
+      "importance": 0.05444812402129173
+    },
+    {
+      "id": 2,
+      "text": "premise unit: everyone",
+      "type": "premise_unit",
+      "importance": 0.0628683939576149
+    },
+    {
+      "id": 3,
+      "text": "premise unit: set",
+      "type": "premise_unit",
+      "importance": 0.06912589073181152
+    },
+    {
+      "id": 4,
+      "text": "premise unit: principles",
+      "type": "premise_unit",
+      "importance": 0.05983133614063263
+    },
+    {
+      "id": 5,
+      "text": "premise unit: live",
+      "type": "premise_unit",
+      "importance": 0.059830717742443085
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: someone",
+      "type": "hypothesis_unit",
+      "importance": 0.05727778375148773
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: set",
+      "type": "hypothesis_unit",
+      "importance": 0.06439665704965591
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: principles",
+      "type": "hypothesis_unit",
+      "importance": 0.06268763542175293
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: live",
+      "type": "hypothesis_unit",
+      "importance": 0.06264237314462662
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: set -> set",
+      "type": "transformation",
+      "importance": 0.04956110194325447
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: principles -> principles",
+      "type": "transformation",
+      "importance": 0.04973600432276726
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: live -> live",
+      "type": "transformation",
+      "importance": 0.049770839512348175
+    },
+    {
+      "id": 13,
+      "text": "wiktionary entry: everyone",
+      "type": "wiktionary_entry",
+      "importance": 0.060417983680963516
+    },
+    {
+      "id": 14,
+      "text": "wiktionary gloss: Every individual in a set; every person.",
+      "type": "wiktionary_gloss",
+      "importance": 0.04724009335041046
+    },
+    {
+      "id": 15,
+      "text": "wiktionary entry: set",
+      "type": "wiktionary_entry",
+      "importance": 0.060080595314502716
+    },
+    {
+      "id": 16,
+      "text": "wiktionary gloss: To put (something) down, to rest.",
+      "type": "wiktionary_gloss",
+      "importance": 0.0471089705824852
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.04315432161092758
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.32692277431488037
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.31147193908691406
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.3164498209953308
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.3167187571525574
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.037938959896564484
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.03794680908322334
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.038045722991228104
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.2081722766160965
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.13498330116271973
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.13810856640338898
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.1381949931383133
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.030076878145337105
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.030063513666391373
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.03011516109108925
+    },
+    {
+      "source": 2,
+      "target": 13,
+      "relation": "wiktionary_evidence",
+      "attention": 0.27215099334716797
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.15262718498706818
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.0776139348745346
+    },
+    {
+      "source": 3,
+      "target": 15,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24963535368442535
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.16352079808712006
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.07921075820922852
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.16349276900291443
+    },
+    {
+      "source": 5,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.07919452339410782
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.21572673320770264
+    },
+    {
+      "source": 7,
+      "target": 15,
+      "relation": "wiktionary_evidence",
+      "attention": 0.07592903077602386
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.2187945693731308
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.2182759791612625
+    },
+    {
+      "source": 13,
+      "target": 14,
+      "relation": "wiktionary_evidence",
+      "attention": 0.28426751494407654
+    },
+    {
+      "source": 15,
+      "target": 16,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2821832597255707
+    }
+  ]
+}

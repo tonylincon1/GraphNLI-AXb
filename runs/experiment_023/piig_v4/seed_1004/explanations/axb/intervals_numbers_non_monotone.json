@@ -1,0 +1,181 @@
+{
+  "uid": "axb-658",
+  "dataset": "axb",
+  "logic": "Intervals/Numbers;Non-monotone",
+  "language": "en",
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: just watched the first 15 minutes got bored skipped to",
+      "type": "premise_phrase",
+      "importance": 0.1376013457775116
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: just watched the first 30 minutes got bored skipped to",
+      "type": "hypothesis_phrase",
+      "importance": 0.1347326636314392
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: just adj Factually right, correct; factual.",
+      "type": "wiktionary_entry",
+      "importance": 0.1432557851076126
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: just: Factually right, correct; factual.",
+      "type": "wiktionary_gloss",
+      "importance": 0.14414283633232117
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: watched verb simple past and past participle of watch",
+      "type": "wiktionary_entry",
+      "importance": 0.14324696362018585
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: watched: simple past and past participle of watch",
+      "type": "wiktionary_gloss",
+      "importance": 0.1441022753715515
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.15291811525821686
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.059315599501132965
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.11129776388406754
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.11901220679283142
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.1116417869925499
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.1194673553109169
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.2750215232372284
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.13635605573654175
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.1118459403514862
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.13668784499168396
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.1120242029428482
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.25426363945007324
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.14134250581264496
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.10136237740516663
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.14066286385059357
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.13526958227157593
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.1413438618183136
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.19141709804534912
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.14948254823684692
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.14066743850708008
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.13519862294197083
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.14943446218967438
+    }
+  ]
+}

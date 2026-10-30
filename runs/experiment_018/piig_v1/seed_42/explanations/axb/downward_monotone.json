@@ -1,0 +1,85 @@
+{
+  "uid": "axb-62",
+  "dataset": "axb",
+  "logic": "Downward monotone",
+  "language": "en",
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: we consider all context words as positive examples and sample",
+      "type": "premise_phrase",
+      "importance": 0.24616581201553345
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: we consider all words as positive examples and sample negatives",
+      "type": "hypothesis_phrase",
+      "importance": 0.19059871137142181
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.18899771571159363
+    },
+    {
+      "id": 3,
+      "text": "evidence upward generalization through hyponym to hypernym",
+      "type": "upward_generalization",
+      "importance": 0.20380808413028717
+    },
+    {
+      "id": 4,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.17042964696884155
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.23001420497894287
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.2621462047100067
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.4666938781738281
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.3122462034225464
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.3873559832572937
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.20268090069293976
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.06619252264499664
+    }
+  ]
+}

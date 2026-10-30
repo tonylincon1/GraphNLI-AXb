@@ -1,0 +1,103 @@
+{
+  "uid": "axb-62",
+  "dataset": "axb",
+  "logic": "Downward monotone",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: we consider all context words as positive examples and sample",
+      "type": "premise_phrase",
+      "importance": 0.19169554114341736
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: we consider all words as positive examples and sample negatives",
+      "type": "hypothesis_phrase",
+      "importance": 0.18354955315589905
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.15698623657226562
+    },
+    {
+      "id": 3,
+      "text": "evidence lexical generalization candidate; validity depends on quantifier polarity",
+      "type": "lexical_generalization_candidate",
+      "importance": 0.16054898500442505
+    },
+    {
+      "id": 4,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.14902445673942566
+    },
+    {
+      "id": 5,
+      "text": "evidence quantifier polarity context: premise downward quantifier: restrictor polarity is downward; hypothesis downward quantifier: restrictor polarity is downward",
+      "type": "quantifier_polarity_context",
+      "importance": 0.15819527208805084
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.2996382713317871
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.37762558460235596
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.23582524061203003
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.3828272521495819
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_evidence",
+      "attention": 0.2790656089782715
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.2882135808467865
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.18432386219501495
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.15330664813518524
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_evidence",
+      "attention": 0.24031539261341095
+    }
+  ]
+}

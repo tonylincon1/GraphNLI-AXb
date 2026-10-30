@@ -1,0 +1,85 @@
+{
+  "uid": "axb-6",
+  "dataset": "axb",
+  "logic": "unknown",
+  "language": "en",
+  "prediction_binary": 1,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: out of the box ouya supports media apps such as",
+      "type": "premise_phrase",
+      "importance": 0.25931841135025024
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: out of the box ouya supports twitch tv and xbmc",
+      "type": "hypothesis_phrase",
+      "importance": 0.19056516885757446
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.17413179576396942
+    },
+    {
+      "id": 3,
+      "text": "evidence upward generalization through hyponym to hypernym",
+      "type": "upward_generalization",
+      "importance": 0.20773066580295563
+    },
+    {
+      "id": 4,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.16825397312641144
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.2297348529100418
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.2620964050292969
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.4669380486011505
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.3122093975543976
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.3871145248413086
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.20284031331539154
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.06601996719837189
+    }
+  ]
+}

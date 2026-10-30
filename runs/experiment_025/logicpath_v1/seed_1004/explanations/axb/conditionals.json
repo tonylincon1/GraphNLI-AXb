@@ -1,0 +1,289 @@
+{
+  "uid": "axb-426",
+  "dataset": "axb",
+  "logic": "Conditionals",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7793935537338257,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.32769379019737244,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.24648569524288177,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.22150488197803497,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.18193933367729187,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.31168389320373535,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.29174256324768066,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.3806459307670593,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.1672903150320053,
+      "target": 1.0
+    },
+    "numeric_change": {
+      "score": 0.2159130871295929,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.1905164271593094,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: If Pedro has a donkey, then he beats it.",
+      "type": "premise_state",
+      "importance": 0.11092538386583328
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Pedro beats his donkey.",
+      "type": "hypothesis_state",
+      "importance": 0.10774721950292587
+    },
+    {
+      "id": 2,
+      "text": "premise unit: if",
+      "type": "premise_unit",
+      "importance": 0.060330796986818314
+    },
+    {
+      "id": 3,
+      "text": "premise unit: pedro",
+      "type": "premise_unit",
+      "importance": 0.05638020485639572
+    },
+    {
+      "id": 4,
+      "text": "premise unit: donkey",
+      "type": "premise_unit",
+      "importance": 0.056359343230724335
+    },
+    {
+      "id": 5,
+      "text": "premise unit: then",
+      "type": "premise_unit",
+      "importance": 0.060308102518320084
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: pedro",
+      "type": "hypothesis_unit",
+      "importance": 0.06582959741353989
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: beats",
+      "type": "hypothesis_unit",
+      "importance": 0.059647444635629654
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: his",
+      "type": "hypothesis_unit",
+      "importance": 0.06617817282676697
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: donkey",
+      "type": "hypothesis_unit",
+      "importance": 0.06578344106674194
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: pedro -> pedro",
+      "type": "transformation",
+      "importance": 0.08335678279399872
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: donkey -> donkey",
+      "type": "transformation",
+      "importance": 0.083390973508358
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: beats -> beats",
+      "type": "transformation",
+      "importance": 0.07137312740087509
+    },
+    {
+      "id": 13,
+      "text": "transformation conditional_alignment: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.052389346063137054
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.06018134206533432
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.26112183928489685
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.05778375267982483
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.0579865425825119
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.26151353120803833
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.19008752703666687
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.1905377209186554
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.2150157243013382
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.30328458547592163
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.04722233861684799
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.05485735088586807
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.12855279445648193
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.047265466302633286
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.2648523151874542
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.26510319113731384
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.28097352385520935
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.32868626713752747
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.28008970618247986
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.34112006425857544
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.2794942259788513
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.34120821952819824
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3777899146080017
+    },
+    {
+      "source": 7,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.47117504477500916
+    },
+    {
+      "source": 9,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.377610445022583
+    }
+  ]
+}

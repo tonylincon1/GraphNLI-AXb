@@ -1,0 +1,349 @@
+{
+  "uid": "axb-512",
+  "dataset": "axb",
+  "logic": "Temporal;Intervals/Numbers",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: lt gov dan patrick first unveiled a bathroom bill in",
+      "type": "premise_phrase",
+      "importance": 0.08572807908058167
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: lt gov dan patrick first unveiled a bathroom bill in",
+      "type": "hypothesis_phrase",
+      "importance": 0.08637002855539322
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: gov noun Clipping of government.",
+      "type": "wiktionary_entry",
+      "importance": 0.09337674081325531
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: gov: Clipping of government.",
+      "type": "wiktionary_gloss",
+      "importance": 0.10913629829883575
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: dan noun A title of honour or respect similar to \"master\" or \"Sir\", used of historical and legendary figures of the past.",
+      "type": "wiktionary_entry",
+      "importance": 0.09339049458503723
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: dan: A title of honour or respect similar to \"master\" or \"Sir\", used of historical and legendary figures of the past.",
+      "type": "wiktionary_gloss",
+      "importance": 0.10914233326911926
+    },
+    {
+      "id": 6,
+      "text": "evidence numeric relation: premise numbers ['2017']; hypothesis numbers ['2017']",
+      "type": "numeric_relation_evidence",
+      "importance": 0.0881851464509964
+    },
+    {
+      "id": 7,
+      "text": "evidence directed lexical relation from premise to hypothesis: identity, synonym, hypernym, hyponym",
+      "type": "directed_lexical_relation",
+      "importance": 0.08390601724386215
+    },
+    {
+      "id": 8,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.08611311763525009
+    },
+    {
+      "id": 9,
+      "text": "evidence upward generalization through hyponym to hypernym",
+      "type": "upward_generalization",
+      "importance": 0.08044137060642242
+    },
+    {
+      "id": 10,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.08421037346124649
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.052886731922626495
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.09622852504253387
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.10381943732500076
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.09614287316799164
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.10360591113567352
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.09181918203830719
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.06362795829772949
+    },
+    {
+      "source": 0,
+      "target": 8,
+      "relation": "phrase_evidence",
+      "attention": 0.04853861778974533
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "relation": "phrase_evidence",
+      "attention": 0.06650222837924957
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "phrase_evidence",
+      "attention": 0.05534599721431732
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.0953608900308609
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.13496173918247223
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.09501349180936813
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.13449272513389587
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.09265527129173279
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.04599930718541145
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "phrase_evidence",
+      "attention": 0.04673081263899803
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "phrase_evidence",
+      "attention": 0.09728945791721344
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "phrase_evidence",
+      "attention": 0.06741705536842346
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.0979880839586258
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.05074136704206467
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.09818083047866821
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.10054934024810791
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.08408127725124359
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.09316632896661758
+    },
+    {
+      "source": 2,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.09657907485961914
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.1190839633345604
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.09789779782295227
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.11750054359436035
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.11432917416095734
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.14958584308624268
+    },
+    {
+      "source": 3,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.1352439671754837
+    },
+    {
+      "source": 3,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.13051582872867584
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.088712677359581
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.09808963537216187
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.10041069239377975
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.08388308435678482
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.0932590439915657
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.09677600860595703
+    },
+    {
+      "source": 4,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.11969064921140671
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.11421661823987961
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.14921393990516663
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "evidence_lexicon",
+      "attention": 0.13538329303264618
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "evidence_lexicon",
+      "attention": 0.13129641115665436
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "relation": "evidence_lexicon",
+      "attention": 0.08915005624294281
+    }
+  ]
+}

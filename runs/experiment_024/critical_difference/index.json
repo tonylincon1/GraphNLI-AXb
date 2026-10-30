@@ -1,0 +1,34 @@
+[
+  {
+    "split": "axb",
+    "metric": "binary/mcc",
+    "status": "insufficient_blocks",
+    "models": [
+      "piig_v5"
+    ],
+    "blocks": [
+      "seed_1001",
+      "seed_1002",
+      "seed_1003",
+      "seed_1004",
+      "seed_1005"
+    ],
+    "message": "At least two paired seeds and two models are needed for a critical-difference test."
+  },
+  {
+    "split": "xnli_test_en",
+    "metric": "binary/mcc",
+    "status": "insufficient_blocks",
+    "models": [
+      "piig_v5"
+    ],
+    "blocks": [
+      "seed_1001",
+      "seed_1002",
+      "seed_1003",
+      "seed_1004",
+      "seed_1005"
+    ],
+    "message": "At least two paired seeds and two models are needed for a critical-difference test."
+  }
+]

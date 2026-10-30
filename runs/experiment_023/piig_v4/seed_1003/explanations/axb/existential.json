@@ -1,0 +1,181 @@
+{
+  "uid": "axb-380",
+  "dataset": "axb",
+  "logic": "Existential",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: susan knows how turtles reproduce",
+      "type": "premise_phrase",
+      "importance": 0.1507261097431183
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: someone knows how turtles reproduce",
+      "type": "hypothesis_phrase",
+      "importance": 0.16488277912139893
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: knows verb third-person singular simple present indicative of know",
+      "type": "wiktionary_entry",
+      "importance": 0.13992799818515778
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: knows: third-person singular simple present indicative of know",
+      "type": "wiktionary_gloss",
+      "importance": 0.13066907227039337
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: how adv To what degree or extent.",
+      "type": "wiktionary_entry",
+      "importance": 0.14002051949501038
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: how: To what degree or extent.",
+      "type": "wiktionary_gloss",
+      "importance": 0.13080112636089325
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.14297237992286682
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.2720400393009186
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.12566369771957397
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.14962279796600342
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.12574224174022675
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.1498013436794281
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.1552312970161438
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.21609705686569214
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.19611984491348267
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.2165759801864624
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.19635438919067383
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.20235109329223633
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.08016683161258698
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.0800376832485199
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.07989591360092163
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.08096899837255478
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.08046948164701462
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.0575428307056427
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.0890948474407196
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.08019416779279709
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.08097980171442032
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.08899307250976562
+    }
+  ]
+}

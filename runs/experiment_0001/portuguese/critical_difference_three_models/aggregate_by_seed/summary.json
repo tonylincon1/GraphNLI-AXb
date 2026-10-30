@@ -1,0 +1,227 @@
+[
+  {
+    "variant": "pair_cls",
+    "seed": 1001,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 8,
+    "best_validation_metric": 0.8951153515502259,
+    "elapsed_seconds": 7278.891895532608,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.787535820457931,
+        "binary/accuracy": 0.9124922629201566,
+        "nli3/macro_f1": 0.6806569026310753
+      }
+    }
+  },
+  {
+    "variant": "pair_cls",
+    "seed": 1002,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 4,
+    "best_validation_metric": 0.8965315819694805,
+    "elapsed_seconds": 5526.323194980621,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.8075161188576082,
+        "binary/accuracy": 0.9191439505746907,
+        "nli3/macro_f1": 0.6881758568391151
+      }
+    }
+  },
+  {
+    "variant": "pair_cls",
+    "seed": 1003,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 8,
+    "best_validation_metric": 0.890660825715019,
+    "elapsed_seconds": 7303.983589887619,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.7844105304325338,
+        "binary/accuracy": 0.9116234354934546,
+        "nli3/macro_f1": 0.678299603996254
+      }
+    }
+  },
+  {
+    "variant": "pair_cls",
+    "seed": 1004,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 7,
+    "best_validation_metric": 0.8931563331230158,
+    "elapsed_seconds": 7234.03732919693,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.8157057079230595,
+        "binary/accuracy": 0.9221323002319207,
+        "nli3/macro_f1": 0.6883196114481916
+      }
+    }
+  },
+  {
+    "variant": "pair_cls",
+    "seed": 1005,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 8,
+    "best_validation_metric": 0.893225215117697,
+    "elapsed_seconds": 7382.971091747284,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.819514551505884,
+        "binary/accuracy": 0.9240342913639877,
+        "nli3/macro_f1": 0.6942622930291494
+      }
+    }
+  },
+  {
+    "variant": "piig_v4",
+    "seed": 1001,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 2,
+    "best_validation_metric": 0.8886247752383482,
+    "elapsed_seconds": 4432.941103219986,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.800211377610803,
+        "binary/accuracy": 0.9181929398347805,
+        "nli3/macro_f1": 0.6851333170917154
+      }
+    }
+  },
+  {
+    "variant": "piig_v4",
+    "seed": 1002,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 6,
+    "best_validation_metric": 0.8999936586467019,
+    "elapsed_seconds": 8634.961374759674,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.8134410493896181,
+        "binary/accuracy": 0.9216978401983146,
+        "nli3/macro_f1": 0.6935360955307912
+      }
+    }
+  },
+  {
+    "variant": "piig_v4",
+    "seed": 1003,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 3,
+    "best_validation_metric": 0.9019149693374517,
+    "elapsed_seconds": 5438.073708295822,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.8074796310961304,
+        "binary/accuracy": 0.9202923095598617,
+        "nli3/macro_f1": 0.6870225128770745
+      }
+    }
+  },
+  {
+    "variant": "piig_v4",
+    "seed": 1004,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 6,
+    "best_validation_metric": 0.9002658189225516,
+    "elapsed_seconds": 8641.38162112236,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.8190333855907664,
+        "binary/accuracy": 0.9236369897584319,
+        "nli3/macro_f1": 0.693823530451966
+      }
+    }
+  },
+  {
+    "variant": "piig_v4",
+    "seed": 1005,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 3,
+    "best_validation_metric": 0.8967365670123714,
+    "elapsed_seconds": 4675.170391559601,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.8039626601688056,
+        "binary/accuracy": 0.9203776698036661,
+        "nli3/macro_f1": 0.6870769716630223
+      }
+    }
+  },
+  {
+    "variant": "piig_pt_lkb_v1",
+    "seed": 1001,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 8,
+    "best_validation_metric": 0.8885887124247175,
+    "elapsed_seconds": 6557.795254945755,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.8196544892040741,
+        "binary/accuracy": 0.9246684891291154,
+        "nli3/macro_f1": 0.6910606534486798
+      }
+    }
+  },
+  {
+    "variant": "piig_pt_lkb_v1",
+    "seed": 1002,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 3,
+    "best_validation_metric": 0.8920496010943327,
+    "elapsed_seconds": 5279.741302490234,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.8141833277894167,
+        "binary/accuracy": 0.922979643046531,
+        "nli3/macro_f1": 0.6890973104514817
+      }
+    }
+  },
+  {
+    "variant": "piig_pt_lkb_v1",
+    "seed": 1003,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 4,
+    "best_validation_metric": 0.8887034456027707,
+    "elapsed_seconds": 6271.361823558807,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.8051700408145693,
+        "binary/accuracy": 0.9161548134731247,
+        "nli3/macro_f1": 0.6849143716761502
+      }
+    }
+  },
+  {
+    "variant": "piig_pt_lkb_v1",
+    "seed": 1004,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 7,
+    "best_validation_metric": 0.8928365568259284,
+    "elapsed_seconds": 8195.22831106186,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.8137177602265893,
+        "binary/accuracy": 0.9234629406014605,
+        "nli3/macro_f1": 0.6895981093429954
+      }
+    }
+  },
+  {
+    "variant": "piig_pt_lkb_v1",
+    "seed": 1005,
+    "model_name": "neuralmind/bert-base-portuguese-cased",
+    "best_epoch": 8,
+    "best_validation_metric": 0.8997403255984752,
+    "elapsed_seconds": 9019.02532505989,
+    "eval": {
+      "overall_mean": {
+        "binary/mcc": 0.8188811729103972,
+        "binary/accuracy": 0.9247789948824104,
+        "nli3/macro_f1": 0.6926370782843462
+      }
+    }
+  }
+]

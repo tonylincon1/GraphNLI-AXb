@@ -1,0 +1,410 @@
+{
+  "uid": "axb-48",
+  "dataset": "axb",
+  "logic": "Upward monotone",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7966631650924683,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3273063898086548,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.20858682692050934,
+      "target": 1.0
+    },
+    "hyponym_specialization": {
+      "score": 0.19583702087402344,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.14537225663661957,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.31292667984962463,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.31573164463043213,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.36484280228614807,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.14540354907512665,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.1699560433626175,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.1756516695022583,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Some dogs like to scratch their ears.",
+      "type": "premise_state",
+      "importance": 0.07607836276292801
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Some animals like to scratch their ears.",
+      "type": "hypothesis_state",
+      "importance": 0.07699169218540192
+    },
+    {
+      "id": 2,
+      "text": "premise unit: some",
+      "type": "premise_unit",
+      "importance": 0.048856258392333984
+    },
+    {
+      "id": 3,
+      "text": "premise unit: dogs",
+      "type": "premise_unit",
+      "importance": 0.04918571189045906
+    },
+    {
+      "id": 4,
+      "text": "premise unit: like",
+      "type": "premise_unit",
+      "importance": 0.04883585870265961
+    },
+    {
+      "id": 5,
+      "text": "premise unit: scratch",
+      "type": "premise_unit",
+      "importance": 0.048812806606292725
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: some",
+      "type": "hypothesis_unit",
+      "importance": 0.040705397725105286
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: animals",
+      "type": "hypothesis_unit",
+      "importance": 0.03951582312583923
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: like",
+      "type": "hypothesis_unit",
+      "importance": 0.04030907526612282
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: scratch",
+      "type": "hypothesis_unit",
+      "importance": 0.040281906723976135
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: some -> some",
+      "type": "transformation",
+      "importance": 0.04700691998004913
+    },
+    {
+      "id": 11,
+      "text": "transformation hypernym_generalization: dogs -> animals",
+      "type": "transformation",
+      "importance": 0.04810831695795059
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: like -> like",
+      "type": "transformation",
+      "importance": 0.05050557851791382
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: scratch -> scratch",
+      "type": "transformation",
+      "importance": 0.05053122714161873
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: their -> their",
+      "type": "transformation",
+      "importance": 0.04032902792096138
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: ears -> ears",
+      "type": "transformation",
+      "importance": 0.04032360762357712
+    },
+    {
+      "id": 16,
+      "text": "wiktionary entry: some",
+      "type": "wiktionary_entry",
+      "importance": 0.0676545575261116
+    },
+    {
+      "id": 17,
+      "text": "wiktionary gloss: A certain number (multiple but not all).",
+      "type": "wiktionary_gloss",
+      "importance": 0.03932066634297371
+    },
+    {
+      "id": 18,
+      "text": "wiktionary entry: dogs",
+      "type": "wiktionary_entry",
+      "importance": 0.0670471265912056
+    },
+    {
+      "id": 19,
+      "text": "wiktionary gloss: plural of dog",
+      "type": "wiktionary_gloss",
+      "importance": 0.03960007056593895
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.4290088415145874
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.15174467861652374
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.151533842086792
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.24128597974777222
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.24156340956687927
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.04843618720769882
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.0483078733086586
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.04834122210741043
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.04842238873243332
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.07879267632961273
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.07851734012365341
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.09756633639335632
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.09918355196714401
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.09965768456459045
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.09977097809314728
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.09988731145858765
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.10006377100944519
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.10024741291999817
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.10020224750041962
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.18983794748783112
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.19018925726413727
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.3085189759731293
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.15305987000465393
+    },
+    {
+      "source": 2,
+      "target": 16,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24039578437805176
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.31314170360565186
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.15309958159923553
+    },
+    {
+      "source": 3,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24343401193618774
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.33139532804489136
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.20947499573230743
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.33096206188201904
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.2097163200378418
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.16433069109916687
+    },
+    {
+      "source": 6,
+      "target": 16,
+      "relation": "wiktionary_evidence",
+      "attention": 0.08438513427972794
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.19079676270484924
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.19063512980937958
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.1909172087907791
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.4061090648174286
+    },
+    {
+      "source": 18,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.41335567831993103
+    }
+  ]
+}

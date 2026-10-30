@@ -1,0 +1,355 @@
+{
+  "uid": "axb-48",
+  "dataset": "axb",
+  "logic": "Upward monotone",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.8070664405822754,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3589252829551697,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.26828569173812866,
+      "target": 1.0
+    },
+    "hyponym_specialization": {
+      "score": 0.23688219487667084,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.1834990680217743,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.32610851526260376,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.30145692825317383,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.3977053463459015,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.18618866801261902,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.2387489378452301,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.19649535417556763,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Some dogs like to scratch their ears.",
+      "type": "premise_state",
+      "importance": 0.09333835542201996
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Some animals like to scratch their ears.",
+      "type": "hypothesis_state",
+      "importance": 0.11187706142663956
+    },
+    {
+      "id": 2,
+      "text": "premise unit: some",
+      "type": "premise_unit",
+      "importance": 0.0485941544175148
+    },
+    {
+      "id": 3,
+      "text": "premise unit: dogs",
+      "type": "premise_unit",
+      "importance": 0.0485658124089241
+    },
+    {
+      "id": 4,
+      "text": "premise unit: like",
+      "type": "premise_unit",
+      "importance": 0.048572055995464325
+    },
+    {
+      "id": 5,
+      "text": "premise unit: scratch",
+      "type": "premise_unit",
+      "importance": 0.048541780561208725
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: some",
+      "type": "hypothesis_unit",
+      "importance": 0.05718919634819031
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: animals",
+      "type": "hypothesis_unit",
+      "importance": 0.05716425180435181
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: like",
+      "type": "hypothesis_unit",
+      "importance": 0.057162392884492874
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: scratch",
+      "type": "hypothesis_unit",
+      "importance": 0.05716802179813385
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: some -> some",
+      "type": "transformation",
+      "importance": 0.07127540558576584
+    },
+    {
+      "id": 11,
+      "text": "transformation hypernym_generalization: dogs -> animals",
+      "type": "transformation",
+      "importance": 0.0713113471865654
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: like -> like",
+      "type": "transformation",
+      "importance": 0.07132899016141891
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: scratch -> scratch",
+      "type": "transformation",
+      "importance": 0.07134433835744858
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: their -> their",
+      "type": "transformation",
+      "importance": 0.043281517922878265
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: ears -> ears",
+      "type": "transformation",
+      "importance": 0.0432853177189827
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.04598560184240341
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.05266627296805382
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.05269540473818779
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.05250399559736252
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.05265209823846817
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.17239388823509216
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.172385111451149
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.1725783348083496
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.17276503145694733
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.28596997261047363
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.2858775854110718
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.04335346072912216
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.04336591064929962
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.0434379018843174
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.04334237053990364
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.24538712203502655
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.244976207613945
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.24525023996829987
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.2452038675546646
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.30913591384887695
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.3091789782047272
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.2800801694393158
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3410990238189697
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.27939754724502563
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.34140533208847046
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.2797367572784424
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.3414020836353302
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.27939170598983765
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.3411906063556671
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.37702834606170654
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.377607524394989
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.3775634765625
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.377936452627182
+    }
+  ]
+}

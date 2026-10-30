@@ -1,0 +1,373 @@
+{
+  "uid": "axb-666",
+  "dataset": "axb",
+  "logic": "Existential;Negation",
+  "language": "en",
+  "prediction_3": 2,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7926363348960876,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3461998403072357,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.28548285365104675,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.26896318793296814,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.204767644405365,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.34925776720046997,
+      "target": 1.0
+    },
+    "quantifier_change": {
+      "score": 0.3005982041358948,
+      "target": 1.0
+    },
+    "conjunction_change": {
+      "score": 0.3752623200416565,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.21765165030956268,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.25678926706314087,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.2121886909008026,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: You\u2019re walking through the woods, there\u2019s no one around and your phone is dead, out of the corner of your eye you spot him, Shia LaBeouf!",
+      "type": "premise_state",
+      "importance": 0.17408286035060883
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: You\u2019re walking through the woods, there are lurkers are around and your phone is dead, out of the corner of your eye you spot him, Shia LaBeouf!",
+      "type": "hypothesis_state",
+      "importance": 0.10777555406093597
+    },
+    {
+      "id": 2,
+      "text": "premise unit: you\u2019re",
+      "type": "premise_unit",
+      "importance": 0.05401935428380966
+    },
+    {
+      "id": 3,
+      "text": "premise unit: walking",
+      "type": "premise_unit",
+      "importance": 0.054012950509786606
+    },
+    {
+      "id": 4,
+      "text": "premise unit: through",
+      "type": "premise_unit",
+      "importance": 0.054034002125263214
+    },
+    {
+      "id": 5,
+      "text": "premise unit: woods",
+      "type": "premise_unit",
+      "importance": 0.05403834208846092
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: you\u2019re",
+      "type": "hypothesis_unit",
+      "importance": 0.05619630962610245
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: walking",
+      "type": "hypothesis_unit",
+      "importance": 0.05616660416126251
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: through",
+      "type": "hypothesis_unit",
+      "importance": 0.05615935102105141
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: woods",
+      "type": "hypothesis_unit",
+      "importance": 0.05618240311741829
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: you\u2019re -> you\u2019re",
+      "type": "transformation",
+      "importance": 0.040109261870384216
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: walking -> walking",
+      "type": "transformation",
+      "importance": 0.040115274488925934
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: through -> through",
+      "type": "transformation",
+      "importance": 0.040112413465976715
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: woods -> woods",
+      "type": "transformation",
+      "importance": 0.040106162428855896
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: around -> around",
+      "type": "transformation",
+      "importance": 0.03896351531147957
+    },
+    {
+      "id": 15,
+      "text": "transformation negation_flip: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.03896216303110123
+    },
+    {
+      "id": 16,
+      "text": "transformation quantifier_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.03896353393793106
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.2601105570793152
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.298451691865921
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.2983470857143402
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.29854631423950195
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.29847824573516846
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.2387714385986328
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.2387159913778305
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.23871265351772308
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.23850741982460022
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.26849207282066345
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.26836705207824707
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.26823219656944275
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.1879822015762329
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.18755470216274261
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.18732096254825592
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.18750831484794617
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.10176728665828705
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.10190833359956741
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.10171102732419968
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.10184861719608307
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.16012157499790192
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.16031304001808167
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.16037656366825104
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.5252816677093506
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.04985443502664566
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.5251651406288147
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.04991326481103897
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.5253607034683228
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.04988836869597435
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.5254846215248108
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.049919094890356064
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.13064315915107727
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.13044863939285278
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.13031277060508728
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.13039064407348633
+    }
+  ]
+}

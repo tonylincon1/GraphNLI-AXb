@@ -1,0 +1,67 @@
+{
+  "uid": "axb-354",
+  "dataset": "axb",
+  "logic": "Conjunction",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: both doctor and patient bear some responsibility for successful care",
+      "type": "premise_phrase",
+      "importance": 0.25277960300445557
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: the doctor bears some responsibility for successful care",
+      "type": "hypothesis_phrase",
+      "importance": 0.2544189989566803
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.23543769121170044
+    },
+    {
+      "id": 3,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.2573636472225189
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.11529785394668579
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.36720091104507446
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.414272665977478
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.21434356272220612
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.2707233428955078
+    }
+  ]
+}

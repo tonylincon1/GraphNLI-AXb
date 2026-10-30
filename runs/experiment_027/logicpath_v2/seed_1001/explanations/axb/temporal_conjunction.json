@@ -1,0 +1,356 @@
+{
+  "uid": "axb-720",
+  "dataset": "axb",
+  "logic": "Temporal;Conjunction",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7721551656723022,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3514392077922821,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.23815035820007324,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.20020480453968048,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.17028412222862244,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.35464221239089966,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.28159549832344055,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.4127518832683563,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.18199223279953003,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.2689094543457031,
+      "target": 1.0
+    },
+    "temporal_change": {
+      "score": 0.2568000257015228,
+      "target": 1.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: The regiment returned to Baltimore on May 13, when Major General Benjamin F. Butler occupied the city with several Union regiments in anticipation of a Confederate attack on Baltimore which never developed.",
+      "type": "premise_state",
+      "importance": 0.0724392905831337
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Long before May 13, Major General Benjamin F. Butler occupied the city with several Union regiments in anticipation of a Confederate attack on Baltimore which never developed.",
+      "type": "hypothesis_state",
+      "importance": 0.11224957555532455
+    },
+    {
+      "id": 2,
+      "text": "premise unit: regiment",
+      "type": "premise_unit",
+      "importance": 0.0494525171816349
+    },
+    {
+      "id": 3,
+      "text": "premise unit: returned",
+      "type": "premise_unit",
+      "importance": 0.04943690076470375
+    },
+    {
+      "id": 4,
+      "text": "premise unit: baltimore",
+      "type": "premise_unit",
+      "importance": 0.04069798067212105
+    },
+    {
+      "id": 5,
+      "text": "premise unit: may",
+      "type": "premise_unit",
+      "importance": 0.04276495426893234
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: long",
+      "type": "hypothesis_unit",
+      "importance": 0.041485872119665146
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: before",
+      "type": "hypothesis_unit",
+      "importance": 0.041491422802209854
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: may",
+      "type": "hypothesis_unit",
+      "importance": 0.04092235490679741
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: 13",
+      "type": "hypothesis_unit",
+      "importance": 0.042839761823415756
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: may -> may",
+      "type": "transformation",
+      "importance": 0.06295041739940643
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: 13 -> 13",
+      "type": "transformation",
+      "importance": 0.053832124918699265
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: major -> major",
+      "type": "transformation",
+      "importance": 0.04130030795931816
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: general -> general",
+      "type": "transformation",
+      "importance": 0.04130570590496063
+    },
+    {
+      "id": 14,
+      "text": "transformation numeric_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.04130858927965164
+    },
+    {
+      "id": 15,
+      "text": "transformation temporal_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.04127279669046402
+    },
+    {
+      "id": 16,
+      "text": "wiktionary entry: regiment",
+      "type": "wiktionary_entry",
+      "importance": 0.05133094638586044
+    },
+    {
+      "id": 17,
+      "text": "wiktionary gloss: A unit of armed troops under the command of an officer, and consisting of several smaller units.",
+      "type": "wiktionary_gloss",
+      "importance": 0.04079079627990723
+    },
+    {
+      "id": 18,
+      "text": "wiktionary entry: returned",
+      "type": "wiktionary_entry",
+      "importance": 0.05133616179227829
+    },
+    {
+      "id": 19,
+      "text": "wiktionary gloss: simple past and past participle of return",
+      "type": "wiktionary_gloss",
+      "importance": 0.04079151526093483
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.03809119760990143
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.28798606991767883
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.2870143949985504
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.30895134806632996
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.15651854872703552
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.06240773946046829
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.061212826520204544
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.07558661699295044
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.07530021667480469
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.07642583549022675
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.07616467773914337
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.2985627353191376
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.2985939681529999
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.13194340467453003
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.15926581621170044
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.10514988750219345
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.13776373863220215
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.3195178210735321
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.3190561830997467
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.319998174905777
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.32052144408226013
+    },
+    {
+      "source": 2,
+      "target": 16,
+      "relation": "wiktionary_evidence",
+      "attention": 0.27794191241264343
+    },
+    {
+      "source": 3,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2785193622112274
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.15933386981487274
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.4405284523963928
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3499607443809509
+    },
+    {
+      "source": 9,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.5118245482444763
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.30043303966522217
+    },
+    {
+      "source": 18,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.29994234442710876
+    }
+  ]
+}

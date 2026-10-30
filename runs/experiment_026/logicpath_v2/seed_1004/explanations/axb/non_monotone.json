@@ -1,0 +1,434 @@
+{
+  "uid": "axb-446",
+  "dataset": "axb",
+  "logic": "Non-monotone",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.786790132522583,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.4048219919204712,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2323927879333496,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.20808719098567963,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.15930798649787903,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.30946263670921326,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.35150954127311707,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.40862253308296204,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.1946236938238144,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.22376540303230286,
+      "target": 1.0
+    },
+    "temporal_change": {
+      "score": 0.2297564446926117,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: The latest fatal incident, reported Monday morning, killed a 17-year-old boy and wounded a woman.",
+      "type": "premise_state",
+      "importance": 0.0634307935833931
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: The latest incident, reported Monday morning, killed a 17-year-old boy and wounded a woman.",
+      "type": "hypothesis_state",
+      "importance": 0.03612997755408287
+    },
+    {
+      "id": 2,
+      "text": "premise unit: latest",
+      "type": "premise_unit",
+      "importance": 0.0412057489156723
+    },
+    {
+      "id": 3,
+      "text": "premise unit: fatal",
+      "type": "premise_unit",
+      "importance": 0.03936949372291565
+    },
+    {
+      "id": 4,
+      "text": "premise unit: incident",
+      "type": "premise_unit",
+      "importance": 0.039882320910692215
+    },
+    {
+      "id": 5,
+      "text": "premise unit: reported",
+      "type": "premise_unit",
+      "importance": 0.039863258600234985
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: latest",
+      "type": "hypothesis_unit",
+      "importance": 0.04101898521184921
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: incident",
+      "type": "hypothesis_unit",
+      "importance": 0.04631659761071205
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: reported",
+      "type": "hypothesis_unit",
+      "importance": 0.04633144289255142
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: monday",
+      "type": "hypothesis_unit",
+      "importance": 0.04691610112786293
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: latest -> latest",
+      "type": "transformation",
+      "importance": 0.04676076024770737
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: incident -> incident",
+      "type": "transformation",
+      "importance": 0.04779302701354027
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: reported -> reported",
+      "type": "transformation",
+      "importance": 0.04778430238366127
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: monday -> monday",
+      "type": "transformation",
+      "importance": 0.046553418040275574
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: morning -> morning",
+      "type": "transformation",
+      "importance": 0.04586826637387276
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: killed -> killed",
+      "type": "transformation",
+      "importance": 0.04586637392640114
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: 17 -> 17",
+      "type": "transformation",
+      "importance": 0.045869097113609314
+    },
+    {
+      "id": 17,
+      "text": "transformation numeric_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.045864541083574295
+    },
+    {
+      "id": 18,
+      "text": "wiktionary entry: latest",
+      "type": "wiktionary_entry",
+      "importance": 0.06190899759531021
+    },
+    {
+      "id": 19,
+      "text": "wiktionary gloss: superlative form of late: most late",
+      "type": "wiktionary_gloss",
+      "importance": 0.03470582887530327
+    },
+    {
+      "id": 20,
+      "text": "wiktionary entry: fatal",
+      "type": "wiktionary_entry",
+      "importance": 0.05568265914916992
+    },
+    {
+      "id": 21,
+      "text": "wiktionary gloss: Proceeding from, or appointed by, fate or destiny.",
+      "type": "wiktionary_gloss",
+      "importance": 0.03487800806760788
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.051163434982299805
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.2598850131034851
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.30394917726516724
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.27052706480026245
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.27070173621177673
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.02439507469534874
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.02431047521531582
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.02431628853082657
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.02450675144791603
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.024603642523288727
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.024546852335333824
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.024594441056251526
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.024539299309253693
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.08344774693250656
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.09053359925746918
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.09049747884273529
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.09369844198226929
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.024409517645835876
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.024484099820256233
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.024545719847083092
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.02478862553834915
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.02494017593562603
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.024914953857660294
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.024904169142246246
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.024890219792723656
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.10829220712184906
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.03880782425403595
+    },
+    {
+      "source": 2,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.32530248165130615
+    },
+    {
+      "source": 3,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.36475878953933716
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.15373225510120392
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.056920260190963745
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.15364781022071838
+    },
+    {
+      "source": 5,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.05685298889875412
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.017957540228962898
+    },
+    {
+      "source": 6,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2485273778438568
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.02638314850628376
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.026339735835790634
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.030687322840094566
+    },
+    {
+      "source": 18,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.4004896581172943
+    },
+    {
+      "source": 20,
+      "target": 21,
+      "relation": "wiktionary_evidence",
+      "attention": 0.406419575214386
+    }
+  ]
+}

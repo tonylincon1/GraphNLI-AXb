@@ -1,0 +1,20 @@
+% Generated from experiment_022/summary.json (5 seeds: 1001--1005).
+% Requires: \usepackage{booktabs}
+\begin{table}[ht]
+\centering
+\caption{MCC médio (desvio-padrão) no AX-b e no XNLI.}
+\label{tab:experiment022-overall-mcc}
+\begin{tabular}{lcc}
+\toprule
+Modelo & AX-b MCC & XNLI MCC \\
+\midrule
+KGNLI & \textbf{0.2278 $\pm$ 0.0113} & 0.4996 $\pm$ 0.0253 \\
+Our approach & 0.2221 $\pm$ 0.0132 & 0.5113 $\pm$ 0.0056 \\
+KGAnet & 0.2188 $\pm$ 0.0217 & 0.5091 $\pm$ 0.0231 \\
+Pair classifier & 0.2168 $\pm$ 0.0146 & \textbf{0.5265 $\pm$ 0.0108} \\
+K-BERT & 0.1784 $\pm$ 0.0334 & 0.4945 $\pm$ 0.0233 \\
+\bottomrule
+\end{tabular}
+\\
+\parbox{0.85\linewidth}{\footnotesize Valores reportados como média $\pm$ desvio-padrão entre as cinco seeds. MCC maior é melhor.}
+\end{table}

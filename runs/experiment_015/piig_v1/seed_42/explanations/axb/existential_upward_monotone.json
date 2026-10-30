@@ -1,0 +1,49 @@
+{
+  "uid": "axb-668",
+  "dataset": "axb",
+  "logic": "Existential;Upward monotone",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: weird that you want to show something to a stack",
+      "type": "premise_phrase",
+      "importance": 0.3447290062904358
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: weird that you want to show this video to a",
+      "type": "hypothesis_phrase",
+      "importance": 0.32876989245414734
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.32650110125541687
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.21018144488334656
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.3366726040840149
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.0826723501086235
+    }
+  ]
+}

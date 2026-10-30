@@ -1,0 +1,224 @@
+[
+  {
+    "split": "assin2_test",
+    "metric": "binary/mcc",
+    "status": "ok",
+    "alpha": 0.05,
+    "blocks": [
+      "seed_1001",
+      "seed_1002",
+      "seed_1003",
+      "seed_1004",
+      "seed_1005"
+    ],
+    "models": [
+      "Pair classifier",
+      "Our approach PT-LKB",
+      "Our approach"
+    ],
+    "friedman": {
+      "statistic": null,
+      "p_value": 0.16529888822158642
+    },
+    "pairwise_wilcoxon": {
+      "p_value": null,
+      "significant_at_0_05": null
+    },
+    "autorank": {
+      "omnibus": "friedman",
+      "posthoc": "nemenyi",
+      "all_normal": true,
+      "homoscedastic": true,
+      "effect_size": "cohen_d",
+      "report": "The statistical analysis was conducted for 3 populations with 5 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.048). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and failed to reject the null hypothesis (p=0.080) that the data is homoscedastic. Thus, we assume that our data is homoscedastic.\nBecause we have more than two populations and all populations are normal and homoscedastic, we should use repeated measures ANOVA as omnibus test to determine if there are any significant differences between the mean values of the populations. However, the user decided to force the use of the less powerful Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=1.482 of the Nemenyi test.\nWe failed to reject the null hypothesis (p=0.165) of the Friedman test that there is no difference in the central tendency of the populations Pair classifier (MD=0.798+-0.014, MAD=0.005, MR=2.600), Our approach (MD=0.806+-0.007, MAD=0.001, MR=2.000), and Our approach PT-LKB (MD=0.811+-0.025, MAD=0.002, MR=1.400). Therefore, we assume that there is no statistically significant difference between the median values of the populations."
+    },
+    "nemenyi_critical_difference": 1.4822885537191792,
+    "average_ranks": {
+      "Pair classifier": 2.6,
+      "Our approach": 2.0,
+      "Our approach PT-LKB": 1.4
+    },
+    "non_significant_groups": [
+      [
+        "Our approach PT-LKB",
+        "Our approach",
+        "Pair classifier"
+      ]
+    ],
+    "block_values": {
+      "seed_1001": {
+        "Pair classifier": 0.7883762936020946,
+        "Our approach PT-LKB": 0.8121174349589968,
+        "Our approach": 0.8065107780682507
+      },
+      "seed_1002": {
+        "Pair classifier": 0.7976056865159467,
+        "Our approach PT-LKB": 0.8092454618497357,
+        "Our approach": 0.8043160478689251
+      },
+      "seed_1003": {
+        "Pair classifier": 0.7934308308245748,
+        "Our approach PT-LKB": 0.7826844556215811,
+        "Our approach": 0.8061712697154133
+      },
+      "seed_1004": {
+        "Pair classifier": 0.8023857959732539,
+        "Our approach PT-LKB": 0.8188593360552824,
+        "Our approach": 0.8072045270287196
+      },
+      "seed_1005": {
+        "Pair classifier": 0.8080343989616664,
+        "Our approach PT-LKB": 0.8113227969501806,
+        "Our approach": 0.7975476816634532
+      }
+    }
+  },
+  {
+    "split": "assin_test",
+    "metric": "binary/mcc",
+    "status": "ok",
+    "alpha": 0.05,
+    "blocks": [
+      "seed_1001",
+      "seed_1002",
+      "seed_1003",
+      "seed_1004",
+      "seed_1005"
+    ],
+    "models": [
+      "Pair classifier",
+      "Our approach PT-LKB",
+      "Our approach"
+    ],
+    "friedman": {
+      "statistic": null,
+      "p_value": 0.5488116360940257
+    },
+    "pairwise_wilcoxon": {
+      "p_value": null,
+      "significant_at_0_05": null
+    },
+    "autorank": {
+      "omnibus": "friedman",
+      "posthoc": "nemenyi",
+      "all_normal": true,
+      "homoscedastic": false,
+      "effect_size": "cohen_d",
+      "report": "The statistical analysis was conducted for 3 populations with 5 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.433). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and reject the null hypothesis (p=0.018) that thedata is homoscedastic. Thus, we assume that our data is heteroscedastic.\nBecause we have more than two populations and the populations are normal but heteroscedastic, we use the non-parametric Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We use the post-hoc Nemenyi test to infer which differences are significant. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=1.482 of the Nemenyi test.\nWe failed to reject the null hypothesis (p=0.549) of the Friedman test that there is no difference in the central tendency of the populations Our approach (MD=0.727+-0.028, MAD=0.009, MR=2.400), Pair classifier (MD=0.746+-0.057, MAD=0.020, MR=1.800), and Our approach PT-LKB (MD=0.744+-0.010, MAD=0.004, MR=1.800). Therefore, we assume that there is no statistically significant difference between the median values of the populations."
+    },
+    "nemenyi_critical_difference": 1.4822885537191792,
+    "average_ranks": {
+      "Our approach": 2.4,
+      "Pair classifier": 1.8,
+      "Our approach PT-LKB": 1.8
+    },
+    "non_significant_groups": [
+      [
+        "Our approach PT-LKB",
+        "Pair classifier",
+        "Our approach"
+      ]
+    ],
+    "block_values": {
+      "seed_1001": {
+        "Pair classifier": 0.7111260159969675,
+        "Our approach PT-LKB": 0.7486019137239519,
+        "Our approach": 0.7161093896703918
+      },
+      "seed_1002": {
+        "Pair classifier": 0.7464168378420474,
+        "Our approach PT-LKB": 0.7415267269723175,
+        "Our approach": 0.7355629587378512
+      },
+      "seed_1003": {
+        "Pair classifier": 0.6930648773286822,
+        "Our approach PT-LKB": 0.7540097910745417,
+        "Our approach": 0.7274164314310361
+      },
+      "seed_1004": {
+        "Pair classifier": 0.7598867830744555,
+        "Our approach PT-LKB": 0.7391183282737621,
+        "Our approach": 0.7551769931391307
+      },
+      "seed_1005": {
+        "Pair classifier": 0.7668999040935326,
+        "Our approach PT-LKB": 0.7444586927222276,
+        "Our approach": 0.7181485262428727
+      }
+    }
+  },
+  {
+    "split": "inferbr_test",
+    "metric": "binary/mcc",
+    "status": "ok",
+    "alpha": 0.05,
+    "blocks": [
+      "seed_1001",
+      "seed_1002",
+      "seed_1003",
+      "seed_1004",
+      "seed_1005"
+    ],
+    "models": [
+      "Pair classifier",
+      "Our approach PT-LKB",
+      "Our approach"
+    ],
+    "friedman": {
+      "statistic": null,
+      "p_value": 0.07427357821433378
+    },
+    "pairwise_wilcoxon": {
+      "p_value": null,
+      "significant_at_0_05": null
+    },
+    "autorank": {
+      "omnibus": "friedman",
+      "posthoc": "nemenyi",
+      "all_normal": true,
+      "homoscedastic": true,
+      "effect_size": "cohen_d",
+      "report": "The statistical analysis was conducted for 3 populations with 5 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.282). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and failed to reject the null hypothesis (p=0.968) that the data is homoscedastic. Thus, we assume that our data is homoscedastic.\nBecause we have more than two populations and all populations are normal and homoscedastic, we should use repeated measures ANOVA as omnibus test to determine if there are any significant differences between the mean values of the populations. However, the user decided to force the use of the less powerful Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=1.482 of the Nemenyi test.\nWe failed to reject the null hypothesis (p=0.074) of the Friedman test that there is no difference in the central tendency of the populations Pair classifier (MD=0.879+-0.018, MAD=0.006, MR=2.800), Our approach PT-LKB (MD=0.892+-0.017, MAD=0.009, MR=1.800), and Our approach (MD=0.895+-0.015, MAD=0.006, MR=1.400). Therefore, we assume that there is no statistically significant difference between the median values of the populations."
+    },
+    "nemenyi_critical_difference": 1.4822885537191792,
+    "average_ranks": {
+      "Pair classifier": 2.8,
+      "Our approach PT-LKB": 1.8,
+      "Our approach": 1.4
+    },
+    "non_significant_groups": [
+      [
+        "Our approach",
+        "Our approach PT-LKB",
+        "Pair classifier"
+      ]
+    ],
+    "block_values": {
+      "seed_1001": {
+        "Pair classifier": 0.8631051517747311,
+        "Our approach PT-LKB": 0.8982441189292739,
+        "Our approach": 0.8780139650937663
+      },
+      "seed_1002": {
+        "Pair classifier": 0.8785258322148305,
+        "Our approach PT-LKB": 0.891777794546197,
+        "Our approach": 0.9004441415620779
+      },
+      "seed_1003": {
+        "Pair classifier": 0.8667358831443446,
+        "Our approach PT-LKB": 0.8788158757475849,
+        "Our approach": 0.8888511921419419
+      },
+      "seed_1004": {
+        "Pair classifier": 0.8848445447214691,
+        "Our approach PT-LKB": 0.8831756163507234,
+        "Our approach": 0.8947186366044488
+      },
+      "seed_1005": {
+        "Pair classifier": 0.8836093514624532,
+        "Our approach PT-LKB": 0.9008620290587833,
+        "Our approach": 0.8961917726000904
+      }
+    }
+  }
+]

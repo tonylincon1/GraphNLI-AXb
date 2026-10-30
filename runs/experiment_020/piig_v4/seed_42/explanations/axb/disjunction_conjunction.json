@@ -1,0 +1,181 @@
+{
+  "uid": "axb-748",
+  "dataset": "axb",
+  "logic": "Disjunction;Conjunction",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: hazelnuts have often been found on other mesolithic sites but",
+      "type": "premise_phrase",
+      "importance": 0.1461939513683319
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: hazelnuts have often been found on other mesolithic sites but",
+      "type": "hypothesis_phrase",
+      "importance": 0.13737137615680695
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: often adv Frequently; many times on different occasions.",
+      "type": "wiktionary_entry",
+      "importance": 0.14231924712657928
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: often: Frequently; many times on different occasions.",
+      "type": "wiktionary_gloss",
+      "importance": 0.1429658830165863
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: been verb past participle of be.",
+      "type": "wiktionary_entry",
+      "importance": 0.142267107963562
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: been: past participle of be.",
+      "type": "wiktionary_gloss",
+      "importance": 0.142942413687706
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.14593999087810516
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.08004938066005707
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.16036765277385712
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.11324116587638855
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.16061337292194366
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.1133289784193039
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.2255898267030716
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.08815743029117584
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.10089339315891266
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.0883825272321701
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.10113750398159027
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.1648504137992859
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.19381314516067505
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.14136940240859985
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.19350716471672058
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.14612624049186707
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.19381874799728394
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.13209384679794312
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09453785419464111
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.19350385665893555
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.14618536829948425
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09460563957691193
+    }
+  ]
+}

@@ -1,0 +1,355 @@
+{
+  "uid": "axb-6",
+  "dataset": "axb",
+  "logic": "unknown",
+  "language": "en",
+  "prediction_3": 2,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7618035078048706,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3582537770271301,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2766045033931732,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.26142647862434387,
+      "target": 1.0
+    },
+    "antonym_contradiction": {
+      "score": 0.15415754914283752,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3189646601676941,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.3615034520626068,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.4199727177619934,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.19931147992610931,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.25910839438438416,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.2180718034505844,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Out of the box, Ouya supports media apps such as Twitch.tv and XBMC media player.",
+      "type": "premise_state",
+      "importance": 0.14646945893764496
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Out of the box, Ouya supports Twitch.tv and XBMC media player.",
+      "type": "hypothesis_state",
+      "importance": 0.0851103737950325
+    },
+    {
+      "id": 2,
+      "text": "premise unit: out",
+      "type": "premise_unit",
+      "importance": 0.04418395832180977
+    },
+    {
+      "id": 3,
+      "text": "premise unit: box",
+      "type": "premise_unit",
+      "importance": 0.044198062270879745
+    },
+    {
+      "id": 4,
+      "text": "premise unit: ouya",
+      "type": "premise_unit",
+      "importance": 0.04419105499982834
+    },
+    {
+      "id": 5,
+      "text": "premise unit: supports",
+      "type": "premise_unit",
+      "importance": 0.04421032965183258
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: out",
+      "type": "hypothesis_unit",
+      "importance": 0.046969059854745865
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: box",
+      "type": "hypothesis_unit",
+      "importance": 0.04696192964911461
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: ouya",
+      "type": "hypothesis_unit",
+      "importance": 0.04699131101369858
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: supports",
+      "type": "hypothesis_unit",
+      "importance": 0.04700314626097679
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: out -> out",
+      "type": "transformation",
+      "importance": 0.07858704775571823
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: box -> box",
+      "type": "transformation",
+      "importance": 0.07853567600250244
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: ouya -> ouya",
+      "type": "transformation",
+      "importance": 0.07859589159488678
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: supports -> supports",
+      "type": "transformation",
+      "importance": 0.07854798436164856
+    },
+    {
+      "id": 14,
+      "text": "transformation hyponym_specialization: media -> tv",
+      "type": "transformation",
+      "importance": 0.044715337455272675
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: twitch -> twitch",
+      "type": "transformation",
+      "importance": 0.04472938925027847
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.12337709218263626
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.13219839334487915
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.13261237740516663
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.13204777240753174
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.13219493627548218
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.2925119400024414
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.2923315465450287
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.29225093126296997
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.29212015867233276
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.36250749230384827
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.3624328672885895
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.06180558353662491
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.06206356734037399
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.061983607709407806
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.06173783913254738
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.14714470505714417
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.14696890115737915
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.14680464565753937
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.1468869298696518
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.21316231787204742
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.21357329189777374
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.09897707402706146
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.34784868359565735
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.09896625578403473
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.3475988507270813
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.09899426996707916
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.3480875492095947
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.09925805777311325
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.34786975383758545
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.44925040006637573
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.4489130973815918
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.44951701164245605
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.44920051097869873
+    }
+  ]
+}

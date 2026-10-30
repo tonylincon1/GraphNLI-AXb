@@ -1,0 +1,61 @@
+{
+  "split": "assin2_test",
+  "metric": "binary/mcc",
+  "status": "ok",
+  "alpha": 0.05,
+  "blocks": [
+    "seed_1001",
+    "seed_1002",
+    "seed_1003",
+    "seed_1004",
+    "seed_1005"
+  ],
+  "models": [
+    "Pair classifier",
+    "Our approach"
+  ],
+  "friedman": {
+    "statistic": null,
+    "p_value": 0.15625
+  },
+  "pairwise_wilcoxon": {
+    "p_value": 0.15625,
+    "significant_at_0_05": false
+  },
+  "autorank": {
+    "omnibus": "wilcoxon",
+    "posthoc": null,
+    "all_normal": true,
+    "homoscedastic": true,
+    "effect_size": "cohen_d",
+    "report": "The statistical analysis was conducted for 2 populations with 5 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.048). Therefore, we assume that all populations are normal.\nNo check for homogeneity was required because we only have two populations.\nBecause we have only two populations and both populations are normal, we should use the t-test to determine differences between the mean values of the populations and report the mean value (M) and the standard deviation (SD) for each population. However, the user decided to force the use of the less powerful Wilcoxon signed rank test and we report the median (MD) and the median absolute devivation (MAD) for each population.\nWe failed to reject the null hypothesis (p=0.156) of Wilcoxon's signed rank test that population Our approach (MD=0.806+-0.006, MAD=0.001) is not greater than population Pair classifier (MD=0.798+-0.012, MAD=0.005) . Therefore, we assume that there is no statistically significant difference between the medians of the populations."
+  },
+  "nemenyi_critical_difference": NaN,
+  "average_ranks": {
+    "Pair classifier": 1.8,
+    "Our approach": 1.2
+  },
+  "non_significant_groups": [],
+  "block_values": {
+    "seed_1001": {
+      "Pair classifier": 0.7883762936020946,
+      "Our approach": 0.8065107780682507
+    },
+    "seed_1002": {
+      "Pair classifier": 0.7976056865159467,
+      "Our approach": 0.8043160478689251
+    },
+    "seed_1003": {
+      "Pair classifier": 0.7934308308245748,
+      "Our approach": 0.8061712697154133
+    },
+    "seed_1004": {
+      "Pair classifier": 0.8023857959732539,
+      "Our approach": 0.8072045270287196
+    },
+    "seed_1005": {
+      "Pair classifier": 0.8080343989616664,
+      "Our approach": 0.7975476816634532
+    }
+  }
+}

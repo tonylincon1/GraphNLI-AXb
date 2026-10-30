@@ -1,0 +1,121 @@
+{
+  "uid": "axb-386",
+  "dataset": "axb",
+  "logic": "Disjunction;Conditionals;Negation",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: either there is no bathroom in this house or it",
+      "type": "premise_phrase",
+      "importance": 0.17358727753162384
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: if there is a bathroom in this house it is",
+      "type": "hypothesis_phrase",
+      "importance": 0.1647792011499405
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.12481580674648285
+    },
+    {
+      "id": 3,
+      "text": "evidence polarity contrast from negation scope",
+      "type": "negation_conflict",
+      "importance": 0.152952641248703
+    },
+    {
+      "id": 4,
+      "text": "evidence conditional direction requires an observed antecedent",
+      "type": "conditional_direction",
+      "importance": 0.12713535130023956
+    },
+    {
+      "id": 5,
+      "text": "evidence quantifier polarity context: premise downward quantifier: restrictor polarity is downward",
+      "type": "quantifier_polarity_context",
+      "importance": 0.12917284667491913
+    },
+    {
+      "id": 6,
+      "text": "evidence disjunction scope: one alternative aligns; disjunction alone does not entail that alternative",
+      "type": "disjunction_scope",
+      "importance": 0.1275569200515747
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.2518951892852783
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.3112361431121826
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.3433573842048645
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.20961445569992065
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_evidence",
+      "attention": 0.22791168093681335
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.32017451524734497
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.21932518482208252
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.383148193359375
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.20744922757148743
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_evidence",
+      "attention": 0.216337651014328
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.15134796500205994
+    }
+  ]
+}

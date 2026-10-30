@@ -1,0 +1,181 @@
+{
+  "uid": "axb-880",
+  "dataset": "axb",
+  "logic": "Disjunction;Non-monotone",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: the entity prediction task requires predicting xxxx given the preceding",
+      "type": "premise_phrase",
+      "importance": 0.1407347172498703
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: the entity prediction task requires predicting xxxx given the preceding",
+      "type": "hypothesis_phrase",
+      "importance": 0.14416643977165222
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: entity noun That which has a distinct existence as an individual unit, often used for organizations which have no physical form.",
+      "type": "wiktionary_entry",
+      "importance": 0.14329564571380615
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: entity: That which has a distinct existence as an individual unit, often used for organizations which have no physical form.",
+      "type": "wiktionary_gloss",
+      "importance": 0.13750185072422028
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: prediction noun A statement of what will happen in the future.",
+      "type": "wiktionary_entry",
+      "importance": 0.14326627552509308
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: prediction: A statement of what will happen in the future.",
+      "type": "wiktionary_gloss",
+      "importance": 0.13744999468326569
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.1535850465297699
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.1063683032989502
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.09334900975227356
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.07568107545375824
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.0933142602443695
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.07558438181877136
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.09364296495914459
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.1132546216249466
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.06512774527072906
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.11327261477708817
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.06517260521650314
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.14431023597717285
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.1214430183172226
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.19083015620708466
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.12152372300624847
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.07067900896072388
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.12102784216403961
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.05052940547466278
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.08889085054397583
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.12110920250415802
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.07058490812778473
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.08881993591785431
+    }
+  ]
+}

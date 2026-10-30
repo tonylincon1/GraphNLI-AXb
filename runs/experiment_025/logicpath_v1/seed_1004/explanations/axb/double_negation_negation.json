@@ -1,0 +1,301 @@
+{
+  "uid": "axb-1012",
+  "dataset": "axb",
+  "logic": "Double negation;Negation",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7883495092391968,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.33899766206741333,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2559919059276581,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.22694313526153564,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.18372869491577148,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.32612836360931396,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.29947325587272644,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.3945542275905609,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.1762009561061859,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.22371657192707062,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.1964816153049469,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: It's not the case that there is no rabbi at this wedding; he is right there standing behind that tree.",
+      "type": "premise_state",
+      "importance": 0.12412245571613312
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: There is no rabbi at this wedding, let alone behind that tree.",
+      "type": "hypothesis_state",
+      "importance": 0.10882969945669174
+    },
+    {
+      "id": 2,
+      "text": "premise unit: it's",
+      "type": "premise_unit",
+      "importance": 0.05590168759226799
+    },
+    {
+      "id": 3,
+      "text": "premise unit: not",
+      "type": "premise_unit",
+      "importance": 0.055886950343847275
+    },
+    {
+      "id": 4,
+      "text": "premise unit: case",
+      "type": "premise_unit",
+      "importance": 0.055888980627059937
+    },
+    {
+      "id": 5,
+      "text": "premise unit: there",
+      "type": "premise_unit",
+      "importance": 0.052165694534778595
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: there",
+      "type": "hypothesis_unit",
+      "importance": 0.06122298166155815
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: no",
+      "type": "hypothesis_unit",
+      "importance": 0.05530418083071709
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: rabbi",
+      "type": "hypothesis_unit",
+      "importance": 0.05529715493321419
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: at",
+      "type": "hypothesis_unit",
+      "importance": 0.05533420667052269
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: there -> there",
+      "type": "transformation",
+      "importance": 0.07670703530311584
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: no -> no",
+      "type": "transformation",
+      "importance": 0.06532786786556244
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: rabbi -> rabbi",
+      "type": "transformation",
+      "importance": 0.06533555686473846
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: at -> at",
+      "type": "transformation",
+      "importance": 0.06530778110027313
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: wedding -> wedding",
+      "type": "transformation",
+      "importance": 0.04736778512597084
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.051531288772821426
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.257184773683548
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.25741657614707947
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.25749674439430237
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.05422849953174591
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.17916426062583923
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.20412616431713104
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.20457011461257935
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.20385590195655823
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.29250460863113403
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.04489404708147049
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.052670739591121674
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.052679091691970825
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.052685901522636414
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.2536190152168274
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.26926520466804504
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.26952114701271057
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.26959115266799927
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.317436546087265
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.28021693229675293
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3407653570175171
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3773530125617981
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.470844030380249
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.47040170431137085
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.4705459475517273
+    }
+  ]
+}

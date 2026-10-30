@@ -1,0 +1,97 @@
+{
+  "uid": "axb-658",
+  "dataset": "axb",
+  "logic": "Intervals/Numbers;Non-monotone",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: just watched the first 15 minutes got bored skipped to",
+      "type": "premise_phrase",
+      "importance": 0.18625673651695251
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: just watched the first 30 minutes got bored skipped to",
+      "type": "hypothesis_phrase",
+      "importance": 0.19595327973365784
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.19796977937221527
+    },
+    {
+      "id": 3,
+      "text": "external knowledge: wikidata entity: GIF Q2192 bitmap image file format family instance of raster-graphics file format lossless compression image compression video compression subclass of format facts instance of raster-graphics file format instance of lossless compression instance of image compression instance of video compression",
+      "type": "external_knowledge",
+      "importance": 0.21024221181869507
+    },
+    {
+      "id": 4,
+      "text": "evidence entity type path from linked external knowledge",
+      "type": "entity_type_path",
+      "importance": 0.2095779925584793
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.176430344581604
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.2182612270116806
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_knowledge",
+      "attention": 0.14794160425662994
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_knowledge",
+      "attention": 0.28682851791381836
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.2466242015361786
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_knowledge",
+      "attention": 0.14825426042079926
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_knowledge",
+      "attention": 0.2605699300765991
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_knowledge",
+      "attention": 0.4462472200393677
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_knowledge",
+      "attention": 0.3764297664165497
+    }
+  ]
+}

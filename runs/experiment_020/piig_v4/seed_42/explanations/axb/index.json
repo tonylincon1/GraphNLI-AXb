@@ -1,0 +1,152 @@
+[
+  {
+    "logic": "Negation",
+    "uid": "axb-0",
+    "file": "negation.svg"
+  },
+  {
+    "logic": "unknown",
+    "uid": "axb-6",
+    "file": "unknown.svg"
+  },
+  {
+    "logic": "Negation;Conditionals",
+    "uid": "axb-20",
+    "file": "negation_conditionals.svg"
+  },
+  {
+    "logic": "Double negation",
+    "uid": "axb-22",
+    "file": "double_negation.svg"
+  },
+  {
+    "logic": "Upward monotone",
+    "uid": "axb-48",
+    "file": "upward_monotone.svg"
+  },
+  {
+    "logic": "Downward monotone",
+    "uid": "axb-62",
+    "file": "downward_monotone.svg"
+  },
+  {
+    "logic": "Intervals/Numbers",
+    "uid": "axb-346",
+    "file": "intervals_numbers.svg"
+  },
+  {
+    "logic": "Conjunction",
+    "uid": "axb-354",
+    "file": "conjunction.svg"
+  },
+  {
+    "logic": "Conjunction;Negation",
+    "uid": "axb-356",
+    "file": "conjunction_negation.svg"
+  },
+  {
+    "logic": "Disjunction",
+    "uid": "axb-366",
+    "file": "disjunction.svg"
+  },
+  {
+    "logic": "Disjunction;Negation",
+    "uid": "axb-368",
+    "file": "disjunction_negation.svg"
+  },
+  {
+    "logic": "Universal",
+    "uid": "axb-374",
+    "file": "universal.svg"
+  },
+  {
+    "logic": "Existential",
+    "uid": "axb-380",
+    "file": "existential.svg"
+  },
+  {
+    "logic": "Disjunction;Conditionals;Negation",
+    "uid": "axb-386",
+    "file": "disjunction_conditionals_negation.svg"
+  },
+  {
+    "logic": "Temporal",
+    "uid": "axb-418",
+    "file": "temporal.svg"
+  },
+  {
+    "logic": "Conditionals",
+    "uid": "axb-426",
+    "file": "conditionals.svg"
+  },
+  {
+    "logic": "Non-monotone",
+    "uid": "axb-446",
+    "file": "non_monotone.svg"
+  },
+  {
+    "logic": "Temporal;Intervals/Numbers",
+    "uid": "axb-512",
+    "file": "temporal_intervals_numbers.svg"
+  },
+  {
+    "logic": "Downward monotone;Conditionals",
+    "uid": "axb-626",
+    "file": "downward_monotone_conditionals.svg"
+  },
+  {
+    "logic": "Intervals/Numbers;Non-monotone",
+    "uid": "axb-658",
+    "file": "intervals_numbers_non_monotone.svg"
+  },
+  {
+    "logic": "Existential;Negation",
+    "uid": "axb-666",
+    "file": "existential_negation.svg"
+  },
+  {
+    "logic": "Existential;Upward monotone",
+    "uid": "axb-668",
+    "file": "existential_upward_monotone.svg"
+  },
+  {
+    "logic": "Temporal;Conjunction",
+    "uid": "axb-720",
+    "file": "temporal_conjunction.svg"
+  },
+  {
+    "logic": "Disjunction;Conjunction",
+    "uid": "axb-748",
+    "file": "disjunction_conjunction.svg"
+  },
+  {
+    "logic": "Downward monotone;Existential;Negation",
+    "uid": "axb-814",
+    "file": "downward_monotone_existential_negation.svg"
+  },
+  {
+    "logic": "Universal;Conjunction",
+    "uid": "axb-842",
+    "file": "universal_conjunction.svg"
+  },
+  {
+    "logic": "Conjunction;Upward monotone",
+    "uid": "axb-872",
+    "file": "conjunction_upward_monotone.svg"
+  },
+  {
+    "logic": "Disjunction;Non-monotone",
+    "uid": "axb-880",
+    "file": "disjunction_non_monotone.svg"
+  },
+  {
+    "logic": "Double negation;Negation",
+    "uid": "axb-1012",
+    "file": "double_negation_negation.svg"
+  },
+  {
+    "logic": "Universal;Negation",
+    "uid": "axb-1100",
+    "file": "universal_negation.svg"
+  }
+]

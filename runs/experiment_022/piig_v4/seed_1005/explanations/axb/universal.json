@@ -1,0 +1,181 @@
+{
+  "uid": "axb-374",
+  "dataset": "axb",
+  "logic": "Universal",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: everyone has a set of principles to live by",
+      "type": "premise_phrase",
+      "importance": 0.17229871451854706
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: someone has a set of principles to live by",
+      "type": "hypothesis_phrase",
+      "importance": 0.14895935356616974
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: everyone pron Every individual in a set; every person.",
+      "type": "wiktionary_entry",
+      "importance": 0.13040544092655182
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: everyone: Every individual in a set; every person.",
+      "type": "wiktionary_gloss",
+      "importance": 0.13419117033481598
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: set verb To put (something) down, to rest.",
+      "type": "wiktionary_entry",
+      "importance": 0.1303868442773819
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: set: To put (something) down, to rest.",
+      "type": "wiktionary_gloss",
+      "importance": 0.13417702913284302
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.1495814174413681
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.29407423734664917
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.1687578707933426
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.1462196409702301
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.16886697709560394
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.14643539488315582
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.3073529601097107
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.11176124215126038
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.12543492019176483
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.11168356239795685
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.12528906762599945
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.2529515326023102
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.08962901681661606
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.10454468429088593
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.08987222611904144
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.1293925791978836
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.08944859355688095
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.17202910780906677
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.11255359649658203
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.08968877792358398
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.12941201031208038
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.11244132369756699
+    }
+  ]
+}

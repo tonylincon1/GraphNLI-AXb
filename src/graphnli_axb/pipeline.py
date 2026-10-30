@@ -210,6 +210,7 @@ def run_pipeline(name: str, pipeline: dict, global_config: dict, experiment_dir:
     seeds = [int(x) for x in pipeline.get("seeds", global_config.get("seeds", [42]))]
     tuning = dict(global_config.get("tuning", {}))
     tuning.update(pipeline.get("tuning", {}))
+    reuse_tuning_from = pipeline.get("reuse_tuning_from", tuning.get("reuse_tuning_from"))
     pipeline_dir = experiment_dir / name
     results, tuning_reports = [], []
     for model_name in model_names:
@@ -218,7 +219,28 @@ def run_pipeline(name: str, pipeline: dict, global_config: dict, experiment_dir:
             tune_dir = pipeline_dir / "tuning" / model_slug / variant
             tune_dir.mkdir(parents=True, exist_ok=True)
             study_path = tune_dir / "study.json"
-            if study_path.exists():
+            if reuse_tuning_from:
+                source_study_path = (
+                    project_root()
+                    / global_config.get("output_dir", "runs")
+                    / str(reuse_tuning_from)
+                    / name
+                    / "tuning"
+                    / model_slug
+                    / variant
+                    / "study.json"
+                )
+                if not source_study_path.exists():
+                    raise FileNotFoundError(
+                        f"Tuning study for {name}/{model_name}/{variant} was not found at {source_study_path}"
+                    )
+                report = json.loads(source_study_path.read_text(encoding="utf-8"))
+                report = dict(report)
+                report["reused_from"] = str(source_study_path)
+                # Keep a provenance copy in the new experiment without rerunning trials.
+                study_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+                print(f"Reusing tuning: {source_study_path}")
+            elif study_path.exists():
                 report = json.loads(study_path.read_text(encoding="utf-8"))
             else:
                 report = tune_variant(model_name, variant, train_rows, val_rows, base, tuning, tune_dir / "trials")

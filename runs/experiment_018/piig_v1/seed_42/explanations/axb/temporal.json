@@ -1,0 +1,49 @@
+{
+  "uid": "axb-418",
+  "dataset": "axb",
+  "logic": "Temporal",
+  "language": "en",
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: she has three questions",
+      "type": "premise_phrase",
+      "importance": 0.40539032220840454
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: she had three questions",
+      "type": "hypothesis_phrase",
+      "importance": 0.29002830386161804
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.30458134412765503
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.3056786060333252
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.4490405321121216
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.49604690074920654
+    }
+  ]
+}

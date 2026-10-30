@@ -1,0 +1,223 @@
+{
+  "uid": "axb-720",
+  "dataset": "axb",
+  "logic": "Temporal;Conjunction",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: the regiment returned to baltimore on may 13 when major",
+      "type": "premise_phrase",
+      "importance": 0.1198636144399643
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: long before may 13 major general benjamin f butler occupied",
+      "type": "hypothesis_phrase",
+      "importance": 0.1246408224105835
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: regiment noun A unit of armed troops under the command of an officer, and consisting of several smaller units.",
+      "type": "wiktionary_entry",
+      "importance": 0.11473368853330612
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: regiment: A unit of armed troops under the command of an officer, and consisting of several smaller units.",
+      "type": "wiktionary_gloss",
+      "importance": 0.12614311277866364
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: returned verb simple past and past participle of return",
+      "type": "wiktionary_entry",
+      "importance": 0.11454471945762634
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: returned: simple past and past participle of return",
+      "type": "wiktionary_gloss",
+      "importance": 0.12616996467113495
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.15403814613819122
+    },
+    {
+      "id": 7,
+      "text": "evidence conditional direction requires an observed antecedent",
+      "type": "conditional_direction",
+      "importance": 0.11986596137285233
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.278328001499176
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.12283428013324738
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.13042984902858734
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.12314413487911224
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.13106906414031982
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.17950443923473358
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.19530878961086273
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.10514000803232193
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.1890546828508377
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.10446597635746002
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.18732163310050964
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.12464277446269989
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "phrase_evidence",
+      "attention": 0.13178212940692902
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.09597894549369812
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.06763189285993576
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.09599536657333374
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09445475041866302
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.15670180320739746
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.09612853825092316
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.13245129585266113
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.1725909411907196
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.16230051219463348
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.09612787514925003
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.09402664005756378
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.15779048204421997
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.17167901992797852
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "evidence_lexicon",
+      "attention": 0.16301460564136505
+    }
+  ]
+}

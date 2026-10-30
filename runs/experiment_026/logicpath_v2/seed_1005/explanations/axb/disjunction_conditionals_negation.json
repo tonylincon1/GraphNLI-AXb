@@ -1,0 +1,416 @@
+{
+  "uid": "axb-386",
+  "dataset": "axb",
+  "logic": "Disjunction;Conditionals;Negation",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.5816842913627625,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.44278931617736816,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.4674185812473297,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.38236159086227417,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.3436213731765747,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.45573219656944275,
+      "target": 1.0
+    },
+    "quantifier_change": {
+      "score": 0.49101772904396057,
+      "target": 1.0
+    },
+    "conjunction_change": {
+      "score": 0.4857637286186218,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.37153691053390503,
+      "target": 1.0
+    },
+    "numeric_change": {
+      "score": 0.4065481126308441,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.37990280985832214,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Either there is no bathroom in this house, or it is in a funny place.",
+      "type": "premise_state",
+      "importance": 0.08141130208969116
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: If there is a bathroom in this house, it is in a funny place.",
+      "type": "hypothesis_state",
+      "importance": 0.14652346074581146
+    },
+    {
+      "id": 2,
+      "text": "premise unit: either",
+      "type": "premise_unit",
+      "importance": 0.03749707713723183
+    },
+    {
+      "id": 3,
+      "text": "premise unit: there",
+      "type": "premise_unit",
+      "importance": 0.0316273495554924
+    },
+    {
+      "id": 4,
+      "text": "premise unit: no",
+      "type": "premise_unit",
+      "importance": 0.037486035376787186
+    },
+    {
+      "id": 5,
+      "text": "premise unit: bathroom",
+      "type": "premise_unit",
+      "importance": 0.033261738717556
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: if",
+      "type": "hypothesis_unit",
+      "importance": 0.03829508274793625
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: there",
+      "type": "hypothesis_unit",
+      "importance": 0.03881869837641716
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: bathroom",
+      "type": "hypothesis_unit",
+      "importance": 0.04320128634572029
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: house",
+      "type": "hypothesis_unit",
+      "importance": 0.036089926958084106
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: there -> there",
+      "type": "transformation",
+      "importance": 0.05244116857647896
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: bathroom -> bathroom",
+      "type": "transformation",
+      "importance": 0.049583178013563156
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: house -> house",
+      "type": "transformation",
+      "importance": 0.040950026363134384
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: funny -> funny",
+      "type": "transformation",
+      "importance": 0.030575383454561234
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: place -> place",
+      "type": "transformation",
+      "importance": 0.030580146238207817
+    },
+    {
+      "id": 15,
+      "text": "transformation negation_flip: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.030587254092097282
+    },
+    {
+      "id": 16,
+      "text": "transformation quantifier_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.030587250366806984
+    },
+    {
+      "id": 17,
+      "text": "transformation conditional_alignment: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.030580326914787292
+    },
+    {
+      "id": 18,
+      "text": "wiktionary entry: bathroom",
+      "type": "wiktionary_entry",
+      "importance": 0.04322800412774086
+    },
+    {
+      "id": 19,
+      "text": "wiktionary gloss: A room containing a shower or bathtub, and (typically but not necessarily) a toilet.",
+      "type": "wiktionary_gloss",
+      "importance": 0.04634436219930649
+    },
+    {
+      "id": 20,
+      "text": "wiktionary entry: place",
+      "type": "wiktionary_entry",
+      "importance": 0.039456792175769806
+    },
+    {
+      "id": 21,
+      "text": "wiktionary gloss: An area; somewhere within an area.",
+      "type": "wiktionary_gloss",
+      "importance": 0.050874147564172745
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.10928276926279068
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.2205267995595932
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.0568949356675148
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.22084380686283112
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.044713057577610016
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.12924212217330933
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.12919104099273682
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.13878609240055084
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.1690039038658142
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.16952946782112122
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.1690773069858551
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.16917383670806885
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.16897648572921753
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.22083495557308197
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.11844427138566971
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.10176745057106018
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.13271690905094147
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.27863043546676636
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.27640119194984436
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.30390042066574097
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.3953742980957031
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.39492321014404297
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.3952590823173523
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.3951879143714905
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.39530402421951294
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.1510479748249054
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.37232697010040283
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.12502360343933105
+    },
+    {
+      "source": 5,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.32493436336517334
+    },
+    {
+      "source": 5,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.14106963574886322
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3595691919326782
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.3368588089942932
+    },
+    {
+      "source": 8,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.20035167038440704
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.40116316080093384
+    },
+    {
+      "source": 18,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.42141449451446533
+    },
+    {
+      "source": 18,
+      "target": 20,
+      "relation": "wiktionary_relation",
+      "attention": 0.05729612708091736
+    },
+    {
+      "source": 20,
+      "target": 21,
+      "relation": "wiktionary_evidence",
+      "attention": 0.534100353717804
+    }
+  ]
+}

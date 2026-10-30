@@ -1,0 +1,49 @@
+{
+  "uid": "axb-748",
+  "dataset": "axb",
+  "logic": "Disjunction;Conjunction",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: hazelnuts have often been found on other mesolithic sites but",
+      "type": "premise_phrase",
+      "importance": 0.32979628443717957
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: hazelnuts have often been found on other mesolithic sites but",
+      "type": "hypothesis_phrase",
+      "importance": 0.32501065731048584
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.34519311785697937
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.22265881299972534
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.34024250507354736
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.0770651251077652
+    }
+  ]
+}

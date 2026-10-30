@@ -1,0 +1,85 @@
+{
+  "uid": "axb-872",
+  "dataset": "axb",
+  "logic": "Conjunction;Upward monotone",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: understanding a long document requires tracking how entities are introduced",
+      "type": "premise_phrase",
+      "importance": 0.21349270641803741
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: understanding a long document requires understanding how entities are introduced",
+      "type": "hypothesis_phrase",
+      "importance": 0.21604344248771667
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.18800419569015503
+    },
+    {
+      "id": 3,
+      "text": "evidence upward generalization through hyponym to hypernym",
+      "type": "upward_generalization",
+      "importance": 0.17529310286045074
+    },
+    {
+      "id": 4,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.20716653764247894
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.09706688672304153
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.36517995595932007
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.27159184217453003
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.37610024213790894
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.19108882546424866
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.2876661419868469
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.24131536483764648
+    }
+  ]
+}

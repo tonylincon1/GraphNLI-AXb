@@ -1,0 +1,260 @@
+{
+  "uid": "axb-418",
+  "dataset": "axb",
+  "logic": "Temporal",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 1,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7190636992454529,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.32872065901756287,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2212638407945633,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.20722059905529022,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.15886354446411133,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.2911401093006134,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.33905619382858276,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.38263624906539917,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.14950232207775116,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.23089057207107544,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.21136528253555298,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: She has three questions.",
+      "type": "premise_state",
+      "importance": 0.08576774597167969
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: She had three questions.",
+      "type": "hypothesis_state",
+      "importance": 0.06671328097581863
+    },
+    {
+      "id": 2,
+      "text": "premise unit: three",
+      "type": "premise_unit",
+      "importance": 0.08065515756607056
+    },
+    {
+      "id": 3,
+      "text": "premise unit: questions",
+      "type": "premise_unit",
+      "importance": 0.08065544813871384
+    },
+    {
+      "id": 4,
+      "text": "hypothesis unit: three",
+      "type": "hypothesis_unit",
+      "importance": 0.08006628602743149
+    },
+    {
+      "id": 5,
+      "text": "hypothesis unit: questions",
+      "type": "hypothesis_unit",
+      "importance": 0.08008451014757156
+    },
+    {
+      "id": 6,
+      "text": "transformation lexical_identity: three -> three",
+      "type": "transformation",
+      "importance": 0.08714573085308075
+    },
+    {
+      "id": 7,
+      "text": "transformation lexical_identity: questions -> questions",
+      "type": "transformation",
+      "importance": 0.08715023845434189
+    },
+    {
+      "id": 8,
+      "text": "wiktionary entry: three",
+      "type": "wiktionary_entry",
+      "importance": 0.10992419719696045
+    },
+    {
+      "id": 9,
+      "text": "wiktionary gloss: A numerical value equal to 3; the number following two and preceding four.",
+      "type": "wiktionary_gloss",
+      "importance": 0.0659385696053505
+    },
+    {
+      "id": 10,
+      "text": "wiktionary entry: questions",
+      "type": "wiktionary_entry",
+      "importance": 0.10996350646018982
+    },
+    {
+      "id": 11,
+      "text": "wiktionary gloss: plural of question",
+      "type": "wiktionary_gloss",
+      "importance": 0.06593532860279083
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.09767073392868042
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.3258365988731384
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.3260294795036316
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "operation",
+      "attention": 0.041311271488666534
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "operation",
+      "attention": 0.04140758886933327
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.14476925134658813
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.14513573050498962
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "operation",
+      "attention": 0.03502830117940903
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "operation",
+      "attention": 0.03509459272027016
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "lexical_relation",
+      "attention": 0.10835793614387512
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "operation",
+      "attention": 0.038770291954278946
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "relation": "wiktionary_evidence",
+      "attention": 0.32521504163742065
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "lexical_relation",
+      "attention": 0.10823187232017517
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "operation",
+      "attention": 0.0387624129652977
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "wiktionary_evidence",
+      "attention": 0.32543694972991943
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "operation",
+      "attention": 0.017949700355529785
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24840794503688812
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "operation",
+      "attention": 0.017899198457598686
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24864445626735687
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "relation": "wiktionary_evidence",
+      "attention": 0.4005846381187439
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "relation": "wiktionary_evidence",
+      "attention": 0.4007854461669922
+    }
+  ]
+}

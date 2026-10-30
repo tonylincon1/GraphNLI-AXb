@@ -1,0 +1,36 @@
+[
+  {
+    "split": "axb",
+    "metric": "binary/mcc",
+    "status": "insufficient_blocks",
+    "models": [
+      "kbert_injection",
+      "kganet_rel_gat",
+      "kgnli_dual",
+      "pair_cls",
+      "piig_v1",
+      "piig_v4"
+    ],
+    "blocks": [
+      "seed_42"
+    ],
+    "message": "At least two paired seeds and two models are needed for a critical-difference test."
+  },
+  {
+    "split": "xnli_test_en",
+    "metric": "binary/mcc",
+    "status": "insufficient_blocks",
+    "models": [
+      "kbert_injection",
+      "kganet_rel_gat",
+      "kgnli_dual",
+      "pair_cls",
+      "piig_v1",
+      "piig_v4"
+    ],
+    "blocks": [
+      "seed_42"
+    ],
+    "message": "At least two paired seeds and two models are needed for a critical-difference test."
+  }
+]

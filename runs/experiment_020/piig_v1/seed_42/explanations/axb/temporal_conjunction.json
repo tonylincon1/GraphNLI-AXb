@@ -1,0 +1,67 @@
+{
+  "uid": "axb-720",
+  "dataset": "axb",
+  "logic": "Temporal;Conjunction",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: the regiment returned to baltimore on may 13 when major",
+      "type": "premise_phrase",
+      "importance": 0.25195562839508057
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: long before may 13 major general benjamin f butler occupied",
+      "type": "hypothesis_phrase",
+      "importance": 0.26921114325523376
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.23784294724464417
+    },
+    {
+      "id": 3,
+      "text": "evidence conditional direction requires an observed antecedent",
+      "type": "conditional_direction",
+      "importance": 0.2409902960062027
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.13025717437267303
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.38038045167922974
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.28493738174438477
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.21800994873046875
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.3783184885978699
+    }
+  ]
+}

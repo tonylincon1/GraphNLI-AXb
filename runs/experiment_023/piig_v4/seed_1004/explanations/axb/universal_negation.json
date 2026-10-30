@@ -1,0 +1,181 @@
+{
+  "uid": "axb-1100",
+  "dataset": "axb",
+  "logic": "Universal;Negation",
+  "language": "en",
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: a general artificial intelligence should always come with an off",
+      "type": "premise_phrase",
+      "importance": 0.13874660432338715
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: the new general artificial intelligence i'm developing shouldn't come with",
+      "type": "hypothesis_phrase",
+      "importance": 0.1382911652326584
+    },
+    {
+      "id": 2,
+      "text": "wiktionary entry: general adj Including or involving every part or member of a given or implied entity, whole, etc.; common to all, universal.",
+      "type": "wiktionary_entry",
+      "importance": 0.14199566841125488
+    },
+    {
+      "id": 3,
+      "text": "wiktionary gloss: general: Including or involving every part or member of a given or implied entity, whole, etc.; common to all, universal.",
+      "type": "wiktionary_gloss",
+      "importance": 0.1441890448331833
+    },
+    {
+      "id": 4,
+      "text": "wiktionary entry: artificial adj Man-made; made by humans; of artifice.",
+      "type": "wiktionary_entry",
+      "importance": 0.14207984507083893
+    },
+    {
+      "id": 5,
+      "text": "wiktionary gloss: artificial: Man-made; made by humans; of artifice.",
+      "type": "wiktionary_gloss",
+      "importance": 0.1443129926919937
+    },
+    {
+      "id": 6,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.15038470923900604
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.059227146208286285
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.1115063726902008
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.11920477449893951
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.11145565658807755
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.11911093443632126
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.2751452922821045
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_lexicon",
+      "attention": 0.1363336741924286
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_lexicon",
+      "attention": 0.11173327267169952
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_lexicon",
+      "attention": 0.13651257753372192
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_lexicon",
+      "attention": 0.11178533732891083
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_evidence",
+      "attention": 0.25476574897766113
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_lexicon",
+      "attention": 0.14078566431999207
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.10158467292785645
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.14106564223766327
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.13511037826538086
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_lexicon",
+      "attention": 0.1411760300397873
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.19140201807022095
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.14941374957561493
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_lexicon",
+      "attention": 0.14145852625370026
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.13518714904785156
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_lexicon",
+      "attention": 0.14940379559993744
+    }
+  ]
+}

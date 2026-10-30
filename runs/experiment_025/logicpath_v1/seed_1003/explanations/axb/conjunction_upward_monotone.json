@@ -1,0 +1,457 @@
+{
+  "uid": "axb-872",
+  "dataset": "axb",
+  "logic": "Conjunction;Upward monotone",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7881880402565002,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3626279830932617,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.33402901887893677,
+      "target": 1.0
+    },
+    "hyponym_specialization": {
+      "score": 0.30013278126716614,
+      "target": 1.0
+    },
+    "antonym_contradiction": {
+      "score": 0.21577997505664825,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.37587445974349976,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.3248327970504761,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.3959094285964966,
+      "target": 1.0
+    },
+    "conditional_alignment": {
+      "score": 0.2399214506149292,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.27842605113983154,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.22737061977386475,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Understanding a long document requires tracking how entities are introduced and evolve over time.",
+      "type": "premise_state",
+      "importance": 0.1920698881149292
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Understanding a long document requires understanding how entities are introduced.",
+      "type": "hypothesis_state",
+      "importance": 0.11318301409482956
+    },
+    {
+      "id": 2,
+      "text": "premise unit: understanding",
+      "type": "premise_unit",
+      "importance": 0.04325668886303902
+    },
+    {
+      "id": 3,
+      "text": "premise unit: long",
+      "type": "premise_unit",
+      "importance": 0.04324768856167793
+    },
+    {
+      "id": 4,
+      "text": "premise unit: document",
+      "type": "premise_unit",
+      "importance": 0.044076770544052124
+    },
+    {
+      "id": 5,
+      "text": "premise unit: requires",
+      "type": "premise_unit",
+      "importance": 0.04324956610798836
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: understanding",
+      "type": "hypothesis_unit",
+      "importance": 0.045087821781635284
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: long",
+      "type": "hypothesis_unit",
+      "importance": 0.045091141015291214
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: document",
+      "type": "hypothesis_unit",
+      "importance": 0.04910409450531006
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: requires",
+      "type": "hypothesis_unit",
+      "importance": 0.04510026052594185
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: understanding -> understanding",
+      "type": "transformation",
+      "importance": 0.031213941052556038
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: long -> long",
+      "type": "transformation",
+      "importance": 0.03119909018278122
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: document -> document",
+      "type": "transformation",
+      "importance": 0.031004268676042557
+    },
+    {
+      "id": 13,
+      "text": "transformation hypernym_generalization: document -> entities",
+      "type": "transformation",
+      "importance": 0.03050006553530693
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: requires -> requires",
+      "type": "transformation",
+      "importance": 0.031201524659991264
+    },
+    {
+      "id": 15,
+      "text": "transformation hypernym_generalization: tracking -> introduced",
+      "type": "transformation",
+      "importance": 0.030196676030755043
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: how -> how",
+      "type": "transformation",
+      "importance": 0.030197003856301308
+    },
+    {
+      "id": 17,
+      "text": "transformation hyponym_specialization: entities -> document",
+      "type": "transformation",
+      "importance": 0.030438022688031197
+    },
+    {
+      "id": 18,
+      "text": "transformation lexical_identity: entities -> entities",
+      "type": "transformation",
+      "importance": 0.030188776552677155
+    },
+    {
+      "id": 19,
+      "text": "transformation lexical_identity: introduced -> introduced",
+      "type": "transformation",
+      "importance": 0.030213430523872375
+    },
+    {
+      "id": 20,
+      "text": "transformation conjunction_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.030180247500538826
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.23668470978736877
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.2941609025001526
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.294540137052536
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.28460267186164856
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.29425305128097534
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.2377454787492752
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.2379646599292755
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.23795171082019806
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.2513532340526581
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.23776733875274658
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.26732999086380005
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.2676505744457245
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.24999386072158813
+    },
+    {
+      "source": 0,
+      "target": 18,
+      "relation": "operation",
+      "attention": 0.2675272822380066
+    },
+    {
+      "source": 0,
+      "target": 19,
+      "relation": "operation",
+      "attention": 0.267463743686676
+    },
+    {
+      "source": 0,
+      "target": 20,
+      "relation": "operation",
+      "attention": 0.26743435859680176
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.18333080410957336
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.18306046724319458
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.1782303750514984
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.18289431929588318
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.10054181516170502
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.10050740092992783
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.1003861352801323
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.14207471907138824
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.10072870552539825
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.1592392921447754
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.15894445776939392
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.10836958885192871
+    },
+    {
+      "source": 1,
+      "target": 18,
+      "relation": "operation",
+      "attention": 0.15930365025997162
+    },
+    {
+      "source": 1,
+      "target": 19,
+      "relation": "operation",
+      "attention": 0.15872612595558167
+    },
+    {
+      "source": 1,
+      "target": 20,
+      "relation": "operation",
+      "attention": 0.15950174629688263
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.5252466201782227
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.050123002380132675
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.5250779986381531
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.049905359745025635
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.49419111013412476
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.04922514781355858
+    },
+    {
+      "source": 4,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.06109766662120819
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.5252201557159424
+    },
+    {
+      "source": 5,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.0499977171421051
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.13027174770832062
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.13041150569915771
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.12672707438468933
+    },
+    {
+      "source": 8,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.13426253199577332
+    },
+    {
+      "source": 9,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.13044095039367676
+    }
+  ]
+}

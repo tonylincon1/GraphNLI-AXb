@@ -1,0 +1,307 @@
+{
+  "uid": "axb-22",
+  "dataset": "axb",
+  "logic": "Double negation",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7998018264770508,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.30451303720474243,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.21313759684562683,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.16648200154304504,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.11890581995248795,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.2520948052406311,
+      "target": 1.0
+    },
+    "quantifier_change": {
+      "score": 0.26031479239463806,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.37119120359420776,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.1401648074388504,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.18375879526138306,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.16570328176021576,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Writing Java is not too different from programming with handcuffs.",
+      "type": "premise_state",
+      "importance": 0.2410881221294403
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Writing Java is similar to programming with handcuffs.",
+      "type": "hypothesis_state",
+      "importance": 0.10607374459505081
+    },
+    {
+      "id": 2,
+      "text": "premise unit: writing",
+      "type": "premise_unit",
+      "importance": 0.041261814534664154
+    },
+    {
+      "id": 3,
+      "text": "premise unit: java",
+      "type": "premise_unit",
+      "importance": 0.0412534698843956
+    },
+    {
+      "id": 4,
+      "text": "premise unit: not",
+      "type": "premise_unit",
+      "importance": 0.040208812803030014
+    },
+    {
+      "id": 5,
+      "text": "premise unit: too",
+      "type": "premise_unit",
+      "importance": 0.04020402953028679
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: writing",
+      "type": "hypothesis_unit",
+      "importance": 0.07733434438705444
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: java",
+      "type": "hypothesis_unit",
+      "importance": 0.07731274515390396
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: similar",
+      "type": "hypothesis_unit",
+      "importance": 0.05729270726442337
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: programming",
+      "type": "hypothesis_unit",
+      "importance": 0.06746727973222733
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: writing -> writing",
+      "type": "transformation",
+      "importance": 0.042506057769060135
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: java -> java",
+      "type": "transformation",
+      "importance": 0.04250026121735573
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: programming -> programming",
+      "type": "transformation",
+      "importance": 0.041456565260887146
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: handcuffs -> handcuffs",
+      "type": "transformation",
+      "importance": 0.042020201683044434
+    },
+    {
+      "id": 14,
+      "text": "transformation negation_flip: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.04201976954936981
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.07867550849914551
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.30120545625686646
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.3011389970779419
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.5030667185783386
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.5029435157775879
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3083413541316986
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.30808860063552856
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.31204530596733093
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.44640952348709106
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.4461436867713928
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.30552732944488525
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.3053516149520874
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.3167651891708374
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.31048262119293213
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.027023205533623695
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.02695629559457302
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.027424106374382973
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.059949807822704315
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.060125723481178284
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.2097974717617035
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.029224323108792305
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.20961938798427582
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.029310524463653564
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.18599824607372284
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.18604640662670135
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.19202089309692383
+    }
+  ]
+}

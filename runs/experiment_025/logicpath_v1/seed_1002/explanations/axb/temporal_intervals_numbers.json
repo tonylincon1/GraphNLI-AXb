@@ -1,0 +1,409 @@
+{
+  "uid": "axb-512",
+  "dataset": "axb",
+  "logic": "Temporal;Intervals/Numbers",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.784712553024292,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3388536870479584,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2549329400062561,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.22220546007156372,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.1780412793159485,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.34922024607658386,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.31248003244400024,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.4167722165584564,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.20074887573719025,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.22186590731143951,
+      "target": 1.0
+    },
+    "temporal_change": {
+      "score": 0.20925143361091614,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Lt. Gov. Dan Patrick first unveiled a \u201cbathroom bill\u201d in January 2017, and for the first several months of debate, Abbott remained largely silent even as some cautioned that it would be bad for business.",
+      "type": "premise_state",
+      "importance": 0.09280270338058472
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Lt. Gov. Dan Patrick first unveiled a \u201cbathroom bill\u201d in January 2017, and in the second month of debate, Abbott remained largely silent even as some cautioned that it would be bad for business.",
+      "type": "hypothesis_state",
+      "importance": 0.13403761386871338
+    },
+    {
+      "id": 2,
+      "text": "premise unit: lt",
+      "type": "premise_unit",
+      "importance": 0.052250705659389496
+    },
+    {
+      "id": 3,
+      "text": "premise unit: gov",
+      "type": "premise_unit",
+      "importance": 0.0521998330950737
+    },
+    {
+      "id": 4,
+      "text": "premise unit: dan",
+      "type": "premise_unit",
+      "importance": 0.052204348146915436
+    },
+    {
+      "id": 5,
+      "text": "premise unit: patrick",
+      "type": "premise_unit",
+      "importance": 0.05222536623477936
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: lt",
+      "type": "hypothesis_unit",
+      "importance": 0.048952192068099976
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: gov",
+      "type": "hypothesis_unit",
+      "importance": 0.04896456003189087
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: dan",
+      "type": "hypothesis_unit",
+      "importance": 0.04896930605173111
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: patrick",
+      "type": "hypothesis_unit",
+      "importance": 0.04898575693368912
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: lt -> lt",
+      "type": "transformation",
+      "importance": 0.0513145811855793
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: gov -> gov",
+      "type": "transformation",
+      "importance": 0.051321785897016525
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: dan -> dan",
+      "type": "transformation",
+      "importance": 0.0513322688639164
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: patrick -> patrick",
+      "type": "transformation",
+      "importance": 0.051285188645124435
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: first -> first",
+      "type": "transformation",
+      "importance": 0.03262506425380707
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: unveiled -> unveiled",
+      "type": "transformation",
+      "importance": 0.0326271578669548
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: bathroom -> bathroom",
+      "type": "transformation",
+      "importance": 0.03263682872056961
+    },
+    {
+      "id": 17,
+      "text": "transformation lexical_identity: bill -> bill",
+      "type": "transformation",
+      "importance": 0.032631002366542816
+    },
+    {
+      "id": 18,
+      "text": "transformation numeric_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.03263378515839577
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.14902251958847046
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.05560166388750076
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.05551701411604881
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.05574308708310127
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.05559951812028885
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.09606646001338959
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.09581971913576126
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.09605535864830017
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.09549815207719803
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.20551642775535583
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.20547504723072052
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.2054644078016281
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.20533771812915802
+    },
+    {
+      "source": 0,
+      "target": 18,
+      "relation": "operation",
+      "attention": 0.20527750253677368
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.132676362991333
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.13331955671310425
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.13325318694114685
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.1334673911333084
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.07990524172782898
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.0799609124660492
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.0799378976225853
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.0797409638762474
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.3239958882331848
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.323908269405365
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.32391154766082764
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.32413262128829956
+    },
+    {
+      "source": 1,
+      "target": 18,
+      "relation": "operation",
+      "attention": 0.3241695165634155
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.17511339485645294
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.41078197956085205
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.17466992139816284
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.411344975233078
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.1748422086238861
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.41104161739349365
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.17470420897006989
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.4113900363445282
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.37008604407310486
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.369798481464386
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.37013569474220276
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.36953815817832947
+    }
+  ]
+}

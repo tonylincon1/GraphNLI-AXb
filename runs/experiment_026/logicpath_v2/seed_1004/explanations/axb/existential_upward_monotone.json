@@ -1,0 +1,380 @@
+{
+  "uid": "axb-668",
+  "dataset": "axb",
+  "logic": "Existential;Upward monotone",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7789905667304993,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.34466052055358887,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.21696652472019196,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.19751191139221191,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.1413174271583557,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.2925248444080353,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.3248959183692932,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.37621793150901794,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.15755777060985565,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.20955103635787964,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.20387402176856995,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Weird that you want to show something to a stack of papers.",
+      "type": "premise_state",
+      "importance": 0.07236196100711823
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Weird that you want to show this video to a stack of papers.",
+      "type": "hypothesis_state",
+      "importance": 0.0408531129360199
+    },
+    {
+      "id": 2,
+      "text": "premise unit: weird",
+      "type": "premise_unit",
+      "importance": 0.04823159798979759
+    },
+    {
+      "id": 3,
+      "text": "premise unit: want",
+      "type": "premise_unit",
+      "importance": 0.04822814464569092
+    },
+    {
+      "id": 4,
+      "text": "premise unit: show",
+      "type": "premise_unit",
+      "importance": 0.04673681780695915
+    },
+    {
+      "id": 5,
+      "text": "premise unit: something",
+      "type": "premise_unit",
+      "importance": 0.04504697397351265
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: weird",
+      "type": "hypothesis_unit",
+      "importance": 0.04796161130070686
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: want",
+      "type": "hypothesis_unit",
+      "importance": 0.04799634590744972
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: show",
+      "type": "hypothesis_unit",
+      "importance": 0.0538804791867733
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: video",
+      "type": "hypothesis_unit",
+      "importance": 0.05523282289505005
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: weird -> weird",
+      "type": "transformation",
+      "importance": 0.05419977009296417
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: want -> want",
+      "type": "transformation",
+      "importance": 0.054204605519771576
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: show -> show",
+      "type": "transformation",
+      "importance": 0.05536836013197899
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: stack -> stack",
+      "type": "transformation",
+      "importance": 0.05323155224323273
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: papers -> papers",
+      "type": "transformation",
+      "importance": 0.05322597175836563
+    },
+    {
+      "id": 15,
+      "text": "wiktionary entry: weird",
+      "type": "wiktionary_entry",
+      "importance": 0.07099391520023346
+    },
+    {
+      "id": 16,
+      "text": "wiktionary gloss: Having an unusually strange character or behaviour.",
+      "type": "wiktionary_gloss",
+      "importance": 0.040637094527482986
+    },
+    {
+      "id": 17,
+      "text": "wiktionary entry: want",
+      "type": "wiktionary_entry",
+      "importance": 0.07097837328910828
+    },
+    {
+      "id": 18,
+      "text": "wiktionary gloss: To wish for or desire (something); to feel a need or desire for; to crave, hanker, or demand.",
+      "type": "wiktionary_gloss",
+      "importance": 0.040630556643009186
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.055846624076366425
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.26767972111701965
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.2676747739315033
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.27843475341796875
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.3292089104652405
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.026347577571868896
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.02633887529373169
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.02638869360089302
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.026643039658665657
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.026687579229474068
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.08984381705522537
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.08999645709991455
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.09673848748207092
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.10067646950483322
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.025537345558404922
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.025483451783657074
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.025490304455161095
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.025938764214515686
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.025916248559951782
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.10834182053804398
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.038707129657268524
+    },
+    {
+      "source": 2,
+      "target": 15,
+      "relation": "wiktionary_evidence",
+      "attention": 0.3253382742404938
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.1083151251077652
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.038734398782253265
+    },
+    {
+      "source": 3,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.325189471244812
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.15381523966789246
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.056975357234478
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.01791367307305336
+    },
+    {
+      "source": 6,
+      "target": 15,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2485932558774948
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.01793844625353813
+    },
+    {
+      "source": 7,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24856333434581757
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.02637762390077114
+    },
+    {
+      "source": 15,
+      "target": 16,
+      "relation": "wiktionary_evidence",
+      "attention": 0.4008799195289612
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.4010515809059143
+    }
+  ]
+}

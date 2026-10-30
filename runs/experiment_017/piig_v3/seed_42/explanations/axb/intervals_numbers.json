@@ -1,0 +1,85 @@
+{
+  "uid": "axb-346",
+  "dataset": "axb",
+  "logic": "Intervals/Numbers",
+  "language": "en",
+  "prediction_binary": 1,
+  "label_binary": 0,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: i have failed my resolutions every year since 1997 and",
+      "type": "premise_phrase",
+      "importance": 0.22635126113891602
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: i failed my resolutions in 2004",
+      "type": "hypothesis_phrase",
+      "importance": 0.21019884943962097
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.19203685224056244
+    },
+    {
+      "id": 3,
+      "text": "evidence conjunction elimination from premise structure",
+      "type": "conjunction_elimination",
+      "importance": 0.18157292902469635
+    },
+    {
+      "id": 4,
+      "text": "evidence quantifier polarity context: premise universal quantifier: restrictor downward, scope upward",
+      "type": "quantifier_polarity_context",
+      "importance": 0.18984012305736542
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.3887103199958801
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.41661912202835083
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.3699890971183777
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.26823490858078003
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.2669873833656311
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_evidence",
+      "attention": 0.186824768781662
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_evidence",
+      "attention": 0.27705347537994385
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "split": "axb",
+  "metric": "binary/mcc",
+  "status": "exploratory_insufficient_blocks",
+  "alpha": 0.05,
+  "blocks": [
+    "seed_1001",
+    "seed_1002",
+    "seed_1003"
+  ],
+  "models": [
+    "K-BERT",
+    "KGAnet",
+    "KGNLI",
+    "Pair classifier",
+    "Our approach"
+  ],
+  "friedman": {
+    "statistic": null,
+    "p_value": null
+  },
+  "autorank": {
+    "available": false,
+    "message": "autorank requires at least five paired seeds."
+  },
+  "nemenyi_critical_difference": 3.521541570197461,
+  "average_ranks": {
+    "K-BERT": 4.0,
+    "KGAnet": 2.0,
+    "KGNLI": 4.666666666666667,
+    "Pair classifier": 2.3333333333333335,
+    "Our approach": 2.0
+  },
+  "non_significant_groups": [
+    [
+      "KGAnet",
+      "Our approach",
+      "Pair classifier",
+      "K-BERT",
+      "KGNLI"
+    ]
+  ],
+  "block_values": {
+    "seed_1001": {
+      "K-BERT": 0.21847811709947457,
+      "KGAnet": 0.1922450907174042,
+      "KGNLI": 0.16640681053547302,
+      "Pair classifier": 0.23294871166701486,
+      "Our approach": 0.25807166683244187
+    },
+    "seed_1002": {
+      "K-BERT": 0.2031725131080794,
+      "KGAnet": 0.2522292895610493,
+      "KGNLI": 0.1930241451550769,
+      "Pair classifier": 0.24513039328967193,
+      "Our approach": 0.2446224646001336
+    },
+    "seed_1003": {
+      "K-BERT": 0.18511529731846596,
+      "KGAnet": 0.24170285115474707,
+      "KGNLI": 0.19283741934368676,
+      "Pair classifier": 0.21808295438007086,
+      "Our approach": 0.22301885592392878
+    }
+  }
+}

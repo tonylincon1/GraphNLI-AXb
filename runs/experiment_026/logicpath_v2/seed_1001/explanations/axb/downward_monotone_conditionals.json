@@ -1,0 +1,452 @@
+{
+  "uid": "axb-626",
+  "dataset": "axb",
+  "logic": "Downward monotone;Conditionals",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7962044477462769,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.34904345870018005,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.22378818690776825,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.21012195944786072,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.16100014746189117,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3402807414531708,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.3380148708820343,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.38128331303596497,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.15370582044124603,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.1843165159225464,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.18948408961296082,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: You know that some life changing actions must be taken when grandma reacts with the sad emoji.",
+      "type": "premise_state",
+      "importance": 0.07470434159040451
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: You know that some life-changing actions must be taken when grandma reacts with emoji.",
+      "type": "hypothesis_state",
+      "importance": 0.08463200181722641
+    },
+    {
+      "id": 2,
+      "text": "premise unit: know",
+      "type": "premise_unit",
+      "importance": 0.04427984356880188
+    },
+    {
+      "id": 3,
+      "text": "premise unit: some",
+      "type": "premise_unit",
+      "importance": 0.044268690049648285
+    },
+    {
+      "id": 4,
+      "text": "premise unit: life",
+      "type": "premise_unit",
+      "importance": 0.04428407922387123
+    },
+    {
+      "id": 5,
+      "text": "premise unit: changing",
+      "type": "premise_unit",
+      "importance": 0.04427313804626465
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: know",
+      "type": "hypothesis_unit",
+      "importance": 0.03674542158842087
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: some",
+      "type": "hypothesis_unit",
+      "importance": 0.03673002868890762
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: life",
+      "type": "hypothesis_unit",
+      "importance": 0.03631759434938431
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: changing",
+      "type": "hypothesis_unit",
+      "importance": 0.0363415889441967
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: know -> know",
+      "type": "transformation",
+      "importance": 0.04264900088310242
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: some -> some",
+      "type": "transformation",
+      "importance": 0.04262489452958107
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: life -> life",
+      "type": "transformation",
+      "importance": 0.04590429365634918
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: changing -> changing",
+      "type": "transformation",
+      "importance": 0.04587583988904953
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: actions -> actions",
+      "type": "transformation",
+      "importance": 0.036389585584402084
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: must -> must",
+      "type": "transformation",
+      "importance": 0.03638971969485283
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: taken -> taken",
+      "type": "transformation",
+      "importance": 0.036390520632267
+    },
+    {
+      "id": 17,
+      "text": "transformation lexical_identity: when -> when",
+      "type": "transformation",
+      "importance": 0.036391761153936386
+    },
+    {
+      "id": 18,
+      "text": "wiktionary entry: know",
+      "type": "wiktionary_entry",
+      "importance": 0.061883777379989624
+    },
+    {
+      "id": 19,
+      "text": "wiktionary gloss: To perceive the truth or factuality of; to be certain of; to be certain that.",
+      "type": "wiktionary_gloss",
+      "importance": 0.035500846803188324
+    },
+    {
+      "id": 20,
+      "text": "wiktionary entry: some",
+      "type": "wiktionary_entry",
+      "importance": 0.06193939596414566
+    },
+    {
+      "id": 21,
+      "text": "wiktionary gloss: A certain number (multiple but not all).",
+      "type": "wiktionary_gloss",
+      "importance": 0.03548364341259003
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.4155266284942627
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.1485583782196045
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.1485460251569748
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.2388070970773697
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.23903925716876984
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.047657206654548645
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.047813303768634796
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.047645505517721176
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.047777868807315826
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.07788725197315216
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.07781602442264557
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.07795366644859314
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.07826311886310577
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.09630128741264343
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.09627651423215866
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.0978885218501091
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.09791002422571182
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.10004225373268127
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.09975492209196091
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.09985321760177612
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.0998065397143364
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.18993821740150452
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.19000640511512756
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.18983423709869385
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.1894780844449997
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.30883434414863586
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.15301087498664856
+    },
+    {
+      "source": 2,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24018457531929016
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.3086059093475342
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.15295498073101044
+    },
+    {
+      "source": 3,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24042153358459473
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.3312351405620575
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.20967718958854675
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.33145228028297424
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.20933139324188232
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.16463737189769745
+    },
+    {
+      "source": 6,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.08417333662509918
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.16430431604385376
+    },
+    {
+      "source": 7,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.08440086245536804
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.19081957638263702
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.1905946135520935
+    },
+    {
+      "source": 18,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.4063233435153961
+    },
+    {
+      "source": 20,
+      "target": 21,
+      "relation": "wiktionary_evidence",
+      "attention": 0.40610843896865845
+    }
+  ]
+}

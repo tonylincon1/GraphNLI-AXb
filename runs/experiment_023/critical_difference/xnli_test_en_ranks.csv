@@ -1,0 +1,6 @@
+model,average_rank
+Our approach,1.8
+Pair classifier,2.2
+K-BERT,3.2
+KGAnet,3.6
+KGNLI,4.2

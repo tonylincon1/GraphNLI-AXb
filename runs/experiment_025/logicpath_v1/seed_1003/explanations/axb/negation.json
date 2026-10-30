@@ -1,0 +1,289 @@
+{
+  "uid": "axb-0",
+  "dataset": "axb",
+  "logic": "Negation",
+  "language": "en",
+  "prediction_3": 2,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7876095771789551,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.33132901787757874,
+      "target": 1.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2537192404270172,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.2511255741119385,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.2047899067401886,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3277472257614136,
+      "target": 1.0
+    },
+    "quantifier_change": {
+      "score": 0.27544277906417847,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.36056289076805115,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.19900572299957275,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.23935183882713318,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.2070215940475464,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: The cat sat on the mat.",
+      "type": "premise_state",
+      "importance": 0.1564021110534668
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: The cat did not sit on the mat.",
+      "type": "hypothesis_state",
+      "importance": 0.12381283193826675
+    },
+    {
+      "id": 2,
+      "text": "premise unit: cat",
+      "type": "premise_unit",
+      "importance": 0.07214495539665222
+    },
+    {
+      "id": 3,
+      "text": "premise unit: sat",
+      "type": "premise_unit",
+      "importance": 0.07217684388160706
+    },
+    {
+      "id": 4,
+      "text": "premise unit: mat",
+      "type": "premise_unit",
+      "importance": 0.07217016071081161
+    },
+    {
+      "id": 5,
+      "text": "hypothesis unit: cat",
+      "type": "hypothesis_unit",
+      "importance": 0.07396942377090454
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: not",
+      "type": "hypothesis_unit",
+      "importance": 0.06551197916269302
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: sit",
+      "type": "hypothesis_unit",
+      "importance": 0.07394865900278091
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: mat",
+      "type": "hypothesis_unit",
+      "importance": 0.07395079731941223
+    },
+    {
+      "id": 9,
+      "text": "transformation lexical_identity: cat -> cat",
+      "type": "transformation",
+      "importance": 0.05431371554732323
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_synonym: sat -> sit",
+      "type": "transformation",
+      "importance": 0.05433480069041252
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: mat -> mat",
+      "type": "transformation",
+      "importance": 0.054328665137290955
+    },
+    {
+      "id": 12,
+      "text": "transformation negation_flip: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.052935075014829636
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.28788912296295166
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.3160725235939026
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.316428542137146
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.3165864646434784
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.24066680669784546
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.24074606597423553
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.2407875955104828
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.27047476172447205
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.19227832555770874
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.35463398694992065
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.19183191657066345
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.1923709511756897
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.10326354950666428
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.10302240401506424
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.10306987166404724
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.16150134801864624
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "lexical_relation",
+      "attention": 0.5249439477920532
+    },
+    {
+      "source": 2,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.049822401255369186
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.5250387191772461
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.0499160960316658
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.5248236060142517
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.049847327172756195
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.13048580288887024
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.13047266006469727
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.13041988015174866
+    }
+  ]
+}

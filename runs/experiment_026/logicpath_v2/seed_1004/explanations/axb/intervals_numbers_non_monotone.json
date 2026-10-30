@@ -1,0 +1,434 @@
+{
+  "uid": "axb-658",
+  "dataset": "axb",
+  "logic": "Intervals/Numbers;Non-monotone",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 2,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.786216676235199,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.40188783407211304,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.23203982412815094,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.20682545006275177,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.15976278483867645,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3082321882247925,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.3533172905445099,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.4069681465625763,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.19506309926509857,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.22374457120895386,
+      "target": 1.0
+    },
+    "temporal_change": {
+      "score": 0.22865960001945496,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Just watched the first 15 minutes, got bored, skipped to the magic bit, it's funnier as a GIF.",
+      "type": "premise_state",
+      "importance": 0.06371860206127167
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Just watched the first 30 minutes, got bored, skipped to the magic bit, it's funnier as a GIF.",
+      "type": "hypothesis_state",
+      "importance": 0.03593479096889496
+    },
+    {
+      "id": 2,
+      "text": "premise unit: just",
+      "type": "premise_unit",
+      "importance": 0.04118781164288521
+    },
+    {
+      "id": 3,
+      "text": "premise unit: watched",
+      "type": "premise_unit",
+      "importance": 0.04118885099887848
+    },
+    {
+      "id": 4,
+      "text": "premise unit: first",
+      "type": "premise_unit",
+      "importance": 0.039867643266916275
+    },
+    {
+      "id": 5,
+      "text": "premise unit: 15",
+      "type": "premise_unit",
+      "importance": 0.0383521243929863
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: just",
+      "type": "hypothesis_unit",
+      "importance": 0.04103195294737816
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: watched",
+      "type": "hypothesis_unit",
+      "importance": 0.041024986654520035
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: first",
+      "type": "hypothesis_unit",
+      "importance": 0.04632453992962837
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: 30",
+      "type": "hypothesis_unit",
+      "importance": 0.0475388802587986
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: just -> just",
+      "type": "transformation",
+      "importance": 0.046736035495996475
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: watched -> watched",
+      "type": "transformation",
+      "importance": 0.04673376306891441
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: first -> first",
+      "type": "transformation",
+      "importance": 0.047797709703445435
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: minutes -> minutes",
+      "type": "transformation",
+      "importance": 0.04586433619260788
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: got -> got",
+      "type": "transformation",
+      "importance": 0.045862503349781036
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: bored -> bored",
+      "type": "transformation",
+      "importance": 0.045862212777137756
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: skipped -> skipped",
+      "type": "transformation",
+      "importance": 0.04585709795355797
+    },
+    {
+      "id": 17,
+      "text": "transformation numeric_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.04586009681224823
+    },
+    {
+      "id": 18,
+      "text": "wiktionary entry: just",
+      "type": "wiktionary_entry",
+      "importance": 0.061942458152770996
+    },
+    {
+      "id": 19,
+      "text": "wiktionary gloss: Factually right, correct; factual.",
+      "type": "wiktionary_gloss",
+      "importance": 0.03467429056763649
+    },
+    {
+      "id": 20,
+      "text": "wiktionary entry: watched",
+      "type": "wiktionary_entry",
+      "importance": 0.06192484125494957
+    },
+    {
+      "id": 21,
+      "text": "wiktionary gloss: simple past and past participle of watch",
+      "type": "wiktionary_gloss",
+      "importance": 0.0347144678235054
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.051249243319034576
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.2599485516548157
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.2600574493408203
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.27062803506851196
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.32150012254714966
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.024255508556962013
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.02429896406829357
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.02420787699520588
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.024550646543502808
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.024502644315361977
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.02455444261431694
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.02450014464557171
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.024480361491441727
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.08346091210842133
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.08370024710893631
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.09051720798015594
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.09439590573310852
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.024446692317724228
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.024496695026755333
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.0243986863642931
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.02485537901520729
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.024838095530867577
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.024930911138653755
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.024978555738925934
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.02485577017068863
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.10815180838108063
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.03870587423443794
+    },
+    {
+      "source": 2,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.3252912163734436
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.10826990753412247
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.038680315017700195
+    },
+    {
+      "source": 3,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.3252750635147095
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.1538388431072235
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.05702412873506546
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.017923060804605484
+    },
+    {
+      "source": 6,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24860574305057526
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.01789519563317299
+    },
+    {
+      "source": 7,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.24862980842590332
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.026414014399051666
+    },
+    {
+      "source": 18,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.40087640285491943
+    },
+    {
+      "source": 20,
+      "target": 21,
+      "relation": "wiktionary_evidence",
+      "attention": 0.4000295400619507
+    }
+  ]
+}

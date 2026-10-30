@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="700" viewBox="0 0 1500 700">
+<defs><marker id="arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#4d6f8e"/></marker><marker id="red-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#a33d3d"/></marker></defs>
+<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}.column{font-size:14px;font-weight:bold;fill:#52616b}.edge-label{font-size:10px;fill:#52616b}</style>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="30" y="32" class="title">LogicPath v1 transformation graph | axb-368</text>
+<text x="30" y="54" class="small">Prediction: 2 | label: -100 | arrows show transformation flow; width shows attention.</text>
+<text x="120" y="92" text-anchor="middle" class="column">Premise</text>
+<text x="390" y="92" text-anchor="middle" class="column">Premise units</text>
+<text x="720" y="92" text-anchor="middle" class="column">Transformations</text>
+<text x="1050" y="92" text-anchor="middle" class="column">Hypothesis units</text>
+<text x="1380" y="92" text-anchor="middle" class="column">Hypothesis</text>
+<line x1="198.0" y1="375.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.51" stroke-opacity="0.33" marker-end="url(#arrow)"/>
+<text x="750.0" y="370.0" text-anchor="middle" class="edge-label">supports</text>
+<line x1="198.0" y1="375.0" x2="312.0" y2="206.2" stroke="#4d6f8e" stroke-width="2.86" stroke-opacity="0.81" marker-end="url(#arrow)"/>
+<text x="255.0" y="285.6" text-anchor="middle" class="edge-label">contains</text>
+<line x1="198.0" y1="375.0" x2="312.0" y2="318.8" stroke="#4d6f8e" stroke-width="2.86" stroke-opacity="0.81" marker-end="url(#arrow)"/>
+<text x="255.0" y="341.9" text-anchor="middle" class="edge-label">contains</text>
+<line x1="198.0" y1="375.0" x2="312.0" y2="431.2" stroke="#4d6f8e" stroke-width="2.86" stroke-opacity="0.81" marker-end="url(#arrow)"/>
+<text x="255.0" y="398.1" text-anchor="middle" class="edge-label">contains</text>
+<line x1="198.0" y1="375.0" x2="312.0" y2="543.8" stroke="#4d6f8e" stroke-width="2.86" stroke-opacity="0.81" marker-end="url(#arrow)"/>
+<text x="255.0" y="454.4" text-anchor="middle" class="edge-label">contains</text>
+<line x1="198.0" y1="375.0" x2="642.0" y2="225.0" stroke="#4d6f8e" stroke-width="2.60" stroke-opacity="0.72" marker-end="url(#arrow)"/>
+<text x="420.0" y="295.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="198.0" y1="375.0" x2="642.0" y2="375.0" stroke="#4d6f8e" stroke-width="2.60" stroke-opacity="0.72" marker-end="url(#arrow)"/>
+<text x="420.0" y="370.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="198.0" y1="375.0" x2="642.0" y2="525.0" stroke="#4d6f8e" stroke-width="3.22" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="420.0" y="445.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="1128.0" y1="225.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.93" stroke-opacity="0.48" marker-end="url(#arrow)"/>
+<text x="1215.0" y="295.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="1128.0" y1="375.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.42" stroke-opacity="0.30" marker-end="url(#arrow)"/>
+<text x="1215.0" y="370.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="1128.0" y1="525.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="1.42" stroke-opacity="0.30" marker-end="url(#arrow)"/>
+<text x="1215.0" y="445.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="798.0" y1="225.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="3.11" stroke-opacity="0.90" marker-end="url(#arrow)"/>
+<text x="1050.0" y="295.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="375.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="3.11" stroke-opacity="0.90" marker-end="url(#arrow)"/>
+<text x="1050.0" y="370.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="525.0" x2="1302.0" y2="375.0" stroke="#4d6f8e" stroke-width="3.44" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="1050.0" y="445.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="225.0" x2="972.0" y2="375.0" stroke="#4d6f8e" stroke-width="4.30" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="885.0" y="295.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="375.0" x2="972.0" y2="525.0" stroke="#4d6f8e" stroke-width="4.30" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="885.0" y="445.0" text-anchor="middle" class="edge-label">operation</text>
+<rect x="38.0" y="343.0" width="164" height="64" rx="6" fill="#e8f3fb" stroke="#1f4d70" stroke-width="2"/>
+<text x="120.0" y="368.0" text-anchor="middle" class="node">N0 | 0.149</text>
+<text x="120.0" y="385.0" text-anchor="middle" class="small">premise state: Either he</text>
+<text x="120.0" y="399.0" text-anchor="middle" class="small">has a blind trust or h...</text>
+<rect x="1298.0" y="343.0" width="164" height="64" rx="6" fill="#e8f3fb" stroke="#1f4d70" stroke-width="2"/>
+<text x="1380.0" y="368.0" text-anchor="middle" class="node">N1 | 0.113</text>
+<text x="1380.0" y="385.0" text-anchor="middle" class="small">hypothesis state: He does</text>
+<text x="1380.0" y="399.0" text-anchor="middle" class="small">not have a conflict of...</text>
+<rect x="308.0" y="174.2" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="390.0" y="199.2" text-anchor="middle" class="node">N2 | 0.071</text>
+<text x="390.0" y="216.2" text-anchor="middle" class="small">premise unit: either</text>
+<rect x="308.0" y="286.8" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="390.0" y="311.8" text-anchor="middle" class="node">N3 | 0.071</text>
+<text x="390.0" y="328.8" text-anchor="middle" class="small">premise unit: blind</text>
+<rect x="308.0" y="399.2" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="390.0" y="424.2" text-anchor="middle" class="node">N4 | 0.071</text>
+<text x="390.0" y="441.2" text-anchor="middle" class="small">premise unit: trust</text>
+<rect x="308.0" y="511.8" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="390.0" y="536.8" text-anchor="middle" class="node">N5 | 0.071</text>
+<text x="390.0" y="553.8" text-anchor="middle" class="small">premise unit: or</text>
+<rect x="968.0" y="193.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1050.0" y="218.0" text-anchor="middle" class="node">N6 | 0.078</text>
+<text x="1050.0" y="235.0" text-anchor="middle" class="small">hypothesis unit: not</text>
+<rect x="968.0" y="343.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1050.0" y="368.0" text-anchor="middle" class="node">N7 | 0.070</text>
+<text x="1050.0" y="385.0" text-anchor="middle" class="small">hypothesis unit: conflict</text>
+<rect x="968.0" y="493.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1050.0" y="518.0" text-anchor="middle" class="node">N8 | 0.070</text>
+<text x="1050.0" y="535.0" text-anchor="middle" class="small">hypothesis unit: interest</text>
+<rect x="638.0" y="193.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="218.0" text-anchor="middle" class="node">N9 | 0.086</text>
+<text x="720.0" y="235.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="249.0" text-anchor="middle" class="small">lexical_identity:...</text>
+<rect x="638.0" y="343.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="368.0" text-anchor="middle" class="node">N10 | 0.086</text>
+<text x="720.0" y="385.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="399.0" text-anchor="middle" class="small">lexical_identity:...</text>
+<rect x="638.0" y="493.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="518.0" text-anchor="middle" class="node">N11 | 0.064</text>
+<text x="720.0" y="535.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="549.0" text-anchor="middle" class="small">negation_flip: premise...</text>
+<text x="30" y="676" class="small">Node score: normalized relation-aware attention. Red arrows indicate contradiction relations.</text>
+</svg>

@@ -1,0 +1,391 @@
+{
+  "uid": "axb-626",
+  "dataset": "axb",
+  "logic": "Downward monotone;Conditionals",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.8102551698684692,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.37457385659217834,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.28850147128105164,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.2495420277118683,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.19287292659282684,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3481826186180115,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.31403762102127075,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.417575865983963,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.20655272901058197,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.26103273034095764,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.2086317092180252,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: You know that some life changing actions must be taken when grandma reacts with the sad emoji.",
+      "type": "premise_state",
+      "importance": 0.10615650564432144
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: You know that some life-changing actions must be taken when grandma reacts with emoji.",
+      "type": "hypothesis_state",
+      "importance": 0.12486756592988968
+    },
+    {
+      "id": 2,
+      "text": "premise unit: know",
+      "type": "premise_unit",
+      "importance": 0.042510323226451874
+    },
+    {
+      "id": 3,
+      "text": "premise unit: some",
+      "type": "premise_unit",
+      "importance": 0.04253697767853737
+    },
+    {
+      "id": 4,
+      "text": "premise unit: life",
+      "type": "premise_unit",
+      "importance": 0.042511358857154846
+    },
+    {
+      "id": 5,
+      "text": "premise unit: changing",
+      "type": "premise_unit",
+      "importance": 0.04250461980700493
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: know",
+      "type": "hypothesis_unit",
+      "importance": 0.05051492154598236
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: some",
+      "type": "hypothesis_unit",
+      "importance": 0.05052197352051735
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: life",
+      "type": "hypothesis_unit",
+      "importance": 0.050523288547992706
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: changing",
+      "type": "hypothesis_unit",
+      "importance": 0.050501205027103424
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: know -> know",
+      "type": "transformation",
+      "importance": 0.06252725422382355
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: some -> some",
+      "type": "transformation",
+      "importance": 0.0624811127781868
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: life -> life",
+      "type": "transformation",
+      "importance": 0.06252847611904144
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: changing -> changing",
+      "type": "transformation",
+      "importance": 0.06253045797348022
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: actions -> actions",
+      "type": "transformation",
+      "importance": 0.03670269995927811
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: must -> must",
+      "type": "transformation",
+      "importance": 0.036701302975416183
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: taken -> taken",
+      "type": "transformation",
+      "importance": 0.03668816387653351
+    },
+    {
+      "id": 17,
+      "text": "transformation lexical_identity: when -> when",
+      "type": "transformation",
+      "importance": 0.036691814661026
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.037206731736660004
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.04849665239453316
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.048620931804180145
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.04835198074579239
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.04857940226793289
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.16183102130889893
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.1614697277545929
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.16144374012947083
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.16168317198753357
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.27496781945228577
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.2747783064842224
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.2749229073524475
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.27478137612342834
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.0411483496427536
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.04103810340166092
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.041015882045030594
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.04107041656970978
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.23278582096099854
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.23315833508968353
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.23290161788463593
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.2330065816640854
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.2968962490558624
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.29714235663414
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.29691773653030396
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.297033429145813
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.27974486351013184
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.341291606426239
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.28009894490242004
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.3410545289516449
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.279855877161026
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.34136196970939636
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.27955111861228943
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.3413083553314209
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3772309720516205
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.37667331099510193
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.377494752407074
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.3772314786911011
+    }
+  ]
+}

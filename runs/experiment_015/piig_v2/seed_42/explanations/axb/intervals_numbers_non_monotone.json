@@ -1,0 +1,223 @@
+{
+  "uid": "axb-658",
+  "dataset": "axb",
+  "logic": "Intervals/Numbers;Non-monotone",
+  "language": "en",
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "attribution_method": "normalized mean cross-attention plus mean incoming/outgoing relation-aware GAT attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise phrase: just watched the first 15 minutes got bored skipped to",
+      "type": "premise_phrase",
+      "importance": 0.1394525170326233
+    },
+    {
+      "id": 1,
+      "text": "hypothesis phrase: just watched the first 30 minutes got bored skipped to",
+      "type": "hypothesis_phrase",
+      "importance": 0.1260865330696106
+    },
+    {
+      "id": 2,
+      "text": "evidence lexical bridge across premise and hypothesis",
+      "type": "lexical_bridge",
+      "importance": 0.12002894282341003
+    },
+    {
+      "id": 3,
+      "text": "external knowledge: wikidata entity: GIF Q2192 bitmap image file format family instance of raster-graphics file format lossless compression image compression video compression subclass of format facts instance of raster-graphics file format instance of lossless compression instance of image compression instance of video compression",
+      "type": "external_knowledge",
+      "importance": 0.12185505032539368
+    },
+    {
+      "id": 4,
+      "text": "external fact: GIF instance of raster-graphics file format",
+      "type": "external_fact",
+      "importance": 0.12277162820100784
+    },
+    {
+      "id": 5,
+      "text": "external fact: GIF instance of lossless compression",
+      "type": "external_fact",
+      "importance": 0.12275642156600952
+    },
+    {
+      "id": 6,
+      "text": "external fact: GIF instance of image compression",
+      "type": "external_fact",
+      "importance": 0.12274772673845291
+    },
+    {
+      "id": 7,
+      "text": "evidence entity type path from linked external knowledge",
+      "type": "entity_type_path",
+      "importance": 0.12430117279291153
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "phrase_pair",
+      "attention": 0.08059099316596985
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.2556581199169159
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "phrase_knowledge",
+      "attention": 0.1224597692489624
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "phrase_knowledge",
+      "attention": 0.14052823185920715
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "phrase_knowledge",
+      "attention": 0.140725776553154
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "phrase_knowledge",
+      "attention": 0.14073508977890015
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "phrase_knowledge",
+      "attention": 0.15105170011520386
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "relation": "phrase_evidence",
+      "attention": 0.034976426512002945
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "relation": "phrase_knowledge",
+      "attention": 0.11677677929401398
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "phrase_knowledge",
+      "attention": 0.1291416883468628
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "phrase_knowledge",
+      "attention": 0.12932135164737701
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "phrase_knowledge",
+      "attention": 0.1293550729751587
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "phrase_knowledge",
+      "attention": 0.1940079927444458
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relation": "evidence_knowledge",
+      "attention": 0.044763799756765366
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "evidence_knowledge",
+      "attention": 0.037710096687078476
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "relation": "evidence_knowledge",
+      "attention": 0.03778553381562233
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "evidence_knowledge",
+      "attention": 0.03776615858078003
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "relation": "evidence_knowledge",
+      "attention": 0.05749395489692688
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "evidence_knowledge",
+      "attention": 0.0575282946228981
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "evidence_knowledge",
+      "attention": 0.057520247995853424
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "evidence_knowledge",
+      "attention": 0.050327368080616
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relation": "evidence_knowledge",
+      "attention": 0.06591124087572098
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "evidence_knowledge",
+      "attention": 0.0659247636795044
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "relation": "evidence_knowledge",
+      "attention": 0.060198716819286346
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "evidence_knowledge",
+      "attention": 0.0657583624124527
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "evidence_knowledge",
+      "attention": 0.06030948460102081
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "relation": "evidence_knowledge",
+      "attention": 0.06039067730307579
+    }
+  ]
+}

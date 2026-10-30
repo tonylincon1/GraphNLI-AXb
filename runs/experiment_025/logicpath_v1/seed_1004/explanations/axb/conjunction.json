@@ -1,0 +1,319 @@
+{
+  "uid": "axb-354",
+  "dataset": "axb",
+  "logic": "Conjunction",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7934752702713013,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.34943175315856934,
+      "target": 1.0
+    },
+    "hypernym_generalization": {
+      "score": 0.26685580611228943,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.2336936593055725,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.1871117353439331,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3373876214027405,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.30642735958099365,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.4065629243850708,
+      "target": 1.0
+    },
+    "conditional_alignment": {
+      "score": 0.185954287648201,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.23518814146518707,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.2014416754245758,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Both doctor and patient bear some responsibility for successful care.",
+      "type": "premise_state",
+      "importance": 0.12927575409412384
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: The doctor bears some responsibility for successful care.",
+      "type": "hypothesis_state",
+      "importance": 0.1154954582452774
+    },
+    {
+      "id": 2,
+      "text": "premise unit: both",
+      "type": "premise_unit",
+      "importance": 0.05206957459449768
+    },
+    {
+      "id": 3,
+      "text": "premise unit: doctor",
+      "type": "premise_unit",
+      "importance": 0.04849531501531601
+    },
+    {
+      "id": 4,
+      "text": "premise unit: and",
+      "type": "premise_unit",
+      "importance": 0.05206689611077309
+    },
+    {
+      "id": 5,
+      "text": "premise unit: patient",
+      "type": "premise_unit",
+      "importance": 0.052075497806072235
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: doctor",
+      "type": "hypothesis_unit",
+      "importance": 0.05715503916144371
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: bears",
+      "type": "hypothesis_unit",
+      "importance": 0.051544733345508575
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: some",
+      "type": "hypothesis_unit",
+      "importance": 0.05158056318759918
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: responsibility",
+      "type": "hypothesis_unit",
+      "importance": 0.051515672355890274
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: doctor -> doctor",
+      "type": "transformation",
+      "importance": 0.07129503786563873
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_synonym: bear -> bears",
+      "type": "transformation",
+      "importance": 0.06032789871096611
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: some -> some",
+      "type": "transformation",
+      "importance": 0.06030844524502754
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: responsibility -> responsibility",
+      "type": "transformation",
+      "importance": 0.06037072837352753
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: successful -> successful",
+      "type": "transformation",
+      "importance": 0.043218184262514114
+    },
+    {
+      "id": 15,
+      "text": "transformation conjunction_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.04320519044995308
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.0452609658241272
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.2544281780719757
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.05163376033306122
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.2543359100818634
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.25439363718032837
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.17160403728485107
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.19663216173648834
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.19649046659469604
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.19683676958084106
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.28470340371131897
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.2850135564804077
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.043244875967502594
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.05078133940696716
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.05089554935693741
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.05082113295793533
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.24513719975948334
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.260696679353714
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.2612271010875702
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.26078689098358154
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.3091820776462555
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.30877193808555603
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.27923938632011414
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.34151217341423035
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.37788820266723633
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.4703136086463928
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.4697337746620178
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.4707091450691223
+    }
+  ]
+}

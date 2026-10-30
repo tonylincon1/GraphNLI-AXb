@@ -1,0 +1,457 @@
+{
+  "uid": "axb-748",
+  "dataset": "axb",
+  "logic": "Disjunction;Conjunction",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7828434109687805,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.34745585918426514,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2713242173194885,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.23145809769630432,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.1847299188375473,
+      "target": 1.0
+    },
+    "negation_flip": {
+      "score": 0.36512625217437744,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.3222827911376953,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.434646338224411,
+      "target": 1.0
+    },
+    "conditional_alignment": {
+      "score": 0.2101677805185318,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.23310816287994385,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.218410924077034,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Hazelnuts have often been found on other Mesolithic sites, but rarely in such quantities or concentrated in one pit.",
+      "type": "premise_state",
+      "importance": 0.0927027016878128
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Hazelnuts have often been found on other Mesolithic sites, but rarely in such quantities, and rarely concentrated in one pit.",
+      "type": "hypothesis_state",
+      "importance": 0.12870579957962036
+    },
+    {
+      "id": 2,
+      "text": "premise unit: hazelnuts",
+      "type": "premise_unit",
+      "importance": 0.04703320935368538
+    },
+    {
+      "id": 3,
+      "text": "premise unit: often",
+      "type": "premise_unit",
+      "importance": 0.05704205855727196
+    },
+    {
+      "id": 4,
+      "text": "premise unit: found",
+      "type": "premise_unit",
+      "importance": 0.04700307548046112
+    },
+    {
+      "id": 5,
+      "text": "premise unit: other",
+      "type": "premise_unit",
+      "importance": 0.04706140235066414
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: hazelnuts",
+      "type": "hypothesis_unit",
+      "importance": 0.04399458318948746
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: often",
+      "type": "hypothesis_unit",
+      "importance": 0.05732829496264458
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: found",
+      "type": "hypothesis_unit",
+      "importance": 0.0440533272922039
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: other",
+      "type": "hypothesis_unit",
+      "importance": 0.044034652411937714
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: hazelnuts -> hazelnuts",
+      "type": "transformation",
+      "importance": 0.04616827145218849
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: often -> often",
+      "type": "transformation",
+      "importance": 0.03996415436267853
+    },
+    {
+      "id": 12,
+      "text": "transformation antonym_contradiction: often -> rarely",
+      "type": "transformation",
+      "importance": 0.0357121117413044
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: found -> found",
+      "type": "transformation",
+      "importance": 0.04615258798003197
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: other -> other",
+      "type": "transformation",
+      "importance": 0.04613164812326431
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: mesolithic -> mesolithic",
+      "type": "transformation",
+      "importance": 0.02855675481259823
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: sites -> sites",
+      "type": "transformation",
+      "importance": 0.02856222167611122
+    },
+    {
+      "id": 17,
+      "text": "transformation antonym_contradiction: rarely -> often",
+      "type": "transformation",
+      "importance": 0.03410867974162102
+    },
+    {
+      "id": 18,
+      "text": "transformation lexical_identity: rarely -> rarely",
+      "type": "transformation",
+      "importance": 0.028557859361171722
+    },
+    {
+      "id": 19,
+      "text": "transformation lexical_identity: such -> such",
+      "type": "transformation",
+      "importance": 0.028570547699928284
+    },
+    {
+      "id": 20,
+      "text": "transformation conjunction_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.028556087985634804
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.1379694640636444
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.050973888486623764
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.049621328711509705
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.05092920362949371
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.05095120519399643
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.09357231855392456
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.09326717257499695
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.12638616561889648
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.09338226169347763
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.09331818670034409
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.20299392938613892
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.20360028743743896
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.09356512129306793
+    },
+    {
+      "source": 0,
+      "target": 18,
+      "relation": "operation",
+      "attention": 0.20282293856143951
+    },
+    {
+      "source": 0,
+      "target": 19,
+      "relation": "operation",
+      "attention": 0.20326527953147888
+    },
+    {
+      "source": 0,
+      "target": 20,
+      "relation": "operation",
+      "attention": 0.20327270030975342
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.13076317310333252
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.09477108716964722
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.13082276284694672
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.1308123767375946
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.07696555554866791
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.07673035562038422
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.10338269174098969
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.0769413560628891
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.0768558457493782
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.3207360506057739
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.3203907310962677
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.089761883020401
+    },
+    {
+      "source": 1,
+      "target": 18,
+      "relation": "operation",
+      "attention": 0.32115229964256287
+    },
+    {
+      "source": 1,
+      "target": 19,
+      "relation": "operation",
+      "attention": 0.3205984830856323
+    },
+    {
+      "source": 1,
+      "target": 20,
+      "relation": "operation",
+      "attention": 0.32076767086982727
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.17428676784038544
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.41196951270103455
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.12259025871753693
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.33058345317840576
+    },
+    {
+      "source": 3,
+      "target": 12,
+      "relation": "contradicts",
+      "attention": 0.48174160718917847
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.1746777892112732
+    },
+    {
+      "source": 4,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.41134172677993774
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.174896240234375
+    },
+    {
+      "source": 5,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.4114997088909149
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.36943739652633667
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.3130195140838623
+    },
+    {
+      "source": 7,
+      "target": 17,
+      "relation": "contradicts",
+      "attention": 0.4984176456928253
+    },
+    {
+      "source": 8,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.36997443437576294
+    },
+    {
+      "source": 9,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.3695070743560791
+    }
+  ]
+}

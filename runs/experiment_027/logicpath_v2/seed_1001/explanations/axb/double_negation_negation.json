@@ -1,0 +1,350 @@
+{
+  "uid": "axb-1012",
+  "dataset": "axb",
+  "logic": "Double negation;Negation",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 2,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7738248705863953,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3445171117782593,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.23525911569595337,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.19436021149158478,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.16115668416023254,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3560737669467926,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.2667178511619568,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.40675726532936096,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.176988422870636,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.2584158480167389,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.2520008385181427,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: It's not the case that there is no rabbi at this wedding; he is right there standing behind that tree.",
+      "type": "premise_state",
+      "importance": 0.07393615692853928
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: There is no rabbi at this wedding, let alone behind that tree.",
+      "type": "hypothesis_state",
+      "importance": 0.07742512226104736
+    },
+    {
+      "id": 2,
+      "text": "premise unit: it's",
+      "type": "premise_unit",
+      "importance": 0.052203528583049774
+    },
+    {
+      "id": 3,
+      "text": "premise unit: not",
+      "type": "premise_unit",
+      "importance": 0.05218890309333801
+    },
+    {
+      "id": 4,
+      "text": "premise unit: case",
+      "type": "premise_unit",
+      "importance": 0.043070144951343536
+    },
+    {
+      "id": 5,
+      "text": "premise unit: there",
+      "type": "premise_unit",
+      "importance": 0.045203838497400284
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: there",
+      "type": "hypothesis_unit",
+      "importance": 0.04347437247633934
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: no",
+      "type": "hypothesis_unit",
+      "importance": 0.045413561165332794
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: rabbi",
+      "type": "hypothesis_unit",
+      "importance": 0.045458972454071045
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: at",
+      "type": "hypothesis_unit",
+      "importance": 0.04540882259607315
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: there -> there",
+      "type": "transformation",
+      "importance": 0.06659382581710815
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: no -> no",
+      "type": "transformation",
+      "importance": 0.05714861676096916
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: rabbi -> rabbi",
+      "type": "transformation",
+      "importance": 0.057079024612903595
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: at -> at",
+      "type": "transformation",
+      "importance": 0.0570809431374073
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: wedding -> wedding",
+      "type": "transformation",
+      "importance": 0.04412153363227844
+    },
+    {
+      "id": 15,
+      "text": "wiktionary entry: it's",
+      "type": "wiktionary_entry",
+      "importance": 0.054038163274526596
+    },
+    {
+      "id": 16,
+      "text": "wiktionary gloss: Contraction of it + is.",
+      "type": "wiktionary_gloss",
+      "importance": 0.043056268244981766
+    },
+    {
+      "id": 17,
+      "text": "wiktionary entry: not",
+      "type": "wiktionary_entry",
+      "importance": 0.054019734263420105
+    },
+    {
+      "id": 18,
+      "text": "wiktionary gloss: Negates the meaning of the modified verb.",
+      "type": "wiktionary_gloss",
+      "importance": 0.0430784597992897
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.044227778911590576
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.28998661041259766
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.2901560962200165
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.3118590712547302
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.1589985191822052
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.07054165005683899
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.06841343641281128
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.06859058886766434
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.0684969425201416
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.08355927467346191
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.13722553849220276
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.16375720500946045
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.1638331264257431
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.16347858309745789
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.10996127128601074
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.14255714416503906
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.1418779194355011
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.14215783774852753
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.3242824673652649
+    },
+    {
+      "source": 2,
+      "target": 15,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2793619632720947
+    },
+    {
+      "source": 3,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.27874964475631714
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.15959849953651428
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.440029501914978
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.35000741481781006
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.5133732557296753
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.5131833553314209
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.5128416419029236
+    },
+    {
+      "source": 15,
+      "target": 16,
+      "relation": "wiktionary_evidence",
+      "attention": 0.29986855387687683
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.3005369305610657
+    }
+  ]
+}

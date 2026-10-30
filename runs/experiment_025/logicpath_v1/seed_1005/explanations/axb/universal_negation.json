@@ -1,0 +1,301 @@
+{
+  "uid": "axb-1100",
+  "dataset": "axb",
+  "logic": "Universal;Negation",
+  "language": "en",
+  "prediction_3": 2,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7479349374771118,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.33818525075912476,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2666187584400177,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.2531106173992157,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.1507074236869812,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3098876178264618,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.3537242114543915,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.39925628900527954,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.19963693618774414,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.2324112206697464,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.2089514434337616,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: A general artificial intelligence should always come with an off switch.",
+      "type": "premise_state",
+      "importance": 0.1458934247493744
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: The new general artificial intelligence I'm developing shouldn't come with an off switch.",
+      "type": "hypothesis_state",
+      "importance": 0.09383468329906464
+    },
+    {
+      "id": 2,
+      "text": "premise unit: general",
+      "type": "premise_unit",
+      "importance": 0.051415082067251205
+    },
+    {
+      "id": 3,
+      "text": "premise unit: artificial",
+      "type": "premise_unit",
+      "importance": 0.05143309757113457
+    },
+    {
+      "id": 4,
+      "text": "premise unit: intelligence",
+      "type": "premise_unit",
+      "importance": 0.05143410339951515
+    },
+    {
+      "id": 5,
+      "text": "premise unit: should",
+      "type": "premise_unit",
+      "importance": 0.05420475825667381
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: new",
+      "type": "hypothesis_unit",
+      "importance": 0.05817986652255058
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: general",
+      "type": "hypothesis_unit",
+      "importance": 0.05451013520359993
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: artificial",
+      "type": "hypothesis_unit",
+      "importance": 0.054553620517253876
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: intelligence",
+      "type": "hypothesis_unit",
+      "importance": 0.05450651794672012
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: general -> general",
+      "type": "transformation",
+      "importance": 0.09180878102779388
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: artificial -> artificial",
+      "type": "transformation",
+      "importance": 0.09185492247343063
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: intelligence -> intelligence",
+      "type": "transformation",
+      "importance": 0.09184086322784424
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: come -> come",
+      "type": "transformation",
+      "importance": 0.054530221968889236
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.1476351022720337
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.1356889307498932
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.1351468861103058
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.1355224996805191
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.31595343351364136
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.32252857089042664
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.32229548692703247
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.3227694630622864
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.39281928539276123
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.26877880096435547
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.06577105820178986
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.06562399864196777
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.06561651825904846
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.16304486989974976
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.16310423612594604
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.16281920671463013
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.22947239875793457
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.09911367297172546
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.34747031331062317
+    },
+    {
+      "source": 3,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.09943327307701111
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.34774965047836304
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.09918905794620514
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.3477569818496704
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.4485763907432556
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.44899284839630127
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.44869717955589294
+    }
+  ]
+}

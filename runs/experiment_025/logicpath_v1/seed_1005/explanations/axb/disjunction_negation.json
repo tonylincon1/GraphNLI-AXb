@@ -1,0 +1,229 @@
+{
+  "uid": "axb-368",
+  "dataset": "axb",
+  "logic": "Disjunction;Negation",
+  "language": "en",
+  "prediction_3": 2,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7249658107757568,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.33764344453811646,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2545464038848877,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.2438410222530365,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.14665937423706055,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3171796500682831,
+      "target": 1.0
+    },
+    "quantifier_change": {
+      "score": 0.37018880248069763,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.402599573135376,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.19580474495887756,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.22296731173992157,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.21758830547332764,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Either he has a blind trust or he has a conflict of interest.",
+      "type": "premise_state",
+      "importance": 0.19323895871639252
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: He does not have a conflict of interest.",
+      "type": "hypothesis_state",
+      "importance": 0.10449486970901489
+    },
+    {
+      "id": 2,
+      "text": "premise unit: either",
+      "type": "premise_unit",
+      "importance": 0.06411963701248169
+    },
+    {
+      "id": 3,
+      "text": "premise unit: blind",
+      "type": "premise_unit",
+      "importance": 0.0640983134508133
+    },
+    {
+      "id": 4,
+      "text": "premise unit: trust",
+      "type": "premise_unit",
+      "importance": 0.0641164630651474
+    },
+    {
+      "id": 5,
+      "text": "premise unit: or",
+      "type": "premise_unit",
+      "importance": 0.06410521268844604
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: not",
+      "type": "hypothesis_unit",
+      "importance": 0.06868134438991547
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: conflict",
+      "type": "hypothesis_unit",
+      "importance": 0.062093980610370636
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: interest",
+      "type": "hypothesis_unit",
+      "importance": 0.06208934634923935
+    },
+    {
+      "id": 9,
+      "text": "transformation lexical_identity: conflict -> conflict",
+      "type": "transformation",
+      "importance": 0.09288410097360611
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: interest -> interest",
+      "type": "transformation",
+      "importance": 0.09294314682483673
+    },
+    {
+      "id": 11,
+      "text": "transformation negation_flip: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.06713461875915527
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.1765902042388916
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.3187805712223053
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.31910648941993713
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.31888681650161743
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.3190910816192627
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.36964476108551025
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.37035128474235535
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.4193705916404724
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.2730051279067993
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.07465232163667679
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.07461601495742798
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.2073158323764801
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.20727497339248657
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.24589064717292786
+    },
+    {
+      "source": 7,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.49464720487594604
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.49489909410476685
+    }
+  ]
+}

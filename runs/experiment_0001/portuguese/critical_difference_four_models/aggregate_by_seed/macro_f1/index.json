@@ -1,0 +1,84 @@
+[
+  {
+    "split": "overall_mean",
+    "metric": "nli3/macro_f1",
+    "status": "ok",
+    "alpha": 0.05,
+    "blocks": [
+      "seed_1001",
+      "seed_1002",
+      "seed_1003",
+      "seed_1004",
+      "seed_1005"
+    ],
+    "models": [
+      "LogicPath v2",
+      "Pair classifier",
+      "Our approach PT-LKB",
+      "Our approach"
+    ],
+    "friedman": {
+      "statistic": null,
+      "p_value": 0.2658159278478818
+    },
+    "pairwise_wilcoxon": {
+      "p_value": null,
+      "significant_at_0_05": null
+    },
+    "autorank": {
+      "omnibus": "friedman",
+      "posthoc": "nemenyi",
+      "all_normal": true,
+      "homoscedastic": true,
+      "effect_size": "cohen_d",
+      "report": "The statistical analysis was conducted for 4 populations with 5 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.115). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and failed to reject the null hypothesis (p=0.273) that the data is homoscedastic. Thus, we assume that our data is homoscedastic.\nBecause we have more than two populations and all populations are normal and homoscedastic, we should use repeated measures ANOVA as omnibus test to determine if there are any significant differences between the mean values of the populations. However, the user decided to force the use of the less powerful Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=2.098 of the Nemenyi test.\nWe failed to reject the null hypothesis (p=0.266) of the Friedman test that there is no difference in the central tendency of the populations Pair classifier (MD=0.688+-0.012, MAD=0.006, MR=3.400), Our approach PT-LKB (MD=0.690+-0.006, MAD=0.001, MR=2.400), Our approach (MD=0.687+-0.008, MAD=0.002, MR=2.400), and LogicPath v2 (MD=0.692+-0.005, MAD=0.002, MR=1.800). Therefore, we assume that there is no statistically significant difference between the median values of the populations."
+    },
+    "nemenyi_critical_difference": 2.0975924614902377,
+    "average_ranks": {
+      "Pair classifier": 3.4,
+      "Our approach PT-LKB": 2.4,
+      "Our approach": 2.4,
+      "LogicPath v2": 1.8
+    },
+    "non_significant_groups": [
+      [
+        "LogicPath v2",
+        "Our approach",
+        "Our approach PT-LKB",
+        "Pair classifier"
+      ]
+    ],
+    "block_values": {
+      "seed_1001": {
+        "LogicPath v2": 0.6897527442383852,
+        "Pair classifier": 0.6806569026310753,
+        "Our approach PT-LKB": 0.6910606534486798,
+        "Our approach": 0.6851333170917154
+      },
+      "seed_1002": {
+        "LogicPath v2": 0.6957566718753575,
+        "Pair classifier": 0.6881758568391151,
+        "Our approach PT-LKB": 0.6890973104514817,
+        "Our approach": 0.6935360955307912
+      },
+      "seed_1003": {
+        "LogicPath v2": 0.6893923495614679,
+        "Pair classifier": 0.678299603996254,
+        "Our approach PT-LKB": 0.6849143716761502,
+        "Our approach": 0.6870225128770745
+      },
+      "seed_1004": {
+        "LogicPath v2": 0.6926917981964363,
+        "Pair classifier": 0.6883196114481916,
+        "Our approach PT-LKB": 0.6895981093429954,
+        "Our approach": 0.693823530451966
+      },
+      "seed_1005": {
+        "LogicPath v2": 0.6918682341095779,
+        "Pair classifier": 0.6942622930291494,
+        "Our approach PT-LKB": 0.6926370782843462,
+        "Our approach": 0.6870769716630223
+      }
+    }
+  }
+]

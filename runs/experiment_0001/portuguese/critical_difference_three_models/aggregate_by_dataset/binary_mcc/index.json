@@ -1,0 +1,60 @@
+[
+  {
+    "split": "aggregate_block",
+    "metric": "binary/mcc",
+    "status": "exploratory_insufficient_blocks",
+    "alpha": 0.05,
+    "blocks": [
+      "seed_assin2_test",
+      "seed_assin_test",
+      "seed_inferbr_test"
+    ],
+    "models": [
+      "Pair classifier",
+      "Our approach PT-LKB",
+      "Our approach"
+    ],
+    "friedman": {
+      "statistic": null,
+      "p_value": null
+    },
+    "autorank": {
+      "available": false,
+      "message": "autorank requires at least five paired seeds."
+    },
+    "pairwise_wilcoxon": {
+      "p_value": null,
+      "significant_at_0_05": null
+    },
+    "nemenyi_critical_difference": 1.9136235154962773,
+    "average_ranks": {
+      "Pair classifier": 2.6666666666666665,
+      "Our approach PT-LKB": 1.3333333333333333,
+      "Our approach": 2.0
+    },
+    "non_significant_groups": [
+      [
+        "Our approach PT-LKB",
+        "Our approach",
+        "Pair classifier"
+      ]
+    ],
+    "block_values": {
+      "seed_assin2_test": {
+        "Pair classifier": 0.7979666011755073,
+        "Our approach PT-LKB": 0.8068458970871554,
+        "Our approach": 0.8043500608689526
+      },
+      "seed_assin_test": {
+        "Pair classifier": 0.735478883667137,
+        "Our approach PT-LKB": 0.7455430905533602,
+        "Our approach": 0.7304828598442564
+      },
+      "seed_inferbr_test": {
+        "Pair classifier": 0.8753641526635658,
+        "Our approach PT-LKB": 0.8905750869265125,
+        "Our approach": 0.891643941600465
+      }
+    }
+  }
+]

@@ -1,0 +1,86 @@
+{
+  "split": "axb",
+  "metric": "binary/mcc",
+  "status": "ok",
+  "alpha": 0.05,
+  "blocks": [
+    "seed_1001",
+    "seed_1002",
+    "seed_1003",
+    "seed_1004",
+    "seed_1005"
+  ],
+  "models": [
+    "K-BERT",
+    "KGAnet",
+    "KGNLI",
+    "Pair classifier",
+    "Our approach"
+  ],
+  "friedman": {
+    "statistic": null,
+    "p_value": 0.047732532884316
+  },
+  "autorank": {
+    "omnibus": "friedman",
+    "posthoc": "nemenyi",
+    "all_normal": true,
+    "homoscedastic": true,
+    "effect_size": "cohen_d",
+    "report": "The statistical analysis was conducted for 5 populations with 5 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.401). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and failed to reject the null hypothesis (p=0.840) that the data is homoscedastic. Thus, we assume that our data is homoscedastic.\nBecause we have more than two populations and all populations are normal and homoscedastic, we should use repeated measures ANOVA as omnibus test to determine if there are any significant differences between the mean values of the populations. However, the user decided to force the use of the less powerful Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=2.728 of the Nemenyi test.\nWe reject the null hypothesis (p=0.048) of the Friedman test that there is no difference in the central tendency of the populations K-BERT (MD=0.203+-0.056, MAD=0.015, MR=4.200), KGNLI (MD=0.193+-0.038, MAD=0.016, MR=4.000), Pair classifier (MD=0.233+-0.049, MAD=0.015, MR=2.800), KGAnet (MD=0.242+-0.062, MAD=0.022, MR=2.400), and Our approach (MD=0.245+-0.038, MAD=0.013, MR=1.600). Therefore, we assume that there is a statistically significant difference between the median values of the populations.\nBased on the post-hoc Nemenyi test, we assume that there are no significant differences within the following groups: K-BERT, KGNLI, Pair classifier, KGAnet, and Our approach. All other differences are significant."
+  },
+  "nemenyi_critical_difference": 2.7277508838690387,
+  "average_ranks": {
+    "K-BERT": 4.2,
+    "KGNLI": 4.0,
+    "Pair classifier": 2.8,
+    "KGAnet": 2.4,
+    "Our approach": 1.6
+  },
+  "non_significant_groups": [
+    [
+      "Our approach",
+      "KGAnet",
+      "Pair classifier",
+      "KGNLI",
+      "K-BERT"
+    ]
+  ],
+  "block_values": {
+    "seed_1001": {
+      "K-BERT": 0.21847811709947457,
+      "KGAnet": 0.1922450907174042,
+      "KGNLI": 0.16640681053547302,
+      "Pair classifier": 0.23294871166701486,
+      "Our approach": 0.25807166683244187
+    },
+    "seed_1002": {
+      "K-BERT": 0.2031725131080794,
+      "KGAnet": 0.2522292895610493,
+      "KGNLI": 0.1930241451550769,
+      "Pair classifier": 0.24513039328967193,
+      "Our approach": 0.2446224646001336
+    },
+    "seed_1003": {
+      "K-BERT": 0.18511529731846596,
+      "KGAnet": 0.24170285115474707,
+      "KGNLI": 0.19283741934368676,
+      "Pair classifier": 0.21808295438007086,
+      "Our approach": 0.22301885592392878
+    },
+    "seed_1004": {
+      "K-BERT": 0.14882943267507392,
+      "KGAnet": 0.2641410288313109,
+      "KGNLI": 0.20860080909457396,
+      "Pair classifier": 0.2656108994234144,
+      "Our approach": 0.2691074895912471
+    },
+    "seed_1005": {
+      "K-BERT": 0.20702244963340444,
+      "KGAnet": 0.20832931467389346,
+      "KGNLI": 0.21459804483372213,
+      "Pair classifier": 0.20452970640588886,
+      "Our approach": 0.23438669944793167
+    }
+  }
+}

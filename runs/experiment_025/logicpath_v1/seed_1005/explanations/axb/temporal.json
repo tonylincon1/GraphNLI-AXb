@@ -1,0 +1,199 @@
+{
+  "uid": "axb-418",
+  "dataset": "axb",
+  "logic": "Temporal",
+  "language": "en",
+  "prediction_3": 1,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7471717000007629,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3452487289905548,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.26918861269950867,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.2530454695224762,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.15629738569259644,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3154216408729553,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.3492584824562073,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.39243072271347046,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.20100751519203186,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.23824867606163025,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.21653684973716736,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: She has three questions.",
+      "type": "premise_state",
+      "importance": 0.1611844301223755
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: She had three questions.",
+      "type": "hypothesis_state",
+      "importance": 0.11252591013908386
+    },
+    {
+      "id": 2,
+      "text": "premise unit: three",
+      "type": "premise_unit",
+      "importance": 0.09414622187614441
+    },
+    {
+      "id": 3,
+      "text": "premise unit: questions",
+      "type": "premise_unit",
+      "importance": 0.09415403753519058
+    },
+    {
+      "id": 4,
+      "text": "hypothesis unit: three",
+      "type": "hypothesis_unit",
+      "importance": 0.09918756783008575
+    },
+    {
+      "id": 5,
+      "text": "hypothesis unit: questions",
+      "type": "hypothesis_unit",
+      "importance": 0.09919963032007217
+    },
+    {
+      "id": 6,
+      "text": "transformation lexical_identity: three -> three",
+      "type": "transformation",
+      "importance": 0.1698325127363205
+    },
+    {
+      "id": 7,
+      "text": "transformation lexical_identity: questions -> questions",
+      "type": "transformation",
+      "importance": 0.16976965963840485
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.2212934046983719
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.14457741379737854
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.1447908580303192
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation": "operation",
+      "attention": 0.4105795919895172
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "relation": "operation",
+      "attention": 0.4109744429588318
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.07658430188894272
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.07659684121608734
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "operation",
+      "attention": 0.20821645855903625
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "operation",
+      "attention": 0.2079339176416397
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "relation": "lexical_relation",
+      "attention": 0.09923265874385834
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "operation",
+      "attention": 0.3478474020957947
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "relation": "lexical_relation",
+      "attention": 0.09932554513216019
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "operation",
+      "attention": 0.3475417494773865
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "relation": "operation",
+      "attention": 0.44864141941070557
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation": "operation",
+      "attention": 0.4484473466873169
+    }
+  ]
+}

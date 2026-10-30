@@ -1,0 +1,440 @@
+{
+  "uid": "axb-4",
+  "dataset": "axb",
+  "logic": "Negation",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 2,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.798115611076355,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.38325250148773193,
+      "target": 1.0
+    },
+    "hypernym_generalization": {
+      "score": 0.2538282871246338,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.2096746861934662,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.1801844984292984,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.3631231486797333,
+      "target": 1.0
+    },
+    "quantifier_change": {
+      "score": 0.2901672124862671,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.4201348125934601,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.18727973103523254,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.28902047872543335,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.2643499970436096,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Out of the box, Ouya supports media apps such as Twitch.tv and XBMC media player.",
+      "type": "premise_state",
+      "importance": 0.05189661309123039
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Out of the box, Ouya doesn't support media apps such as Twitch.tv and XBMC media player.",
+      "type": "hypothesis_state",
+      "importance": 0.09758824110031128
+    },
+    {
+      "id": 2,
+      "text": "premise unit: out",
+      "type": "premise_unit",
+      "importance": 0.04492221400141716
+    },
+    {
+      "id": 3,
+      "text": "premise unit: box",
+      "type": "premise_unit",
+      "importance": 0.04495086148381233
+    },
+    {
+      "id": 4,
+      "text": "premise unit: ouya",
+      "type": "premise_unit",
+      "importance": 0.038454849272966385
+    },
+    {
+      "id": 5,
+      "text": "premise unit: supports",
+      "type": "premise_unit",
+      "importance": 0.037777505815029144
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: out",
+      "type": "hypothesis_unit",
+      "importance": 0.03926399350166321
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: box",
+      "type": "hypothesis_unit",
+      "importance": 0.03925202041864395
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: ouya",
+      "type": "hypothesis_unit",
+      "importance": 0.0367383249104023
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: doesn't",
+      "type": "hypothesis_unit",
+      "importance": 0.03722192347049713
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: out -> out",
+      "type": "transformation",
+      "importance": 0.055265575647354126
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: box -> box",
+      "type": "transformation",
+      "importance": 0.055280376225709915
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: ouya -> ouya",
+      "type": "transformation",
+      "importance": 0.05684341862797737
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_synonym: supports -> support",
+      "type": "transformation",
+      "importance": 0.04883001372218132
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: media -> media",
+      "type": "transformation",
+      "importance": 0.03664274141192436
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: apps -> apps",
+      "type": "transformation",
+      "importance": 0.03666360676288605
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: such -> such",
+      "type": "transformation",
+      "importance": 0.03662089258432388
+    },
+    {
+      "id": 17,
+      "text": "transformation negation_flip: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.03667810931801796
+    },
+    {
+      "id": 18,
+      "text": "wiktionary entry: out",
+      "type": "wiktionary_entry",
+      "importance": 0.047886524349451065
+    },
+    {
+      "id": 19,
+      "text": "wiktionary gloss: Away from the inside or centre.",
+      "type": "wiktionary_gloss",
+      "importance": 0.036667853593826294
+    },
+    {
+      "id": 20,
+      "text": "wiktionary entry: box",
+      "type": "wiktionary_entry",
+      "importance": 0.04789981245994568
+    },
+    {
+      "id": 21,
+      "text": "wiktionary gloss: Senses relating to a three-dimensional object or space.",
+      "type": "wiktionary_gloss",
+      "importance": 0.036654531955718994
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.03149233013391495
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.14659647643566132
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.14716972410678864
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.1516065001487732
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.17961230874061584
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.053905170410871506
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.054315436631441116
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.05377420410513878
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.05645115301012993
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.06645563989877701
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.06653191149234772
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.06658177822828293
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.06734457612037659
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.10508742183446884
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.10441726446151733
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.1251283586025238
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.29150065779685974
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.09584575891494751
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.09634298086166382
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.09677004814147949
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.10862898826599121
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.3118828535079956
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.311404824256897
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.31158676743507385
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.31193023920059204
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.14234894514083862
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.43385788798332214
+    },
+    {
+      "source": 2,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.1932206153869629
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.14239169657230377
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.4337182641029358
+    },
+    {
+      "source": 3,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.19289574027061462
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.15939128398895264
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.43917423486709595
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.5460488200187683
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3149014711380005
+    },
+    {
+      "source": 6,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.14107123017311096
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.3160400092601776
+    },
+    {
+      "source": 7,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.14106932282447815
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.3500897288322449
+    },
+    {
+      "source": 18,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.29443359375
+    },
+    {
+      "source": 20,
+      "target": 21,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2951183617115021
+    }
+  ]
+}

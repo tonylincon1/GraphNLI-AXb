@@ -1,0 +1,452 @@
+{
+  "uid": "axb-880",
+  "dataset": "axb",
+  "logic": "Disjunction;Non-monotone",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7975527048110962,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3579854369163513,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.20560982823371887,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.1873178482055664,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.14436748623847961,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.32746121287345886,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.33630475401878357,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.41120103001594543,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.15107867121696472,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.2298000454902649,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.21442408859729767,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: The entity prediction task requires predicting xxxx given the preceding text either by choosing a previously mentioned entity or deciding that this is a \u201cnew entity\u201d.",
+      "type": "premise_state",
+      "importance": 0.06197366490960121
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: The entity prediction task requires predicting xxxx given the preceding text by choosing a previously mentioned entity.",
+      "type": "hypothesis_state",
+      "importance": 0.13151653110980988
+    },
+    {
+      "id": 2,
+      "text": "premise unit: entity",
+      "type": "premise_unit",
+      "importance": 0.04261206090450287
+    },
+    {
+      "id": 3,
+      "text": "premise unit: prediction",
+      "type": "premise_unit",
+      "importance": 0.0426148846745491
+    },
+    {
+      "id": 4,
+      "text": "premise unit: task",
+      "type": "premise_unit",
+      "importance": 0.040905628353357315
+    },
+    {
+      "id": 5,
+      "text": "premise unit: requires",
+      "type": "premise_unit",
+      "importance": 0.040888670831918716
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: entity",
+      "type": "hypothesis_unit",
+      "importance": 0.04298747703433037
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: prediction",
+      "type": "hypothesis_unit",
+      "importance": 0.04296782985329628
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: task",
+      "type": "hypothesis_unit",
+      "importance": 0.04046636074781418
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: requires",
+      "type": "hypothesis_unit",
+      "importance": 0.040484603494405746
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: entity -> entity",
+      "type": "transformation",
+      "importance": 0.03707452863454819
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: prediction -> prediction",
+      "type": "transformation",
+      "importance": 0.037067264318466187
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: task -> task",
+      "type": "transformation",
+      "importance": 0.03725831210613251
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: requires -> requires",
+      "type": "transformation",
+      "importance": 0.0372655987739563
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: predicting -> predicting",
+      "type": "transformation",
+      "importance": 0.0369979664683342
+    },
+    {
+      "id": 15,
+      "text": "transformation lexical_identity: xxxx -> xxxx",
+      "type": "transformation",
+      "importance": 0.037000853568315506
+    },
+    {
+      "id": 16,
+      "text": "transformation lexical_identity: given -> given",
+      "type": "transformation",
+      "importance": 0.0370008647441864
+    },
+    {
+      "id": 17,
+      "text": "transformation lexical_identity: preceding -> preceding",
+      "type": "transformation",
+      "importance": 0.03699903190135956
+    },
+    {
+      "id": 18,
+      "text": "wiktionary entry: entity",
+      "type": "wiktionary_entry",
+      "importance": 0.056853827089071274
+    },
+    {
+      "id": 19,
+      "text": "wiktionary gloss: That which has a distinct existence as an individual unit, often used for organizations which have no physical form.",
+      "type": "wiktionary_gloss",
+      "importance": 0.031094815582036972
+    },
+    {
+      "id": 20,
+      "text": "wiktionary entry: prediction",
+      "type": "wiktionary_entry",
+      "importance": 0.056874532252550125
+    },
+    {
+      "id": 21,
+      "text": "wiktionary gloss: A statement of what will happen in the future.",
+      "type": "wiktionary_gloss",
+      "importance": 0.03109469637274742
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.23115113377571106
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.2228391170501709
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.22250491380691528
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.2426271140575409
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.2423298954963684
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.023629598319530487
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.02358163148164749
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.023614738136529922
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.023579826578497887
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.025585129857063293
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.02572038397192955
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.025654494762420654
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.025646205991506577
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.27940845489501953
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.27956491708755493
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.28854233026504517
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.2882808446884155
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.19908498227596283
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.19923388957977295
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.1996186375617981
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.19934308528900146
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.23698025941848755
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.23699837923049927
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.23702120780944824
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.23708783090114594
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.2843661606311798
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.0396844819188118
+    },
+    {
+      "source": 2,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.25934433937072754
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.2842921018600464
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.03967047482728958
+    },
+    {
+      "source": 3,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2596885561943054
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.4177277684211731
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.04297073185443878
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.41787397861480713
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.0430445671081543
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.03644656017422676
+    },
+    {
+      "source": 6,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.26278814673423767
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.03634602576494217
+    },
+    {
+      "source": 7,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2624909281730652
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.03751577436923981
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.03764712065458298
+    },
+    {
+      "source": 18,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.5429333448410034
+    },
+    {
+      "source": 20,
+      "target": 21,
+      "relation": "wiktionary_evidence",
+      "attention": 0.5430831909179688
+    }
+  ]
+}

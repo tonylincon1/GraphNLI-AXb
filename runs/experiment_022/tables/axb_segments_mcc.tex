@@ -1,0 +1,29 @@
+% Generated from experiment_022/summary.json (5 seeds: 1001--1005).
+% Requires: \usepackage{booktabs}
+\begin{table}[ht]
+\centering
+\caption{MCC médio (desvio-padrão) por segmento principal do AX-b.}
+\label{tab:experiment022-axb-segments-mcc}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+Segmento & KGNLI & Our approach & KGAnet & Pair & K-BERT \\
+\midrule
+Conjunction & 0.4551 $\pm$ 0.0624 & 0.4659 $\pm$ 0.0624 & 0.4551 $\pm$ 0.0491 & \textbf{0.4988 $\pm$ 0.0455} & 0.3453 $\pm$ 0.1450 \\
+Universal & \textbf{0.4606 $\pm$ 0.0654} & 0.4060 $\pm$ 0.0564 & 0.3689 $\pm$ 0.1074 & 0.3907 $\pm$ 0.1157 & 0.3557 $\pm$ 0.1625 \\
+Existential & 0.2863 $\pm$ 0.1253 & 0.1981 $\pm$ 0.0873 & 0.3220 $\pm$ 0.1182 & 0.3670 $\pm$ 0.1297 & \textbf{0.4310 $\pm$ 0.1785} \\
+Conditionals & 0.2508 $\pm$ 0.1591 & 0.2889 $\pm$ 0.0502 & \textbf{0.3423 $\pm$ 0.1855} & 0.3128 $\pm$ 0.0634 & 0.1285 $\pm$ 0.0953 \\
+Upward monotone & 0.3140 $\pm$ 0.0424 & \textbf{0.3333 $\pm$ 0.0443} & 0.3131 $\pm$ 0.0612 & 0.3229 $\pm$ 0.0375 & 0.1104 $\pm$ 0.0584 \\
+Double negation & 0.0981 $\pm$ 0.0940 & 0.0856 $\pm$ 0.0710 & \textbf{0.2124 $\pm$ 0.0492} & 0.1281 $\pm$ 0.1052 & -0.0427 $\pm$ 0.0695 \\
+Non-monotone & 0.1891 $\pm$ 0.0241 & \textbf{0.1979 $\pm$ 0.0241} & 0.1590 $\pm$ 0.0413 & 0.1609 $\pm$ 0.0238 & 0.0580 $\pm$ 0.0816 \\
+Temporal & \textbf{0.0726 $\pm$ 0.1171} & 0.0003 $\pm$ 0.1061 & 0.0202 $\pm$ 0.0665 & 0.0066 $\pm$ 0.0882 & 0.0446 $\pm$ 0.0998 \\
+Negation & \textbf{-0.0054 $\pm$ 0.0717} & -0.0890 $\pm$ 0.0529 & -0.0217 $\pm$ 0.0689 & -0.0201 $\pm$ 0.0813 & -0.0109 $\pm$ 0.0663 \\
+Downward monotone & -0.2017 $\pm$ 0.0702 & -0.1981 $\pm$ 0.0782 & -0.1382 $\pm$ 0.1356 & -0.2944 $\pm$ 0.1004 & \textbf{-0.0610 $\pm$ 0.1344} \\
+Intervals / Numbers & -0.1678 $\pm$ 0.0398 & -0.1420 $\pm$ 0.0884 & -0.1137 $\pm$ 0.0695 & -0.1482 $\pm$ 0.1107 & \textbf{-0.0669 $\pm$ 0.1384} \\
+Disjunction & \textbf{-0.1927 $\pm$ 0.1233} & -0.2427 $\pm$ 0.0866 & -0.2194 $\pm$ 0.1574 & -0.1945 $\pm$ 0.1459 & -0.4229 $\pm$ 0.1322 \\
+\bottomrule
+\end{tabular}%
+}
+\\
+\parbox{0.95\linewidth}{\footnotesize Valores como média $\pm$ desvio-padrão entre as cinco seeds. Foram incluídos os segmentos básicos; combinações de fenômenos e a categoria \texttt{unknown} foram excluídas. MCC maior é melhor, portanto valores negativos indicam desempenho abaixo de uma associação equilibrada entre as classes.}
+\end{table}

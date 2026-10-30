@@ -1,0 +1,301 @@
+{
+  "uid": "axb-380",
+  "dataset": "axb",
+  "logic": "Existential",
+  "language": "en",
+  "prediction_3": 2,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7912298440933228,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3038026988506317,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.21271724998950958,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.16232705116271973,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.11417262256145477,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.24716593325138092,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.24082525074481964,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.33819183707237244,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.13566197454929352,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.18597280979156494,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.16275081038475037,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Susan knows how turtles reproduce.",
+      "type": "premise_state",
+      "importance": 0.21842338144779205
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: Someone knows how turtles reproduce.",
+      "type": "hypothesis_state",
+      "importance": 0.11003302782773972
+    },
+    {
+      "id": 2,
+      "text": "premise unit: susan",
+      "type": "premise_unit",
+      "importance": 0.04358404874801636
+    },
+    {
+      "id": 3,
+      "text": "premise unit: knows",
+      "type": "premise_unit",
+      "importance": 0.04469869285821915
+    },
+    {
+      "id": 4,
+      "text": "premise unit: how",
+      "type": "premise_unit",
+      "importance": 0.04469026252627373
+    },
+    {
+      "id": 5,
+      "text": "premise unit: turtles",
+      "type": "premise_unit",
+      "importance": 0.044705793261528015
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: someone",
+      "type": "hypothesis_unit",
+      "importance": 0.061663154512643814
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: knows",
+      "type": "hypothesis_unit",
+      "importance": 0.08276774734258652
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: how",
+      "type": "hypothesis_unit",
+      "importance": 0.08280118554830551
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: turtles",
+      "type": "hypothesis_unit",
+      "importance": 0.08273449540138245
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: knows -> knows",
+      "type": "transformation",
+      "importance": 0.046104516834020615
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: how -> how",
+      "type": "transformation",
+      "importance": 0.046097200363874435
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: turtles -> turtles",
+      "type": "transformation",
+      "importance": 0.04611775279045105
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: reproduce -> reproduce",
+      "type": "transformation",
+      "importance": 0.04557875916361809
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.08106396347284317
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.5033613443374634
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.30154699087142944
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.30150341987609863
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.301776647567749
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3097003102302551
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.309514582157135
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.3096804618835449
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.44783130288124084
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.31853559613227844
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.3074498772621155
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.30774176120758057
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.307791143655777
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.027502410113811493
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.02741212770342827
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.027459129691123962
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.06058721989393234
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.20970943570137024
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.02930360659956932
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.20970578491687775
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.029237881302833557
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.20944994688034058
+    },
+    {
+      "source": 5,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.02942587062716484
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.18599560856819153
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.18625445663928986
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.18589791655540466
+    }
+  ]
+}

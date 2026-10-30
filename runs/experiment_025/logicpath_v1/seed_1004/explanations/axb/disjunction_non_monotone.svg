@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1050" viewBox="0 0 1500 1050">
+<defs><marker id="arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#4d6f8e"/></marker><marker id="red-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#a33d3d"/></marker></defs>
+<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}.column{font-size:14px;font-weight:bold;fill:#52616b}.edge-label{font-size:10px;fill:#52616b}</style>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="30" y="32" class="title">LogicPath v1 transformation graph | axb-880</text>
+<text x="30" y="54" class="small">Prediction: 0 | label: -100 | arrows show transformation flow; width shows attention.</text>
+<text x="120" y="92" text-anchor="middle" class="column">Premise</text>
+<text x="390" y="92" text-anchor="middle" class="column">Premise units</text>
+<text x="720" y="92" text-anchor="middle" class="column">Transformations</text>
+<text x="1050" y="92" text-anchor="middle" class="column">Hypothesis units</text>
+<text x="1380" y="92" text-anchor="middle" class="column">Hypothesis</text>
+<line x1="198.0" y1="550.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="1.26" stroke-opacity="0.24" marker-end="url(#arrow)"/>
+<text x="750.0" y="545.0" text-anchor="middle" class="edge-label">supports</text>
+<line x1="198.0" y1="550.0" x2="312.0" y2="250.0" stroke="#4d6f8e" stroke-width="1.34" stroke-opacity="0.27" marker-end="url(#arrow)"/>
+<text x="255.0" y="395.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="198.0" y1="550.0" x2="312.0" y2="450.0" stroke="#4d6f8e" stroke-width="1.34" stroke-opacity="0.27" marker-end="url(#arrow)"/>
+<text x="255.0" y="495.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="198.0" y1="550.0" x2="312.0" y2="650.0" stroke="#4d6f8e" stroke-width="1.34" stroke-opacity="0.27" marker-end="url(#arrow)"/>
+<text x="255.0" y="595.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="198.0" y1="550.0" x2="312.0" y2="850.0" stroke="#4d6f8e" stroke-width="1.34" stroke-opacity="0.27" marker-end="url(#arrow)"/>
+<text x="255.0" y="695.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="198.0" y1="550.0" x2="642.0" y2="200.0" stroke="#4d6f8e" stroke-width="2.13" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+<text x="420.0" y="370.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="198.0" y1="550.0" x2="642.0" y2="300.0" stroke="#4d6f8e" stroke-width="2.14" stroke-opacity="0.56" marker-end="url(#arrow)"/>
+<text x="420.0" y="420.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="198.0" y1="550.0" x2="642.0" y2="400.0" stroke="#4d6f8e" stroke-width="2.13" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+<text x="420.0" y="470.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="198.0" y1="550.0" x2="642.0" y2="500.0" stroke="#4d6f8e" stroke-width="2.13" stroke-opacity="0.55" marker-end="url(#arrow)"/>
+<text x="420.0" y="520.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="198.0" y1="550.0" x2="642.0" y2="600.0" stroke="#4d6f8e" stroke-width="2.93" stroke-opacity="0.84" marker-end="url(#arrow)"/>
+<text x="420.0" y="570.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="198.0" y1="550.0" x2="642.0" y2="700.0" stroke="#4d6f8e" stroke-width="2.92" stroke-opacity="0.84" marker-end="url(#arrow)"/>
+<text x="420.0" y="620.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="198.0" y1="550.0" x2="642.0" y2="800.0" stroke="#4d6f8e" stroke-width="2.92" stroke-opacity="0.84" marker-end="url(#arrow)"/>
+<text x="420.0" y="670.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="198.0" y1="550.0" x2="642.0" y2="900.0" stroke="#4d6f8e" stroke-width="2.92" stroke-opacity="0.84" marker-end="url(#arrow)"/>
+<text x="420.0" y="720.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="1128.0" y1="250.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="1.29" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="1215.0" y="395.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="1128.0" y1="450.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="1.29" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="1215.0" y="495.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="1128.0" y1="650.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="1.29" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="1215.0" y="595.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="1128.0" y1="850.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="1.29" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="1215.0" y="695.0" text-anchor="middle" class="edge-label">contains</text>
+<line x1="798.0" y1="200.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="2.63" stroke-opacity="0.73" marker-end="url(#arrow)"/>
+<text x="1050.0" y="370.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="300.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="2.63" stroke-opacity="0.73" marker-end="url(#arrow)"/>
+<text x="1050.0" y="420.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="400.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="2.63" stroke-opacity="0.73" marker-end="url(#arrow)"/>
+<text x="1050.0" y="470.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="500.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="2.63" stroke-opacity="0.73" marker-end="url(#arrow)"/>
+<text x="1050.0" y="520.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="600.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="3.08" stroke-opacity="0.89" marker-end="url(#arrow)"/>
+<text x="1050.0" y="570.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="700.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="3.08" stroke-opacity="0.89" marker-end="url(#arrow)"/>
+<text x="1050.0" y="620.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="800.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="3.08" stroke-opacity="0.89" marker-end="url(#arrow)"/>
+<text x="1050.0" y="670.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="900.0" x2="1302.0" y2="550.0" stroke="#4d6f8e" stroke-width="3.08" stroke-opacity="0.89" marker-end="url(#arrow)"/>
+<text x="1050.0" y="720.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="468.0" y1="250.0" x2="972.0" y2="250.0" stroke="#4d6f8e" stroke-width="2.96" stroke-opacity="0.85" marker-end="url(#arrow)"/>
+<text x="720.0" y="245.0" text-anchor="middle" class="edge-label">lexical_relation</text>
+<line x1="468.0" y1="250.0" x2="642.0" y2="200.0" stroke="#4d6f8e" stroke-width="3.39" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="555.0" y="220.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="468.0" y1="450.0" x2="972.0" y2="450.0" stroke="#4d6f8e" stroke-width="2.96" stroke-opacity="0.85" marker-end="url(#arrow)"/>
+<text x="720.0" y="445.0" text-anchor="middle" class="edge-label">lexical_relation</text>
+<line x1="468.0" y1="450.0" x2="642.0" y2="300.0" stroke="#4d6f8e" stroke-width="3.39" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="555.0" y="370.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="468.0" y1="650.0" x2="972.0" y2="650.0" stroke="#4d6f8e" stroke-width="2.96" stroke-opacity="0.85" marker-end="url(#arrow)"/>
+<text x="720.0" y="645.0" text-anchor="middle" class="edge-label">lexical_relation</text>
+<line x1="468.0" y1="650.0" x2="642.0" y2="400.0" stroke="#4d6f8e" stroke-width="3.39" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="555.0" y="520.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="468.0" y1="850.0" x2="972.0" y2="850.0" stroke="#4d6f8e" stroke-width="2.96" stroke-opacity="0.85" marker-end="url(#arrow)"/>
+<text x="720.0" y="845.0" text-anchor="middle" class="edge-label">lexical_relation</text>
+<line x1="468.0" y1="850.0" x2="642.0" y2="500.0" stroke="#4d6f8e" stroke-width="3.39" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="555.0" y="670.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="200.0" x2="972.0" y2="250.0" stroke="#4d6f8e" stroke-width="3.64" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="885.0" y="220.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="300.0" x2="972.0" y2="450.0" stroke="#4d6f8e" stroke-width="3.64" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="885.0" y="370.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="400.0" x2="972.0" y2="650.0" stroke="#4d6f8e" stroke-width="3.64" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="885.0" y="520.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="798.0" y1="500.0" x2="972.0" y2="850.0" stroke="#4d6f8e" stroke-width="3.64" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="885.0" y="670.0" text-anchor="middle" class="edge-label">operation</text>
+<rect x="38.0" y="518.0" width="164" height="64" rx="6" fill="#e8f3fb" stroke="#1f4d70" stroke-width="2"/>
+<text x="120.0" y="543.0" text-anchor="middle" class="node">N0 | 0.106</text>
+<text x="120.0" y="560.0" text-anchor="middle" class="small">premise state: The entity</text>
+<text x="120.0" y="574.0" text-anchor="middle" class="small">prediction task requir...</text>
+<rect x="1298.0" y="518.0" width="164" height="64" rx="6" fill="#e8f3fb" stroke="#1f4d70" stroke-width="2"/>
+<text x="1380.0" y="543.0" text-anchor="middle" class="node">N1 | 0.125</text>
+<text x="1380.0" y="560.0" text-anchor="middle" class="small">hypothesis state: The</text>
+<text x="1380.0" y="574.0" text-anchor="middle" class="small">entity prediction task...</text>
+<rect x="308.0" y="218.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="390.0" y="243.0" text-anchor="middle" class="node">N2 | 0.043</text>
+<text x="390.0" y="260.0" text-anchor="middle" class="small">premise unit: entity</text>
+<rect x="308.0" y="418.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="390.0" y="443.0" text-anchor="middle" class="node">N3 | 0.043</text>
+<text x="390.0" y="460.0" text-anchor="middle" class="small">premise unit: prediction</text>
+<rect x="308.0" y="618.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="390.0" y="643.0" text-anchor="middle" class="node">N4 | 0.042</text>
+<text x="390.0" y="660.0" text-anchor="middle" class="small">premise unit: task</text>
+<rect x="308.0" y="818.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="390.0" y="843.0" text-anchor="middle" class="node">N5 | 0.042</text>
+<text x="390.0" y="860.0" text-anchor="middle" class="small">premise unit: requires</text>
+<rect x="968.0" y="218.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1050.0" y="243.0" text-anchor="middle" class="node">N6 | 0.051</text>
+<text x="1050.0" y="260.0" text-anchor="middle" class="small">hypothesis unit: entity</text>
+<rect x="968.0" y="418.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1050.0" y="443.0" text-anchor="middle" class="node">N7 | 0.050</text>
+<text x="1050.0" y="460.0" text-anchor="middle" class="small">hypothesis unit:</text>
+<text x="1050.0" y="474.0" text-anchor="middle" class="small">prediction</text>
+<rect x="968.0" y="618.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1050.0" y="643.0" text-anchor="middle" class="node">N8 | 0.051</text>
+<text x="1050.0" y="660.0" text-anchor="middle" class="small">hypothesis unit: task</text>
+<rect x="968.0" y="818.0" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1050.0" y="843.0" text-anchor="middle" class="node">N9 | 0.051</text>
+<text x="1050.0" y="860.0" text-anchor="middle" class="small">hypothesis unit: requires</text>
+<rect x="638.0" y="168.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="193.0" text-anchor="middle" class="node">N10 | 0.062</text>
+<text x="720.0" y="210.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="224.0" text-anchor="middle" class="small">lexical_identity: enti...</text>
+<rect x="638.0" y="268.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="293.0" text-anchor="middle" class="node">N11 | 0.063</text>
+<text x="720.0" y="310.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="324.0" text-anchor="middle" class="small">lexical_identity:...</text>
+<rect x="638.0" y="368.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="393.0" text-anchor="middle" class="node">N12 | 0.063</text>
+<text x="720.0" y="410.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="424.0" text-anchor="middle" class="small">lexical_identity: task...</text>
+<rect x="638.0" y="468.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="493.0" text-anchor="middle" class="node">N13 | 0.063</text>
+<text x="720.0" y="510.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="524.0" text-anchor="middle" class="small">lexical_identity:...</text>
+<rect x="638.0" y="568.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="593.0" text-anchor="middle" class="node">N14 | 0.037</text>
+<text x="720.0" y="610.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="624.0" text-anchor="middle" class="small">lexical_identity:...</text>
+<rect x="638.0" y="668.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="693.0" text-anchor="middle" class="node">N15 | 0.037</text>
+<text x="720.0" y="710.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="724.0" text-anchor="middle" class="small">lexical_identity: xxxx...</text>
+<rect x="638.0" y="768.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="793.0" text-anchor="middle" class="node">N16 | 0.037</text>
+<text x="720.0" y="810.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="824.0" text-anchor="middle" class="small">lexical_identity: give...</text>
+<rect x="638.0" y="868.0" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="720.0" y="893.0" text-anchor="middle" class="node">N17 | 0.037</text>
+<text x="720.0" y="910.0" text-anchor="middle" class="small">transformation</text>
+<text x="720.0" y="924.0" text-anchor="middle" class="small">lexical_identity:...</text>
+<text x="30" y="1026" class="small">Node score: normalized relation-aware attention. Red arrows indicate contradiction relations.</text>
+</svg>

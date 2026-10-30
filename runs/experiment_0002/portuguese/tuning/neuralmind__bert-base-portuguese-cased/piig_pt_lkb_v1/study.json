@@ -1,0 +1,59 @@
+{
+  "model_name": "neuralmind/bert-base-portuguese-cased",
+  "variant": "piig_pt_lkb_v1",
+  "trials": 5,
+  "seed": 42,
+  "completed_trials": 5,
+  "storage": "/home/antoniosrn/GraphNLI-AXb/runs/experiment_0001/portuguese/tuning/neuralmind__bert-base-portuguese-cased/piig_pt_lkb_v1/trials/optuna.db",
+  "selection_metric": "nli3/macro_f1",
+  "best_value": 0.8999653688598667,
+  "best_params": {
+    "lr": 1.1973917635685022e-05,
+    "dropout": 0.22701814444901136,
+    "weight_decay": 0.00011527987128232407,
+    "warmup_ratio": 0.14548647782429913
+  },
+  "trials_table": [
+    {
+      "lr": 7.106591851092237e-06,
+      "dropout": 0.28767857660247903,
+      "weight_decay": 0.015702970884055395,
+      "warmup_ratio": 0.08979877262955549,
+      "value": 0.8849087418971572,
+      "state": "COMPLETE"
+    },
+    {
+      "lr": 4.296748115469074e-06,
+      "dropout": 0.08899863008405066,
+      "weight_decay": 0.00014936568554617635,
+      "warmup_ratio": 0.12992642186624026,
+      "value": 0.8684296656105691,
+      "state": "COMPLETE"
+    },
+    {
+      "lr": 1.1973917635685022e-05,
+      "dropout": 0.22701814444901136,
+      "weight_decay": 0.00011527987128232407,
+      "warmup_ratio": 0.14548647782429913,
+      "value": 0.8999653688598667,
+      "state": "COMPLETE"
+    },
+    {
+      "lr": 2.0396887264773367e-05,
+      "dropout": 0.10308477766956904,
+      "weight_decay": 0.0003511356313970409,
+      "warmup_ratio": 0.027510676478015073,
+      "value": 0.897583279752042,
+      "state": "COMPLETE"
+    },
+    {
+      "lr": 6.044543365247592e-06,
+      "dropout": 0.18118910790805948,
+      "weight_decay": 0.0019762189340280074,
+      "warmup_ratio": 0.043684371029706286,
+      "value": 0.872656899098836,
+      "state": "COMPLETE"
+    }
+  ],
+  "reused_from": "/Users/antonio/Desktop/repositorios/GraphNLI-AXb/runs/experiment_0001/portuguese/tuning/neuralmind__bert-base-portuguese-cased/piig_pt_lkb_v1/study.json"
+}

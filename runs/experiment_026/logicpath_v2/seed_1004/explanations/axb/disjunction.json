@@ -1,0 +1,248 @@
+{
+  "uid": "axb-366",
+  "dataset": "axb",
+  "logic": "Disjunction",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7059664130210876,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3150930106639862,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.21508507430553436,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.21904292702674866,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.15479080379009247,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.30074042081832886,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.29597207903862,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.3715592920780182,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.13418187201023102,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.22859719395637512,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.199055477976799,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Either he has a blind trust or he has a conflict of interest.",
+      "type": "premise_state",
+      "importance": 0.1047426387667656
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: He has a conflict of interest.",
+      "type": "hypothesis_state",
+      "importance": 0.05678444728255272
+    },
+    {
+      "id": 2,
+      "text": "premise unit: either",
+      "type": "premise_unit",
+      "importance": 0.0638037770986557
+    },
+    {
+      "id": 3,
+      "text": "premise unit: blind",
+      "type": "premise_unit",
+      "importance": 0.06378569453954697
+    },
+    {
+      "id": 4,
+      "text": "premise unit: trust",
+      "type": "premise_unit",
+      "importance": 0.06231630966067314
+    },
+    {
+      "id": 5,
+      "text": "premise unit: or",
+      "type": "premise_unit",
+      "importance": 0.06232454255223274
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: conflict",
+      "type": "hypothesis_unit",
+      "importance": 0.07694137096405029
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: interest",
+      "type": "hypothesis_unit",
+      "importance": 0.07697385549545288
+    },
+    {
+      "id": 8,
+      "text": "transformation lexical_identity: conflict -> conflict",
+      "type": "transformation",
+      "importance": 0.07382682710886002
+    },
+    {
+      "id": 9,
+      "text": "transformation lexical_identity: interest -> interest",
+      "type": "transformation",
+      "importance": 0.0738181471824646
+    },
+    {
+      "id": 10,
+      "text": "wiktionary entry: either",
+      "type": "wiktionary_entry",
+      "importance": 0.08586598187685013
+    },
+    {
+      "id": 11,
+      "text": "wiktionary gloss: Any one (of two).",
+      "type": "wiktionary_gloss",
+      "importance": 0.05646452307701111
+    },
+    {
+      "id": 12,
+      "text": "wiktionary entry: blind",
+      "type": "wiktionary_entry",
+      "importance": 0.08590090274810791
+    },
+    {
+      "id": 13,
+      "text": "wiktionary gloss: Unable to see, or only partially able to see.",
+      "type": "wiktionary_gloss",
+      "importance": 0.0564509816467762
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.07724152505397797
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.32167959213256836
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.32200950384140015
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.3393293023109436
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.3391970098018646
+    },
+    {
+      "source": 0,
+      "target": 8,
+      "relation": "operation",
+      "attention": 0.0295080728828907
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.029464803636074066
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.1550883650779724
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.15525561571121216
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "operation",
+      "attention": 0.035249046981334686
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.03530097380280495
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "wiktionary_evidence",
+      "attention": 0.3647517263889313
+    },
+    {
+      "source": 3,
+      "target": 12,
+      "relation": "wiktionary_evidence",
+      "attention": 0.3647173345088959
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "relation": "operation",
+      "attention": 0.030635889619588852
+    },
+    {
+      "source": 7,
+      "target": 9,
+      "relation": "operation",
+      "attention": 0.030567985028028488
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "relation": "wiktionary_evidence",
+      "attention": 0.4058087170124054
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "relation": "wiktionary_evidence",
+      "attention": 0.4067300856113434
+    }
+  ]
+}

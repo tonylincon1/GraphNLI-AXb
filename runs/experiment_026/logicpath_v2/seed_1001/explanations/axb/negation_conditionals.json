@@ -1,0 +1,416 @@
+{
+  "uid": "axb-20",
+  "dataset": "axb",
+  "logic": "Negation;Conditionals",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7975448369979858,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.34308916330337524,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.21532019972801208,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.20785048604011536,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.15541231632232666,
+      "target": 1.0
+    },
+    "negation_flip": {
+      "score": 0.3257974684238434,
+      "target": 0.0
+    },
+    "quantifier_change": {
+      "score": 0.32850921154022217,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.3737923800945282,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.15102265775203705,
+      "target": 1.0
+    },
+    "numeric_change": {
+      "score": 0.17876574397087097,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.1854565590620041,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: And if both apply, they are essentially impossible.",
+      "type": "premise_state",
+      "importance": 0.08267348259687424
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: And if both apply, they are essentially possible.",
+      "type": "hypothesis_state",
+      "importance": 0.08097612857818604
+    },
+    {
+      "id": 2,
+      "text": "premise unit: and",
+      "type": "premise_unit",
+      "importance": 0.046446867287158966
+    },
+    {
+      "id": 3,
+      "text": "premise unit: if",
+      "type": "premise_unit",
+      "importance": 0.046438395977020264
+    },
+    {
+      "id": 4,
+      "text": "premise unit: both",
+      "type": "premise_unit",
+      "importance": 0.046449702233076096
+    },
+    {
+      "id": 5,
+      "text": "premise unit: apply",
+      "type": "premise_unit",
+      "importance": 0.04646586999297142
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: and",
+      "type": "hypothesis_unit",
+      "importance": 0.038231052458286285
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: if",
+      "type": "hypothesis_unit",
+      "importance": 0.038237400352954865
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: both",
+      "type": "hypothesis_unit",
+      "importance": 0.0382290743291378
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: apply",
+      "type": "hypothesis_unit",
+      "importance": 0.03822699189186096
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: and -> and",
+      "type": "transformation",
+      "importance": 0.04809286445379257
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: if -> if",
+      "type": "transformation",
+      "importance": 0.04809990152716637
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: both -> both",
+      "type": "transformation",
+      "importance": 0.04808491840958595
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: apply -> apply",
+      "type": "transformation",
+      "importance": 0.04808078333735466
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: essentially -> essentially",
+      "type": "transformation",
+      "importance": 0.038260240107774734
+    },
+    {
+      "id": 15,
+      "text": "transformation antonym_contradiction: impossible -> possible",
+      "type": "transformation",
+      "importance": 0.03826743736863136
+    },
+    {
+      "id": 16,
+      "text": "transformation conditional_alignment: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.03826267644762993
+    },
+    {
+      "id": 17,
+      "text": "wiktionary entry: impossible",
+      "type": "wiktionary_entry",
+      "importance": 0.059881795197725296
+    },
+    {
+      "id": 18,
+      "text": "wiktionary gloss: Not possible; not able to be done or happen.",
+      "type": "wiktionary_gloss",
+      "importance": 0.035356078296899796
+    },
+    {
+      "id": 19,
+      "text": "wiktionary entry: possible",
+      "type": "wiktionary_entry",
+      "importance": 0.059879500418901443
+    },
+    {
+      "id": 20,
+      "text": "wiktionary gloss: Able but not certain to happen; neither inevitable nor impossible.",
+      "type": "wiktionary_gloss",
+      "importance": 0.035358820110559464
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.42235279083251953
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.23974207043647766
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.2396875023841858
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.24033787846565247
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.2407938838005066
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.04799629747867584
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.048026543110609055
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.048050880432128906
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.048113804310560226
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.07823454588651657
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.07859175652265549
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.07850595563650131
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.09878969937562943
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.09886637330055237
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.09875496476888657
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.09856413304805756
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.09996788203716278
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.10013405978679657
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.09988300502300262
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.09972057491540909
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.19007642567157745
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.189573273062706
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.18975263833999634
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.331616073846817
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.20962604880332947
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.3315517008304596
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.2095610797405243
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.33140695095062256
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.2094966471195221
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "relation": "lexical_relation",
+      "attention": 0.33133935928344727
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.20978394150733948
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.19079144299030304
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.19067414104938507
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.19067169725894928
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.19050441682338715
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.35610610246658325
+    },
+    {
+      "source": 17,
+      "target": 19,
+      "relation": "wiktionary_relation",
+      "attention": 0.6541623473167419
+    },
+    {
+      "source": 19,
+      "target": 20,
+      "relation": "wiktionary_evidence",
+      "attention": 0.35564684867858887
+    }
+  ]
+}

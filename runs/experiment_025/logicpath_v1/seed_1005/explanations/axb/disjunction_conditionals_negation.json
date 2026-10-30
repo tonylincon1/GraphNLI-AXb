@@ -1,0 +1,361 @@
+{
+  "uid": "axb-386",
+  "dataset": "axb",
+  "logic": "Disjunction;Conditionals;Negation",
+  "language": "en",
+  "prediction_3": 0,
+  "label_3": -100,
+  "prediction_binary": 0,
+  "label_binary": 0,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.7549698948860168,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.3715363144874573,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.27974557876586914,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.2600136697292328,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.1564607322216034,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.33575189113616943,
+      "target": 1.0
+    },
+    "quantifier_change": {
+      "score": 0.38504481315612793,
+      "target": 1.0
+    },
+    "conjunction_change": {
+      "score": 0.4540611803531647,
+      "target": 0.0
+    },
+    "conditional_alignment": {
+      "score": 0.19925720989704132,
+      "target": 1.0
+    },
+    "numeric_change": {
+      "score": 0.27478107810020447,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.23562848567962646,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Either there is no bathroom in this house, or it is in a funny place.",
+      "type": "premise_state",
+      "importance": 0.18313339352607727
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: If there is a bathroom in this house, it is in a funny place.",
+      "type": "hypothesis_state",
+      "importance": 0.10729623585939407
+    },
+    {
+      "id": 2,
+      "text": "premise unit: either",
+      "type": "premise_unit",
+      "importance": 0.04090123623609543
+    },
+    {
+      "id": 3,
+      "text": "premise unit: there",
+      "type": "premise_unit",
+      "importance": 0.038574736565351486
+    },
+    {
+      "id": 4,
+      "text": "premise unit: no",
+      "type": "premise_unit",
+      "importance": 0.040898486971855164
+    },
+    {
+      "id": 5,
+      "text": "premise unit: bathroom",
+      "type": "premise_unit",
+      "importance": 0.03853653371334076
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: if",
+      "type": "hypothesis_unit",
+      "importance": 0.04421777278184891
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: there",
+      "type": "hypothesis_unit",
+      "importance": 0.041143178939819336
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: bathroom",
+      "type": "hypothesis_unit",
+      "importance": 0.041160352528095245
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: house",
+      "type": "hypothesis_unit",
+      "importance": 0.039320141077041626
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: there -> there",
+      "type": "transformation",
+      "importance": 0.06910251826047897
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: bathroom -> bathroom",
+      "type": "transformation",
+      "importance": 0.06912309676408768
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: house -> house",
+      "type": "transformation",
+      "importance": 0.05703435093164444
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: funny -> funny",
+      "type": "transformation",
+      "importance": 0.03790503367781639
+    },
+    {
+      "id": 14,
+      "text": "transformation lexical_identity: place -> place",
+      "type": "transformation",
+      "importance": 0.03791714459657669
+    },
+    {
+      "id": 15,
+      "text": "transformation negation_flip: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.0379108227789402
+    },
+    {
+      "id": 16,
+      "text": "transformation quantifier_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.037913236767053604
+    },
+    {
+      "id": 17,
+      "text": "transformation conditional_alignment: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.03791172429919243
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.1083155944943428
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.310494989156723
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.13047049939632416
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.3106093108654022
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.13018256425857544
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.2757805585861206
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.27591973543167114
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.29619812965393066
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.3461070656776428
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.34657710790634155
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.34560850262641907
+    },
+    {
+      "source": 0,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.3452889919281006
+    },
+    {
+      "source": 0,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.3455854058265686
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.2628875970840454
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.05958782881498337
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.05991552025079727
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.06404128670692444
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.13777068257331848
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.13804146647453308
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.16538938879966736
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.20439130067825317
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.20400723814964294
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.20434238016605377
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "relation": "operation",
+      "attention": 0.20429304242134094
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "relation": "operation",
+      "attention": 0.20434172451496124
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "relation": "lexical_relation",
+      "attention": 0.09896314144134521
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3477168083190918
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "relation": "lexical_relation",
+      "attention": 0.09892354905605316
+    },
+    {
+      "source": 5,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.3475804924964905
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.4493449330329895
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.4493445158004761
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.495680034160614
+    }
+  ]
+}

@@ -147,6 +147,21 @@ with the remaining trials instead of restarting from trial 0. Set `tuning.trials
 `tuning.epochs` to change the cost, or replace `tuning.search_space` to tune
 other parameters.
 
+To run additional seeds without launching new Optuna trials, set
+`reuse_tuning_from` inside the pipeline. For example, `configs/experiment_0002.yaml`
+uses the completed studies from `experiment_0001` and only trains seeds `1006` to
+`1010`:
+
+```yaml
+pipelines:
+  portuguese:
+    reuse_tuning_from: experiment_0001
+```
+
+The pipeline reads each variant's `study.json` from the source experiment,
+copies its provenance into the new run, and applies its `best_params`. It fails
+if a study is missing, preventing an accidental run with untuned defaults.
+
 The artifacts are organized as:
 
 ```text

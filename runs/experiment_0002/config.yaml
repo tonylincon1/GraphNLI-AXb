@@ -1,0 +1,59 @@
+data_dir: data
+output_dir: runs
+
+model_name: neuralmind/bert-base-portuguese-cased
+seeds: [1006, 1007, 1008, 1009, 1010]
+
+training:
+  epochs: 8
+  batch_size: 32
+  lr: 0.00001
+  weight_decay: 0.01
+  warmup_ratio: 0.06
+  dropout: 0.15
+  max_len: 160
+  max_nodes: 32
+  max_node_len: 8
+  max_wikidata_entities: 8
+  max_wikidata_len: 32
+  max_proof_nodes: 12
+  max_proof_len: 32
+  max_logicpath_nodes: 32
+  max_logicpath_len: 24
+  wikidata_cache: data/cache/wikidata_entities.jsonl
+  wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+  pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
+  max_wiktionary_entries: 2
+  graph_layers: 2
+  aux_weight: 0.15
+  selection_metric: nli3/macro_f1
+  patience: 2
+  cd_metric: binary/mcc
+  cd_alpha: 0.05
+  num_workers: 0
+  device: mps
+  max_grad_norm: 1.0
+
+pipelines:
+  portuguese:
+    enabled: true
+    device: mps
+    batch_size: 32
+    model_names: [neuralmind/bert-base-portuguese-cased]
+    variants: [pair_cls, piig_v4, piig_pt_lkb_v1]
+    reuse_tuning_from: experiment_0001
+    train:
+      datasets:
+        - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_train.jsonl, split: train}
+        - {dataset: manifest, name: assin, path: data/raw/portuguese/assin_train.jsonl, split: train}
+        - {dataset: manifest, name: assin2, path: data/raw/portuguese/assin2_train.jsonl, split: train}
+    validation:
+      datasets:
+        - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_dev.jsonl, split: dev}
+        - {dataset: manifest, name: assin, path: data/raw/portuguese/assin_dev.jsonl, split: dev}
+        - {dataset: manifest, name: assin2, path: data/raw/portuguese/assin2_dev.jsonl, split: dev}
+    test:
+      - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: test}
+      - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: test}
+      - {name: inferbr_test, dataset: manifest, path: data/raw/portuguese/inferbr_test.jsonl, split: test}
+    save_explanations: true

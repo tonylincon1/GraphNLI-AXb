@@ -1,0 +1,57 @@
+{
+  "split": "axb",
+  "metric": "binary/mcc",
+  "status": "ok",
+  "alpha": 0.05,
+  "blocks": [
+    "seed_1001",
+    "seed_1002",
+    "seed_1003",
+    "seed_1004",
+    "seed_1005"
+  ],
+  "models": [
+    "logicpath_v1",
+    "Our approach v6"
+  ],
+  "friedman": {
+    "statistic": null,
+    "p_value": 0.3125
+  },
+  "autorank": {
+    "omnibus": "wilcoxon",
+    "posthoc": null,
+    "all_normal": true,
+    "homoscedastic": true,
+    "effect_size": "cohen_d",
+    "report": "The statistical analysis was conducted for 2 populations with 5 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.677). Therefore, we assume that all populations are normal.\nNo check for homogeneity was required because we only have two populations.\nBecause we have only two populations and both populations are normal, we should use the t-test to determine differences between the mean values of the populations and report the mean value (M) and the standard deviation (SD) for each population. However, the user decided to force the use of the less powerful Wilcoxon signed rank test and we report the median (MD) and the median absolute devivation (MAD) for each population.\nWe failed to reject the null hypothesis (p=0.312) of Wilcoxon's signed rank test that population Our approach v6 (MD=0.241+-0.026, MAD=0.016) is not greater than population logicpath_v1 (MD=0.232+-0.049, MAD=0.008) . Therefore, we assume that there is no statistically significant difference between the medians of the populations."
+  },
+  "nemenyi_critical_difference": NaN,
+  "average_ranks": {
+    "logicpath_v1": 1.6,
+    "Our approach v6": 1.4
+  },
+  "non_significant_groups": [],
+  "block_values": {
+    "seed_1001": {
+      "logicpath_v1": 0.274267128045851,
+      "Our approach v6": 0.22450613696726163
+    },
+    "seed_1002": {
+      "logicpath_v1": 0.23457663523017916,
+      "Our approach v6": 0.24050678516853752
+    },
+    "seed_1003": {
+      "logicpath_v1": 0.22433558238242043,
+      "Our approach v6": 0.21995478416645833
+    },
+    "seed_1004": {
+      "logicpath_v1": 0.23244090156252528,
+      "Our approach v6": 0.2610170477499993
+    },
+    "seed_1005": {
+      "logicpath_v1": 0.18710523007085633,
+      "Our approach v6": 0.24259846336188054
+    }
+  }
+}

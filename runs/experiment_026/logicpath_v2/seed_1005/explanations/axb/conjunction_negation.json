@@ -1,0 +1,368 @@
+{
+  "uid": "axb-356",
+  "dataset": "axb",
+  "logic": "Conjunction;Negation",
+  "language": "en",
+  "logicpath_version": "v2",
+  "prediction_3": 1,
+  "label_3": -100,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {
+      "score": 0.5885477066040039,
+      "target": 1.0
+    },
+    "lexical_synonym": {
+      "score": 0.43483710289001465,
+      "target": 0.0
+    },
+    "hypernym_generalization": {
+      "score": 0.462971568107605,
+      "target": 0.0
+    },
+    "hyponym_specialization": {
+      "score": 0.3761146366596222,
+      "target": 0.0
+    },
+    "antonym_contradiction": {
+      "score": 0.33956554532051086,
+      "target": 0.0
+    },
+    "negation_flip": {
+      "score": 0.4535195529460907,
+      "target": 1.0
+    },
+    "quantifier_change": {
+      "score": 0.4838293492794037,
+      "target": 0.0
+    },
+    "conjunction_change": {
+      "score": 0.47800809144973755,
+      "target": 1.0
+    },
+    "conditional_alignment": {
+      "score": 0.3625357151031494,
+      "target": 0.0
+    },
+    "numeric_change": {
+      "score": 0.3937387764453888,
+      "target": 0.0
+    },
+    "temporal_change": {
+      "score": 0.3781549036502838,
+      "target": 0.0
+    }
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {
+      "id": 0,
+      "text": "premise state: Both doctor and patient bear some responsibility for successful care.",
+      "type": "premise_state",
+      "importance": 0.08120007067918777
+    },
+    {
+      "id": 1,
+      "text": "hypothesis state: The doctor does not bear responsibility for successful care.",
+      "type": "hypothesis_state",
+      "importance": 0.130790114402771
+    },
+    {
+      "id": 2,
+      "text": "premise unit: both",
+      "type": "premise_unit",
+      "importance": 0.03822574391961098
+    },
+    {
+      "id": 3,
+      "text": "premise unit: doctor",
+      "type": "premise_unit",
+      "importance": 0.037145812064409256
+    },
+    {
+      "id": 4,
+      "text": "premise unit: and",
+      "type": "premise_unit",
+      "importance": 0.04155166447162628
+    },
+    {
+      "id": 5,
+      "text": "premise unit: patient",
+      "type": "premise_unit",
+      "importance": 0.04156675189733505
+    },
+    {
+      "id": 6,
+      "text": "hypothesis unit: doctor",
+      "type": "hypothesis_unit",
+      "importance": 0.04796814173460007
+    },
+    {
+      "id": 7,
+      "text": "hypothesis unit: not",
+      "type": "hypothesis_unit",
+      "importance": 0.04246002063155174
+    },
+    {
+      "id": 8,
+      "text": "hypothesis unit: bear",
+      "type": "hypothesis_unit",
+      "importance": 0.040086306631565094
+    },
+    {
+      "id": 9,
+      "text": "hypothesis unit: responsibility",
+      "type": "hypothesis_unit",
+      "importance": 0.0400826521217823
+    },
+    {
+      "id": 10,
+      "text": "transformation lexical_identity: doctor -> doctor",
+      "type": "transformation",
+      "importance": 0.05540956184267998
+    },
+    {
+      "id": 11,
+      "text": "transformation lexical_identity: bear -> bear",
+      "type": "transformation",
+      "importance": 0.04614434391260147
+    },
+    {
+      "id": 12,
+      "text": "transformation lexical_identity: responsibility -> responsibility",
+      "type": "transformation",
+      "importance": 0.04616987332701683
+    },
+    {
+      "id": 13,
+      "text": "transformation lexical_identity: successful -> successful",
+      "type": "transformation",
+      "importance": 0.03504716977477074
+    },
+    {
+      "id": 14,
+      "text": "transformation negation_flip: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.0350598469376564
+    },
+    {
+      "id": 15,
+      "text": "transformation conjunction_change: premise -> hypothesis",
+      "type": "transformation",
+      "importance": 0.03505495563149452
+    },
+    {
+      "id": 16,
+      "text": "wiktionary entry: both",
+      "type": "wiktionary_entry",
+      "importance": 0.05397867038846016
+    },
+    {
+      "id": 17,
+      "text": "wiktionary gloss: Each of the two; one and the other; referring to two individuals or items.",
+      "type": "wiktionary_gloss",
+      "importance": 0.05450576916337013
+    },
+    {
+      "id": 18,
+      "text": "wiktionary entry: doctor",
+      "type": "wiktionary_entry",
+      "importance": 0.04619695618748665
+    },
+    {
+      "id": 19,
+      "text": "wiktionary gloss: A physician; a member of the medical profession; one who is trained and licensed to heal the sick or injured. The final examination and qualification may award a doctor degree in which case the post-nominal letters are DO, DPM, MD, DMD, or DDS in the US, or MBBS or BDS in the UK.",
+      "type": "wiktionary_gloss",
+      "importance": 0.05135559290647507
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "relation": "supports",
+      "attention": 0.12885397672653198
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "relation": "contains",
+      "attention": 0.10046974569559097
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "relation": "contains",
+      "attention": 0.04678691178560257
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "relation": "contains",
+      "attention": 0.22292830049991608
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "relation": "contains",
+      "attention": 0.22253581881523132
+    },
+    {
+      "source": 0,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.14220978319644928
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.1521327644586563
+    },
+    {
+      "source": 0,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.15212482213974
+    },
+    {
+      "source": 0,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.18311595916748047
+    },
+    {
+      "source": 0,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.1828354299068451
+    },
+    {
+      "source": 0,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.1829572319984436
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "relation": "contains",
+      "attention": 0.10522636026144028
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "relation": "contains",
+      "attention": 0.22432741522789001
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "relation": "contains",
+      "attention": 0.13605403900146484
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "relation": "contains",
+      "attention": 0.13594591617584229
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.28551608324050903
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.313493549823761
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.31364303827285767
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "relation": "operation",
+      "attention": 0.4046042263507843
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "relation": "operation",
+      "attention": 0.4048570394515991
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "relation": "operation",
+      "attention": 0.40454524755477905
+    },
+    {
+      "source": 2,
+      "target": 16,
+      "relation": "wiktionary_evidence",
+      "attention": 0.3795090913772583
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "relation": "lexical_relation",
+      "attention": 0.12481355667114258
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.32548031210899353
+    },
+    {
+      "source": 3,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.143397718667984
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "relation": "operation",
+      "attention": 0.3374744951725006
+    },
+    {
+      "source": 6,
+      "target": 18,
+      "relation": "wiktionary_evidence",
+      "attention": 0.2064180076122284
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "relation": "operation",
+      "attention": 0.4011639952659607
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "relation": "operation",
+      "attention": 0.40154483914375305
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "relation": "wiktionary_evidence",
+      "attention": 0.5070756077766418
+    },
+    {
+      "source": 18,
+      "target": 19,
+      "relation": "wiktionary_evidence",
+      "attention": 0.4316566586494446
+    }
+  ]
+}

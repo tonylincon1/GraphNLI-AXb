@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1770" height="735" viewBox="0 0 1770 735">
+<defs><marker id="arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#4d6f8e"/></marker><marker id="red-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#a33d3d"/></marker></defs>
+<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}.column{font-size:14px;font-weight:bold;fill:#52616b}.edge-label{font-size:10px;fill:#52616b}</style>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="30" y="32" class="title">LogicPath v2 transformation graph | axb-668</text>
+<text x="30" y="54" class="small">Binary prediction: 0 | binary label: 1 | arrows show transformation flow; width shows attention.</text>
+<text x="100" y="92" text-anchor="middle" class="column">Premise</text>
+<text x="350" y="92" text-anchor="middle" class="column">Premise units</text>
+<text x="635" y="92" text-anchor="middle" class="column">Wiktionary</text>
+<text x="635" y="92" text-anchor="middle" class="column">Wiktionary</text>
+<text x="930" y="92" text-anchor="middle" class="column">Transformations</text>
+<text x="1260" y="92" text-anchor="middle" class="column">Hypothesis units</text>
+<text x="1580" y="92" text-anchor="middle" class="column">Hypothesis</text>
+<line x1="178.0" y1="392.5" x2="1502.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.39" stroke-opacity="0.29" marker-end="url(#arrow)"/>
+<text x="840.0" y="387.5" text-anchor="middle" class="edge-label">supports</text>
+<line x1="178.0" y1="392.5" x2="272.0" y2="210.6" stroke="#4d6f8e" stroke-width="2.87" stroke-opacity="0.82" marker-end="url(#arrow)"/>
+<text x="225.0" y="296.6" text-anchor="middle" class="edge-label">contains</text>
+<line x1="178.0" y1="392.5" x2="272.0" y2="331.9" stroke="#4d6f8e" stroke-width="2.87" stroke-opacity="0.82" marker-end="url(#arrow)"/>
+<text x="225.0" y="357.2" text-anchor="middle" class="edge-label">contains</text>
+<line x1="178.0" y1="392.5" x2="272.0" y2="453.1" stroke="#4d6f8e" stroke-width="2.95" stroke-opacity="0.85" marker-end="url(#arrow)"/>
+<text x="225.0" y="417.8" text-anchor="middle" class="edge-label">contains</text>
+<line x1="178.0" y1="392.5" x2="272.0" y2="574.4" stroke="#4d6f8e" stroke-width="3.30" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="225.0" y="478.4" text-anchor="middle" class="edge-label">contains</text>
+<line x1="178.0" y1="392.5" x2="852.0" y2="198.5" stroke="#4d6f8e" stroke-width="1.18" stroke-opacity="0.22" marker-end="url(#arrow)"/>
+<text x="515.0" y="290.5" text-anchor="middle" class="edge-label">operation</text>
+<line x1="178.0" y1="392.5" x2="852.0" y2="295.5" stroke="#4d6f8e" stroke-width="1.18" stroke-opacity="0.22" marker-end="url(#arrow)"/>
+<text x="515.0" y="339.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="178.0" y1="392.5" x2="852.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.18" stroke-opacity="0.22" marker-end="url(#arrow)"/>
+<text x="515.0" y="387.5" text-anchor="middle" class="edge-label">operation</text>
+<line x1="178.0" y1="392.5" x2="852.0" y2="489.5" stroke="#4d6f8e" stroke-width="1.19" stroke-opacity="0.22" marker-end="url(#arrow)"/>
+<text x="515.0" y="436.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="178.0" y1="392.5" x2="852.0" y2="586.5" stroke="#4d6f8e" stroke-width="1.19" stroke-opacity="0.22" marker-end="url(#arrow)"/>
+<text x="515.0" y="484.5" text-anchor="middle" class="edge-label">operation</text>
+<line x1="1338.0" y1="210.6" x2="1502.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.63" stroke-opacity="0.37" marker-end="url(#arrow)"/>
+<text x="1420.0" y="296.6" text-anchor="middle" class="edge-label">contains</text>
+<line x1="1338.0" y1="331.9" x2="1502.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.63" stroke-opacity="0.37" marker-end="url(#arrow)"/>
+<text x="1420.0" y="357.2" text-anchor="middle" class="edge-label">contains</text>
+<line x1="1338.0" y1="453.1" x2="1502.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.68" stroke-opacity="0.39" marker-end="url(#arrow)"/>
+<text x="1420.0" y="417.8" text-anchor="middle" class="edge-label">contains</text>
+<line x1="1338.0" y1="574.4" x2="1502.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.70" stroke-opacity="0.40" marker-end="url(#arrow)"/>
+<text x="1420.0" y="478.4" text-anchor="middle" class="edge-label">contains</text>
+<line x1="1008.0" y1="198.5" x2="1502.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.18" stroke-opacity="0.21" marker-end="url(#arrow)"/>
+<text x="1255.0" y="290.5" text-anchor="middle" class="edge-label">operation</text>
+<line x1="1008.0" y1="295.5" x2="1502.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.18" stroke-opacity="0.21" marker-end="url(#arrow)"/>
+<text x="1255.0" y="339.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="1008.0" y1="392.5" x2="1502.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.18" stroke-opacity="0.21" marker-end="url(#arrow)"/>
+<text x="1255.0" y="387.5" text-anchor="middle" class="edge-label">operation</text>
+<line x1="1008.0" y1="489.5" x2="1502.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.18" stroke-opacity="0.21" marker-end="url(#arrow)"/>
+<text x="1255.0" y="436.0" text-anchor="middle" class="edge-label">operation</text>
+<line x1="1008.0" y1="586.5" x2="1502.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.18" stroke-opacity="0.21" marker-end="url(#arrow)"/>
+<text x="1255.0" y="484.5" text-anchor="middle" class="edge-label">operation</text>
+<line x1="428.0" y1="210.6" x2="1182.0" y2="210.6" stroke="#4d6f8e" stroke-width="1.76" stroke-opacity="0.42" marker-end="url(#arrow)"/>
+<text x="805.0" y="205.6" text-anchor="middle" class="edge-label">lexical_relation</text>
+<line x1="428.0" y1="210.6" x2="852.0" y2="198.5" stroke="#4d6f8e" stroke-width="1.27" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="640.0" y="199.6" text-anchor="middle" class="edge-label">operation</text>
+<line x1="428.0" y1="210.6" x2="557.0" y2="271.2" stroke="#4d6f8e" stroke-width="3.28" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="492.5" y="235.9" text-anchor="middle" class="edge-label">wiktionary_evidence</text>
+<line x1="428.0" y1="331.9" x2="1182.0" y2="331.9" stroke="#4d6f8e" stroke-width="1.76" stroke-opacity="0.42" marker-end="url(#arrow)"/>
+<text x="805.0" y="326.9" text-anchor="middle" class="edge-label">lexical_relation</text>
+<line x1="428.0" y1="331.9" x2="852.0" y2="295.5" stroke="#4d6f8e" stroke-width="1.27" stroke-opacity="0.25" marker-end="url(#arrow)"/>
+<text x="640.0" y="308.7" text-anchor="middle" class="edge-label">operation</text>
+<line x1="428.0" y1="331.9" x2="557.0" y2="513.8" stroke="#4d6f8e" stroke-width="3.28" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="492.5" y="417.8" text-anchor="middle" class="edge-label">wiktionary_evidence</text>
+<line x1="428.0" y1="453.1" x2="1182.0" y2="453.1" stroke="#4d6f8e" stroke-width="2.08" stroke-opacity="0.53" marker-end="url(#arrow)"/>
+<text x="805.0" y="448.1" text-anchor="middle" class="edge-label">lexical_relation</text>
+<line x1="428.0" y1="453.1" x2="852.0" y2="392.5" stroke="#4d6f8e" stroke-width="1.40" stroke-opacity="0.29" marker-end="url(#arrow)"/>
+<text x="640.0" y="417.8" text-anchor="middle" class="edge-label">operation</text>
+<line x1="1008.0" y1="198.5" x2="1182.0" y2="210.6" stroke="#4d6f8e" stroke-width="1.13" stroke-opacity="0.19" marker-end="url(#arrow)"/>
+<text x="1095.0" y="199.6" text-anchor="middle" class="edge-label">operation</text>
+<line x1="713.0" y1="271.2" x2="1182.0" y2="210.6" stroke="#4d6f8e" stroke-width="2.74" stroke-opacity="0.77" marker-end="url(#arrow)"/>
+<text x="947.5" y="235.9" text-anchor="middle" class="edge-label">wiktionary_evidence</text>
+<line x1="1008.0" y1="295.5" x2="1182.0" y2="331.9" stroke="#4d6f8e" stroke-width="1.13" stroke-opacity="0.19" marker-end="url(#arrow)"/>
+<text x="1095.0" y="308.7" text-anchor="middle" class="edge-label">operation</text>
+<line x1="713.0" y1="513.8" x2="1182.0" y2="331.9" stroke="#4d6f8e" stroke-width="2.74" stroke-opacity="0.77" marker-end="url(#arrow)"/>
+<text x="947.5" y="417.8" text-anchor="middle" class="edge-label">wiktionary_evidence</text>
+<line x1="1008.0" y1="392.5" x2="1182.0" y2="453.1" stroke="#4d6f8e" stroke-width="1.18" stroke-opacity="0.22" marker-end="url(#arrow)"/>
+<text x="1095.0" y="417.8" text-anchor="middle" class="edge-label">operation</text>
+<line x1="713.0" y1="271.2" x2="713.0" y2="271.2" stroke="#4d6f8e" stroke-width="3.81" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="713.0" y="266.2" text-anchor="middle" class="edge-label">wiktionary_evidence</text>
+<line x1="713.0" y1="513.8" x2="713.0" y2="513.8" stroke="#4d6f8e" stroke-width="3.81" stroke-opacity="0.92" marker-end="url(#arrow)"/>
+<text x="713.0" y="508.8" text-anchor="middle" class="edge-label">wiktionary_evidence</text>
+<rect x="18.0" y="360.5" width="164" height="64" rx="6" fill="#e8f3fb" stroke="#1f4d70" stroke-width="2"/>
+<text x="100.0" y="385.5" text-anchor="middle" class="node">N0 | 0.072</text>
+<text x="100.0" y="402.5" text-anchor="middle" class="small">premise state: Weird that</text>
+<text x="100.0" y="416.5" text-anchor="middle" class="small">you want to show...</text>
+<rect x="1498.0" y="360.5" width="164" height="64" rx="6" fill="#e8f3fb" stroke="#1f4d70" stroke-width="2"/>
+<text x="1580.0" y="385.5" text-anchor="middle" class="node">N1 | 0.041</text>
+<text x="1580.0" y="402.5" text-anchor="middle" class="small">hypothesis state: Weird</text>
+<text x="1580.0" y="416.5" text-anchor="middle" class="small">that you want to show...</text>
+<rect x="268.0" y="178.6" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="350.0" y="203.6" text-anchor="middle" class="node">N2 | 0.048</text>
+<text x="350.0" y="220.6" text-anchor="middle" class="small">premise unit: weird</text>
+<rect x="268.0" y="299.9" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="350.0" y="324.9" text-anchor="middle" class="node">N3 | 0.048</text>
+<text x="350.0" y="341.9" text-anchor="middle" class="small">premise unit: want</text>
+<rect x="268.0" y="421.1" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="350.0" y="446.1" text-anchor="middle" class="node">N4 | 0.047</text>
+<text x="350.0" y="463.1" text-anchor="middle" class="small">premise unit: show</text>
+<rect x="268.0" y="542.4" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="350.0" y="567.4" text-anchor="middle" class="node">N5 | 0.045</text>
+<text x="350.0" y="584.4" text-anchor="middle" class="small">premise unit: something</text>
+<rect x="1178.0" y="178.6" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1260.0" y="203.6" text-anchor="middle" class="node">N6 | 0.048</text>
+<text x="1260.0" y="220.6" text-anchor="middle" class="small">hypothesis unit: weird</text>
+<rect x="1178.0" y="299.9" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1260.0" y="324.9" text-anchor="middle" class="node">N7 | 0.048</text>
+<text x="1260.0" y="341.9" text-anchor="middle" class="small">hypothesis unit: want</text>
+<rect x="1178.0" y="421.1" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1260.0" y="446.1" text-anchor="middle" class="node">N8 | 0.054</text>
+<text x="1260.0" y="463.1" text-anchor="middle" class="small">hypothesis unit: show</text>
+<rect x="1178.0" y="542.4" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="1260.0" y="567.4" text-anchor="middle" class="node">N9 | 0.055</text>
+<text x="1260.0" y="584.4" text-anchor="middle" class="small">hypothesis unit: video</text>
+<rect x="848.0" y="166.5" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="930.0" y="191.5" text-anchor="middle" class="node">N10 | 0.054</text>
+<text x="930.0" y="208.5" text-anchor="middle" class="small">transformation</text>
+<text x="930.0" y="222.5" text-anchor="middle" class="small">lexical_identity: weir...</text>
+<rect x="848.0" y="263.5" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="930.0" y="288.5" text-anchor="middle" class="node">N11 | 0.054</text>
+<text x="930.0" y="305.5" text-anchor="middle" class="small">transformation</text>
+<text x="930.0" y="319.5" text-anchor="middle" class="small">lexical_identity: want...</text>
+<rect x="848.0" y="360.5" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="930.0" y="385.5" text-anchor="middle" class="node">N12 | 0.055</text>
+<text x="930.0" y="402.5" text-anchor="middle" class="small">transformation</text>
+<text x="930.0" y="416.5" text-anchor="middle" class="small">lexical_identity: show...</text>
+<rect x="848.0" y="457.5" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="930.0" y="482.5" text-anchor="middle" class="node">N13 | 0.053</text>
+<text x="930.0" y="499.5" text-anchor="middle" class="small">transformation</text>
+<text x="930.0" y="513.5" text-anchor="middle" class="small">lexical_identity: stac...</text>
+<rect x="848.0" y="554.5" width="164" height="64" rx="6" fill="#f7f1df" stroke="#1f4d70" stroke-width="2"/>
+<text x="930.0" y="579.5" text-anchor="middle" class="node">N14 | 0.053</text>
+<text x="930.0" y="596.5" text-anchor="middle" class="small">transformation</text>
+<text x="930.0" y="610.5" text-anchor="middle" class="small">lexical_identity: pape...</text>
+<rect x="553.0" y="239.2" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="635.0" y="264.2" text-anchor="middle" class="node">N15 | 0.071</text>
+<text x="635.0" y="281.2" text-anchor="middle" class="small">wiktionary entry: weird</text>
+<rect x="553.0" y="239.2" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="635.0" y="264.2" text-anchor="middle" class="node">N16 | 0.041</text>
+<text x="635.0" y="281.2" text-anchor="middle" class="small">wiktionary gloss: Having</text>
+<text x="635.0" y="295.2" text-anchor="middle" class="small">an unusually strange...</text>
+<rect x="553.0" y="481.8" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="635.0" y="506.8" text-anchor="middle" class="node">N17 | 0.071</text>
+<text x="635.0" y="523.8" text-anchor="middle" class="small">wiktionary entry: want</text>
+<rect x="553.0" y="481.8" width="164" height="64" rx="6" fill="#eef5ee" stroke="#1f4d70" stroke-width="2"/>
+<text x="635.0" y="506.8" text-anchor="middle" class="node">N18 | 0.041</text>
+<text x="635.0" y="523.8" text-anchor="middle" class="small">wiktionary gloss: To wish</text>
+<text x="635.0" y="537.8" text-anchor="middle" class="small">for or desire...</text>
+<text x="30" y="711" class="small">Node score: normalized relation-aware attention. Red arrows indicate contradiction relations.</text>
+</svg>
