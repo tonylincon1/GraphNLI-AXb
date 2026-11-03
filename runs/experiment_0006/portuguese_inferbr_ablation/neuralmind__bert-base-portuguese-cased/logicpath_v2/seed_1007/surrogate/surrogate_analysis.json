@@ -1,0 +1,63 @@
+{
+  "method": "logistic-regression surrogate with grouped permutation importance",
+  "samples": 1705,
+  "feature_dimensions": 3094,
+  "surrogate_train_samples": 1278,
+  "surrogate_test_samples": 427,
+  "surrogate_fidelity_accuracy": 0.9929742388758782,
+  "black_box_predicted_classes": [
+    0,
+    1,
+    2
+  ],
+  "groups": [
+    {
+      "feature_group": "transformer_pair",
+      "start": 0,
+      "end": 768,
+      "dimensions": 768,
+      "permutation_fidelity_drop_mean": 0.38969555035128806,
+      "permutation_fidelity_drop_std": 0.020741536136285297
+    },
+    {
+      "feature_group": "pair_graph_abs_difference",
+      "start": 1536,
+      "end": 2304,
+      "dimensions": 768,
+      "permutation_fidelity_drop_mean": 0.06838407494145196,
+      "permutation_fidelity_drop_std": 0.007893348733654677
+    },
+    {
+      "feature_group": "pair_graph_product",
+      "start": 2304,
+      "end": 3072,
+      "dimensions": 768,
+      "permutation_fidelity_drop_mean": 0.017330210772833744,
+      "permutation_fidelity_drop_std": 0.007118821617597509
+    },
+    {
+      "feature_group": "graph_pool",
+      "start": 768,
+      "end": 1536,
+      "dimensions": 768,
+      "permutation_fidelity_drop_mean": 0.0049180327868852515,
+      "permutation_fidelity_drop_std": 0.0028586781301484115
+    },
+    {
+      "feature_group": "transformation_probabilities",
+      "start": 3072,
+      "end": 3083,
+      "dimensions": 11,
+      "permutation_fidelity_drop_mean": 0.0,
+      "permutation_fidelity_drop_std": 0.0
+    },
+    {
+      "feature_group": "inverse_transformation_probabilities",
+      "start": 3083,
+      "end": 3094,
+      "dimensions": 11,
+      "permutation_fidelity_drop_mean": 0.0,
+      "permutation_fidelity_drop_std": 0.0
+    }
+  ]
+}

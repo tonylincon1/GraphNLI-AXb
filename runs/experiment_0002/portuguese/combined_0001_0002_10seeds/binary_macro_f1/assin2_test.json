@@ -1,0 +1,104 @@
+{
+  "split": "assin2_test",
+  "metric": "binary/macro_f1",
+  "status": "ok",
+  "alpha": 0.05,
+  "blocks": [
+    "seed_1001",
+    "seed_1002",
+    "seed_1003",
+    "seed_1004",
+    "seed_1005",
+    "seed_1006",
+    "seed_1007",
+    "seed_1008",
+    "seed_1009",
+    "seed_1010"
+  ],
+  "models": [
+    "Pair classifier",
+    "Our approach PT-LKB",
+    "Our approach"
+  ],
+  "friedman": {
+    "statistic": null,
+    "p_value": 0.12245642825298172
+  },
+  "pairwise_wilcoxon": {
+    "p_value": null,
+    "significant_at_0_05": null
+  },
+  "autorank": {
+    "omnibus": "friedman",
+    "posthoc": "nemenyi",
+    "all_normal": false,
+    "homoscedastic": true,
+    "effect_size": "akinshin_gamma",
+    "report": "The statistical analysis was conducted for 3 populations with 10 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe rejected the null hypothesis that the population is normal for the population Our approach (p=0.004). Therefore, we assume that not all populations are normal.\nBecause we have more than two populations and the populations and one of them is not normal, we use the non-parametric Friedman test as omnibus test to determine if there are any significant differences between the median values of the populations. We use the post-hoc Nemenyi test to infer which differences are significant. We report the median (MD), the median absolute deviation (MAD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=1.048 of the Nemenyi test.\nWe failed to reject the null hypothesis (p=0.122) of the Friedman test that there is no difference in the central tendency of the populations Pair classifier (MD=0.894+-0.008, MAD=0.003, MR=2.400), Our approach (MD=0.900+-0.008, MAD=0.001, MR=2.100), and Our approach PT-LKB (MD=0.903+-0.011, MAD=0.002, MR=1.500). Therefore, we assume that there is no statistically significant difference between the median values of the populations."
+  },
+  "nemenyi_critical_difference": 1.0481362880100318,
+  "average_ranks": {
+    "Pair classifier": 2.4,
+    "Our approach": 2.1,
+    "Our approach PT-LKB": 1.5
+  },
+  "non_significant_groups": [
+    [
+      "Our approach PT-LKB",
+      "Our approach",
+      "Pair classifier"
+    ]
+  ],
+  "block_values": {
+    "seed_1001": {
+      "Pair classifier": 0.8928090103966115,
+      "Our approach PT-LKB": 0.9037603041367109,
+      "Our approach": 0.9018034129464658
+    },
+    "seed_1002": {
+      "Pair classifier": 0.8963714167395205,
+      "Our approach PT-LKB": 0.9020974176477055,
+      "Our approach": 0.8996396122330036
+    },
+    "seed_1003": {
+      "Pair classifier": 0.8943278943278943,
+      "Our approach PT-LKB": 0.8861964605396779,
+      "Our approach": 0.9009056749205127
+    },
+    "seed_1004": {
+      "Pair classifier": 0.8992990154109589,
+      "Our approach PT-LKB": 0.907937668386066,
+      "Our approach": 0.8994615520396602
+    },
+    "seed_1005": {
+      "Pair classifier": 0.90125197527684,
+      "Our approach PT-LKB": 0.9042645360030805,
+      "Our approach": 0.8972993545106782
+    },
+    "seed_1006": {
+      "Pair classifier": 0.8885549649960132,
+      "Our approach PT-LKB": 0.9062615220463305,
+      "Our approach": 0.9004674081727411
+    },
+    "seed_1007": {
+      "Pair classifier": 0.905057399937946,
+      "Our approach PT-LKB": 0.9021221816539315,
+      "Our approach": 0.9024678337903396
+    },
+    "seed_1008": {
+      "Pair classifier": 0.889637012105183,
+      "Our approach PT-LKB": 0.9045871547355724,
+      "Our approach": 0.9001796162615887
+    },
+    "seed_1009": {
+      "Pair classifier": 0.893047379993254,
+      "Our approach PT-LKB": 0.8983698436134631,
+      "Our approach": 0.8952500407842341
+    },
+    "seed_1010": {
+      "Pair classifier": 0.894300518134715,
+      "Our approach PT-LKB": 0.8917171327237194,
+      "Our approach": 0.8863173459696571
+    }
+  }
+}

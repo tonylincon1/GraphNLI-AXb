@@ -1,0 +1,6 @@
+model,average_rank
+TRIAL-NLI,1.75
+KGNLI,2.1
+KGAnet,2.7
+Pair classifier,4.1
+K-BERT,4.35

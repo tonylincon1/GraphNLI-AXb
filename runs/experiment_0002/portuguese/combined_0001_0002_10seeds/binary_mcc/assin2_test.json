@@ -1,0 +1,104 @@
+{
+  "split": "assin2_test",
+  "metric": "binary/mcc",
+  "status": "ok",
+  "alpha": 0.05,
+  "blocks": [
+    "seed_1001",
+    "seed_1002",
+    "seed_1003",
+    "seed_1004",
+    "seed_1005",
+    "seed_1006",
+    "seed_1007",
+    "seed_1008",
+    "seed_1009",
+    "seed_1010"
+  ],
+  "models": [
+    "Pair classifier",
+    "Our approach PT-LKB",
+    "Our approach"
+  ],
+  "friedman": {
+    "statistic": null,
+    "p_value": 0.12245642825298172
+  },
+  "pairwise_wilcoxon": {
+    "p_value": null,
+    "significant_at_0_05": null
+  },
+  "autorank": {
+    "omnibus": "friedman",
+    "posthoc": "nemenyi",
+    "all_normal": true,
+    "homoscedastic": true,
+    "effect_size": "cohen_d",
+    "report": "The statistical analysis was conducted for 3 populations with 10 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.030). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and failed to reject the null hypothesis (p=0.715) that the data is homoscedastic. Thus, we assume that our data is homoscedastic.\nBecause we have more than two populations and all populations are normal and homoscedastic, we should use repeated measures ANOVA as omnibus test to determine if there are any significant differences between the mean values of the populations. However, the user decided to force the use of the less powerful Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=1.048 of the Nemenyi test.\nWe failed to reject the null hypothesis (p=0.122) of the Friedman test that there is no difference in the central tendency of the populations Pair classifier (MD=0.794+-0.009, MAD=0.006, MR=2.400), Our approach (MD=0.805+-0.008, MAD=0.002, MR=2.100), and Our approach PT-LKB (MD=0.810+-0.011, MAD=0.005, MR=1.500). Therefore, we assume that there is no statistically significant difference between the median values of the populations."
+  },
+  "nemenyi_critical_difference": 1.0481362880100318,
+  "average_ranks": {
+    "Pair classifier": 2.4,
+    "Our approach": 2.1,
+    "Our approach PT-LKB": 1.5
+  },
+  "non_significant_groups": [
+    [
+      "Our approach PT-LKB",
+      "Our approach",
+      "Pair classifier"
+    ]
+  ],
+  "block_values": {
+    "seed_1001": {
+      "Pair classifier": 0.7883762936020946,
+      "Our approach PT-LKB": 0.8121174349589968,
+      "Our approach": 0.8065107780682507
+    },
+    "seed_1002": {
+      "Pair classifier": 0.7976056865159467,
+      "Our approach PT-LKB": 0.8092454618497357,
+      "Our approach": 0.8043160478689251
+    },
+    "seed_1003": {
+      "Pair classifier": 0.7934308308245748,
+      "Our approach PT-LKB": 0.7826844556215811,
+      "Our approach": 0.8061712697154133
+    },
+    "seed_1004": {
+      "Pair classifier": 0.8023857959732539,
+      "Our approach PT-LKB": 0.8188593360552824,
+      "Our approach": 0.8072045270287196
+    },
+    "seed_1005": {
+      "Pair classifier": 0.8080343989616664,
+      "Our approach PT-LKB": 0.8113227969501806,
+      "Our approach": 0.7975476816634532
+    },
+    "seed_1006": {
+      "Pair classifier": 0.7824810243611616,
+      "Our approach PT-LKB": 0.8162719366014255,
+      "Our approach": 0.8058199572318678
+    },
+    "seed_1007": {
+      "Pair classifier": 0.8133989796969978,
+      "Our approach PT-LKB": 0.808832834615381,
+      "Our approach": 0.8107247818478042
+    },
+    "seed_1008": {
+      "Pair classifier": 0.787067269782507,
+      "Our approach PT-LKB": 0.8136258834140441,
+      "Our approach": 0.8030251530163415
+    },
+    "seed_1009": {
+      "Pair classifier": 0.791739755197502,
+      "Our approach PT-LKB": 0.8025024209771368,
+      "Our approach": 0.7935023351286901
+    },
+    "seed_1010": {
+      "Pair classifier": 0.7938454546410924,
+      "Our approach PT-LKB": 0.7907624958643759,
+      "Our approach": 0.7809961992193974
+    }
+  }
+}

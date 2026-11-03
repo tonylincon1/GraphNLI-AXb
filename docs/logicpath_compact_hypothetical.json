@@ -1,0 +1,40 @@
+{
+  "uid": "hypothetical-logicpath-negation-wiktionary",
+  "dataset": "illustration",
+  "logic": "Negation",
+  "language": "en",
+  "prediction_3": 2,
+  "label_3": 2,
+  "prediction_binary": 1,
+  "label_binary": 1,
+  "transformations": {
+    "lexical_identity": {"score": 0.22, "target": 0.0},
+    "negation_flip": {"score": 0.94, "target": 1.0},
+    "antonym_contradiction": {"score": 0.18, "target": 0.0}
+  },
+  "attribution_method": "normalized mean relation-aware Graph Transformer attention",
+  "nodes": [
+    {"id": 0, "text": "premise state: The student is happy.", "type": "premise_state", "importance": 0.19},
+    {"id": 1, "text": "premise unit: student", "type": "premise_unit", "importance": 0.11},
+    {"id": 2, "text": "premise unit: happy", "type": "premise_unit", "importance": 0.22},
+    {"id": 3, "text": "transformation negation_flip: happy -> not happy", "type": "transformation", "importance": 0.33},
+    {"id": 4, "text": "hypothesis unit: student", "type": "hypothesis_unit", "importance": 0.10},
+    {"id": 5, "text": "hypothesis unit: not happy", "type": "hypothesis_unit", "importance": 0.25},
+    {"id": 6, "text": "hypothesis state: The student is not happy.", "type": "hypothesis_state", "importance": 0.21},
+    {"id": 7, "text": "Wiktionary entry: happy", "type": "wiktionary_entry", "importance": 0.16},
+    {"id": 8, "text": "Wiktionary gloss: Feeling pleasure or satisfaction.", "type": "wiktionary_gloss", "importance": 0.14}
+  ],
+  "edges": [
+    {"source": 0, "target": 1, "relation": "contains", "attention": 0.34},
+    {"source": 0, "target": 2, "relation": "contains", "attention": 0.58},
+    {"source": 0, "target": 3, "relation": "operation", "attention": 0.45},
+    {"source": 1, "target": 4, "relation": "lexical_relation", "attention": 0.72},
+    {"source": 2, "target": 3, "relation": "operation", "attention": 0.86},
+    {"source": 3, "target": 5, "relation": "operation", "attention": 0.91},
+    {"source": 4, "target": 6, "relation": "contains", "attention": 0.31},
+    {"source": 5, "target": 6, "relation": "contains", "attention": 0.63},
+    {"source": 0, "target": 6, "relation": "contradicts", "attention": 0.20},
+    {"source": 2, "target": 7, "relation": "wiktionary_evidence", "attention": 0.76},
+    {"source": 7, "target": 8, "relation": "wiktionary_evidence", "attention": 0.68}
+  ]
+}

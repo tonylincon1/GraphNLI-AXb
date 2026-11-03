@@ -1,0 +1,160 @@
+{
+  "split": "assin_test",
+  "metric": "binary/accuracy",
+  "status": "ok",
+  "alpha": 0.05,
+  "blocks": [
+    "seed_1001",
+    "seed_1002",
+    "seed_1003",
+    "seed_1004",
+    "seed_1005",
+    "seed_1006",
+    "seed_1007",
+    "seed_1008",
+    "seed_1009",
+    "seed_1010"
+  ],
+  "models": [
+    "Graph Rewrite v1",
+    "K-BERT",
+    "LogicPath PT-LKB",
+    "LogicPath v2",
+    "Pair classifier",
+    "Our approach PT-LKB",
+    "Our approach"
+  ],
+  "friedman": {
+    "statistic": null,
+    "p_value": 0.00011704896661096393
+  },
+  "pairwise_wilcoxon": {
+    "p_value": null,
+    "significant_at_0_05": null
+  },
+  "autorank": {
+    "omnibus": "friedman",
+    "posthoc": "nemenyi",
+    "all_normal": true,
+    "homoscedastic": false,
+    "effect_size": "cohen_d",
+    "report": "The statistical analysis was conducted for 7 populations with 10 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.011). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and reject the null hypothesis (p=0.025) that thedata is homoscedastic. Thus, we assume that our data is heteroscedastic.\nBecause we have more than two populations and the populations are normal but heteroscedastic, we use the non-parametric Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We use the post-hoc Nemenyi test to infer which differences are significant. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=2.848 of the Nemenyi test.\nWe reject the null hypothesis (p=0.000) of the Friedman test that there is no difference in the central tendency of the populations K-BERT (MD=0.898+-0.004, MAD=0.003, MR=6.900), Pair classifier (MD=0.904+-0.010, MAD=0.006, MR=4.350), Our approach (MD=0.912+-0.006, MAD=0.004, MR=4.100), Our approach PT-LKB (MD=0.915+-0.007, MAD=0.001, MR=4.000), LogicPath PT-LKB (MD=0.916+-0.003, MAD=0.002, MR=3.300), Graph Rewrite v1 (MD=0.917+-0.005, MAD=0.002, MR=2.750), and LogicPath v2 (MD=0.917+-0.005, MAD=0.001, MR=2.600). Therefore, we assume that there is a statistically significant difference between the median values of the populations.\nBased on the post-hoc Nemenyi test, we assume that there are no significant differences within the following groups: K-BERT, Pair classifier, and Our approach; Pair classifier, Our approach, Our approach PT-LKB, LogicPath PT-LKB, Graph Rewrite v1, and LogicPath v2. All other differences are significant."
+  },
+  "nemenyi_critical_difference": 2.848314607025562,
+  "average_ranks": {
+    "K-BERT": 6.9,
+    "Pair classifier": 4.35,
+    "Our approach": 4.1,
+    "Our approach PT-LKB": 4.0,
+    "LogicPath PT-LKB": 3.3,
+    "Graph Rewrite v1": 2.75,
+    "LogicPath v2": 2.6
+  },
+  "non_significant_groups": [
+    [
+      "LogicPath v2",
+      "Graph Rewrite v1",
+      "LogicPath PT-LKB",
+      "Our approach PT-LKB",
+      "Our approach",
+      "Pair classifier"
+    ],
+    [
+      "Our approach",
+      "Pair classifier",
+      "K-BERT"
+    ]
+  ],
+  "block_values": {
+    "seed_1001": {
+      "Graph Rewrite v1": 0.9195,
+      "K-BERT": 0.8975,
+      "LogicPath PT-LKB": 0.91675,
+      "LogicPath v2": 0.91725,
+      "Pair classifier": 0.9055,
+      "Our approach PT-LKB": 0.91575,
+      "Our approach": 0.90775
+    },
+    "seed_1002": {
+      "Graph Rewrite v1": 0.9185,
+      "K-BERT": 0.8995,
+      "LogicPath PT-LKB": 0.91275,
+      "LogicPath v2": 0.9165,
+      "Pair classifier": 0.9165,
+      "Our approach PT-LKB": 0.91525,
+      "Our approach": 0.90975
+    },
+    "seed_1003": {
+      "Graph Rewrite v1": 0.915,
+      "K-BERT": 0.8955,
+      "LogicPath PT-LKB": 0.9145,
+      "LogicPath v2": 0.9055,
+      "Pair classifier": 0.8995,
+      "Our approach PT-LKB": 0.91675,
+      "Our approach": 0.909
+    },
+    "seed_1004": {
+      "Graph Rewrite v1": 0.91375,
+      "K-BERT": 0.90225,
+      "LogicPath PT-LKB": 0.91625,
+      "LogicPath v2": 0.921,
+      "Pair classifier": 0.9185,
+      "Our approach PT-LKB": 0.9145,
+      "Our approach": 0.9185
+    },
+    "seed_1005": {
+      "Graph Rewrite v1": 0.90675,
+      "K-BERT": 0.899,
+      "LogicPath PT-LKB": 0.91625,
+      "LogicPath v2": 0.91675,
+      "Pair classifier": 0.92275,
+      "Our approach PT-LKB": 0.9145,
+      "Our approach": 0.91
+    },
+    "seed_1006": {
+      "Graph Rewrite v1": 0.91475,
+      "K-BERT": 0.8945,
+      "LogicPath PT-LKB": 0.919,
+      "LogicPath v2": 0.91675,
+      "Pair classifier": 0.89825,
+      "Our approach PT-LKB": 0.921,
+      "Our approach": 0.91425
+    },
+    "seed_1007": {
+      "Graph Rewrite v1": 0.917,
+      "K-BERT": 0.90675,
+      "LogicPath PT-LKB": 0.91025,
+      "LogicPath v2": 0.917,
+      "Pair classifier": 0.917,
+      "Our approach PT-LKB": 0.915,
+      "Our approach": 0.917
+    },
+    "seed_1008": {
+      "Graph Rewrite v1": 0.921,
+      "K-BERT": 0.89575,
+      "LogicPath PT-LKB": 0.913,
+      "LogicPath v2": 0.91225,
+      "Pair classifier": 0.90175,
+      "Our approach PT-LKB": 0.90875,
+      "Our approach": 0.9165
+    },
+    "seed_1009": {
+      "Graph Rewrite v1": 0.9165,
+      "K-BERT": 0.89925,
+      "LogicPath PT-LKB": 0.921,
+      "LogicPath v2": 0.91825,
+      "Pair classifier": 0.8985,
+      "Our approach PT-LKB": 0.9135,
+      "Our approach": 0.91625
+    },
+    "seed_1010": {
+      "Graph Rewrite v1": 0.9245,
+      "K-BERT": 0.89475,
+      "LogicPath PT-LKB": 0.91575,
+      "LogicPath v2": 0.9205,
+      "Pair classifier": 0.90325,
+      "Our approach PT-LKB": 0.898,
+      "Our approach": 0.90075
+    }
+  }
+}

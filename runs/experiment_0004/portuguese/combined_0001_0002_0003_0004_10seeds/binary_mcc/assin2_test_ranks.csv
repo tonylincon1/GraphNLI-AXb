@@ -1,0 +1,8 @@
+model,average_rank
+Our approach PT-LKB,2.8
+LogicPath PT-LKB,3.0
+LogicPath v2,3.2
+Graph Rewrite v1,3.8
+Our approach,4.0
+Pair classifier,5.0
+K-BERT,6.2

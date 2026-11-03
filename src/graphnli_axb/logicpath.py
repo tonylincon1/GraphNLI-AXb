@@ -136,6 +136,8 @@ def _base_logicpath_graph(
     wiktionary_cache: dict | None = None,
     max_wiktionary_entries: int = 0,
     lexicon_name: str = "Wiktionary",
+    include_units: bool = True,
+    include_transformations: bool = True,
 ) -> LogicPathGraphSpec:
     """Build a pair-conditioned transformation graph, optionally with lexical evidence."""
     premise_units = _unit_tokens(sentence1)
@@ -144,19 +146,20 @@ def _base_logicpath_graph(
 
     texts = ["premise state: " + sentence1, "hypothesis state: " + sentence2]
     types = ["premise_state", "hypothesis_state"]
-    for token in premise_units:
-        if len(texts) >= max_nodes:
-            break
-        texts.append(f"premise unit: {token}")
-        types.append("premise_unit")
-    for token in hypothesis_units:
-        if len(texts) >= max_nodes:
-            break
-        texts.append(f"hypothesis unit: {token}")
-        types.append("hypothesis_unit")
+    if include_units:
+        for token in premise_units:
+            if len(texts) >= max_nodes:
+                break
+            texts.append(f"premise unit: {token}")
+            types.append("premise_unit")
+        for token in hypothesis_units:
+            if len(texts) >= max_nodes:
+                break
+            texts.append(f"hypothesis unit: {token}")
+            types.append("hypothesis_unit")
 
     kept_transformations = []
-    for name, left, right, relation in transformations:
+    for name, left, right, relation in transformations if include_transformations else []:
         if len(texts) >= max_nodes:
             break
         texts.append(f"transformation {name}: {left} -> {right}")
@@ -284,6 +287,64 @@ def build_logicpath_v2_graph(
         wiktionary_cache=wiktionary_cache,
         max_wiktionary_entries=max_wiktionary_entries,
         lexicon_name=lexicon_name,
+    )
+
+
+def build_logicpath_no_transform_graph(
+    sentence1: str,
+    sentence2: str,
+    wiktionary_cache: dict,
+    max_nodes: int = 32,
+    max_wiktionary_entries: int = 2,
+    lexicon_name: str = "Wiktionary",
+) -> LogicPathGraphSpec:
+    """Build the LogicPath graph without explicit transformation nodes.
+
+    The graph preserves premise/hypothesis states, lexical units, and cached
+    Wiktionary evidence. This isolates the contribution of the typed graph and
+    external lexical evidence from the transformation-prediction branch.
+    """
+    return _base_logicpath_graph(
+        sentence1,
+        sentence2,
+        max_nodes,
+        LOGICPATH_V2_NODE_TYPES,
+        LOGICPATH_V2_REL_TO_ID,
+        wiktionary_cache=wiktionary_cache,
+        max_wiktionary_entries=max_wiktionary_entries,
+        lexicon_name=lexicon_name,
+        include_units=True,
+        include_transformations=False,
+    )
+
+
+def build_logicpath_ablation_graph(
+    sentence1: str,
+    sentence2: str,
+    mode: str,
+    max_nodes: int = 32,
+    wiktionary_cache: dict | None = None,
+    max_wiktionary_entries: int = 2,
+) -> LogicPathGraphSpec:
+    """Build controlled LogicPath ablations with the v2 graph vocabulary.
+
+    ``states`` contains only premise and hypothesis state nodes.
+    ``transformations`` adds transformation nodes while keeping the state-only
+    representation.  ``full`` keeps units, transformations, and Wiktionary
+    evidence, matching LogicPath v2.
+    """
+    if mode not in {"states", "transformations", "full"}:
+        raise ValueError(f"Unknown LogicPath ablation mode: {mode}")
+    return _base_logicpath_graph(
+        sentence1,
+        sentence2,
+        max_nodes,
+        LOGICPATH_V2_NODE_TYPES,
+        LOGICPATH_V2_REL_TO_ID,
+        wiktionary_cache=wiktionary_cache if mode == "full" else None,
+        max_wiktionary_entries=max_wiktionary_entries if mode == "full" else 0,
+        include_units=mode == "full",
+        include_transformations=mode in {"transformations", "full"},
     )
 
 

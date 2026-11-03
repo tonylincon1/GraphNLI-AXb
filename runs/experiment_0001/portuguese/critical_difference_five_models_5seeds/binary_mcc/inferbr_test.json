@@ -1,0 +1,90 @@
+{
+  "split": "inferbr_test",
+  "metric": "binary/mcc",
+  "status": "ok",
+  "alpha": 0.05,
+  "blocks": [
+    "seed_1001",
+    "seed_1002",
+    "seed_1003",
+    "seed_1004",
+    "seed_1005"
+  ],
+  "models": [
+    "LogicPath PT-LKB",
+    "LogicPath v2",
+    "Pair classifier",
+    "Our approach PT-LKB",
+    "Our approach"
+  ],
+  "friedman": {
+    "statistic": null,
+    "p_value": 0.20520291200399413
+  },
+  "pairwise_wilcoxon": {
+    "p_value": null,
+    "significant_at_0_05": null
+  },
+  "autorank": {
+    "omnibus": "friedman",
+    "posthoc": "nemenyi",
+    "all_normal": true,
+    "homoscedastic": true,
+    "effect_size": "cohen_d",
+    "report": "The statistical analysis was conducted for 5 populations with 5 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.281). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and failed to reject the null hypothesis (p=0.817) that the data is homoscedastic. Thus, we assume that our data is homoscedastic.\nBecause we have more than two populations and all populations are normal and homoscedastic, we should use repeated measures ANOVA as omnibus test to determine if there are any significant differences between the mean values of the populations. However, the user decided to force the use of the less powerful Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=2.728 of the Nemenyi test.\nWe failed to reject the null hypothesis (p=0.205) of the Friedman test that there is no difference in the central tendency of the populations Pair classifier (MD=0.879+-0.020, MAD=0.006, MR=4.400), LogicPath PT-LKB (MD=0.885+-0.024, MAD=0.007, MR=3.000), Our approach PT-LKB (MD=0.892+-0.020, MAD=0.009, MR=3.000), LogicPath v2 (MD=0.894+-0.013, MAD=0.005, MR=2.400), and Our approach (MD=0.895+-0.018, MAD=0.006, MR=2.200). Therefore, we assume that there is no statistically significant difference between the median values of the populations."
+  },
+  "nemenyi_critical_difference": 2.7277508838690387,
+  "average_ranks": {
+    "Pair classifier": 4.4,
+    "LogicPath PT-LKB": 3.0,
+    "Our approach PT-LKB": 3.0,
+    "LogicPath v2": 2.4,
+    "Our approach": 2.2
+  },
+  "non_significant_groups": [
+    [
+      "Our approach",
+      "LogicPath v2",
+      "LogicPath PT-LKB",
+      "Our approach PT-LKB",
+      "Pair classifier"
+    ]
+  ],
+  "block_values": {
+    "seed_1001": {
+      "LogicPath PT-LKB": 0.903972008582648,
+      "LogicPath v2": 0.8879339638563478,
+      "Pair classifier": 0.8631051517747311,
+      "Our approach PT-LKB": 0.8982441189292739,
+      "Our approach": 0.8780139650937663
+    },
+    "seed_1002": {
+      "LogicPath PT-LKB": 0.8776513447115228,
+      "LogicPath v2": 0.8963136845015348,
+      "Pair classifier": 0.8785258322148305,
+      "Our approach PT-LKB": 0.891777794546197,
+      "Our approach": 0.9004441415620779
+    },
+    "seed_1003": {
+      "LogicPath PT-LKB": 0.8846872985682857,
+      "LogicPath v2": 0.8997833156249805,
+      "Pair classifier": 0.8667358831443446,
+      "Our approach PT-LKB": 0.8788158757475849,
+      "Our approach": 0.8888511921419419
+    },
+    "seed_1004": {
+      "LogicPath PT-LKB": 0.8972308128477956,
+      "LogicPath v2": 0.8943946530373692,
+      "Pair classifier": 0.8848445447214691,
+      "Our approach PT-LKB": 0.8831756163507234,
+      "Our approach": 0.8947186366044488
+    },
+    "seed_1005": {
+      "LogicPath PT-LKB": 0.8776513447115228,
+      "LogicPath v2": 0.8848445447214691,
+      "Pair classifier": 0.8836093514624532,
+      "Our approach PT-LKB": 0.9008620290587833,
+      "Our approach": 0.8961917726000904
+    }
+  }
+}

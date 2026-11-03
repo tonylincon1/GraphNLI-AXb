@@ -1,0 +1,7 @@
+feature_group,start,end,dimensions,permutation_fidelity_drop_mean,permutation_fidelity_drop_std
+transformer_pair,0,768,768,0.38969555035128806,0.020741536136285297
+pair_graph_abs_difference,1536,2304,768,0.06838407494145196,0.007893348733654677
+pair_graph_product,2304,3072,768,0.017330210772833744,0.007118821617597509
+graph_pool,768,1536,768,0.0049180327868852515,0.0028586781301484115
+transformation_probabilities,3072,3083,11,0.0,0.0
+inverse_transformation_probabilities,3083,3094,11,0.0,0.0

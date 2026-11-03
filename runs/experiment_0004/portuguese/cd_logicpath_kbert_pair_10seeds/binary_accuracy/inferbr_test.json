@@ -1,0 +1,103 @@
+{
+  "split": "inferbr_test",
+  "metric": "binary/accuracy",
+  "status": "ok",
+  "alpha": 0.05,
+  "blocks": [
+    "seed_1001",
+    "seed_1002",
+    "seed_1003",
+    "seed_1004",
+    "seed_1005",
+    "seed_1006",
+    "seed_1007",
+    "seed_1008",
+    "seed_1009",
+    "seed_1010"
+  ],
+  "models": [
+    "K-BERT",
+    "LogicPath v2",
+    "Pair classifier"
+  ],
+  "friedman": {
+    "statistic": null,
+    "p_value": 0.0007994560913240895
+  },
+  "pairwise_wilcoxon": {
+    "p_value": null,
+    "significant_at_0_05": null
+  },
+  "autorank": {
+    "omnibus": "friedman",
+    "posthoc": "nemenyi",
+    "all_normal": true,
+    "homoscedastic": true,
+    "effect_size": "cohen_d",
+    "report": "The statistical analysis was conducted for 3 populations with 10 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.100). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and failed to reject the null hypothesis (p=0.556) that the data is homoscedastic. Thus, we assume that our data is homoscedastic.\nBecause we have more than two populations and all populations are normal and homoscedastic, we should use repeated measures ANOVA as omnibus test to determine if there are any significant differences between the mean values of the populations. However, the user decided to force the use of the less powerful Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=1.048 of the Nemenyi test.\nWe reject the null hypothesis (p=0.001) of the Friedman test that there is no difference in the central tendency of the populations K-BERT (MD=0.944+-0.005, MAD=0.003, MR=2.500), Pair classifier (MD=0.943+-0.004, MAD=0.004, MR=2.450), and LogicPath v2 (MD=0.953+-0.003, MAD=0.004, MR=1.050). Therefore, we assume that there is a statistically significant difference between the median values of the populations.\nBased on the post-hoc Nemenyi test, we assume that there are no significant differences within the following groups: K-BERT and Pair classifier. All other differences are significant."
+  },
+  "nemenyi_critical_difference": 1.0481362880100318,
+  "average_ranks": {
+    "K-BERT": 2.5,
+    "Pair classifier": 2.45,
+    "LogicPath v2": 1.05
+  },
+  "non_significant_groups": [
+    [
+      "Pair classifier",
+      "K-BERT"
+    ]
+  ],
+  "block_values": {
+    "seed_1001": {
+      "K-BERT": 0.9442815249266863,
+      "LogicPath v2": 0.9495601173020528,
+      "Pair classifier": 0.9390029325513196
+    },
+    "seed_1002": {
+      "K-BERT": 0.9442815249266863,
+      "LogicPath v2": 0.9536656891495601,
+      "Pair classifier": 0.9442815249266863
+    },
+    "seed_1003": {
+      "K-BERT": 0.9395894428152493,
+      "LogicPath v2": 0.9548387096774194,
+      "Pair classifier": 0.9407624633431085
+    },
+    "seed_1004": {
+      "K-BERT": 0.9478005865102639,
+      "LogicPath v2": 0.9524926686217009,
+      "Pair classifier": 0.9483870967741935
+    },
+    "seed_1005": {
+      "K-BERT": 0.9331378299120234,
+      "LogicPath v2": 0.9483870967741935,
+      "Pair classifier": 0.9478005865102639
+    },
+    "seed_1006": {
+      "K-BERT": 0.9460410557184751,
+      "LogicPath v2": 0.9571847507331378,
+      "Pair classifier": 0.9413489736070382
+    },
+    "seed_1007": {
+      "K-BERT": 0.9466275659824047,
+      "LogicPath v2": 0.955425219941349,
+      "Pair classifier": 0.9472140762463344
+    },
+    "seed_1008": {
+      "K-BERT": 0.9489736070381232,
+      "LogicPath v2": 0.9489736070381232,
+      "Pair classifier": 0.9395894428152493
+    },
+    "seed_1009": {
+      "K-BERT": 0.9413489736070382,
+      "LogicPath v2": 0.9495601173020528,
+      "Pair classifier": 0.9378299120234604
+    },
+    "seed_1010": {
+      "K-BERT": 0.9378299120234604,
+      "LogicPath v2": 0.9571847507331378,
+      "Pair classifier": 0.9483870967741935
+    }
+  }
+}

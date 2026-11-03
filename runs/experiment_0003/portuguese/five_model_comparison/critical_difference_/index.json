@@ -1,0 +1,17 @@
+[
+  {
+    "split": "assin2_test",
+    "status": "no_metric",
+    "metric": "binary/macro_f1 macro_f1"
+  },
+  {
+    "split": "assin_test",
+    "status": "no_metric",
+    "metric": "binary/macro_f1 macro_f1"
+  },
+  {
+    "split": "inferbr_test",
+    "status": "no_metric",
+    "metric": "binary/macro_f1 macro_f1"
+  }
+]

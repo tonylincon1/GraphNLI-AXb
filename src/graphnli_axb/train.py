@@ -17,6 +17,8 @@ import torch
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 
 from .data import (
     NLIGraphDataset,
@@ -197,6 +199,90 @@ def save_predictions(path: Path, rows: List[dict]) -> None:
         writer.writerows(rows)
 
 
+@torch.no_grad()
+def collect_fusion_features(model, loader, device: torch.device) -> tuple[np.ndarray, np.ndarray]:
+    """Collect final fusion vectors and the model's predictions for a surrogate."""
+    model.eval()
+    features, predictions = [], []
+    for batch in loader:
+        batch = move_batch(batch, device)
+        output = model(batch)
+        if output.fusion_features is None:
+            raise RuntimeError("This model does not expose feature-fusion vectors.")
+        features.append(output.fusion_features.detach().cpu().numpy())
+        predictions.append(output.logits.argmax(dim=-1).detach().cpu().numpy())
+    return np.concatenate(features, axis=0), np.concatenate(predictions, axis=0)
+
+
+def save_surrogate_analysis(model, loader, device: torch.device, output_dir: Path) -> dict:
+    """Fit a small interpretable surrogate and measure grouped feature importance.
+
+    Importance is the drop in surrogate fidelity after permuting one semantic
+    block of the neural feature fusion vector. This keeps the analysis at the
+    level of architectural components instead of thousands of hidden units.
+    """
+    features, black_box_predictions = collect_fusion_features(model, loader, device)
+    groups = getattr(model, "fusion_feature_groups", None)
+    if not groups:
+        raise RuntimeError("The selected model has no named feature-fusion groups.")
+    if len(np.unique(black_box_predictions)) < 2:
+        raise RuntimeError("Surrogate analysis needs at least two predicted classes.")
+
+    indices = np.arange(len(features))
+    try:
+        train_idx, test_idx = train_test_split(
+            indices,
+            test_size=0.25,
+            random_state=42,
+            stratify=black_box_predictions,
+        )
+    except ValueError:
+        train_idx, test_idx = indices, indices
+    surrogate = LogisticRegression(max_iter=1000, random_state=42)
+    surrogate.fit(features[train_idx], black_box_predictions[train_idx])
+    test_features = features[test_idx]
+    test_targets = black_box_predictions[test_idx]
+    baseline = float((surrogate.predict(test_features) == test_targets).mean())
+    rng = np.random.default_rng(42)
+    importance = []
+    for name, (start, end) in groups.items():
+        scores = []
+        for _ in range(10):
+            permuted = test_features.copy()
+            order = rng.permutation(len(permuted))
+            permuted[:, start:end] = permuted[order, start:end]
+            score = float((surrogate.predict(permuted) == test_targets).mean())
+            scores.append(baseline - score)
+        importance.append(
+            {
+                "feature_group": name,
+                "start": int(start),
+                "end": int(end),
+                "dimensions": int(end - start),
+                "permutation_fidelity_drop_mean": float(np.mean(scores)),
+                "permutation_fidelity_drop_std": float(np.std(scores)),
+            }
+        )
+    importance.sort(key=lambda row: row["permutation_fidelity_drop_mean"], reverse=True)
+    report = {
+        "method": "logistic-regression surrogate with grouped permutation importance",
+        "samples": int(len(features)),
+        "feature_dimensions": int(features.shape[1]),
+        "surrogate_train_samples": int(len(train_idx)),
+        "surrogate_test_samples": int(len(test_idx)),
+        "surrogate_fidelity_accuracy": baseline,
+        "black_box_predicted_classes": sorted(int(value) for value in np.unique(black_box_predictions)),
+        "groups": importance,
+    }
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "surrogate_analysis.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    with (output_dir / "surrogate_analysis.csv").open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(importance[0].keys()))
+        writer.writeheader()
+        writer.writerows(importance)
+    return report
+
+
 def _svg_label(text: str, max_chars: int = 34, max_lines: int = 3) -> list[str]:
     words = text.split()
     lines, current = [], ""
@@ -362,10 +448,21 @@ def _logicpath_explanation_record(batch: dict, output, item_index: int) -> dict:
     importance = output.logicpath_node_importance[item_index, :valid_nodes].detach().cpu().tolist()
     edge_types = batch["logicpath_edge_types"][item_index, :valid_nodes, :valid_nodes].detach().cpu().numpy()
     attention = output.logicpath_graph_attention[:, item_index, :valid_nodes, :valid_nodes].mean(dim=0).detach().cpu().numpy()
+    initial_attention = (
+        output.logicpath_initial_graph_attention[item_index, :valid_nodes, :valid_nodes].detach().cpu().numpy()
+        if output.logicpath_initial_graph_attention is not None else attention
+    )
+    rewritten_attention = (
+        output.logicpath_rewritten_graph_attention[item_index, :valid_nodes, :valid_nodes].detach().cpu().numpy()
+        if output.logicpath_rewritten_graph_attention is not None else attention
+    )
     logicpath_version = batch.get("logicpath_version", ["v1"])[item_index]
     if logicpath_version in {"v2", "v3"}:
         node_type_names = LOGICPATH_V3_NODE_TYPES if logicpath_version == "v3" else LOGICPATH_V2_NODE_TYPES
         relation_names = LOGICPATH_V3_RELATIONS if logicpath_version == "v3" else LOGICPATH_V2_RELATIONS
+    elif logicpath_version == "no_transform_wiktionary_v1":
+        node_type_names = LOGICPATH_V2_NODE_TYPES
+        relation_names = LOGICPATH_V2_RELATIONS
     else:
         node_type_names = LOGICPATH_NODE_TYPES
         relation_names = LOGICPATH_RELATIONS
@@ -390,11 +487,16 @@ def _logicpath_explanation_record(batch: dict, output, item_index: int) -> dict:
                     "target": target,
                     "relation": relation_names[relation_id],
                     "attention": float((attention[source, target] + attention[target, source]) / 2),
+                    "initial_attention": float((initial_attention[source, target] + initial_attention[target, source]) / 2),
+                    "rewritten_attention": float((rewritten_attention[source, target] + rewritten_attention[target, source]) / 2),
                 }
             )
-    transform_scores = output.logicpath_transform_logits[item_index].sigmoid().detach().cpu().tolist()
+    if output.logicpath_transform_logits is None:
+        transform_scores = [0.0] * len(TRANSFORMATIONS)
+    else:
+        transform_scores = output.logicpath_transform_logits[item_index].sigmoid().detach().cpu().tolist()
     transform_targets = batch["logicpath_targets"][item_index].detach().cpu().tolist()
-    return {
+    record = {
         "uid": batch["uid"][item_index],
         "dataset": batch["dataset"][item_index],
         "logic": batch["logic"][item_index],
@@ -412,55 +514,93 @@ def _logicpath_explanation_record(batch: dict, output, item_index: int) -> dict:
         "nodes": nodes,
         "edges": edges,
     }
+    if output.logicpath_initial_node_importance is not None:
+        record["initial_node_importance"] = output.logicpath_initial_node_importance[item_index, :valid_nodes].detach().cpu().tolist()
+        record["rewritten_node_importance"] = output.logicpath_rewritten_node_importance[item_index, :valid_nodes].detach().cpu().tolist()
+        record["rewrite"] = {
+            "selected_operation": max(record["transformations"], key=lambda name: record["transformations"][name]["score"]),
+            "selected_probability": max(value["score"] for value in record["transformations"].values()),
+            "interpretation": "Node states are updated by the learned relation-aware rewrite layers; text and edges remain fixed.",
+        }
+    return record
 
 
 def _write_logicpath_graph_svg(path: Path, record: dict) -> None:
-    """Render a directed, layered transformation flow instead of a circular graph."""
+    """Render a readable, layered transformation flow with adaptive node cards."""
     nodes = record["nodes"]
     edges = record["edges"]
     has_wiktionary = any(node["type"].startswith("wiktionary_") for node in nodes)
     if has_wiktionary:
-        width = 1770
+        width = 2200
         columns = {
-            "premise_state": (100, "Premise"),
-            "premise_unit": (350, "Premise units"),
-            "wiktionary_entry": (635, "Wiktionary"),
-            "wiktionary_gloss": (635, "Wiktionary"),
-            "transformation": (930, "Transformations"),
-            "hypothesis_unit": (1260, "Hypothesis units"),
-            "hypothesis_state": (1580, "Hypothesis"),
+            "premise_state": (125, "Premise"),
+            "premise_unit": (410, "Premise units"),
+            "wiktionary_entry": (690, "Wiktionary entry"),
+            "wiktionary_gloss": (900, "Wiktionary gloss"),
+            "transformation": (1130, "Transformations"),
+            "hypothesis_unit": (1430, "Hypothesis units"),
+            "hypothesis_state": (1960, "Hypothesis"),
         }
     else:
-        width = 1500
+        width = 1900
         columns = {
-            "premise_state": (120, "Premise"),
-            "premise_unit": (390, "Premise units"),
-            "transformation": (720, "Transformations"),
-            "hypothesis_unit": (1050, "Hypothesis units"),
-            "hypothesis_state": (1380, "Hypothesis"),
+            "premise_state": (125, "Premise"),
+            "premise_unit": (475, "Premise units"),
+            "transformation": (950, "Transformations"),
+            "hypothesis_unit": (1425, "Hypothesis units"),
+            "hypothesis_state": (1775, "Hypothesis"),
         }
+    node_width = 190
+    card_padding = 32
+    line_height = 15
+
+    def node_lines(node: dict) -> list[str]:
+        # Keep the complete semantic content in the SVG while wrapping it inside the card.
+        return _svg_label(node["text"], max_chars=28, max_lines=12)
+
+    node_heights = {}
+    for index, node in enumerate(nodes):
+        line_count = len(node_lines(node))
+        node_heights[index] = max(74, card_padding + 18 + line_count * line_height)
+
     grouped = {node_type: [] for node_type in columns}
     for index, node in enumerate(nodes):
         grouped.setdefault(node["type"], []).append(index)
     max_column_nodes = max((len(indices) for indices in grouped.values()), default=1)
-    height = max(700, 210 + max_column_nodes * 105)
+    height = max(820, 260 + max_column_nodes * 150)
     positions = {}
     for node_type, indices in grouped.items():
         x = columns.get(node_type, (720, node_type))[0]
-        step = (height - 250) / max(len(indices), 1)
-        for order, index in enumerate(indices):
-            positions[index] = (x, 150 + step * (order + 0.5))
+        if len(indices) == 1:
+            single_y = (height - 80) / 2
+            if has_wiktionary and node_type == "wiktionary_entry":
+                single_y = 275
+            elif has_wiktionary and node_type == "wiktionary_gloss":
+                single_y = 535
+            y_positions = [single_y]
+        else:
+            top = 150
+            bottom = height - 150
+            step = (bottom - top) / (len(indices) - 1)
+            y_positions = [top + step * order for order in range(len(indices))]
+        for index, y in zip(indices, y_positions):
+            positions[index] = (x, y)
     rank = {node_type: order for order, node_type in enumerate(columns)}
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
         '<defs><marker id="arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#4d6f8e"/></marker><marker id="red-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 z" fill="#a33d3d"/></marker></defs>',
-        '<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}.column{font-size:14px;font-weight:bold;fill:#52616b}.edge-label{font-size:10px;fill:#52616b}</style>',
+        '<style>text{font-family:Arial,sans-serif;fill:#17202a}.small{font-size:12px}.title{font-size:18px;font-weight:bold}.node{font-size:12px;font-weight:bold}.node-text{font-size:11px}.column{font-size:14px;font-weight:bold;fill:#52616b}.edge-label{font-size:10px;fill:#52616b}</style>',
         '<rect width="100%" height="100%" fill="#ffffff"/>',
-        f'<text x="30" y="32" class="title">LogicPath {html.escape(record.get("logicpath_version", "v1"))} transformation graph | {html.escape(record["uid"])}</text>',
+        f'<text x="30" y="32" class="title">LogicPath transformation graph | {html.escape(record["uid"])}</text>',
         f'<text x="30" y="54" class="small">Binary prediction: {record["prediction_binary"]} | binary label: {record["label_binary"]} | arrows show transformation flow; width shows attention.</text>',
     ]
     for node_type, (x, label) in columns.items():
         parts.append(f'<text x="{x}" y="92" text-anchor="middle" class="column">{html.escape(label)}</text>')
+    edge_lanes = {}
+    for edge in edges:
+        key = (min(edge["source"], edge["target"]), max(edge["source"], edge["target"]))
+        edge_lanes[key] = edge_lanes.get(key, 0) + 1
+    seen_lanes = {}
     for edge in edges:
         source = nodes[edge["source"]]
         target = nodes[edge["target"]]
@@ -469,27 +609,192 @@ def _write_logicpath_graph_svg(path: Path, record: dict) -> None:
             source_index, target_index = target_index, source_index
         x1, y1 = positions[source_index]
         x2, y2 = positions[target_index]
-        x1 += 78 if x2 >= x1 else -78
-        x2 -= 78 if x2 >= x1 else -78
+        direction = 1 if x2 >= x1 else -1
+        x1 += direction * (node_width / 2)
+        x2 -= direction * (node_width / 2)
         opacity = min(0.92, 0.15 + edge["attention"] * 2.5)
         stroke = 1 + edge["attention"] * 7
         color = "#9c3f3f" if edge["relation"] == "contradicts" else "#4d6f8e"
         marker = "red-arrow" if edge["relation"] == "contradicts" else "arrow"
-        parts.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{color}" stroke-width="{stroke:.2f}" stroke-opacity="{opacity:.2f}" marker-end="url(#{marker})"/>')
-        label_x = (x1 + x2) / 2
-        label_y = (y1 + y2) / 2 - 5
-        parts.append(f'<text x="{label_x:.1f}" y="{label_y:.1f}" text-anchor="middle" class="edge-label">{html.escape(edge["relation"])}</text>')
+        key = (min(edge["source"], edge["target"]), max(edge["source"], edge["target"]))
+        lane_index = seen_lanes.get(key, 0)
+        seen_lanes[key] = lane_index + 1
+        lane_count = edge_lanes[key]
+        lane_offset = (lane_index - (lane_count - 1) / 2) * 16
+        if edge["relation"] == "contradicts":
+            lane_offset += 90
+        mid_x = (x1 + x2) / 2
+        mid_y = (y1 + y2) / 2 + lane_offset
+        path_data = f"M{x1:.1f},{y1:.1f} Q{mid_x:.1f},{mid_y:.1f} {x2:.1f},{y2:.1f}"
+        parts.append(f'<path d="{path_data}" fill="none" stroke="{color}" stroke-width="{stroke:.2f}" stroke-opacity="{opacity:.2f}" marker-end="url(#{marker})"/>')
+        # Label only salient edges; low-attention edges remain visible without
+        # turning dense examples into a wall of overlapping relation names.
+        if edge["attention"] >= 0.08:
+            label_x = mid_x
+            label_y = mid_y - 5
+            label = html.escape(f'{edge["relation"]} | w={edge["attention"]:.2f}')
+            label_width = max(54, len(f'{edge["relation"]} | w={edge["attention"]:.2f}') * 5.4 + 8)
+            parts.append(f'<rect x="{label_x - label_width / 2:.1f}" y="{label_y - 10:.1f}" width="{label_width:.1f}" height="13" rx="3" fill="#ffffff" fill-opacity="0.88"/>')
+            parts.append(f'<text x="{label_x:.1f}" y="{label_y:.1f}" text-anchor="middle" class="edge-label">{label}</text>')
     for index, node in enumerate(nodes):
         x, y = positions[index]
         score = node["importance"]
         fill = "#e8f3fb" if node["type"] in {"premise_state", "hypothesis_state"} else "#f7f1df" if node["type"] == "transformation" else "#eef5ee"
-        x_left, x_right = x - 82, x + 82
-        parts.append(f'<rect x="{x_left:.1f}" y="{y - 32:.1f}" width="164" height="64" rx="6" fill="{fill}" stroke="#1f4d70" stroke-width="2"/>')
-        parts.append(f'<text x="{x:.1f}" y="{y - 7:.1f}" text-anchor="middle" class="node">N{index} | {score:.3f}</text>')
-        for line_index, line in enumerate(_svg_label(node["text"], max_chars=25, max_lines=2)):
-            parts.append(f'<text x="{x:.1f}" y="{y + 10 + 14 * line_index:.1f}" text-anchor="middle" class="small">{html.escape(line)}</text>')
-    parts.append(f'<text x="30" y="{height - 24}" class="small">Node score: normalized relation-aware attention. Red arrows indicate contradiction relations.</text>')
+        card_height = node_heights[index]
+        x_left = x - node_width / 2
+        parts.append(f'<rect x="{x_left:.1f}" y="{y - card_height / 2:.1f}" width="{node_width}" height="{card_height:.1f}" rx="8" fill="{fill}" stroke="#1f4d70" stroke-width="2"/>')
+        lines = node_lines(node)
+        title_y = y - card_height / 2 + 21
+        parts.append(f'<text x="{x:.1f}" y="{title_y:.1f}" text-anchor="middle" class="node">N{index} | {score:.3f}</text>')
+        for line_index, line in enumerate(lines):
+            text_y = title_y + 17 + line_height * line_index
+            parts.append(f'<text x="{x:.1f}" y="{text_y:.1f}" text-anchor="middle" class="node-text">{html.escape(line)}</text>')
+    parts.append(f'<text x="30" y="{height - 24}" class="small">Node score: normalized relation-aware attention. Edge width shows attention; labels are shown for salient edges.</text>')
     parts.append("</svg>")
+    path.write_text("\n".join(parts), encoding="utf-8")
+
+
+def _write_graph_rewrite_svg(path: Path, record: dict) -> None:
+    """Render a publication-style before/operation/after explanation."""
+    nodes = record["nodes"]
+    edges = record["edges"]
+    initial = record.get("initial_node_importance", [node["importance"] for node in nodes])
+    rewritten = record.get("rewritten_node_importance", [node["importance"] for node in nodes])
+    selected = record.get("rewrite", {}).get("selected_operation", "unknown")
+    selected_probability = record.get("rewrite", {}).get("selected_probability", 0.0)
+    width, height = 2100, 1040
+    panel_y, panel_h = 130, 780
+    panel_w = 650
+    palette = {
+        "premise_state": ("#e7f0f7", "#2f6f9f"),
+        "hypothesis_state": ("#e7f0f7", "#2f6f9f"),
+        "premise_unit": ("#eef5ef", "#4e8b62"),
+        "hypothesis_unit": ("#eef5ef", "#4e8b62"),
+        "transformation": ("#fff1d6", "#c27a1a"),
+        "wiktionary_entry": ("#f1ecfa", "#8064a2"),
+        "wiktionary_gloss": ("#f1ecfa", "#8064a2"),
+    }
+
+    def pretty_name(value: str) -> str:
+        return value.replace("_", " ").title()
+
+    def label_lines(text: str, limit: int = 19, max_lines: int = 4) -> list[str]:
+        words, lines, current = text.split(), [], ""
+        for word in words:
+            if len(current) + len(word) + 1 > limit and current:
+                lines.append(current)
+                current = word
+            else:
+                current = f"{current} {word}".strip()
+        if current:
+            lines.append(current)
+        return lines[:max_lines]
+
+    def node_lines(node: dict) -> list[str]:
+        text = node["text"]
+        if ":" not in text:
+            return label_lines(text)
+        prefix, value = text.split(":", 1)
+        prefix = prefix.strip()
+        value = value.strip()
+        if prefix == "transformation":
+            operation, _, direction = value.partition(":")
+            return ["Transformation", pretty_name(operation.strip()), direction.strip() or "Premise → Hypothesis"]
+        return [pretty_name(prefix), *label_lines(value, 19, max_lines=3)][:4]
+
+    grouped = {}
+    for index, node in enumerate(nodes):
+        grouped.setdefault(node["type"], []).append(index)
+
+    def draw_graph(parts: list[str], offset: int, title: str, scores: list[float], final: bool) -> None:
+        parts.append(f'<rect x="{offset}" y="{panel_y}" width="{panel_w}" height="{panel_h}" rx="18" fill="#ffffff" stroke="#d5dee7" stroke-width="2"/>')
+        parts.append(f'<text x="{offset + 28}" y="{panel_y + 42}" class="panel-title">{html.escape(title)}</text>')
+        parts.append(f'<text x="{offset + 28}" y="{panel_y + 67}" class="panel-subtitle">{("attention-weighted rewritten states" if final else "input evidence and initial states")}</text>')
+        positions = {}
+        # Pyramid layout: sentence states at the top, lexical units in the
+        # middle, and the learned transformation at the central base.
+        fixed_positions = {
+            "premise_state": (145, 235),
+            "hypothesis_state": (505, 235),
+            "premise_unit": (175, 430),
+            "hypothesis_unit": (475, 430),
+            "transformation": (325, 625),
+            "wiktionary_entry": (325, 390),
+            "wiktionary_gloss": (325, 510),
+        }
+        for node_type, indices in grouped.items():
+            base_x, base_y = fixed_positions.get(node_type, (325, 430))
+            count = len(indices)
+            spacing = 145 if count <= 3 else 105
+            for order, index in enumerate(indices):
+                positions[index] = (offset + base_x + (order - (count - 1) / 2) * spacing, panel_y + base_y)
+        for index in range(len(nodes)):
+            positions.setdefault(index, (offset + panel_w / 2, panel_y + 210 + index * 80))
+
+        for edge in edges:
+            x1, y1 = positions[edge["source"]]
+            x2, y2 = positions[edge["target"]]
+            weight = float(edge.get("rewritten_attention", edge.get("attention", 0.0))) if final else float(edge.get("initial_attention", edge.get("attention", 0.0)))
+            strength = weight
+            opacity = min(0.9, 0.18 + strength * 2.2)
+            stroke = 1.2 + strength * 5.0
+            color = "#b24a4a" if edge["relation"] == "contradicts" else "#7c93a8"
+            parts.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{color}" stroke-width="{stroke:.2f}" stroke-opacity="{opacity:.2f}" marker-end="url(#arrow)"/>')
+            label_x, label_y = (x1 + x2) / 2, (y1 + y2) / 2
+            parts.append(f'<rect x="{label_x - 18:.1f}" y="{label_y - 9:.1f}" width="36" height="16" rx="4" fill="white" fill-opacity="0.88"/>')
+            parts.append(f'<text x="{label_x:.1f}" y="{label_y + 3:.1f}" text-anchor="middle" class="edge-weight">w={weight:.2f}</text>')
+
+        for index, node in enumerate(nodes):
+            x, y = positions[index]
+            fill, stroke_color = palette.get(node["type"], ("#f2f4f5", "#667781"))
+            score = float(scores[index])
+            delta = float(rewritten[index]) - float(initial[index])
+            if final and abs(delta) >= 0.025:
+                stroke_color = "#bd5a3a" if delta > 0 else "#477aa1"
+                fill = "#fff0e8" if delta > 0 else "#eaf3fb"
+            parts.append(f'<rect x="{x - 82:.1f}" y="{y - 55:.1f}" width="164" height="110" rx="12" fill="{fill}" stroke="{stroke_color}" stroke-width="2.5"/>')
+            node_label = f"N{index}'" if final else f"N{index}"
+            parts.append(f'<text x="{x:.1f}" y="{y - 35:.1f}" text-anchor="middle" class="node-title">{node_label}  |  {score:.3f}</text>')
+            for line_index, line in enumerate(node_lines(node)):
+                parts.append(f'<text x="{x:.1f}" y="{y - 12 + 14 * line_index:.1f}" text-anchor="middle" class="node-text">{html.escape(line)}</text>')
+            if final:
+                sign = "+" if delta >= 0 else ""
+                parts.append(f'<text x="{x:.1f}" y="{y + 43:.1f}" text-anchor="middle" class="delta">Δ {sign}{delta:.3f}</text>')
+        if final:
+            parts.append(f'<text x="{offset + 28}" y="{panel_y + panel_h - 28}" class="legend">Orange/blue outline = state change relative to initial graph</text>')
+        else:
+            parts.append(f'<text x="{offset + 28}" y="{panel_y + panel_h - 28}" class="legend">Node value = normalized initial state magnitude</text>')
+
+    parts = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+        '<defs><marker id="arrow" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 z" fill="#7c93a8"/></marker></defs>',
+        '<style>text{font-family:Arial,sans-serif;fill:#1d2b36}.title{font-size:29px;font-weight:bold}.subtitle{font-size:15px;fill:#5f7180}.panel-title{font-size:20px;font-weight:bold;fill:#294d68}.panel-subtitle{font-size:13px;fill:#718391}.node-title{font-size:12px;font-weight:bold}.node-text{font-size:11px;fill:#33434f}.delta{font-size:11px;font-weight:bold;fill:#a65334}.edge-weight{font-size:9px;font-weight:bold;fill:#5f7180}.legend{font-size:12px;fill:#718391}.operation-title{font-size:20px;font-weight:bold;fill:#8b591a}.operation{font-size:13px;font-weight:bold}.prob{font-size:12px;fill:#5d6d78}.selected{font-size:16px;font-weight:bold;fill:#a65d18}</style>',
+        '<rect width="100%" height="100%" fill="#f7f9fb"/>',
+        f'<text x="42" y="48" class="title">Graph Rewrite v1: before, operation, after</text>',
+        f'<text x="42" y="78" class="subtitle">{html.escape(record["uid"])}  |  prediction {record["prediction_binary"]}  |  label {record["label_binary"]}</text>',
+    ]
+    draw_graph(parts, 42, "A  Initial graph", initial, False)
+    draw_graph(parts, 1408, "C  Rewritten graph", rewritten, True)
+
+    op_x, op_y, op_w = 715, panel_y, 650
+    parts.append(f'<rect x="{op_x}" y="{op_y}" width="{op_w}" height="{panel_h}" rx="18" fill="#fffaf1" stroke="#e6c98e" stroke-width="2"/>')
+    parts.append(f'<text x="{op_x + 30}" y="{op_y + 42}" class="operation-title">B  Rewrite decision</text>')
+    parts.append(f'<text x="{op_x + 30}" y="{op_y + 68}" class="panel-subtitle">sigmoid operation scores predicted by the network</text>')
+    y = op_y + 125
+    for name, values in sorted(record["transformations"].items(), key=lambda item: item[1]["score"], reverse=True):
+        score = float(values["score"])
+        bar_x, bar_w = op_x + 280, 255
+        color = "#c2761f" if name == selected else "#b9c7d1"
+        parts.append(f'<text x="{op_x + 30}" y="{y}" class="operation">{html.escape(pretty_name(name))}</text>')
+        parts.append(f'<rect x="{bar_x}" y="{y - 13}" width="{bar_w}" height="16" rx="8" fill="#e7edf1"/><rect x="{bar_x}" y="{y - 13}" width="{bar_w * score:.1f}" height="16" rx="8" fill="{color}"/>')
+        parts.append(f'<text x="{bar_x + bar_w + 18}" y="{y}" class="prob">{score:.3f}</text>')
+        y += 35
+    parts.append(f'<line x1="{op_x + 30}" y1="{y + 12}" x2="{op_x + op_w - 30}" y2="{y + 12}" stroke="#ead9b8"/>')
+    parts.append(f'<text x="{op_x + 30}" y="{y + 52}" class="selected">Selected operation: {html.escape(pretty_name(selected))}</text>')
+    parts.append(f'<text x="{op_x + 30}" y="{y + 79}" class="prob">confidence score: {selected_probability:.3f}</text>')
+    parts.append(f'<text x="{op_x + 30}" y="{op_y + panel_h - 48}" class="legend">The graph topology is preserved; node states are updated</text>')
+    parts.append(f'<text x="{op_x + 30}" y="{op_y + panel_h - 28}" class="legend">by relation-aware message passing and the selected operation.</text>')
+    parts.append('</svg>')
     path.write_text("\n".join(parts), encoding="utf-8")
 
 
@@ -515,7 +820,8 @@ def save_logicpath_explanations(model, loader, device: torch.device, output_dir:
                 seen_logic.add(logic)
                 path = output_dir / filename
                 path.with_suffix(".json").write_text(json.dumps(record, indent=2), encoding="utf-8")
-                _write_logicpath_graph_svg(path.with_suffix(".svg"), record)
+                writer = _write_graph_rewrite_svg if record.get("rewrite") else _write_logicpath_graph_svg
+                writer(path.with_suffix(".svg"), record)
                 manifest.append({"logic": logic, "uid": record["uid"], "file": f"{filename}.svg"})
             active_transformations = [name for name, values in record["transformations"].items() if values["target"]]
             if active_transformations and len(transformation_manifest) < 5:
@@ -523,7 +829,8 @@ def save_logicpath_explanations(model, loader, device: torch.device, output_dir:
                 name = f"transformation_{len(transformation_manifest) + 1:02d}_{filename}"
                 path = transformation_dir / name
                 path.with_suffix(".json").write_text(json.dumps(record, indent=2), encoding="utf-8")
-                _write_logicpath_graph_svg(path.with_suffix(".svg"), record)
+                writer = _write_graph_rewrite_svg if record.get("rewrite") else _write_logicpath_graph_svg
+                writer(path.with_suffix(".svg"), record)
                 transformation_manifest.append({"logic": logic, "transformations": active_transformations, "uid": record["uid"], "file": f"{name}.svg"})
     (output_dir / "index.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     if transformation_manifest:
@@ -535,11 +842,18 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
     device = resolve_device(args.device)
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     include_piig = variant in {"piig_v1", "piig_v2", "piig_v3", "piig_v4", "piig_v5", "piig_v6", "piig_pt_lkb_v1"}
-    include_logicpath = variant in {"logicpath_v1", "logicpath_v2", "logicpath_pt_lkb_v1", "graph_rewrite_v1"}
+    include_logicpath = variant in {
+        "logicpath_v1", "logicpath_v2", "logicpath_pt_lkb_v1", "graph_rewrite_v1",
+        "logicpath_ablation_states", "logicpath_ablation_transformations", "logicpath_no_transform_v1",
+    }
     if variant == "graph_rewrite_v1":
         logicpath_version = "v3"
     elif variant == "logicpath_pt_lkb_v1":
         logicpath_version = "v2"
+    elif variant in {"logicpath_ablation_states", "logicpath_ablation_transformations"}:
+        logicpath_version = variant.removeprefix("logicpath_")
+    elif variant == "logicpath_no_transform_v1":
+        logicpath_version = "no_transform_wiktionary_v1"
     else:
         logicpath_version = variant.removeprefix("logicpath_") if include_logicpath else "v1"
     logicpath_lexicon = "PT-LKB" if variant == "logicpath_pt_lkb_v1" else "Wiktionary"
@@ -610,6 +924,7 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
         model.load_state_dict(best["state"])
 
     eval_results = {}
+    surrogate_report = None
     for name, loader in eval_loaders.items():
         metrics, predictions = evaluate(model, loader, device)
         eval_results[name] = metrics
@@ -618,6 +933,12 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
             save_piig_explanations(model, loader, device, out_dir / "explanations" / name)
         if include_logicpath and args.save_piig_explanations and name == args.piig_explain_split:
             save_logicpath_explanations(model, loader, device, out_dir / "explanations" / name)
+        if (
+            getattr(args, "surrogate_analysis", False)
+            and variant == "logicpath_v2"
+            and name == getattr(args, "surrogate_split", "inferbr_test")
+        ):
+            surrogate_report = save_surrogate_analysis(model, loader, device, out_dir / "surrogate")
 
     result = {
         "variant": variant,
@@ -631,6 +952,7 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
         "elapsed_seconds": time.time() - started,
         "history": history,
         "eval": eval_results,
+        "surrogate_analysis": surrogate_report,
         "args": vars(args),
     }
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -764,6 +1086,13 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--max-grad-norm", type=float, default=1.0)
+    parser.add_argument(
+        "--surrogate-analysis",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Fit a grouped surrogate analysis on the final LogicPath feature fusion.",
+    )
+    parser.add_argument("--surrogate-split", default="inferbr_test")
     return parser
 
 

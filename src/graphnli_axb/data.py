@@ -12,7 +12,12 @@ from torch.utils.data import Dataset
 
 from .graph import LOGIC_NODE_TYPE_IDS, RELATIONS, build_graph
 from .labels import LABEL_TO_ID_3, LABEL_TO_ID_BINARY, normalize_label
-from .logicpath import build_logicpath_graph, build_logicpath_v2_graph, build_logicpath_v3_graph
+from .logicpath import (
+    build_logicpath_graph,
+    build_logicpath_no_transform_graph,
+    build_logicpath_v2_graph,
+    build_logicpath_v3_graph,
+)
 from .proof_graph import PROOF_NODE_TYPES, build_proof_graph
 from .wikidata import WIKIDATA_RELATIONS, build_wikidata_spec, load_wikidata_cache
 from .wiktionary import build_wiktionary_spec, load_wiktionary_cache
@@ -413,6 +418,25 @@ class NLIGraphDataset(Dataset):
                     max_nodes=self.max_logicpath_nodes,
                     max_wiktionary_entries=self.max_wiktionary_entries,
                     lexicon_name=self.logicpath_lexicon,
+                )
+            elif self.logicpath_version == "no_transform_wiktionary_v1":
+                logicpath = build_logicpath_no_transform_graph(
+                    row.sentence1,
+                    row.sentence2,
+                    self.wiktionary_cache,
+                    max_nodes=self.max_logicpath_nodes,
+                    max_wiktionary_entries=self.max_wiktionary_entries,
+                    lexicon_name=self.logicpath_lexicon,
+                )
+            elif self.logicpath_version in {"ablation_states", "ablation_transformations"}:
+                from .logicpath import build_logicpath_ablation_graph
+
+                mode = self.logicpath_version.removeprefix("ablation_")
+                logicpath = build_logicpath_ablation_graph(
+                    row.sentence1,
+                    row.sentence2,
+                    mode=mode,
+                    max_nodes=self.max_logicpath_nodes,
                 )
             elif self.logicpath_version == "v3":
                 logicpath = build_logicpath_v3_graph(

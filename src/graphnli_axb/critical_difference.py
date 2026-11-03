@@ -22,7 +22,10 @@ DISPLAY_NAMES = {
     "pair_cls": "Pair classifier",
     "piig_v4": "Our approach",
     "piig_pt_lkb_v1": "Our approach PT-LKB",
-    "logicpath_v2": "LogicPath v2",
+    "logicpath_v2": "TRIAL-NLI",
+    "logicpath_no_transform_v1": "TRIAL-NLI (no transformations)",
+    "logicpath_pt_lkb_v1": "LogicPath PT-LKB",
+    "graph_rewrite_v1": "Graph Rewrite v1",
     "piig_v5": "Our approach v5",
     "piig_v6": "Our approach v6",
 }
@@ -315,7 +318,12 @@ def _write_combined_plot(output_dir: Path, results: dict[str, object]) -> None:
 
 
 def generate_critical_difference_reports(summary_path: Path, output_dir: Path, metric: str = "binary/mcc", alpha: float = 0.05) -> list[dict]:
-    runs = json.loads(summary_path.read_text(encoding="utf-8"))
+    payload = json.loads(summary_path.read_text(encoding="utf-8"))
+    # Training summaries are lists, while YAML pipeline summaries wrap the
+    # same records under a ``results`` field.
+    runs = payload.get("results", payload) if isinstance(payload, dict) else payload
+    if not isinstance(runs, list):
+        raise ValueError(f"Expected a result list or a pipeline summary with 'results': {summary_path}")
     splits = sorted({split for run in runs for split in run.get("eval", {})})
     plot_results = {}
     reports = [_report_for_split(runs, split, metric, alpha, output_dir, plot_results) for split in splits]
@@ -323,3 +331,45 @@ def generate_critical_difference_reports(summary_path: Path, output_dir: Path, m
     (output_dir / "index.json").parent.mkdir(parents=True, exist_ok=True)
     (output_dir / "index.json").write_text(json.dumps(reports, indent=2), encoding="utf-8")
     return reports
+
+
+def generate_overall_critical_difference_report(
+    summary_path: Path,
+    output_dir: Path,
+    metric: str = "binary/mcc",
+    alpha: float = 0.05,
+) -> dict:
+    """Run Autorank on the per-seed mean across all available splits."""
+    payload = json.loads(summary_path.read_text(encoding="utf-8"))
+    runs = payload.get("results", payload) if isinstance(payload, dict) else payload
+    if not isinstance(runs, list):
+        raise ValueError(f"Expected a result list or a pipeline summary with 'results': {summary_path}")
+
+    split_names = sorted({split for run in runs for split in run.get("eval", {})})
+    if not split_names:
+        raise ValueError(f"No evaluation splits found in {summary_path}")
+
+    grouped: dict[tuple[str, int], list[float]] = {}
+    for run in runs:
+        values = [run.get("eval", {}).get(split, {}).get(metric) for split in split_names]
+        if any(value is None for value in values):
+            continue
+        grouped[(run["variant"], int(run["seed"]))] = [float(np.mean(values))]
+
+    overall_runs = [
+        {"variant": variant, "seed": seed, "eval": {"overall": {metric: values[0]}}}
+        for (variant, seed), values in sorted(grouped.items())
+    ]
+    if not overall_runs:
+        raise ValueError(f"No complete per-seed records found for metric {metric}")
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    report = _report_for_split(overall_runs, "overall", metric, alpha, output_dir)
+    report["aggregation"] = {
+        "method": "arithmetic_mean_across_splits",
+        "splits": split_names,
+        "paired_unit": "seed",
+    }
+    (output_dir / "overall.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    (output_dir / "index.json").write_text(json.dumps([report], indent=2), encoding="utf-8")
+    return report

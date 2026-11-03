@@ -1,0 +1,130 @@
+{
+  "split": "assin_test",
+  "metric": "binary/accuracy",
+  "status": "ok",
+  "alpha": 0.05,
+  "blocks": [
+    "seed_1001",
+    "seed_1002",
+    "seed_1003",
+    "seed_1004",
+    "seed_1005",
+    "seed_1006",
+    "seed_1007",
+    "seed_1008",
+    "seed_1009",
+    "seed_1010"
+  ],
+  "models": [
+    "LogicPath PT-LKB",
+    "LogicPath v2",
+    "Pair classifier",
+    "Our approach PT-LKB",
+    "Our approach"
+  ],
+  "friedman": {
+    "statistic": null,
+    "p_value": 0.1786031833497913
+  },
+  "pairwise_wilcoxon": {
+    "p_value": null,
+    "significant_at_0_05": null
+  },
+  "autorank": {
+    "omnibus": "friedman",
+    "posthoc": "nemenyi",
+    "all_normal": true,
+    "homoscedastic": false,
+    "effect_size": "cohen_d",
+    "report": "The statistical analysis was conducted for 5 populations with 10 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.011). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and reject the null hypothesis (p=0.023) that thedata is homoscedastic. Thus, we assume that our data is heteroscedastic.\nBecause we have more than two populations and the populations are normal but heteroscedastic, we use the non-parametric Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We use the post-hoc Nemenyi test to infer which differences are significant. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=1.929 of the Nemenyi test.\nWe failed to reject the null hypothesis (p=0.179) of the Friedman test that there is no difference in the central tendency of the populations Pair classifier (MD=0.904+-0.010, MAD=0.006, MR=3.500), Our approach PT-LKB (MD=0.915+-0.006, MAD=0.001, MR=3.400), Our approach (MD=0.912+-0.006, MAD=0.004, MR=3.350), LogicPath PT-LKB (MD=0.916+-0.003, MAD=0.002, MR=2.700), and LogicPath v2 (MD=0.917+-0.005, MAD=0.001, MR=2.050). Therefore, we assume that there is no statistically significant difference between the median values of the populations."
+  },
+  "nemenyi_critical_difference": 1.9288111473713958,
+  "average_ranks": {
+    "Pair classifier": 3.5,
+    "Our approach PT-LKB": 3.4,
+    "Our approach": 3.35,
+    "LogicPath PT-LKB": 2.7,
+    "LogicPath v2": 2.05
+  },
+  "non_significant_groups": [
+    [
+      "LogicPath v2",
+      "LogicPath PT-LKB",
+      "Our approach",
+      "Our approach PT-LKB",
+      "Pair classifier"
+    ]
+  ],
+  "block_values": {
+    "seed_1001": {
+      "LogicPath PT-LKB": 0.91675,
+      "LogicPath v2": 0.91725,
+      "Pair classifier": 0.9055,
+      "Our approach PT-LKB": 0.91575,
+      "Our approach": 0.90775
+    },
+    "seed_1002": {
+      "LogicPath PT-LKB": 0.91275,
+      "LogicPath v2": 0.9165,
+      "Pair classifier": 0.9165,
+      "Our approach PT-LKB": 0.91525,
+      "Our approach": 0.90975
+    },
+    "seed_1003": {
+      "LogicPath PT-LKB": 0.9145,
+      "LogicPath v2": 0.9055,
+      "Pair classifier": 0.8995,
+      "Our approach PT-LKB": 0.91675,
+      "Our approach": 0.909
+    },
+    "seed_1004": {
+      "LogicPath PT-LKB": 0.91625,
+      "LogicPath v2": 0.921,
+      "Pair classifier": 0.9185,
+      "Our approach PT-LKB": 0.9145,
+      "Our approach": 0.9185
+    },
+    "seed_1005": {
+      "LogicPath PT-LKB": 0.91625,
+      "LogicPath v2": 0.91675,
+      "Pair classifier": 0.92275,
+      "Our approach PT-LKB": 0.9145,
+      "Our approach": 0.91
+    },
+    "seed_1006": {
+      "LogicPath PT-LKB": 0.919,
+      "LogicPath v2": 0.91675,
+      "Pair classifier": 0.89825,
+      "Our approach PT-LKB": 0.921,
+      "Our approach": 0.91425
+    },
+    "seed_1007": {
+      "LogicPath PT-LKB": 0.91025,
+      "LogicPath v2": 0.917,
+      "Pair classifier": 0.917,
+      "Our approach PT-LKB": 0.915,
+      "Our approach": 0.917
+    },
+    "seed_1008": {
+      "LogicPath PT-LKB": 0.913,
+      "LogicPath v2": 0.91225,
+      "Pair classifier": 0.90175,
+      "Our approach PT-LKB": 0.90875,
+      "Our approach": 0.9165
+    },
+    "seed_1009": {
+      "LogicPath PT-LKB": 0.921,
+      "LogicPath v2": 0.91825,
+      "Pair classifier": 0.8985,
+      "Our approach PT-LKB": 0.9135,
+      "Our approach": 0.91625
+    },
+    "seed_1010": {
+      "LogicPath PT-LKB": 0.91575,
+      "LogicPath v2": 0.9205,
+      "Pair classifier": 0.90325,
+      "Our approach PT-LKB": 0.898,
+      "Our approach": 0.90075
+    }
+  }
+}

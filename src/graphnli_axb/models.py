@@ -41,6 +41,11 @@ class ModelOutput:
     logicpath_node_importance: torch.Tensor | None = None
     logicpath_graph_attention: torch.Tensor | None = None
     logicpath_transform_logits: torch.Tensor | None = None
+    logicpath_initial_node_importance: torch.Tensor | None = None
+    logicpath_rewritten_node_importance: torch.Tensor | None = None
+    logicpath_initial_graph_attention: torch.Tensor | None = None
+    logicpath_rewritten_graph_attention: torch.Tensor | None = None
+    fusion_features: torch.Tensor | None = None
 
 
 class PairClassifier(nn.Module):
@@ -1552,6 +1557,129 @@ class LogicPathV1Classifier(PairClassifier):
         )
         self.logicpath_inverse_head = nn.Linear(hidden, len(TRANSFORMATIONS))
         feature_dim = hidden * 4 + len(TRANSFORMATIONS) * 2
+        self.fusion_feature_groups = {
+            "transformer_pair": (0, hidden),
+            "graph_pool": (hidden, hidden * 2),
+            "pair_graph_abs_difference": (hidden * 2, hidden * 3),
+            "pair_graph_product": (hidden * 3, hidden * 4),
+            "transformation_probabilities": (hidden * 4, hidden * 4 + len(TRANSFORMATIONS)),
+            "inverse_transformation_probabilities": (
+                hidden * 4 + len(TRANSFORMATIONS),
+                hidden * 4 + len(TRANSFORMATIONS) * 2,
+            ),
+        }
+        self.classifier = nn.Sequential(
+            nn.LayerNorm(feature_dim),
+            nn.Linear(feature_dim, hidden),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden, num_labels),
+        )
+
+    @staticmethod
+    def pool(nodes: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+        weights = mask.unsqueeze(-1).float()
+        return (nodes * weights).sum(dim=1) / weights.sum(dim=1).clamp(min=1)
+
+    def logicpath_nodes(self, batch: dict) -> torch.Tensor:
+        embeddings = self.encoder.get_input_embeddings()(batch["logicpath_input_ids"])
+        token_mask = batch["logicpath_attention_mask"].unsqueeze(-1)
+        nodes = (embeddings * token_mask).sum(dim=2) / token_mask.sum(dim=2).clamp(min=1)
+        nodes = self.logicpath_input_projection(nodes)
+        return nodes + self.logicpath_type_embedding(batch["logicpath_type_ids"])
+
+    def forward(self, batch: dict) -> ModelOutput:
+        pair, _ = self.encode_pair(batch)
+        nodes = self.logicpath_nodes(batch)
+        initial_nodes = nodes
+        capture_attention = bool(batch.get("return_logicpath_attention", False))
+        graph_attentions = []
+        for layer in self.logicpath_layers:
+            if capture_attention:
+                nodes, attention = layer(
+                    nodes,
+                    batch["logicpath_edge_types"],
+                    batch["logicpath_mask"],
+                    return_attention=True,
+                )
+                graph_attentions.append(attention)
+            else:
+                nodes = layer(nodes, batch["logicpath_edge_types"], batch["logicpath_mask"])
+        graph = self.pool(nodes, batch["logicpath_mask"])
+        transform_logits = self.logicpath_transform_head(graph)
+        inverse_logits = self.logicpath_inverse_head(graph)
+        features = torch.cat(
+            [pair, graph, (pair - graph).abs(), pair * graph, transform_logits.sigmoid(), inverse_logits.sigmoid()],
+            dim=-1,
+        )
+        logits = self.classifier(features)
+        transformation_loss = F.binary_cross_entropy_with_logits(transform_logits, batch["logicpath_targets"])
+        inverse_loss = F.binary_cross_entropy_with_logits(inverse_logits, batch["logicpath_inverse_targets"])
+        if not capture_attention:
+            return ModelOutput(
+                logits=logits,
+                aux_loss=(transformation_loss + inverse_loss) * self.aux_weight,
+                fusion_features=features,
+            )
+        graph_attention = torch.stack(graph_attentions)
+        raw_importance = graph_attention.mean(dim=(0, 3)) + graph_attention.mean(dim=(0, 2))
+        raw_importance = raw_importance * batch["logicpath_mask"].float()
+        importance = raw_importance / raw_importance.sum(dim=-1, keepdim=True).clamp(min=1e-8)
+        return ModelOutput(
+            logits=logits,
+            aux_loss=(transformation_loss + inverse_loss) * self.aux_weight,
+            logicpath_node_importance=importance,
+            logicpath_graph_attention=graph_attention,
+            logicpath_transform_logits=transform_logits,
+            fusion_features=features,
+        )
+
+
+class LogicPathV2Classifier(LogicPathV1Classifier):
+    """LogicPath v1 augmented with pair-conditioned Wiktionary evidence nodes."""
+
+    def __init__(self, model_name: str, dropout: float, num_labels: int = 3, graph_layers: int = 2, aux_weight: float = 0.15):
+        super().__init__(
+            model_name,
+            dropout,
+            num_labels=num_labels,
+            graph_layers=graph_layers,
+            aux_weight=aux_weight,
+            node_types=LOGICPATH_V2_NODE_TYPES,
+            relations=LOGICPATH_V2_RELATIONS,
+        )
+
+
+class LogicPathNoTransformClassifier(PairClassifier):
+    """LogicPath graph encoder with Wiktionary evidence but no transform branch."""
+
+    def __init__(self, model_name: str, dropout: float, num_labels: int = 3, graph_layers: int = 2):
+        super().__init__(model_name, dropout, num_labels)
+        hidden = self.encoder.config.hidden_size
+        self.logicpath_node_types = LOGICPATH_V2_NODE_TYPES
+        self.logicpath_relations = LOGICPATH_V2_RELATIONS
+        input_embedding_dim = getattr(self.encoder.get_input_embeddings(), "embedding_dim", hidden)
+        self.logicpath_input_projection = (
+            nn.Identity() if input_embedding_dim == hidden else nn.Linear(input_embedding_dim, hidden, bias=False)
+        )
+        self.logicpath_type_embedding = nn.Embedding(len(self.logicpath_node_types), hidden)
+        self.logicpath_layers = nn.ModuleList(
+            [
+                LogicPathGraphAttentionLayer(
+                    hidden,
+                    dropout,
+                    relation_count=len(self.logicpath_relations),
+                )
+                for _ in range(graph_layers)
+            ]
+        )
+        feature_dim = hidden * 4
+        self.fusion_feature_groups = {
+            "transformer_pair": (0, hidden),
+            "graph_pool": (hidden, hidden * 2),
+            "pair_graph_abs_difference": (hidden * 2, hidden * 3),
+            "pair_graph_product": (hidden * 3, hidden * 4),
+        }
         self.classifier = nn.Sequential(
             nn.LayerNorm(feature_dim),
             nn.Linear(feature_dim, hidden),
@@ -1589,45 +1717,19 @@ class LogicPathV1Classifier(PairClassifier):
             else:
                 nodes = layer(nodes, batch["logicpath_edge_types"], batch["logicpath_mask"])
         graph = self.pool(nodes, batch["logicpath_mask"])
-        transform_logits = self.logicpath_transform_head(graph)
-        inverse_logits = self.logicpath_inverse_head(graph)
-        features = torch.cat(
-            [pair, graph, (pair - graph).abs(), pair * graph, transform_logits.sigmoid(), inverse_logits.sigmoid()],
-            dim=-1,
-        )
+        features = torch.cat([pair, graph, (pair - graph).abs(), pair * graph], dim=-1)
         logits = self.classifier(features)
-        transformation_loss = F.binary_cross_entropy_with_logits(transform_logits, batch["logicpath_targets"])
-        inverse_loss = F.binary_cross_entropy_with_logits(inverse_logits, batch["logicpath_inverse_targets"])
         if not capture_attention:
-            return ModelOutput(
-                logits=logits,
-                aux_loss=(transformation_loss + inverse_loss) * self.aux_weight,
-            )
+            return ModelOutput(logits=logits, fusion_features=features)
         graph_attention = torch.stack(graph_attentions)
         raw_importance = graph_attention.mean(dim=(0, 3)) + graph_attention.mean(dim=(0, 2))
         raw_importance = raw_importance * batch["logicpath_mask"].float()
         importance = raw_importance / raw_importance.sum(dim=-1, keepdim=True).clamp(min=1e-8)
         return ModelOutput(
             logits=logits,
-            aux_loss=(transformation_loss + inverse_loss) * self.aux_weight,
             logicpath_node_importance=importance,
             logicpath_graph_attention=graph_attention,
-            logicpath_transform_logits=transform_logits,
-        )
-
-
-class LogicPathV2Classifier(LogicPathV1Classifier):
-    """LogicPath v1 augmented with pair-conditioned Wiktionary evidence nodes."""
-
-    def __init__(self, model_name: str, dropout: float, num_labels: int = 3, graph_layers: int = 2, aux_weight: float = 0.15):
-        super().__init__(
-            model_name,
-            dropout,
-            num_labels=num_labels,
-            graph_layers=graph_layers,
-            aux_weight=aux_weight,
-            node_types=LOGICPATH_V2_NODE_TYPES,
-            relations=LOGICPATH_V2_RELATIONS,
+            fusion_features=features,
         )
 
 
@@ -1805,12 +1907,20 @@ class GraphRewriteV1Classifier(PairClassifier):
         raw_importance = graph_attention.mean(dim=(0, 3)) + graph_attention.mean(dim=(0, 2))
         raw_importance = raw_importance * batch["logicpath_mask"].float()
         importance = raw_importance / raw_importance.sum(dim=-1, keepdim=True).clamp(min=1e-8)
+        initial_norm = initial_nodes.norm(dim=-1) * batch["logicpath_mask"].float()
+        initial_importance = initial_norm / initial_norm.sum(dim=-1, keepdim=True).clamp(min=1e-8)
+        rewritten_norm = nodes.norm(dim=-1) * batch["logicpath_mask"].float()
+        rewritten_importance = rewritten_norm / rewritten_norm.sum(dim=-1, keepdim=True).clamp(min=1e-8)
         return ModelOutput(
             logits=logits,
             aux_loss=aux_loss,
             logicpath_node_importance=importance,
             logicpath_graph_attention=graph_attention,
             logicpath_transform_logits=transform_logits,
+            logicpath_initial_node_importance=initial_importance,
+            logicpath_rewritten_node_importance=rewritten_importance,
+            logicpath_initial_graph_attention=graph_attention[0],
+            logicpath_rewritten_graph_attention=graph_attention[-1],
         )
 
 
@@ -1873,6 +1983,12 @@ def build_model(variant: str, model_name: str, dropout: float, graph_layers: int
         return LogicPathV1Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     if variant == "logicpath_v2":
         return LogicPathV2Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
+    if variant == "logicpath_no_transform_v1":
+        return LogicPathNoTransformClassifier(model_name, dropout, graph_layers=graph_layers)
+    if variant in {"logicpath_ablation_states", "logicpath_ablation_transformations"}:
+        return LogicPathV2Classifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
+    if variant == "logicpath_ablation_transformer":
+        return PairClassifier(model_name, dropout)
     if variant == "graph_rewrite_v1":
         return GraphRewriteV1WiktionaryClassifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight)
     if variant == "logicpath_pt_lkb_v1":

@@ -1,0 +1,104 @@
+{
+  "split": "assin_test",
+  "metric": "binary/accuracy",
+  "status": "ok",
+  "alpha": 0.05,
+  "blocks": [
+    "seed_1001",
+    "seed_1002",
+    "seed_1003",
+    "seed_1004",
+    "seed_1005",
+    "seed_1006",
+    "seed_1007",
+    "seed_1008",
+    "seed_1009",
+    "seed_1010"
+  ],
+  "models": [
+    "Pair classifier",
+    "Our approach PT-LKB",
+    "Our approach"
+  ],
+  "friedman": {
+    "statistic": null,
+    "p_value": 0.9000876262522579
+  },
+  "pairwise_wilcoxon": {
+    "p_value": null,
+    "significant_at_0_05": null
+  },
+  "autorank": {
+    "omnibus": "friedman",
+    "posthoc": "nemenyi",
+    "all_normal": false,
+    "homoscedastic": true,
+    "effect_size": "akinshin_gamma",
+    "report": "The statistical analysis was conducted for 3 populations with 10 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe rejected the null hypothesis that the population is normal for the population Our approach PT-LKB (p=0.011). Therefore, we assume that not all populations are normal.\nBecause we have more than two populations and the populations and one of them is not normal, we use the non-parametric Friedman test as omnibus test to determine if there are any significant differences between the median values of the populations. We use the post-hoc Nemenyi test to infer which differences are significant. We report the median (MD), the median absolute deviation (MAD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=1.048 of the Nemenyi test.\nWe failed to reject the null hypothesis (p=0.900) of the Friedman test that there is no difference in the central tendency of the populations Pair classifier (MD=0.904+-0.012, MAD=0.006, MR=2.100), Our approach PT-LKB (MD=0.915+-0.012, MAD=0.001, MR=2.000), and Our approach (MD=0.912+-0.009, MAD=0.004, MR=1.900). Therefore, we assume that there is no statistically significant difference between the median values of the populations."
+  },
+  "nemenyi_critical_difference": 1.0481362880100318,
+  "average_ranks": {
+    "Pair classifier": 2.1,
+    "Our approach PT-LKB": 2.0,
+    "Our approach": 1.9
+  },
+  "non_significant_groups": [
+    [
+      "Our approach",
+      "Our approach PT-LKB",
+      "Pair classifier"
+    ]
+  ],
+  "block_values": {
+    "seed_1001": {
+      "Pair classifier": 0.9055,
+      "Our approach PT-LKB": 0.91575,
+      "Our approach": 0.90775
+    },
+    "seed_1002": {
+      "Pair classifier": 0.9165,
+      "Our approach PT-LKB": 0.91525,
+      "Our approach": 0.90975
+    },
+    "seed_1003": {
+      "Pair classifier": 0.8995,
+      "Our approach PT-LKB": 0.91675,
+      "Our approach": 0.909
+    },
+    "seed_1004": {
+      "Pair classifier": 0.9185,
+      "Our approach PT-LKB": 0.9145,
+      "Our approach": 0.9185
+    },
+    "seed_1005": {
+      "Pair classifier": 0.92275,
+      "Our approach PT-LKB": 0.9145,
+      "Our approach": 0.91
+    },
+    "seed_1006": {
+      "Pair classifier": 0.89825,
+      "Our approach PT-LKB": 0.921,
+      "Our approach": 0.91425
+    },
+    "seed_1007": {
+      "Pair classifier": 0.917,
+      "Our approach PT-LKB": 0.915,
+      "Our approach": 0.917
+    },
+    "seed_1008": {
+      "Pair classifier": 0.90175,
+      "Our approach PT-LKB": 0.90875,
+      "Our approach": 0.9165
+    },
+    "seed_1009": {
+      "Pair classifier": 0.8985,
+      "Our approach PT-LKB": 0.9135,
+      "Our approach": 0.91625
+    },
+    "seed_1010": {
+      "Pair classifier": 0.90325,
+      "Our approach PT-LKB": 0.898,
+      "Our approach": 0.90075
+    }
+  }
+}

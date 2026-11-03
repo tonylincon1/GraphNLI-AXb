@@ -219,7 +219,17 @@ def run_pipeline(name: str, pipeline: dict, global_config: dict, experiment_dir:
             tune_dir = pipeline_dir / "tuning" / model_slug / variant
             tune_dir.mkdir(parents=True, exist_ok=True)
             study_path = tune_dir / "study.json"
-            if reuse_tuning_from:
+            if not tuning.get("enabled", True):
+                report = {
+                    "model_name": model_name,
+                    "variant": variant,
+                    "tuning_enabled": False,
+                    "best_params": {},
+                    "selection_metric": tuning.get("selection_metric", base.get("selection_metric", "nli3/macro_f1")),
+                }
+                study_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+                print(f"Tuning disabled: {name}/{model_name}/{variant}")
+            elif reuse_tuning_from:
                 source_study_path = (
                     project_root()
                     / global_config.get("output_dir", "runs")
@@ -256,6 +266,9 @@ def run_pipeline(name: str, pipeline: dict, global_config: dict, experiment_dir:
                     continue
                 args = _namespace(tuned, model_dir)
                 args.save_piig_explanations = bool(pipeline.get("save_explanations", False))
+                surrogate_variants = pipeline.get("surrogate_analysis_variants", [])
+                args.surrogate_analysis = variant in surrogate_variants
+                args.surrogate_split = pipeline.get("surrogate_split", "inferbr_test")
                 results.append(train_one(model_name, variant, seed, train_rows, val_rows, eval_sets, args))
             tuning_reports.append(report)
     summary = {"pipeline": name, "results": results, "tuning": tuning_reports}
