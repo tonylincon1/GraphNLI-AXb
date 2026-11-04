@@ -10,7 +10,7 @@ output_dir: runs
 #   coverage_pl_v1   Bipartite relational graph + probabilistic coverage head.
 #                    (Its partial-label loss only acts on ASSIN/ASSIN2 pairs, so
 #                    it is inactive in this InferBR-only protocol.)
-# Controls trained in the same run: pair_cls, kgnli_dual, logicpath_v2.
+# Controls trained in the same run (after the new architectures): pair_cls, kgnli_dual.
 #
 # Protocol:
 # * InferBR only: train / dev (checkpoint selection) / test.
@@ -41,7 +41,7 @@ training:
   max_logicpath_len: 24
   wikidata_cache: data/cache/wikidata_entities.jsonl
   # The token-graph models merge both lexicons into one relation index;
-  # kgnli_dual / logicpath_v2 use the Wiktionary cache as before.
+  # kgnli_dual uses the Wiktionary cache as before.
   wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
   pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
   max_wiktionary_entries: 2
@@ -69,7 +69,7 @@ pipelines:
     device: cuda
     batch_size: 32
     model_names: [neuralmind/bert-base-portuguese-cased]
-    variants: [pair_cls, kgnli_dual, logicpath_v2, natlog_ot_v1, rgat_adapter_v1, coverage_pl_v1]
+    variants: [natlog_ot_v1, rgat_adapter_v1, coverage_pl_v1, pair_cls, kgnli_dual]
     train:
       datasets:
         - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_train.jsonl, split: train}

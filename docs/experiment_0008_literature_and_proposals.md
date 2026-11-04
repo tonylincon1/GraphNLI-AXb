@@ -341,9 +341,9 @@ poetry run python scripts/critical_difference.py runs/experiment_0008/inferbr/su
   (`lr 2,04e-5`, `dropout 0,103`, `weight_decay 3,5e-4`, `warmup 0,0275`, a
   configuração que a maioria das variantes escolheu nos tunings anteriores).
   Isso resolve o D2.
-- **Controles no mesmo experimento:** `pair_cls`, `kgnli_dual` e
-  `logicpath_v2`, com as mesmas 10 seeds (1001–1010) e os mesmos
-  hiperparâmetros das três arquiteturas novas.
+- **Controles no mesmo experimento:** `pair_cls` e `kgnli_dual`, treinados
+  depois das três arquiteturas novas, com as mesmas 10 seeds (1001–1010) e os
+  mesmos hiperparâmetros.
 - Como o treino mudou (só InferBR), os números **não são comparáveis** com os
   dos experimentos 0001–0007. A comparação válida é dentro do 0008.
 - O rótulo parcial do COVER-PL só atua em pares ASSIN/ASSIN2, então fica
