@@ -1,0 +1,7 @@
+{
+  "model_name": "neuralmind/bert-base-portuguese-cased",
+  "variant": "natlog_ot_v1",
+  "tuning_enabled": false,
+  "best_params": {},
+  "selection_metric": "nli3/macro_f1"
+}
