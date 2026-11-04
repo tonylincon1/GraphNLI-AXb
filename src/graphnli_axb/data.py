@@ -19,6 +19,7 @@ from .logicpath import (
     build_logicpath_v3_graph,
 )
 from .proof_graph import PROOF_NODE_TYPES, build_proof_graph
+from .token_graph import build_token_graph, load_relation_index
 from .wikidata import WIKIDATA_RELATIONS, build_wikidata_spec, load_wikidata_cache
 from .wiktionary import build_wiktionary_spec, load_wiktionary_cache
 
@@ -230,6 +231,8 @@ class NLIGraphDataset(Dataset):
         logicpath_lexicon: str = "Wiktionary",
         max_logicpath_nodes: int = 24,
         max_logicpath_len: int = 24,
+        include_tokgraph: bool = False,
+        tokgraph_lexicon_paths: Sequence[Path] | None = None,
     ):
         self.rows = list(rows)
         self.tokenizer = tokenizer
@@ -250,6 +253,8 @@ class NLIGraphDataset(Dataset):
         self.logicpath_lexicon = logicpath_lexicon
         self.max_logicpath_nodes = max_logicpath_nodes
         self.max_logicpath_len = max_logicpath_len
+        self.include_tokgraph = include_tokgraph
+        self.tokgraph_index = load_relation_index(tokgraph_lexicon_paths or []) if include_tokgraph else None
 
     def __len__(self) -> int:
         return len(self.rows)
@@ -515,6 +520,26 @@ class NLIGraphDataset(Dataset):
                     "proof_targets": torch.tensor(proof.targets, dtype=torch.float),
                     "proof_texts": proof.texts,
                 }
+            )
+        if self.include_tokgraph:
+            offset_enc = self.tokenizer(
+                row.sentence1,
+                row.sentence2,
+                truncation=True,
+                max_length=self.max_len,
+                padding="max_length",
+                return_tensors="pt",
+                return_offsets_mapping=True,
+            )
+            item.update(
+                build_token_graph(
+                    offset_enc,
+                    row.sentence1,
+                    row.sentence2,
+                    row.language,
+                    self.tokgraph_index,
+                    max_len=self.max_len,
+                )
             )
         if self.include_logicpath:
             item.update(

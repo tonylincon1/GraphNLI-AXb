@@ -147,6 +147,18 @@ The default architecture variants are:
 - `logicpath_v2`: LogicPath with pair-conditioned Wiktionary evidence nodes.
 - `graph_rewrite_v1`: Graph Rewrite Transformer that iteratively applies
   learned, relation-conditioned logical operations to an initial evidence graph.
+- `natlog_ot_v1`: optimal-transport alignment of contextual tokens, soft
+  natural-logic relations, learned polarity projection and a differentiable
+  MacCartney join-table fold (product-of-experts with the Transformer).
+- `rgat_adapter_v1`: relational graph-attention adapters interleaved in the top
+  encoder layers over a language-aware token graph (zero-initialised gates).
+- `coverage_pl_v1`: bipartite relational graph with a probabilistic coverage
+  head (weakest-link entailment, noisy-OR contradiction) and partial-label
+  training for ASSIN/ASSIN2 "none" pairs.
+
+See [experiment 0008 notes](docs/experiment_0008_literature_and_proposals.md)
+for the diagnosis of previous runs, the literature review, and the design of
+these three token-graph models.
 
 See [PIIG v5 architecture notes](docs/piig_v5_architecture.md) for the
 scope-aware graph nodes and training command.

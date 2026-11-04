@@ -1,0 +1,81 @@
+data_dir: data
+output_dir: runs
+
+# Experiment 0008: contextual token-graph architectures vs. controls, InferBR only
+# (see docs/experiment_0008_literature_and_proposals.md).
+#   natlog_ot_v1     OT alignment + soft natural-logic relations + learned
+#                    polarity projection + differentiable join-table fold.
+#   rgat_adapter_v1  Relational graph-attention adapters inside the top 4
+#                    encoder layers (zero-initialised gates).
+#   coverage_pl_v1   Bipartite relational graph + probabilistic coverage head.
+#                    (Its partial-label loss only acts on ASSIN/ASSIN2 pairs, so
+#                    it is inactive in this InferBR-only protocol.)
+# Controls trained in the same run: pair_cls, kgnli_dual, logicpath_v2.
+#
+# Protocol:
+# * InferBR only: train / dev (checkpoint selection) / test.
+# * Tuning DISABLED: every variant uses the same fixed hyperparameters, so the
+#   comparison isolates architecture (with 5 TPE trials Optuna only draws random
+#   configurations, which favoured some variants in 0001-0007). The values are
+#   the configuration most variants selected in earlier Portuguese tunings.
+# * 10 paired seeds -> Friedman/Nemenyi with
+#   poetry run python scripts/critical_difference.py runs/experiment_0008/inferbr/summary.json
+model_name: neuralmind/bert-base-portuguese-cased
+seeds: [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
+
+training:
+  epochs: 8
+  batch_size: 32
+  lr: 0.0000204
+  weight_decay: 0.00035
+  warmup_ratio: 0.0275
+  dropout: 0.103
+  max_len: 160
+  max_nodes: 32
+  max_node_len: 8
+  max_wikidata_entities: 8
+  max_wikidata_len: 32
+  max_proof_nodes: 12
+  max_proof_len: 32
+  max_logicpath_nodes: 32
+  max_logicpath_len: 24
+  wikidata_cache: data/cache/wikidata_entities.jsonl
+  # The token-graph models merge both lexicons into one relation index;
+  # kgnli_dual / logicpath_v2 use the Wiktionary cache as before.
+  wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+  pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
+  max_wiktionary_entries: 2
+  graph_layers: 2
+  aux_weight: 0.15
+  # New graph parameters are randomly initialised; at the encoder learning
+  # rate they barely move in 8 epochs. Only token-graph variants use it.
+  graph_lr_multiplier: 10.0
+  partial_label_datasets: [assin, assin2]
+  selection_metric: nli3/macro_f1
+  patience: 2
+  cd_metric: binary/mcc
+  cd_alpha: 0.05
+  num_workers: 0
+  device: cuda
+  max_grad_norm: 1.0
+
+tuning:
+  enabled: false
+  selection_metric: nli3/macro_f1
+
+pipelines:
+  inferbr:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [neuralmind/bert-base-portuguese-cased]
+    variants: [pair_cls, kgnli_dual, logicpath_v2, natlog_ot_v1, rgat_adapter_v1, coverage_pl_v1]
+    train:
+      datasets:
+        - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_train.jsonl, split: train}
+    validation:
+      datasets:
+        - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_dev.jsonl, split: dev}
+    test:
+      - {name: inferbr_test, dataset: manifest, path: data/raw/portuguese/inferbr_test.jsonl, split: test}
+    save_explanations: false

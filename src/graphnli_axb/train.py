@@ -51,6 +51,7 @@ from .metrics import (
     grouped_direct_binary_metrics,
 )
 from .models import build_model
+from .models_tokgraph import TOKGRAPH_VARIANTS
 from .critical_difference import generate_critical_difference_reports
 
 
@@ -76,7 +77,20 @@ def move_batch(batch: dict, device: torch.device) -> dict:
     return {key: value.to(device) if torch.is_tensor(value) else value for key, value in batch.items()}
 
 
-def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False, piig_version: str = "v1", include_logicpath: bool = False, logicpath_version: str = "v1", logicpath_lexicon: str = "Wiktionary") -> DataLoader:
+def _tokgraph_lexicon_paths(args) -> list[Path]:
+    paths = []
+    for value in (getattr(args, "pt_lkb_cache", None), getattr(args, "wiktionary_cache", None)):
+        if not value:
+            continue
+        path = Path(value)
+        if not path.is_absolute():
+            path = project_root() / path
+        if path.exists():
+            paths.append(path)
+    return paths
+
+
+def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False, piig_version: str = "v1", include_logicpath: bool = False, logicpath_version: str = "v1", logicpath_lexicon: str = "Wiktionary", include_tokgraph: bool = False) -> DataLoader:
     wikidata_cache_path = Path(args.wikidata_cache) if args.wikidata_cache else None
     if wikidata_cache_path is not None and not wikidata_cache_path.is_absolute():
         wikidata_cache_path = project_root() / wikidata_cache_path
@@ -103,6 +117,8 @@ def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False
         logicpath_lexicon=logicpath_lexicon,
         max_logicpath_nodes=args.max_logicpath_nodes,
         max_logicpath_len=args.max_logicpath_len,
+        include_tokgraph=include_tokgraph,
+        tokgraph_lexicon_paths=_tokgraph_lexicon_paths(args) if include_tokgraph else None,
     )
     return DataLoader(
         dataset,
@@ -114,7 +130,9 @@ def make_loader(rows, tokenizer, args, shuffle: bool, include_piig: bool = False
 
 
 def compute_loss(output, labels: torch.Tensor) -> torch.Tensor:
-    if (labels >= 0).any():
+    if getattr(output, "main_loss", None) is not None:
+        loss = output.main_loss
+    elif (labels >= 0).any():
         loss = torch.nn.functional.cross_entropy(output.logits, labels, ignore_index=-100)
     else:
         loss = output.logits.sum() * 0.0
@@ -857,13 +875,14 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
     else:
         logicpath_version = variant.removeprefix("logicpath_") if include_logicpath else "v1"
     logicpath_lexicon = "PT-LKB" if variant == "logicpath_pt_lkb_v1" else "Wiktionary"
+    include_tokgraph = variant in TOKGRAPH_VARIANTS
     piig_version = "v4" if variant == "piig_pt_lkb_v1" else (variant.removeprefix("piig_") if include_piig else "v1")
     original_wiktionary_cache = args.wiktionary_cache
     if variant in {"piig_pt_lkb_v1", "logicpath_pt_lkb_v1"} and getattr(args, "pt_lkb_cache", None):
         args.wiktionary_cache = args.pt_lkb_cache
-    train_loader = make_loader(train_rows, tokenizer, args, shuffle=True, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon)
-    val_loader = make_loader(val_rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon)
-    eval_loaders = {name: make_loader(rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon) for name, rows in eval_sets.items()}
+    train_loader = make_loader(train_rows, tokenizer, args, shuffle=True, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon, include_tokgraph=include_tokgraph)
+    val_loader = make_loader(val_rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon, include_tokgraph=include_tokgraph)
+    eval_loaders = {name: make_loader(rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon, include_tokgraph=include_tokgraph) for name, rows in eval_sets.items()}
     args.wiktionary_cache = original_wiktionary_cache
 
     model = build_model(
@@ -874,10 +893,17 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
         aux_weight=args.aux_weight,
     ).to(device)
 
+    if hasattr(model, "set_partial_label_datasets"):
+        model.set_partial_label_datasets(getattr(args, "partial_label_datasets", ""))
+
     out_dir = Path(args.output_dir) / variant / f"seed_{seed}"
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+    if hasattr(model, "optimizer_groups"):
+        parameters = model.optimizer_groups(args.lr, args.weight_decay, float(getattr(args, "graph_lr_multiplier", 1.0)))
+    else:
+        parameters = model.parameters()
+    optimizer = torch.optim.AdamW(parameters, lr=args.lr, weight_decay=args.weight_decay)
     total_steps = max(1, len(train_loader) * args.epochs)
     warmup_steps = int(total_steps * args.warmup_ratio)
     scheduler = get_linear_schedule_with_warmup(optimizer, warmup_steps, total_steps)
@@ -1065,6 +1091,17 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Evaluation split used for the PIIG explanation artifact; axb by default.",
     )
     parser.add_argument("--graph-layers", type=int, default=2)
+    parser.add_argument(
+        "--graph-lr-multiplier",
+        type=float,
+        default=10.0,
+        help="Learning-rate multiplier for newly initialised graph parameters (token-graph variants only).",
+    )
+    parser.add_argument(
+        "--partial-label-datasets",
+        default="assin,assin2",
+        help="Comma-separated datasets whose 'neutral' label means not-entailment (neutral or contradiction). Used by coverage_pl_v1.",
+    )
     parser.add_argument("--aux-weight", type=float, default=0.15)
     parser.add_argument("--selection-metric", default="binary/mcc", help="Validation metric used for checkpoint selection.")
     parser.add_argument("--patience", type=int, default=0, help="Early stop after this many non-improving validation epochs. 0 disables early stopping.")

@@ -46,6 +46,10 @@ class ModelOutput:
     logicpath_initial_graph_attention: torch.Tensor | None = None
     logicpath_rewritten_graph_attention: torch.Tensor | None = None
     fusion_features: torch.Tensor | None = None
+    # When set, replaces the default cross-entropy (e.g. partial-label training).
+    main_loss: torch.Tensor | None = None
+    # Intermediate graph tensors for visualisation (only when requested).
+    graph_details: dict | None = None
 
 
 class PairClassifier(nn.Module):
@@ -1840,6 +1844,7 @@ class GraphRewriteV1Classifier(PairClassifier):
     def forward(self, batch: dict) -> ModelOutput:
         pair, _ = self.encode_pair(batch)
         nodes = self.logicpath_nodes(batch)
+        initial_nodes = nodes
         initial_graph = self.pool(nodes, batch["logicpath_mask"])
         operation_probs = torch.zeros(
             pair.size(0), len(TRANSFORMATIONS), device=pair.device, dtype=pair.dtype
@@ -1933,6 +1938,10 @@ class LogicPathPTLKBV1Classifier(LogicPathV2Classifier):
 
 
 def build_model(variant: str, model_name: str, dropout: float, graph_layers: int, aux_weight: float) -> nn.Module:
+    from .models_tokgraph import TOKGRAPH_VARIANTS, build_tokgraph_model
+
+    if variant in TOKGRAPH_VARIANTS:
+        return build_tokgraph_model(variant, model_name, dropout, graph_layers, aux_weight)
     if variant == "pair_cls":
         return PairClassifier(model_name, dropout)
     if variant == "bi_encoder":

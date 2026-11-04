@@ -23,7 +23,8 @@ def _label_ids(value: object, dataset_name: str = "") -> tuple[int, int]:
             label = {0: "contradiction", 1: "entailment", 2: "neutral"}.get(numeric)
         elif dataset_name.lower() in {"assin", "assin2"}:
             if dataset_name.lower() == "assin":
-                label = {0: "neutral", 1: "entailment", 2: "neutral"}.get(numeric)
+                # NONE, ENTAILMENT, PARAPHRASE (paraphrase = bidirectional entailment).
+                label = {0: "neutral", 1: "entailment", 2: "entailment"}.get(numeric)
             else:
                 label = {0: "neutral", 1: "entailment"}.get(numeric)
         else:

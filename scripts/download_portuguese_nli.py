@@ -24,7 +24,10 @@ def label_name(value, dataset: str) -> str:
         return "neutral"
     value = int(value)
     if dataset == "assin":
-        return {0: "neutral", 1: "entailment", 2: "neutral"}[value]
+        # ASSIN ClassLabel = [NONE, ENTAILMENT, PARAPHRASE]. A paraphrase is a
+        # bidirectional entailment, so it is entailment for P -> H. Before
+        # 2026-11-04 it was mapped to neutral (about 6% of ASSIN was mislabelled).
+        return {0: "neutral", 1: "entailment", 2: "entailment"}[value]
     if dataset == "assin2":
         return {0: "neutral", 1: "entailment"}[value]
     return {0: "contradiction", 1: "entailment", 2: "neutral"}[value]
@@ -47,6 +50,9 @@ def write_rows(frame: pd.DataFrame, path: Path, dataset: str) -> None:
                 "label": label_name(row[label], dataset),
                 "language": "pt",
             }
+            if dataset == "assin":
+                # Keep the original 3-way judgement for analysis (NONE/ENTAILMENT/PARAPHRASE).
+                record["assin_judgment"] = ["none", "entailment", "paraphrase"][int(row[label])]
             handle.write(json.dumps(record, ensure_ascii=False) + "\n")
     print(f"wrote {path} ({len(frame)} rows)")
 
