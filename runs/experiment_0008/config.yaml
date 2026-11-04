@@ -10,7 +10,8 @@ output_dir: runs
 #   coverage_pl_v1   Bipartite relational graph + probabilistic coverage head.
 #                    (Its partial-label loss only acts on ASSIN/ASSIN2 pairs, so
 #                    it is inactive in this InferBR-only protocol.)
-# Controls trained in the same run (after the new architectures): pair_cls, kgnli_dual.
+# Controls trained in the same run: pair_cls right after natlog_ot_v1 (early paired
+# comparison), kgnli_dual last.
 #
 # Protocol:
 # * InferBR only: train / dev (checkpoint selection) / test.
@@ -69,7 +70,7 @@ pipelines:
     device: cuda
     batch_size: 32
     model_names: [neuralmind/bert-base-portuguese-cased]
-    variants: [natlog_ot_v1, rgat_adapter_v1, coverage_pl_v1, pair_cls, kgnli_dual]
+    variants: [natlog_ot_v1, pair_cls, rgat_adapter_v1, coverage_pl_v1, kgnli_dual]
     train:
       datasets:
         - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_train.jsonl, split: train}
