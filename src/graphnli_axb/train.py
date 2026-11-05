@@ -147,6 +147,7 @@ def evaluate(model, loader, device: torch.device) -> tuple[Dict[str, float], Lis
     all_logits, all_binary_logits, all_labels3, all_binary = [], [], [], []
     all_route_gates, all_latent_relation_mass = [], []
     all_logic, all_uid, all_language = [], [], []
+    all_diagnostics: Dict[str, list] = {}
     total_loss = 0.0
     steps = 0
     for batch in loader:
@@ -162,6 +163,9 @@ def evaluate(model, loader, device: torch.device) -> tuple[Dict[str, float], Lis
             all_route_gates.append(output.route_gates.detach().cpu().numpy())
         if output.latent_relation_mass is not None:
             all_latent_relation_mass.append(output.latent_relation_mass.detach().cpu().numpy())
+        if output.diagnostics:
+            for key, value in output.diagnostics.items():
+                all_diagnostics.setdefault(key, []).append(value.detach().float().cpu().numpy())
         all_labels3.append(batch["labels_3"].detach().cpu().numpy())
         all_binary.append(batch["labels_binary"].detach().cpu().numpy())
         all_logic.extend(batch["logic"])
@@ -187,6 +191,9 @@ def evaluate(model, loader, device: torch.device) -> tuple[Dict[str, float], Lis
         metrics.update(grouped_binary_metrics(logits, labels_binary, all_logic))
         binary_pred = np.array([0 if int(label) == 0 else 1 for label in pred3], dtype=np.int64)
 
+    diagnostics = {key: np.concatenate(parts, axis=0) for key, parts in all_diagnostics.items()}
+    metrics.update(diagnostic_metrics(diagnostics, logits, labels3))
+
     predictions = []
     route_names = RELATIONS + ["semantic_alignment"]
     for idx, uid in enumerate(all_uid):
@@ -203,8 +210,38 @@ def evaluate(model, loader, device: torch.device) -> tuple[Dict[str, float], Lis
             prediction.update({f"route_gate/{name}": float(route_gates[idx, route_id]) for route_id, name in enumerate(route_names)})
         if latent_relation_mass is not None:
             prediction.update({f"latent_relation/{relation_id}": float(value) for relation_id, value in enumerate(latent_relation_mass[idx])})
+        for key, values in diagnostics.items():
+            if key.endswith("_logits"):
+                prediction[f"diag/{key[:-7]}_pred"] = int(values[idx].argmax())
+            elif values.ndim == 1:
+                prediction[f"diag/{key}"] = float(values[idx])
         predictions.append(prediction)
     return metrics, predictions
+
+
+def diagnostic_metrics(diagnostics: Dict[str, np.ndarray], logits: np.ndarray, labels: np.ndarray) -> Dict[str, float]:
+    """Summaries of model-provided diagnostics (e.g. COVER-PL: structured head alone,
+    [CLS] head alone, how often the structured scores change the [CLS] decision)."""
+    if not diagnostics:
+        return {}
+    metrics: Dict[str, float] = {}
+    final = logits.argmax(axis=1)
+    valid = labels >= 0
+    for key, values in diagnostics.items():
+        if key.endswith("_logits") and values.ndim == 2:
+            name = key[: -len("_logits")]
+            for metric, value in classification_metrics(values, labels, prefix=f"diag/{name}/").items():
+                if metric.endswith(("accuracy", "macro_f1", "mcc")):
+                    metrics[metric] = value
+        elif values.ndim == 1:
+            metrics[f"diag/{key}_mean"] = float(np.mean(values))
+    if "cls_logits" in diagnostics:
+        cls_pred = diagnostics["cls_logits"].argmax(axis=1)
+        changed = (cls_pred != final) & valid
+        metrics["diag/changed_rate"] = float(changed.mean())
+        metrics["diag/changed_fixed_rate"] = float((changed & (final == labels)).mean())
+        metrics["diag/changed_broke_rate"] = float((changed & (cls_pred == labels)).mean())
+    return metrics
 
 
 def save_predictions(path: Path, rows: List[dict]) -> None:

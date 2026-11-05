@@ -595,7 +595,16 @@ class BipartiteRelationalLayer(nn.Module):
 
 
 class CoveragePartialLabelClassifier(TokenGraphBase):
-    """Weakest-link coverage entailment + noisy-OR contradiction over a contextual graph."""
+    """Weakest-link coverage entailment + noisy-OR contradiction over a contextual graph.
+
+    Ablation switches (experiment_0009):
+      head="mlp"         replace the logical aggregation by an MLP over pooled hypothesis
+                         nodes (same graph and auxiliary loss: capacity control).
+      use_conflict=False coverage only: z_E = log P_cov, N and C share log(1 - P_cov).
+      use_coverage=False conflict only: z_C = log(1 - P_noconf), E and N share log P_noconf.
+      graph_layers=0     heads read the projected encoder states directly (no bipartite layer).
+    The default configuration builds exactly the same modules, in the same order, as before.
+    """
 
     def __init__(
         self,
@@ -608,26 +617,71 @@ class CoveragePartialLabelClassifier(TokenGraphBase):
         use_partial_labels: bool = True,
         use_struct: bool = True,
         use_symbolic: bool = True,
+        head: str = "logic",
+        use_conflict: bool = True,
+        use_coverage: bool = True,
     ):
         super().__init__(model_name, dropout, num_labels)
+        if head not in {"logic", "mlp"}:
+            raise ValueError(f"Unknown COVER head: {head}")
+        if not (use_conflict or use_coverage):
+            raise ValueError("COVER needs at least one of use_conflict / use_coverage")
         hidden = self.encoder.config.hidden_size
         self.aux_weight = aux_weight
         self.use_partial_labels = use_partial_labels
         self.use_struct = use_struct
         self.use_symbolic = use_symbolic
+        self.head = head
+        self.use_conflict = use_conflict
+        self.use_coverage = use_coverage
         self.node_proj = nn.Linear(hidden, node_dim)
         self.op_embedding = nn.Embedding(NUM_OP, node_dim)
         self.node_norm = nn.LayerNorm(node_dim)
         self.node_dropout = nn.Dropout(dropout)
-        self.layers = nn.ModuleList([BipartiteRelationalLayer(node_dim, dropout) for _ in range(max(1, graph_layers))])
-        self.support_head = nn.Linear(node_dim, 1)
-        self.conflict_head = nn.Linear(node_dim, 1)
-        self.weight_head = nn.Linear(node_dim, 1)
+        self.layers = nn.ModuleList([BipartiteRelationalLayer(node_dim, dropout) for _ in range(max(0, graph_layers))])
+        if head == "logic":
+            self.support_head = nn.Linear(node_dim, 1)
+            self.conflict_head = nn.Linear(node_dim, 1)
+            self.weight_head = nn.Linear(node_dim, 1)
         self.struct_scale = nn.Parameter(torch.tensor(1.0))
-        with torch.no_grad():
-            self.support_head.bias.fill_(2.0)
-            self.conflict_head.bias.fill_(-3.0)
-            self.weight_head.bias.fill_(0.0)
+        if head == "logic":
+            with torch.no_grad():
+                self.support_head.bias.fill_(2.0)
+                self.conflict_head.bias.fill_(-3.0)
+                self.weight_head.bias.fill_(0.0)
+        else:
+            self.mlp_head = nn.Sequential(
+                nn.Linear(node_dim * 2, node_dim), nn.GELU(), nn.Dropout(dropout), nn.Linear(node_dim, num_labels)
+            )
+
+    def _logic_scores(self, x, hypothesis):
+        weight = F.softplus(self.weight_head(x).squeeze(-1)) * hypothesis.to(x.dtype)
+        log_support = F.logsigmoid(self.support_head(x).squeeze(-1))
+        log_no_conflict = F.logsigmoid(-self.conflict_head(x).squeeze(-1))
+        entail_all = (weight * log_support).sum(dim=-1).float()          # log P(every hyp word supported)
+        no_conflict = (weight * log_no_conflict).sum(dim=-1).float()     # log P(no word contradicts)
+        half = math.log(0.5)
+        if self.use_conflict and self.use_coverage:
+            z_e, z_n, z_c = no_conflict + entail_all, no_conflict + log1mexp(entail_all), log1mexp(no_conflict)
+        elif self.use_coverage:   # coverage only: no evidence to separate N from C
+            z_e, z_n = entail_all, log1mexp(entail_all) + half
+            z_c = z_n
+        else:                     # conflict only: no evidence to separate E from N
+            z_c, z_e = log1mexp(no_conflict), no_conflict + half
+            z_n = z_e
+        structured = torch.stack([z_e, z_n, z_c], dim=-1)
+        order = torch.tensor([ENT, NEU, CON], device=structured.device)
+        structured = structured[:, torch.argsort(order)]
+        parts = {"weight": weight, "log_support": log_support, "log_no_conflict": log_no_conflict}
+        return structured, parts
+
+    def _mlp_scores(self, x, hypothesis):
+        mask = hypothesis.unsqueeze(-1).to(x.dtype)
+        count = mask.sum(dim=1).clamp_min(1.0)
+        mean = (x * mask).sum(dim=1) / count
+        maxed = x.masked_fill(~hypothesis.unsqueeze(-1), -1e4).max(dim=1).values
+        maxed = torch.where(hypothesis.any(dim=1, keepdim=True), maxed, torch.zeros_like(maxed))
+        return F.log_softmax(self.mlp_head(torch.cat([mean, maxed], dim=-1)).float(), dim=-1)
 
     def forward(self, batch: dict) -> ModelOutput:
         pooled, states = self.encode_pair(batch)
@@ -652,28 +706,47 @@ class CoveragePartialLabelClassifier(TokenGraphBase):
             x, align, null = layer(x, rel, rel_onehot, premise, hypothesis)
             alignments.append((align, null))
 
-        weight = F.softplus(self.weight_head(x).squeeze(-1)) * hypothesis.to(x.dtype)
-        log_support = F.logsigmoid(self.support_head(x).squeeze(-1))
-        log_no_conflict = F.logsigmoid(-self.conflict_head(x).squeeze(-1))
-        entail_all = (weight * log_support).sum(dim=-1).float()          # log P(every hyp word supported)
-        no_conflict = (weight * log_no_conflict).sum(dim=-1).float()     # log P(no word contradicts)
-        structured = torch.stack(
-            [no_conflict + entail_all, no_conflict + log1mexp(entail_all), log1mexp(no_conflict)], dim=-1
-        )
-        order = torch.tensor([ENT, NEU, CON], device=structured.device)
-        structured = structured[:, torch.argsort(order)]
+        parts = {}
+        if self.head == "logic":
+            structured, parts = self._logic_scores(x, hypothesis)
+        else:
+            structured = self._mlp_scores(x, hypothesis)
 
         logits = cls_logits + self.struct_scale * structured.to(pooled.dtype)
         main_loss = self.set_nll(logits, mask, labels)
         aux = self.set_nll(structured, mask, labels) * self.aux_weight
+
+        diagnostics = None
+        if not self.training:
+            with torch.no_grad():
+                diagnostics = {
+                    "cls_logits": cls_logits.detach().float(),
+                    "struct_logits": structured.detach().float(),
+                    "struct_scale": self.struct_scale.detach().float().expand(logits.size(0)),
+                }
+                if parts:
+                    weight = parts["weight"].detach()
+                    hyp = hypothesis & (weight > 0)
+                    support = parts["log_support"].detach().exp()
+                    conflict = 1.0 - parts["log_no_conflict"].detach().exp()
+                    diagnostics["min_support"] = support.masked_fill(~hyp, 1.0).min(dim=-1).values.float()
+                    diagnostics["max_conflict"] = conflict.masked_fill(~hyp, 0.0).max(dim=-1).values.float()
+
         details = None
         if batch.get("return_tokgraph_details", False):
             details = {
                 "premise": premise, "hypothesis": hypothesis, "rel": rel, "alignments": alignments,
-                "support": log_support.exp(), "conflict": 1.0 - log_no_conflict.exp(),
-                "weight": weight, "structured_probs": structured.exp(), "struct_scale": self.struct_scale.detach(),
+                "structured_probs": structured.exp(), "struct_scale": self.struct_scale.detach(),
             }
-        return ModelOutput(logits=logits, aux_loss=aux, main_loss=main_loss, fusion_features=structured, graph_details=details)
+            if parts:
+                details.update({
+                    "support": parts["log_support"].exp(), "conflict": 1.0 - parts["log_no_conflict"].exp(),
+                    "weight": parts["weight"],
+                })
+        return ModelOutput(
+            logits=logits, aux_loss=aux, main_loss=main_loss, fusion_features=structured,
+            graph_details=details, diagnostics=diagnostics,
+        )
 
 
 # variant name -> (architecture, constructor overrides). Suffixed names are ablations (experiment_0009).
@@ -692,6 +765,10 @@ TOKGRAPH_ABLATIONS = {
     "coverage_pl_v1_no_partial": ("cover", {"use_partial_labels": False}),
     "coverage_pl_v1_no_struct": ("cover", {"use_struct": False}),
     "coverage_pl_v1_no_symbolic": ("cover", {"use_symbolic": False}),
+    "coverage_pl_v1_mlp_head": ("cover", {"head": "mlp"}),
+    "coverage_pl_v1_no_conflict": ("cover", {"use_conflict": False}),
+    "coverage_pl_v1_no_coverage": ("cover", {"use_coverage": False}),
+    "coverage_pl_v1_no_graph": ("cover", {"graph_layers": 0}),
 }
 TOKGRAPH_VARIANTS = set(TOKGRAPH_ABLATIONS)
 
@@ -700,6 +777,8 @@ def build_tokgraph_model(variant: str, model_name: str, dropout: float, graph_la
     if variant not in TOKGRAPH_ABLATIONS:
         raise ValueError(f"Unknown token-graph variant: {variant}")
     architecture, overrides = TOKGRAPH_ABLATIONS[variant]
+    overrides = dict(overrides)
+    graph_layers = overrides.pop("graph_layers", graph_layers)
     if architecture == "natlog":
         return NatLogOTClassifier(model_name, dropout, graph_layers=graph_layers, aux_weight=aux_weight, **overrides)
     if architecture == "riga":

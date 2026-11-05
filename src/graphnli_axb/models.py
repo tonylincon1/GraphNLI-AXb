@@ -50,6 +50,9 @@ class ModelOutput:
     main_loss: torch.Tensor | None = None
     # Intermediate graph tensors for visualisation (only when requested).
     graph_details: dict | None = None
+    # Cheap per-example diagnostics, name -> tensor of shape (batch,) or (batch, k).
+    # Written to the predictions CSV and summarised as diag/* metrics.
+    diagnostics: dict | None = None
 
 
 class PairClassifier(nn.Module):
