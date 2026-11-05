@@ -75,7 +75,7 @@ def main() -> None:
         lines.append(f"> Control `{args.control_variant}` not found in `{args.control_pipeline}`; deltas vs. control omitted.\n")
 
     for name, pipeline in config["pipelines"].items():
-        if not name.endswith("_ablation"):
+        if not name.endswith("_ablation") or not pipeline.get("enabled", True):
             continue
         pipeline_dir = experiment_dir / name
         results = load_results(pipeline_dir)
