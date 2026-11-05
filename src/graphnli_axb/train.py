@@ -79,7 +79,7 @@ def move_batch(batch: dict, device: torch.device) -> dict:
 
 def _tokgraph_lexicon_paths(args) -> list[Path]:
     paths = []
-    for value in (getattr(args, "pt_lkb_cache", None), getattr(args, "wiktionary_cache", None)):
+    for value in (getattr(args, "pt_lkb_cache", None), getattr(args, "wiktionary_cache", None), getattr(args, "wordnet_cache", None)):
         if not value:
             continue
         path = Path(value)
@@ -87,6 +87,8 @@ def _tokgraph_lexicon_paths(args) -> list[Path]:
             path = project_root() / path
         if path.exists():
             paths.append(path)
+        else:
+            print(f"WARNING: token-graph lexicon not found, skipping: {path}", flush=True)
     return paths
 
 
@@ -1157,6 +1159,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Fixed JSONL training subset. When set, train-limit and seed-based sampling are bypassed.",
     )
     parser.add_argument("--eval-limit", type=int, default=0, help="0 means no limit.")
+    parser.add_argument(
+        "--wordnet-cache",
+        default="",
+        help="Extra lexical-relation JSONL for token-graph variants (e.g. English WordNet, "
+        "built by scripts/export_wordnet_relations.py).",
+    )
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--max-grad-norm", type=float, default=1.0)

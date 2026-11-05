@@ -13,7 +13,7 @@ import yaml
 
 from .data import NLIExample, load_axb, load_mnli, load_xnli, project_root
 from .labels import LABEL_TO_ID_3, normalize_label
-from .train import build_arg_parser, resolve_eval_languages, train_one
+from .train import build_arg_parser, maybe_limit, resolve_eval_languages, train_one
 
 
 def _label_ids(value: object, dataset_name: str = "") -> tuple[int, int]:
@@ -100,11 +100,21 @@ def load_sick(data_root: Path, split: str) -> list[NLIExample]:
 
 
 def load_dataset_spec(spec: dict, data_root: Path) -> list[NLIExample]:
+    """Load a dataset spec. Optional ``limit`` (+ ``sample_seed``) draws a fixed,
+    label-stratified subset, the same for every training seed, so runs stay paired."""
     if "datasets" in spec:
         rows = []
         for child in spec["datasets"]:
             rows.extend(load_dataset_spec(child, data_root))
-        return rows
+    else:
+        rows = _load_single_dataset(spec, data_root)
+    limit = int(spec.get("limit", 0) or 0)
+    if limit > 0:
+        rows = maybe_limit(rows, limit, int(spec.get("sample_seed", 13)))
+    return rows
+
+
+def _load_single_dataset(spec: dict, data_root: Path) -> list[NLIExample]:
     kind = spec["dataset"]
     split = spec.get("split", "train")
     if kind == "sick":
