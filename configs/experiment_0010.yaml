@@ -10,6 +10,11 @@ output_dir: runs
 # * Encoder: roberta-large.
 # * SICK official partitions: TRAIN (4,439) / TRIAL as dev for checkpoint selection (495)
 #   / TEST (4,906). Labels are imbalanced (~57% neutral), so macro-F1 is the selection metric.
+# * Extra test set: SuperGLUE AX-b diagnostic (1,104 pairs, 2-way entailment vs.
+#   not_entailment, annotated by phenomenon: negation, monotonicity, quantifiers...).
+#   Only binary/* and logic/<phenomenon>/* metrics apply (no 3-way gold labels).
+#   AX-b pairs reach 115 tokens, so test sets use eval_max_len 128 while training keeps
+#   max_len 64 (every SICK pair fits in 62 tokens).
 # * Lexicon for the token graph: WordNet 3.0 + Wiktionary-EN (SICK vocabulary), the English
 #   counterpart of PT-LKB + Wiktionary-PT. Build WordNet once with
 #     poetry run python scripts/export_wordnet_relations.py
@@ -31,6 +36,7 @@ training:
   warmup_ratio: 0.06
   dropout: 0.103
   max_len: 64
+  eval_max_len: 128
   max_nodes: 32
   max_node_len: 8
   max_wikidata_entities: 8
@@ -71,4 +77,5 @@ pipelines:
     validation: {dataset: sick, split: dev}
     test:
       - {name: sick_test, dataset: sick, split: test}
+      - {name: axb, dataset: axb, split: test}
     save_explanations: false

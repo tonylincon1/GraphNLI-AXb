@@ -921,7 +921,12 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
         args.wiktionary_cache = args.pt_lkb_cache
     train_loader = make_loader(train_rows, tokenizer, args, shuffle=True, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon, include_tokgraph=include_tokgraph)
     val_loader = make_loader(val_rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon, include_tokgraph=include_tokgraph)
-    eval_loaders = {name: make_loader(rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon, include_tokgraph=include_tokgraph) for name, rows in eval_sets.items()}
+    # Test sets may hold longer pairs than the training data (e.g. AX-b vs. SICK); a
+    # larger eval_max_len avoids truncating them without padding every training batch.
+    eval_args = args
+    if getattr(args, "eval_max_len", 0) and args.eval_max_len > args.max_len:
+        eval_args = argparse.Namespace(**{**vars(args), "max_len": args.eval_max_len})
+    eval_loaders = {name: make_loader(rows, tokenizer, eval_args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon, include_tokgraph=include_tokgraph) for name, rows in eval_sets.items()}
     args.wiktionary_cache = original_wiktionary_cache
 
     model = build_model(
@@ -1159,6 +1164,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Fixed JSONL training subset. When set, train-limit and seed-based sampling are bypassed.",
     )
     parser.add_argument("--eval-limit", type=int, default=0, help="0 means no limit.")
+    parser.add_argument(
+        "--eval-max-len",
+        type=int,
+        default=0,
+        help="Max sequence length for the final test sets only (0 = same as --max-len).",
+    )
     parser.add_argument(
         "--wordnet-cache",
         default="",
