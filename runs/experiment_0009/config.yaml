@@ -1,0 +1,163 @@
+data_dir: data
+output_dir: runs
+
+# Experiment 0009: component ablations of the experiment_0008 architectures.
+#
+# Protocol differences from 0008 (on purpose):
+# * Tuning is DISABLED and every variant, including the pair_cls control, uses
+#   the same fixed hyperparameters. This isolates components instead of mixing
+#   them with per-variant tuning (diagnosis D2 in
+#   docs/experiment_0008_literature_and_proposals.md). The values are the
+#   configuration most variants selected in earlier Portuguese tunings
+#   (lr 2.04e-5, dropout 0.103, weight decay 3.5e-4, warmup 0.0275).
+# * InferBR only (train / dev for checkpoint selection / test).
+# * Current scope: COVER-PL ablation only (natlog_ablation and riga_ablation
+#   are disabled; re-enable them by setting enabled: true).
+# * 10 paired seeds, the same as experiment_0008. With 5 seeds the exact
+#   two-sided Wilcoxon test can never go below p = 0.0625.
+#   The training block is identical to experiment_0008, so its pair_cls and
+#   coverage_pl_v1 runs can be copied into runs/experiment_0009/{control,cover_ablation}/
+#   and are skipped on resume (result.json exists); only the ablations train.
+#   Each architecture is a separate pipeline so they can be enabled one at a time.
+#
+# Report: poetry run python scripts/summarize_ablation.py runs/experiment_0009
+model_name: neuralmind/bert-base-portuguese-cased
+seeds: [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
+
+training:
+  epochs: 8
+  batch_size: 32
+  lr: 0.0000204
+  weight_decay: 0.00035
+  warmup_ratio: 0.0275
+  dropout: 0.103
+  max_len: 160
+  max_nodes: 32
+  max_node_len: 8
+  max_wikidata_entities: 8
+  max_wikidata_len: 32
+  max_proof_nodes: 12
+  max_proof_len: 32
+  max_logicpath_nodes: 32
+  max_logicpath_len: 24
+  wikidata_cache: data/cache/wikidata_entities.jsonl
+  wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+  pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
+  max_wiktionary_entries: 2
+  graph_layers: 2
+  aux_weight: 0.15
+  graph_lr_multiplier: 10.0
+  partial_label_datasets: [assin, assin2]
+  selection_metric: nli3/macro_f1
+  patience: 2
+  cd_metric: binary/mcc
+  cd_alpha: 0.05
+  num_workers: 0
+  device: cuda
+  max_grad_norm: 1.0
+
+tuning:
+  enabled: false
+  selection_metric: nli3/macro_f1
+
+# Shared data blocks (YAML anchors keep the four pipelines identical).
+data_blocks:
+  train: &train
+    datasets:
+      - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_train.jsonl, split: train}
+  validation: &validation
+    datasets:
+      - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_dev.jsonl, split: dev}
+  test: &test
+    - {name: inferbr_test, dataset: manifest, path: data/raw/portuguese/inferbr_test.jsonl, split: test}
+
+pipelines:
+  # Reference without any graph, trained with exactly the same hyperparameters.
+  control:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [neuralmind/bert-base-portuguese-cased]
+    variants: [pair_cls]
+    train: *train
+    validation: *validation
+    test: *test
+    save_explanations: false
+
+  # NatLog-OT: which part of the natural-logic pipeline matters?
+  #   no_symbolic     no lexicon relations and no operator lexicon (learned only)
+  #   no_polarity     every context treated as upward monotone
+  #   softmax_align   independent softmax alignment instead of OT with dustbin
+  #   no_join         order-free average of edit relations instead of the join fold
+  natlog_ablation:
+    enabled: false
+    device: cuda
+    batch_size: 32
+    model_names: [neuralmind/bert-base-portuguese-cased]
+    variants:
+      - natlog_ot_v1
+      - natlog_ot_v1_no_symbolic
+      - natlog_ot_v1_no_polarity
+      - natlog_ot_v1_softmax_align
+      - natlog_ot_v1_no_join
+    train: *train
+    validation: *validation
+    test: *test
+    save_explanations: false
+
+  # RIGA: is it the graph structure or just extra adapter capacity?
+  #   scope_only      only operator-scope (+ subword) edges
+  #   lexical_only    only cross-sentence lexical/number (+ subword) edges
+  #   random_edges    same number/types of edges at random token pairs (capacity control)
+  #   8_layers        adapters in layers 5-12 instead of 9-12
+  riga_ablation:
+    enabled: false
+    device: cuda
+    batch_size: 32
+    model_names: [neuralmind/bert-base-portuguese-cased]
+    variants:
+      - rgat_adapter_v1
+      - rgat_adapter_v1_scope_only
+      - rgat_adapter_v1_lexical_only
+      - rgat_adapter_v1_random_edges
+      - rgat_adapter_v1_8_layers
+    train: *train
+    validation: *validation
+    test: *test
+    save_explanations: false
+
+  # COVER-PL: what drives the gain over pair_cls (fewer contradiction -> entailment errors)?
+  #   no_symbolic     no lexicon relations / operator lexicon (all edges "none")
+  #   mlp_head        same graph and auxiliary loss, but an MLP over pooled hypothesis
+  #                   nodes replaces the logical aggregation (capacity control)
+  #   no_conflict     coverage only: E vs. not-E from the weakest link, N and C tied
+  #   no_coverage     conflict only: C vs. not-C from the noisy-OR, E and N tied
+  #   no_graph        graph_layers = 0: heads read the encoder states directly
+  #                   (also drops the relation-typed attention, i.e. the lexicon edges)
+  # Every run also logs diag/* metrics (structured head alone, [CLS] head alone,
+  # how often z changes the [CLS] decision, lambda) and diag/* prediction columns.
+  # In this InferBR-only protocol the partial-label loss never fires (it only
+  # acts on ASSIN/ASSIN2 "none" pairs), so coverage_pl_v1 vs. the pair_cls
+  # control already measures the architecture alone, and the loss ablations
+  # would duplicate other runs:
+  #   coverage_pl_v1_no_partial == coverage_pl_v1
+  #   coverage_pl_v1_no_struct  == pair_cls
+  # Re-enable them when ASSIN/ASSIN2 are added back to training.
+  cover_ablation:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [neuralmind/bert-base-portuguese-cased]
+    variants:
+      - coverage_pl_v1
+      - coverage_pl_v1_no_symbolic
+      - coverage_pl_v1_mlp_head
+      - coverage_pl_v1_no_conflict
+      - coverage_pl_v1_no_coverage
+      - coverage_pl_v1_no_graph
+      # - coverage_pl_v1_no_partial   # needs ASSIN/ASSIN2 in training
+      # - coverage_pl_v1_no_struct    # needs ASSIN/ASSIN2 in training
+    train: *train
+    validation: *validation
+    test: *test
+    save_explanations: false
