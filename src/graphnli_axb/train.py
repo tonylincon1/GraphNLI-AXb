@@ -919,7 +919,13 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
     original_wiktionary_cache = args.wiktionary_cache
     if variant in {"piig_pt_lkb_v1", "logicpath_pt_lkb_v1"} and getattr(args, "pt_lkb_cache", None):
         args.wiktionary_cache = args.pt_lkb_cache
-    train_loader = make_loader(train_rows, tokenizer, args, shuffle=True, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon, include_tokgraph=include_tokgraph)
+    # Gradient accumulation: batch_size stays the effective (optimizer) batch, and the GPU
+    # sees micro-batches of batch_size / grad_accum_steps (needed for roberta-large on 11 GB).
+    grad_accum = max(1, int(getattr(args, "grad_accum_steps", 1) or 1))
+    if args.batch_size % grad_accum:
+        raise ValueError(f"batch_size {args.batch_size} must be divisible by grad_accum_steps {grad_accum}")
+    train_args = args if grad_accum == 1 else argparse.Namespace(**{**vars(args), "batch_size": args.batch_size // grad_accum})
+    train_loader = make_loader(train_rows, tokenizer, train_args, shuffle=True, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon, include_tokgraph=include_tokgraph)
     val_loader = make_loader(val_rows, tokenizer, args, shuffle=False, include_piig=include_piig, piig_version=piig_version, include_logicpath=include_logicpath, logicpath_version=logicpath_version, logicpath_lexicon=logicpath_lexicon, include_tokgraph=include_tokgraph)
     # Test sets may hold longer pairs than the training data (e.g. AX-b vs. SICK); a
     # larger eval_max_len avoids truncating them without padding every training batch.
@@ -948,7 +954,8 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
     else:
         parameters = model.parameters()
     optimizer = torch.optim.AdamW(parameters, lr=args.lr, weight_decay=args.weight_decay)
-    total_steps = max(1, len(train_loader) * args.epochs)
+    steps_per_epoch = -(-len(train_loader) // grad_accum)
+    total_steps = max(1, steps_per_epoch * args.epochs)
     warmup_steps = int(total_steps * args.warmup_ratio)
     scheduler = get_linear_schedule_with_warmup(optimizer, warmup_steps, total_steps)
 
@@ -960,15 +967,19 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
     for epoch in range(1, args.epochs + 1):
         model.train()
         running = 0.0
-        for batch in tqdm(train_loader, desc=f"{variant}/seed{seed}/epoch{epoch}", leave=False):
+        n_micro = len(train_loader)
+        for step, batch in enumerate(tqdm(train_loader, desc=f"{variant}/seed{seed}/epoch{epoch}", leave=False)):
             batch = move_batch(batch, device)
-            optimizer.zero_grad(set_to_none=True)
+            if step % grad_accum == 0:
+                optimizer.zero_grad(set_to_none=True)
+                group_size = min(grad_accum, n_micro - step)
             output = model(batch)
             loss = compute_loss(output, batch["labels_3"])
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
-            optimizer.step()
-            scheduler.step()
+            (loss / group_size).backward()
+            if (step + 1) % grad_accum == 0 or step + 1 == n_micro:
+                torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
+                optimizer.step()
+                scheduler.step()
             running += float(loss.detach().cpu())
 
         val_metrics, _ = evaluate(model, val_loader, device)
@@ -1179,6 +1190,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--max-grad-norm", type=float, default=1.0)
+    parser.add_argument("--grad-accum-steps", type=int, default=1,
+                        help="Split each batch into this many micro-batches (same effective batch_size).")
     parser.add_argument(
         "--surrogate-analysis",
         action=argparse.BooleanOptionalAction,
