@@ -1,0 +1,86 @@
+data_dir: data
+output_dir: runs
+
+# Experiment 0010: replication of experiment_0008 (coverage_pl_v1 vs. pair_cls) in English, on SICK,
+# plus the key experiment_0009 ablation (coverage_pl_v1_no_conflict).
+#
+# Why: test whether the COVER-PL gain (fewer contradiction -> entailment errors) carries
+# over to another language, another dataset and a much larger encoder.
+#
+# Protocol (same as 0008 except where noted):
+# * Encoder: roberta-large.
+# * SICK official partitions: TRAIN (4,439) / TRIAL as dev for checkpoint selection (495)
+#   / TEST (4,906). Labels are imbalanced (~57% neutral), so macro-F1 is the selection metric.
+# * Extra test set: SuperGLUE AX-b diagnostic (1,104 pairs, 2-way entailment vs.
+#   not_entailment, annotated by phenomenon: negation, monotonicity, quantifiers...).
+#   Only binary/* and logic/<phenomenon>/* metrics apply (no 3-way gold labels).
+#   AX-b pairs reach 115 tokens, so test sets use eval_max_len 128 while training keeps
+#   max_len 64 (every SICK pair fits in 62 tokens).
+# * Lexicon for the token graph: WordNet 3.0 + Wiktionary-EN (SICK vocabulary), the English
+#   counterpart of PT-LKB + Wiktionary-PT. Build WordNet once with
+#     poetry run python scripts/export_wordnet_relations.py
+#   pt_lkb_cache is cleared so no Portuguese relations leak into English runs.
+# * Fixed hyperparameters, tuning disabled. Two changes from 0008, both for RoBERTa-large:
+#   lr 1e-5 and warmup 6% (RoBERTa-large fine-tuning on small datasets often diverges
+#   at 2e-5 with almost no warmup; Mosbach et al., 2021). Weight decay, dropout, batch,
+#   epochs and patience are unchanged. max_len 64 covers every SICK pair (max 62 tokens).
+# * coverage_pl_v1_no_conflict: in experiment_0009 removing the conflict branch erased most of
+#   the gain (binary MCC -0.0111, 0/10 wins, p=0.002), so it is replicated here too.
+# * 10 paired seeds -> Wilcoxon / Friedman-Nemenyi as in 0008.
+#   Check for degenerate runs (majority-class predictions), a known RoBERTa-large failure mode.
+model_name: roberta-large
+seeds: [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
+
+training:
+  epochs: 8
+  batch_size: 32
+  # 11 GB GPU: two micro-batches of 16 per optimizer step (effective batch stays 32).
+  grad_accum_steps: 2
+  lr: 0.00001
+  weight_decay: 0.00035
+  warmup_ratio: 0.06
+  dropout: 0.103
+  max_len: 64
+  eval_max_len: 128
+  max_nodes: 32
+  max_node_len: 8
+  max_wikidata_entities: 8
+  max_wikidata_len: 32
+  max_proof_nodes: 12
+  max_proof_len: 32
+  max_logicpath_nodes: 32
+  max_logicpath_len: 24
+  wikidata_cache: data/cache/wikidata_entities.jsonl
+  wiktionary_cache: data/cache/wiktionary_entries_sick_train_en.jsonl
+  wordnet_cache: data/cache/wordnet_relations_en.jsonl
+  pt_lkb_cache: ""
+  max_wiktionary_entries: 2
+  graph_layers: 2
+  aux_weight: 0.15
+  graph_lr_multiplier: 10.0
+  partial_label_datasets: []
+  selection_metric: nli3/macro_f1
+  patience: 2
+  cd_metric: binary/mcc
+  cd_alpha: 0.05
+  num_workers: 0
+  device: cuda
+  max_grad_norm: 1.0
+
+tuning:
+  enabled: false
+  selection_metric: nli3/macro_f1
+
+pipelines:
+  sick_en:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [roberta-large]
+    variants: [coverage_pl_v1, pair_cls, coverage_pl_v1_no_conflict]
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test:
+      - {name: sick_test, dataset: sick, split: test}
+      - {name: axb, dataset: axb, split: test}
+    save_explanations: false
