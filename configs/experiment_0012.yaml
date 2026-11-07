@@ -1,0 +1,124 @@
+data_dir: data
+output_dir: runs
+
+# Experiment 0012: cross-lingual transfer PT <-> EN with one multilingual encoder (XLM-R).
+#
+# Question: does the COVER-PL gain transfer across languages, and does the symbolic
+# knowledge (typed lexical edges) learned in one language help in the other?
+#
+# Design: two mirrored directions, same encoder, same hyperparameters, same lexicon and the
+# same five test sets, so every result fills one cell of a train-language x test-set matrix.
+#   en_to_pt   train SICK (EN)     / dev SICK trial
+#   pt_to_en   train InferBR (PT)  / dev InferBR dev
+#   tests (both directions):
+#     sick_test      EN, 3-way                    (in-language for en_to_pt)
+#     axb            EN, binary, phenomena        (out of distribution)
+#     inferbr_test   PT, 3-way                    (in-language for pt_to_en)
+#     assin2_test    PT, binary (E vs. none)      (built from SICK-BR, i.e. translated SICK)
+#     assin_test     PT, binary (E vs. none)      (news, out of domain for both)
+#   For assin2_test / assin_test only binary/* metrics are meaningful (none = N or C).
+#
+# Lexicon: the union of the English and Portuguese resources (WordNet + Wiktionary-EN +
+# PT-LKB + Wiktionary-PT) is loaded in both directions. Relation types are shared across
+# languages (synonym, hypernym, antonym...), so the relation embeddings learned on one
+# language are applied to edges of the other language at test time. Operators, stopwords
+# and stemming follow each example's language field.
+#
+# Variants (10 paired seeds each):
+#   coverage_pl_v1               full model
+#   pair_cls                     [CLS] baseline
+#   coverage_pl_v1_no_symbolic   no lexicon edges / operator lexicon -> isolates the
+#                                cross-lingual contribution of the symbolic knowledge
+#   coverage_pl_v1_no_conflict   conflict branch removed (key ablation in 0009)
+#
+# Protocol: fixed hyperparameters (no tuning), patience 3 as in experiment_0011.
+# Encoder: xlm-roberta-base (multilingual, same size class as BERTimbau-base); lr 2e-5 and
+# warmup 6% are the usual values for XLM-R-base fine-tuning. max_len 96 covers every training
+# pair (XLM-R tokens: SICK <= 62, InferBR <= 79); eval_max_len 136 covers AX-b (<= 132).
+#
+# Estimated GPU time (GTX 1080 Ti, scaled from 0009/0010 timings):
+#   en_to_pt ~7 h, pt_to_en ~25 h, total ~32 h.
+model_name: xlm-roberta-base
+seeds: [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
+
+training:
+  epochs: 8
+  batch_size: 32
+  lr: 0.00002
+  weight_decay: 0.00035
+  warmup_ratio: 0.06
+  dropout: 0.103
+  max_len: 96
+  eval_max_len: 136
+  max_nodes: 32
+  max_node_len: 8
+  max_wikidata_entities: 8
+  max_wikidata_len: 32
+  max_proof_nodes: 12
+  max_proof_len: 32
+  max_logicpath_nodes: 32
+  max_logicpath_len: 24
+  wikidata_cache: data/cache/wikidata_entities.jsonl
+  # Bilingual lexicon (identical in both directions).
+  pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
+  wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+  wordnet_cache: data/cache/wordnet_relations_en.jsonl
+  extra_lexicon_caches: [data/cache/wiktionary_entries_sick_train_en.jsonl]
+  max_wiktionary_entries: 2
+  graph_layers: 2
+  aux_weight: 0.15
+  graph_lr_multiplier: 10.0
+  partial_label_datasets: []
+  selection_metric: nli3/macro_f1
+  patience: 3
+  cd_metric: binary/mcc
+  cd_alpha: 0.05
+  num_workers: 0
+  device: cuda
+  max_grad_norm: 1.0
+
+tuning:
+  enabled: false
+  selection_metric: nli3/macro_f1
+
+blocks:
+  variants: &variants
+    - coverage_pl_v1
+    - pair_cls
+    - coverage_pl_v1_no_symbolic
+    - coverage_pl_v1_no_conflict
+  tests: &tests
+    - {name: sick_test, dataset: sick, split: test}
+    - {name: axb, dataset: axb, split: test}
+    - {name: inferbr_test, dataset: manifest, path: data/raw/portuguese/inferbr_test.jsonl, split: test}
+    - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: test}
+    - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: test}
+
+pipelines:
+  # Train in English, test in English and Portuguese.
+  en_to_pt:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [xlm-roberta-base]
+    variants: *variants
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *tests
+    save_explanations: false
+
+  # Train in Portuguese, test in Portuguese and English.
+  pt_to_en:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [xlm-roberta-base]
+    variants: *variants
+    train:
+      datasets:
+        - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_train.jsonl, split: train}
+    validation:
+      datasets:
+        - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_dev.jsonl, split: dev}
+    test: *tests
+    save_explanations: false

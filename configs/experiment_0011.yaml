@@ -1,0 +1,237 @@
+data_dir: data
+output_dir: runs
+
+# Experiment 0011: full COVER-PL ablation in two languages under one protocol, with patience 3.
+#
+# Why: in experiment_0009 (patience 2), 9/30 runs of mlp_head / no_conflict / no_graph
+# selected their checkpoint at epoch <= 2, against 0/30 for full / no_symbolic / no_coverage
+# (Fisher p = 0.002, post hoc). Patience 3 tests whether those ablation losses survive when
+# every variant has more room to recover from a bad early epoch. The same protocol is then
+# repeated in English (experiment_0010 setup), so the ablation can be compared across
+# languages, datasets and encoder sizes.
+#
+# Pipelines (run in this order; each one resumes per seed from result.json):
+#   sick_en_ablation           roberta-large, SICK train / TRIAL dev / tests: SICK test + SuperGLUE AX-b
+#                              (hyperparameters and lexicon as in experiment_0010)
+#   inferbr_pt_ablation        BERTimbau-base, InferBR train / dev / tests: InferBR test
+#                              + ASSIN2 test + ASSIN test (out of distribution, binary metrics only)
+#                              (hyperparameters and lexicon as in experiment_0008/0009)
+#   sick_en_graph_baselines    KGAnet / KGNLI baselines, English protocol above
+#   sick_en_kbert              K-BERT baseline, English protocol with a 160-token window
+#   inferbr_pt_graph_baselines K-BERT / KGAnet / KGNLI baselines, Portuguese protocol (160 tokens)
+#
+# Variants (same set in both languages, 10 paired seeds each):
+#   coverage_pl_v1                 full model
+#   pair_cls                       [CLS] baseline, same fixed hyperparameters
+#   coverage_pl_v1_no_conflict     coverage only        (key ablation in 0009)
+#   coverage_pl_v1_no_symbolic     no lexicon relations / operator lexicon
+#   coverage_pl_v1_no_graph        graph_layers = 0
+#   coverage_pl_v1_no_coverage     conflict only
+#   coverage_pl_v1_mlp_head        MLP instead of the logical aggregation
+# Variants run one after another (all 10 seeds of a variant first), so the main comparison
+# (full vs. pair_cls vs. no_conflict) is available early in each pipeline.
+#
+# Changes from 0008/0009/0010: patience 2 -> 3 (epochs stay 8); Portuguese ablation max_len
+# 160 -> 96 (no pair is longer than 74 tokens, so only padding is removed).
+# Code needed: grad_accum_steps (train.py, commit 8940638). Runs are not reused
+# from earlier experiments, because the stopping rule changes.
+#
+# Analysis: paired Wilcoxon per variant vs. full and vs. pair_cls, Holm over the five
+# ablations, Friedman/Nemenyi; AX-b also per phenomenon (exploratory).
+#
+# Estimated GPU time (GTX 1080 Ti, from 0003/0009/0010 timings with best_epoch + 3):
+#   sick_en_ablation           ~19 h (upper bound ~27 h if every run reaches 8 epochs)
+#   inferbr_pt_ablation        ~38 h (max_len 96; ~59 h at 160)
+#   sick_en_graph_baselines    ~6 h  (rough: these models were never run with roberta-large)
+#   sick_en_kbert              ~8 h  (160-token window)
+#   inferbr_pt_graph_baselines ~30 h
+#   total                      ~100 h (~4 days)
+model_name: neuralmind/bert-base-portuguese-cased
+seeds: [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
+
+# Shared settings. Language-specific values are overridden per pipeline under `training:`.
+training:
+  epochs: 8
+  batch_size: 32
+  weight_decay: 0.00035
+  dropout: 0.103
+  max_nodes: 32
+  max_node_len: 8
+  max_wikidata_entities: 8
+  max_wikidata_len: 32
+  max_proof_nodes: 12
+  max_proof_len: 32
+  max_logicpath_nodes: 32
+  max_logicpath_len: 24
+  wikidata_cache: data/cache/wikidata_entities.jsonl
+  max_wiktionary_entries: 2
+  graph_layers: 2
+  aux_weight: 0.15
+  graph_lr_multiplier: 10.0
+  selection_metric: nli3/macro_f1
+  patience: 3
+  cd_metric: binary/mcc
+  cd_alpha: 0.05
+  num_workers: 0
+  device: cuda
+  max_grad_norm: 1.0
+
+tuning:
+  enabled: false
+  selection_metric: nli3/macro_f1
+
+variant_blocks:
+  cover: &cover_variants
+    - coverage_pl_v1
+    - pair_cls
+    - coverage_pl_v1_no_conflict
+    - coverage_pl_v1_no_symbolic
+    - coverage_pl_v1_no_graph
+    - coverage_pl_v1_no_coverage
+    - coverage_pl_v1_mlp_head
+
+  baselines: &graph_baselines
+    - kbert_injection
+    - kganet_rel_gat
+    - kgnli_dual
+  baselines_en_short: &graph_baselines_en_short
+    - kganet_rel_gat
+    - kgnli_dual
+
+# Shared language blocks (anchors keep the ablation and baseline pipelines identical).
+language_blocks:
+  en_training: &en_training
+    # 11 GB GPU: two micro-batches of 16 per optimizer step (effective batch stays 32).
+    grad_accum_steps: 2
+    lr: 0.00001
+    warmup_ratio: 0.06
+    max_len: 64          # every SICK pair fits in 62 tokens
+    eval_max_len: 128    # AX-b pairs reach 115 tokens
+    wiktionary_cache: data/cache/wiktionary_entries_sick_train_en.jsonl
+    wordnet_cache: data/cache/wordnet_relations_en.jsonl
+    pt_lkb_cache: ""     # no Portuguese relations in English runs
+    partial_label_datasets: []
+  # K-BERT appends the retrieved knowledge to the premise inside the same max_len window,
+  # so it needs the longer window of experiments 0001-0003 (160); at 64 the knowledge text
+  # would be truncated away. roberta-large at 160 tokens needs micro-batches of 8.
+  en_training_kbert: &en_training_kbert
+    grad_accum_steps: 4
+    lr: 0.00001
+    warmup_ratio: 0.06
+    max_len: 160
+    eval_max_len: 160
+    wiktionary_cache: data/cache/wiktionary_entries_sick_train_en.jsonl
+    wordnet_cache: data/cache/wordnet_relations_en.jsonl
+    pt_lkb_cache: ""
+    partial_label_datasets: []
+  pt_training_kbert: &pt_training_kbert
+    lr: 0.0000204
+    warmup_ratio: 0.0275
+    max_len: 160         # K-BERT window, as in 0001-0003 and 0008/0009
+    wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+    pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
+    wordnet_cache: ""
+    partial_label_datasets: [assin, assin2]
+  en_test: &en_test
+    - {name: sick_test, dataset: sick, split: test}
+    - {name: axb, dataset: axb, split: test}
+  pt_training: &pt_training
+    lr: 0.0000204
+    warmup_ratio: 0.0275
+    # BERTimbau tokens: InferBR <= 72, ASSIN/ASSIN2 <= 74. Inputs are padded to max_len, so
+    # 96 instead of the 160 of 0008/0009 removes only masked padding, at ~60% of the cost.
+    # (Runs are not bit-identical to 160: dropout masks have a different shape per seed.)
+    max_len: 96
+    wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+    pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
+    wordnet_cache: ""
+    partial_label_datasets: [assin, assin2]   # inactive with InferBR-only training (kept as in 0008/0009)
+  pt_train: &pt_train
+    datasets:
+      - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_train.jsonl, split: train}
+  pt_validation: &pt_validation
+    datasets:
+      - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_dev.jsonl, split: dev}
+  pt_test: &pt_test
+    - {name: inferbr_test, dataset: manifest, path: data/raw/portuguese/inferbr_test.jsonl, split: test}
+    # Out-of-distribution Portuguese tests (never used for training or selection).
+    # Gold labels are entailment vs. none ("none" is stored as neutral), so only the
+    # binary/* metrics are meaningful here; ignore nli3/* for these two sets.
+    - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: test}
+    - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: test}
+
+pipelines:
+  # ---------------------------------------------------------------- English (as experiment_0010)
+  sick_en_ablation:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [roberta-large]
+    variants: *cover_variants
+    training: *en_training
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *en_test
+    save_explanations: false
+
+  # ---------------------------------------------------------------- Portuguese (as experiment_0008/0009)
+  inferbr_pt_ablation:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [neuralmind/bert-base-portuguese-cased]
+    variants: *cover_variants
+    training: *pt_training
+    train: *pt_train
+    validation: *pt_validation
+    test: *pt_test
+    save_explanations: false
+
+  # ---------------------------------------------------------------- Earlier graph baselines
+  # Knowledge-graph NLI baselines from experiments 0001-0003, re-run under the same fixed
+  # protocol so they are paired with the ablation pipelines (same seeds, data, hyperparameters;
+  # their pair_cls control is the one in *_ablation). They run last, so the ablation is
+  # complete first and these can be stopped without losing anything.
+  #   kbert_injection  K-BERT style: retrieved relations injected as extra text
+  #   kganet_rel_gat   KGAnet style: relation-aware GAT over a lexical graph
+  #   kgnli_dual       KGNLI style: separate semantic and knowledge branches
+  # Their knowledge comes from the Wiktionary cache and NLTK WordNet; the Wikidata cache
+  # (data/cache/wikidata_entities.jsonl) is not in the repository, so that evidence is empty
+  # unless the cache exists on the training machine (scripts/build_wikidata_cache.py).
+  sick_en_graph_baselines:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [roberta-large]
+    variants: *graph_baselines_en_short
+    training: *en_training
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *en_test
+    save_explanations: false
+
+  sick_en_kbert:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [roberta-large]
+    variants: [kbert_injection]
+    training: *en_training_kbert
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *en_test
+    save_explanations: false
+
+  inferbr_pt_graph_baselines:
+    enabled: true
+    device: cuda
+    batch_size: 32
+    model_names: [neuralmind/bert-base-portuguese-cased]
+    variants: *graph_baselines
+    # max_len 160 for all three: K-BERT needs the window, and the other two keep the
+    # setting under which they were developed.
+    training: *pt_training_kbert
+    train: *pt_train
+    validation: *pt_validation
+    test: *pt_test
+    save_explanations: false

@@ -79,7 +79,10 @@ def move_batch(batch: dict, device: torch.device) -> dict:
 
 def _tokgraph_lexicon_paths(args) -> list[Path]:
     paths = []
-    for value in (getattr(args, "pt_lkb_cache", None), getattr(args, "wiktionary_cache", None), getattr(args, "wordnet_cache", None)):
+    extra = getattr(args, "extra_lexicon_caches", None) or []
+    if isinstance(extra, str):
+        extra = [extra]
+    for value in (getattr(args, "pt_lkb_cache", None), getattr(args, "wiktionary_cache", None), getattr(args, "wordnet_cache", None), *extra):
         if not value:
             continue
         path = Path(value)
@@ -1186,6 +1189,13 @@ def build_arg_parser() -> argparse.ArgumentParser:
         default="",
         help="Extra lexical-relation JSONL for token-graph variants (e.g. English WordNet, "
         "built by scripts/export_wordnet_relations.py).",
+    )
+    parser.add_argument(
+        "--extra-lexicon-caches",
+        nargs="*",
+        default=[],
+        help="More lexical-relation JSONL files (or directories) merged into the token-graph "
+        "lexicon, e.g. Wiktionary in a second language for cross-lingual runs.",
     )
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--device", default="auto")
