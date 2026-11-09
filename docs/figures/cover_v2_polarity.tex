@@ -1,0 +1,156 @@
+% COVER-PL v2 (proposal): polarity projection of lexical edges before graph attention.
+% Only the edge labels r_ij change; encoder, graph attention and coverage/conflict head are unchanged.
+% Build: pdflatex cover_v2_polarity.tex
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage{pifont}
+\usepackage[none]{hyphenat}
+\usetikzlibrary{positioning,arrows.meta,calc,fit}
+
+\definecolor{neural}{HTML}{2F6DB5}
+\definecolor{neuralbg}{HTML}{E8F0FA}
+\definecolor{symb}{HTML}{D9822B}
+\definecolor{symbbg}{HTML}{FCF0E3}
+\definecolor{logic}{HTML}{2E8B57}
+\definecolor{logicbg}{HTML}{E6F4EC}
+\definecolor{new}{HTML}{7B3FA0}
+\definecolor{newbg}{HTML}{F3EAF8}
+\definecolor{bad}{HTML}{C0392B}
+\definecolor{mute}{HTML}{7A7A7A}
+
+\newcommand{\up}{\textcolor{logic}{\ensuremath{\uparrow}}}
+\newcommand{\dn}{\textcolor{bad}{\ensuremath{\downarrow}}}
+
+\tikzset{
+  >={Stealth[length=2.2mm]},
+  flow/.style={->, line width=0.7pt, draw=black!75},
+  block/.style={draw, rounded corners=3pt, line width=0.8pt, inner sep=4pt, align=center},
+  nblock/.style={block, draw=neural, fill=neuralbg},
+  sblock/.style={block, draw=symb, fill=symbbg},
+  lblock/.style={block, draw=logic, fill=logicbg},
+  vblock/.style={block, draw=new, fill=newbg, line width=1.1pt},
+  title/.style={font=\bfseries\small, anchor=south west, inner sep=1pt},
+  tok/.style={draw=neural!80, fill=white, rounded corners=1.5pt, inner sep=1.6pt, font=\scriptsize, minimum height=4.2mm},
+  htok/.style={tok, fill=neural!12},
+  optok/.style={tok, draw=symb, fill=symbbg},
+  lab/.style={font=\scriptsize, fill=white, inner sep=1pt},
+}
+
+\begin{document}
+\begin{tikzpicture}[font=\small]
+
+% =====================================================================
+% (a) Pipeline: where v2 plugs in
+% =====================================================================
+\node[title] at (0,6.05) {(a) Where v2 acts in COVER-PL};
+\node[block, draw=black!50, text width=2.1cm, font=\scriptsize] (inp) at (1.1,5.1) {Premise $P$\\Hypothesis $H$};
+\node[sblock, text width=2.1cm, font=\scriptsize] (lex) at (1.1,3.75) {Lexicon\\$r_{ij}$: syn., hyper., hypo., ant.};
+\node[sblock, text width=2.1cm, font=\scriptsize] (ops) at (1.1,2.4) {Operators $o_i$\\+ scope edges};
+
+\node[vblock, text width=2.6cm, font=\scriptsize] (pol) at (4.35,2.4) {\textbf{NEW: polarity marking}\\$\rho_i \in \{\up,\dn\}$ per token\\(parity of downward scopes)};
+\node[vblock, text width=2.6cm, font=\scriptsize] (proj) at (4.35,3.75) {\textbf{NEW: edge projection}\\$\tilde r_{ij} = \pi(r_{ij}, \rho_i, \rho_j)$};
+
+\node[nblock, text width=2.3cm, font=\scriptsize] (enc) at (7.6,5.1) {Encoder};
+\node[nblock, text width=2.3cm, font=\scriptsize] (gnn) at (7.6,3.75) {(c) Bipartite graph\\attention, bias $b[\tilde r_{ij}]$};
+\node[lblock, text width=2.3cm, font=\scriptsize] (head) at (7.6,2.4) {(d)--(e) coverage $s_k$\\+ conflict $c_k$ (unchanged)};
+
+\draw[flow] (inp) -- (enc);
+\draw[flow] (lex) -- (proj);
+\draw[flow] (ops) -- (pol);
+\draw[flow] (pol) -- (proj);
+\draw[flow, draw=new, line width=1pt] (proj) -- (gnn);
+\draw[flow] (enc) -- (gnn);
+\draw[flow] (gnn) -- (head);
+\node[font=\scriptsize\itshape, text=new, align=center, text width=8.6cm, anchor=north] at (4.45,1.75)
+  {No new parameters: only the relation id fed to the graph changes.\\Ablation = switch the projection off ($\tilde r_{ij} = r_{ij}$, i.e.\ v1).};
+
+% =====================================================================
+% (b) Polarity marking examples
+% =====================================================================
+\begin{scope}[shift={(10.0,0)}]
+\node[title] at (0,6.05) {(b) Polarity marking $\rho$};
+\node[anchor=west, font=\scriptsize] at (0,5.45) {Upward: specific $\Rightarrow$ general};
+\node[anchor=west] at (0,5.0) {\scriptsize A\,\up \quad dog\,\up \quad barks\,\up};
+\node[anchor=west, font=\scriptsize] at (0,4.45) {Downward: general $\Rightarrow$ specific};
+\node[anchor=west] at (0,4.0) {\scriptsize \textbf{No} \quad animal\,\dn \quad barks\,\dn};
+\node[anchor=west] at (0,3.5) {\scriptsize \textbf{Every} \quad animal\,\dn \quad barks\,\up};
+\node[anchor=west] at (0,3.0) {\scriptsize He did \textbf{not} \quad eat\,\dn \quad fruit\,\dn};
+\node[anchor=west] at (0,2.5) {\scriptsize It is \textbf{not} true that he did \textbf{not} eat\,\up};
+\node[anchor=west, font=\tiny, text=mute, text width=4.4cm, align=left] at (0,1.85)
+  {downward operators: \textit{no, not, few, at most, without, never}; restrictor of \textit{every/all}.
+   Two downward scopes cancel (\up\ again).};
+\end{scope}
+
+% =====================================================================
+% (c) Projection table
+% =====================================================================
+\begin{scope}[shift={(15.0,0)}]
+\node[title] at (0,6.05) {(c) Edge projection $\pi$ (when $\rho_i=\rho_j$)};
+\node[anchor=north west, font=\scriptsize] at (0,5.85) {%
+\renewcommand{\arraystretch}{1.25}%
+\begin{tabular}{@{}l c c@{}}
+lexical edge $p_i \to h_j$ & context \up & context \dn \\ \hline
+synonym ($\equiv$) & $\equiv$ & $\equiv$ \\
+hyponym, \textit{dog}$\to$\textit{animal} ($\sqsubset$) & \textcolor{logic}{$\sqsubset$ supports} & \textcolor{bad}{$\sqsupset$ does not} \\
+hypernym, \textit{animal}$\to$\textit{dog} ($\sqsupset$) & \textcolor{bad}{$\sqsupset$ does not} & \textcolor{logic}{$\sqsubset$ supports} \\
+antonym ($\,|\,$) & $|$ & $|$ \;{\tiny(conflict head)} \\
+\end{tabular}};
+\node[anchor=west, font=\tiny, text=mute, text width=5.6cm, align=left] at (0,3.3)
+  {$\sqsubset$ = premise word is more specific (forward entailment).
+   If $\rho_i \neq \rho_j$, the edge is left unchanged and the polarity mismatch is passed as an operator feature.};
+\end{scope}
+
+% =====================================================================
+% (d) Worked example: v1 vs v2
+% =====================================================================
+\begin{scope}[shift={(0,-4.0)}]
+\node[title] at (0,4.25) {(d) Example: $P$ = \textit{No animal barks} \quad $H$ = \textit{No dog barks} \quad gold: \textbf{entailment}};
+
+% ---- v1
+\node[font=\small\bfseries, anchor=west] at (0,3.6) {v1 (current)};
+\node[optok] (a1) at (0.6,2.8) {No};
+\node[tok]   (b1) at (1.85,2.8) {animal};
+\node[tok]   (c1) at (3.1,2.8) {barks};
+\node[optok] (d1) at (0.6,0.9) {No};
+\node[htok]  (e1) at (1.85,0.9) {dog};
+\node[htok]  (f1) at (3.1,0.9) {barks};
+\node[font=\tiny, text=mute, anchor=east] at (0.15,2.8) {$P$};
+\node[font=\tiny, text=mute, anchor=east] at (0.15,0.9) {$H$};
+\draw[line width=0.6pt, draw=black!50] (a1) -- (d1);
+\draw[line width=0.6pt, draw=black!50] (c1) -- (f1);
+\draw[line width=1.2pt, draw=bad] (b1) -- node[lab, text=bad] {hypernym $\sqsupset$} (e1);
+\node[lblock, font=\scriptsize, text width=3.0cm, anchor=west] at (4.0,1.85)
+  {$s_{\textit{dog}}$ low: ``animal'' does not cover ``dog''\\[2pt]
+   $\Rightarrow$ \textcolor{bad}{\textbf{neutral} \ding{55}}};
+
+% ---- v2
+\begin{scope}[shift={(8.6,0)}]
+\node[font=\small\bfseries, anchor=west, text=new] at (0,3.6) {v2 (polarity projection)};
+\node[optok] (a2) at (0.6,2.8) {No};
+\node[tok]   (b2) at (1.85,2.8) {animal\,\dn};
+\node[tok]   (c2) at (3.1,2.8) {barks\,\dn};
+\node[optok] (d2) at (0.6,0.9) {No};
+\node[htok]  (e2) at (1.85,0.9) {dog\,\dn};
+\node[htok]  (f2) at (3.1,0.9) {barks\,\dn};
+\draw[line width=0.6pt, draw=black!50] (a2) -- (d2);
+\draw[line width=0.6pt, draw=black!50] (c2) -- (f2);
+\draw[line width=1.2pt, draw=logic] (b2) -- node[lab, text=logic] {projected $\sqsubset$} (e2);
+\node[lblock, font=\scriptsize, text width=3.0cm, anchor=west] at (4.0,1.85)
+  {$s_{\textit{dog}}$ high: in \dn\ context ``animal'' covers ``dog''\\[2pt]
+   $\Rightarrow$ \textcolor{logic}{\textbf{entailment} \checkmark}};
+\end{scope}
+
+% ---- expected effect
+\begin{scope}[shift={(17.0,0)}]
+\node[font=\small\bfseries, anchor=west] at (0,3.6) {Hypothesis to test};
+\node[anchor=north west, font=\scriptsize, text width=4.3cm, align=left] at (0,3.3) {%
+  $\bullet$ InferBR / SICK: little change (downward contexts are rare)\\[2pt]
+  $\bullet$ AX-b: downward monotone (v1 MCC $-0.34$), restrictivity, negation\\[2pt]
+  $\bullet$ MED (monotonicity, unseen): main target\\[2pt]
+  $\bullet$ ablation: v2 vs.\ v1, 10 paired seeds};
+\end{scope}
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

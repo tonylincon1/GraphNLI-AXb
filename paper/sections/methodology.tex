@@ -1,0 +1,345 @@
+% ===================================================================== Methodology
+% Every equation below mirrors src/graphnli_axb/models_tokgraph.py (CoveragePartialLabelClassifier,
+% BipartiteRelationalLayer) and src/graphnli_axb/token_graph.py (graph construction).
+% If the code changes, update this section.
+\section{Methodology}
+\label{sec:method}
+
+\subsection{Task formulation}
+\label{sec:task}
+
+Given a premise $\Prem$ and a hypothesis $\Hyp$, natural language inference (NLI) asks whether $\Prem$
+entails $\Hyp$ (\E), contradicts it (\C), or neither (\N). Some corpora only distinguish entailment from
+its absence; we keep a single three-way output space $\mathcal{Y}=\{\E,\N,\C\}$ and evaluate two-way
+corpora through the induced binary decision \E{} \emph{vs.} $\neg$\E{} (\cref{sec:protocol}).
+
+Our design starts from a simple observation about the label semantics. A hypothesis is entailed when
+\emph{every} part of it is supported by the premise and \emph{no} part of it conflicts with the premise;
+it is contradicted as soon as \emph{one} part conflicts; otherwise it is neutral.
+
+This view goes back to
+probabilistic lexical entailment~\citep{glickman2005probabilistic}, where $P(\Hyp\mid\Prem)$ is a
+product over hypothesis words, and to recent atomic-inference models that predict a label per
+hypothesis span and combine them with logical rules~\citep{stacey2022logical,wu2023weakly}.
+\model{} implements it over \emph{contextual token states} and grounds the per-word decisions in
+\emph{typed lexical knowledge}.
+
+\subsection{The \model{} architecture}
+\label{sec:architecture}
+
+\begin{figure*}[t]
+  \centering
+  \includestandalone[width=\textwidth]{figures/cover_architecture}
+  \caption{\model{} architecture. (a)~Content words and logical operators of $\Prem$ and $\Hyp$
+  become graph nodes; typed lexical relations $r_{ij}$ link premise and hypothesis nodes.
+  (b)~A pretrained encoder reads the pair jointly. (c)~Two bipartite relational attention layers
+  refine each node with its evidence on the other side, including a learned \emph{null} target.
+  (d)~Every hypothesis node $k$ receives a support $s_k$, a conflict $c_k$ and an importance $\omega_k$.
+  (e)~A weakest-link coverage and a noisy-OR conflict define a structured distribution $z$, added to
+  the \cls{} logits. \todo{update panel (a): operator scope edges are built but not used by \model.}}
+  \label{fig:architecture}
+\end{figure*}
+
+\Cref{fig:architecture} gives an overview. \model{} keeps the standard cross-encoder classifier and
+adds a structured expert whose output is a log-probability distribution over $\mathcal{Y}$. The expert
+has three parts: a token graph built from symbolic resources (\cref{sec:graph}), bipartite relational
+attention over contextual states (\cref{sec:bipartite}), and a coverage--conflict head with a logical
+aggregation (\cref{sec:head}). The two are fused in logit space (\cref{sec:fusion}).
+
+\subsubsection{Encoder}
+\label{sec:encoder}
+
+The pair is encoded jointly as \texttt{[CLS]}~$\Prem$~\texttt{[SEP]}~$\Hyp$~\texttt{[SEP]} by a
+pretrained Transformer, yielding contextual states $\vect{h}_t\in\mathbb{R}^{d}$ for every subword $t$
+and a pooled state $\vect{h}_{\cls}$ (the pooler output when the encoder has one, otherwise the first
+token). The baseline classifier is
+\begin{equation}
+  \vect{\ell}_{\cls} = \vect{W}_c\,\vect{h}_{\cls} + \vect{b}_c \in \mathbb{R}^{3}.
+  \label{eq:cls}
+\end{equation}
+\model{} is encoder-agnostic; we use RoBERTa~\citep{liu2019roberta} for English,
+BERTimbau~\citep{souza2020bertimbau} for Portuguese and XLM-R~\citep{conneau2020unsupervised} for the
+cross-lingual setting (\cref{sec:protocol}).
+
+\subsubsection{Token graph}
+\label{sec:graph}
+
+The graph is aligned with the encoder's subword sequence, so that symbolic evidence attaches to
+contextual states rather than to static word embeddings. A word becomes a node if it is a content word
+(not punctuation and not in a language-specific stopword list) or a logical operator; the node is
+represented by the state of its \emph{first} subword. We write $\Prem$ and $\Hyp$ also for the sets of
+premise and hypothesis nodes.
+
+Each word also receives an operator type $o_i\in\Ops$ from language-specific lexicons for English and
+Portuguese, with 13 types: \emph{none}, negation, universal, existential, downward-monotone, restrictive,
+conditional, disjunction, conjunction, comparative, modal, temporal and number (e.g.\ \textit{not, no, without} / \textit{não,
+nenhum, sem} are negations).
+
+Portuguese \textit{se}/\textit{caso} is tagged as
+conditional only at the start of a clause, since it is otherwise a reflexive pronoun or a noun.
+
+Premise and hypothesis are connected by typed lexical relations. For every premise--hypothesis word
+pair, a relation $r_{ij}\in\Rel$ is assigned by the first rule that
+fires: (i)~\emph{number-equal} or \emph{number-conflict} when both words are numerals; (ii)~\emph{identical}
+surface form; (iii)~\emph{antonym}, \emph{hypernym}, \emph{hyponym} or \emph{synonym} from a lexical
+resource, looked up over a small set of lemma candidates of each word; (iv)~\emph{same-stem} under a light
+suffix stripper; otherwise \emph{none}.
+
+Hypernymy is directional: $r_{ij}=\textit{hypernym}$ means the
+hypothesis word $j$ is more general than the premise word $i$ ($i\sqsubset j$), and the reverse edge
+$r_{ji}$ is the inverse relation. Stopwords never receive lexical relations.
+
+The resources are WordNet~3.0~\citep{miller1995wordnet} and Wiktionary~\citep{ylonen2022wiktextract}
+for English, and PT-LKB~\citep{goncalooliveira2018ptlkb,ptlexicalsemantics}, which merges ten Portuguese
+lexical resources, and Wiktionary for Portuguese. Pairs listed with
+both hypernym directions in the merged resources are discarded instead of guessed, since a wrong
+direction swaps forward and reverse entailment. From WordNet we keep single-word lemmas and the three
+most frequent synsets per part of speech, to limit edges from rare senses.
+
+\subsubsection{Bipartite relational attention}
+\label{sec:bipartite}
+
+Node states are projected to a smaller space and typed by their operator,
+\begin{equation}
+  \vect{x}^{(0)}_i = \LN\!\big(\vect{W}_p\,\vect{h}_i + \vect{E}_{\mathrm{op}}[o_i]\big)\in\mathbb{R}^{d_g},
+  \label{eq:node}
+\end{equation}
+with $d_g=256$. Each of $L=2$ layers lets every premise node attend to the hypothesis nodes and every
+hypothesis node attend to the premise nodes (cross-sentence pairs only), plus a learned \emph{null}
+target $\nullnode$ for words without a counterpart. For a node $i$ and a node $j$ on the other side,
+\begin{align}
+  e_{ij} &= \frac{(\vect{W}_q\vect{x}_i)^{\top}\vect{W}_k\vect{x}_j}{\sqrt{d_g}} + b[r_{ij}],
+  \label{eq:score}\\
+  \vect{\alpha}_i &= \operatorname{softmax}\big([\,e_{i1},\dots,e_{iN},\,e_{\nullnode}\,]\big),
+  \label{eq:align}\\
+  \vect{m}_i &= \sum_j \alpha_{ij}\big(\vect{W}_v\vect{x}_j + \vect{e}[r_{ij}]\big) + \alpha_{i\nullnode}\,\vect{v}_{\nullnode},
+  \label{eq:message}\\
+  \vect{x}_i &\leftarrow \LN\!\big(\vect{x}_i + \MLP([\vect{x}_i;\vect{m}_i;\vect{x}_i\odot\vect{m}_i;|\vect{x}_i-\vect{m}_i|])\big).
+  \label{eq:update}
+\end{align}
+The relation enters twice: as a scalar bias $b[r]$ on the alignment score, which steers \emph{where} a
+word looks, and as a vector $\vect{e}[r]$ added to the message, which tells the receiving word
+\emph{what kind} of evidence it found (e.g.\ an antonym rather than a synonym). The bias is initialised
+to $2$ for identical, synonym, hypernym, hyponym, antonym and number relations, $1$ for same-stem and
+$0$ otherwise, so that lexicon edges are preferred alignments at the start of training; all relation
+parameters are learned.
+
+The update in \cref{eq:update} follows the matching features of
+ESIM~\citep{chen2017enhanced}; $e_{\nullnode}$ and $\vect{v}_{\nullnode}$ are learned, and layers do not
+share weights. Unlike pairwise lexical features~\citep{chen2018neural}, the relations here act on
+contextual states and are refined over two rounds of alignment.
+
+\subsubsection{Coverage and conflict head}
+\label{sec:head}
+
+After the last layer, each hypothesis node $k\in\Hyp$ is scored independently:
+\begin{align}
+  s_k &= \sigma(\vect{w}_s^{\top}\vect{x}_k + b_s), &\text{(support)}\\
+  c_k &= \sigma(\vect{w}_c^{\top}\vect{x}_k + b_c), &\text{(conflict)}\\
+  \omega_k &= \softplus(\vect{w}_\omega^{\top}\vect{x}_k + b_\omega). &\text{(importance)}
+\end{align}
+$s_k$ is the probability that word $k$ is supported by the premise, $c_k$ the probability that it
+conflicts with the premise, and $\omega_k\ge 0$ how much the word matters for the decision (function-like
+content words can be down-weighted). Biases are initialised to $b_s=2$ and $b_c=-3$, i.e.\ words start
+as supported and non-conflicting.
+
+\subsubsection{Logical aggregation}
+\label{sec:aggregation}
+
+The word-level scores are combined by two logical rules. The hypothesis is covered if \emph{all} of its words are supported (weakest link) and is free of
+conflict if \emph{none} of its words conflicts (noisy-OR):
+\begin{align}
+  \log \Pcov &= \textstyle\sum_{k\in\Hyp} \omega_k \log s_k, \label{eq:cov}\\
+  \log \Pnc  &= \textstyle\sum_{k\in\Hyp} \omega_k \log (1-c_k). \label{eq:noconf}
+\end{align}
+With $\omega_k=1$, \cref{eq:cov} is the product of word-level support probabilities of
+\citet{glickman2005probabilistic}, and \cref{eq:noconf} is a noisy-OR over word-level conflicts. The
+three labels follow the decision tree ``any conflict $\Rightarrow$ \C; otherwise all covered
+$\Rightarrow$ \E; otherwise \N'':
+\begin{equation}
+  \begin{aligned}
+    z_{\E} &= \log \Pnc + \log \Pcov,\\
+    z_{\N} &= \log \Pnc + \log(1-\Pcov),\\
+    z_{\C} &= \log(1-\Pnc).
+  \end{aligned}
+  \label{eq:z}
+\end{equation}
+Since $\Pnc\Pcov+\Pnc(1-\Pcov)+(1-\Pnc)=1$, $\vect{z}$ is a normalised log-distribution by
+construction; no extra softmax or threshold is needed.
+
+Atomic-inference models apply similar rules with
+discrete span labels~\citep{stacey2022logical} or fuzzy logic over aligned phrases~\citep{wu2023weakly};
+\model{} differs in that the atoms are contextual token nodes whose alignment is shaped by typed lexical
+knowledge (\cref{eq:score,eq:message}), and in that the result is fused with, rather than substituted for,
+the sentence-level classifier. The per-word values $(s_k,c_k,\omega_k)$ also serve as an explanation of
+each prediction.
+
+\subsubsection{Fusion with the sentence classifier}
+\label{sec:fusion}
+
+The structured distribution is added to the \cls{} logits with a learned scale $\lambda$ (initialised to
+$1$):
+\begin{equation}
+  \vect{\ell} = \vect{\ell}_{\cls} + \lambda\,\vect{z}, \qquad \hat{y}=\arg\max_{y}\,\ell_y .
+  \label{eq:fusion}
+\end{equation}
+This is a product of experts: the coverage--conflict expert can overrule the encoder when its evidence is
+strong (e.g.\ a confident conflict on one word), and defers to it otherwise, so that phenomena the head
+cannot express are still handled by the encoder.
+
+\subsection{Training objective}
+\label{sec:training}
+
+We use a set-valued negative log-likelihood
+$\Lset(\vect{u};Y) = -\log\sum_{y\in Y}\operatorname{softmax}(\vect{u})_y$ over a set $Y$ of admissible
+labels, applied to the fused logits and, as an auxiliary term, to the structured expert alone:
+\begin{equation}
+  \mathcal{L} = \Lset(\vect{\ell};Y) + \beta\,\Lset(\vect{z};Y), \qquad \beta = 0.15 .
+  \label{eq:loss}
+\end{equation}
+The auxiliary term keeps $\vect{z}$ a meaningful classifier on its own instead of a residual correction.
+With a single gold label, $Y=\{y^{*}\}$ and \cref{eq:loss} is the usual cross-entropy, which is the case in
+all experiments reported here.
+
+The set formulation also allows training on corpora whose negative class
+merges neutral and contradiction (e.g.\ the \textsc{none} label of ASSIN), with $Y=\{\N,\C\}$; we leave
+this mixed-corpus training to future work.\todo{keep or drop depending on the final experiments.}
+
+The encoder and the new parameters are optimised with AdamW~\citep{loshchilov2019decoupled} and a
+linear warm-up/decay schedule; the graph and head parameters use a learning rate $10\times$ larger than
+the encoder's, since they start from scratch.
+
+\subsection{Ablations}
+\label{sec:ablations}
+
+To identify which components produce the effect, we compare \model{} with five variants that remove one
+component each while keeping everything else, including the auxiliary loss, identical:
+\begin{description}\itemsep0pt
+  \item[w/o lexicon] all relations and operators are set to \emph{none}
+    ($r_{ij}\!=\!\textit{none}$, $o_i\!=\!\textit{none}$): the graph and head remain, but alignment is
+    learned from the encoder states only.
+  \item[w/o graph] $L=0$: the head reads $\vect{x}^{(0)}$ directly; this also removes the relation-typed
+    attention, hence the lexicon edges.
+  \item[w/o conflict] coverage only: $z_{\E}=\log\Pcov$ and $z_{\N}=z_{\C}=\log(1-\Pcov)+\log\tfrac12$.
+  \item[w/o coverage] conflict only: $z_{\C}=\log(1-\Pnc)$ and $z_{\E}=z_{\N}=\log\Pnc+\log\tfrac12$.
+  \item[MLP head] the logical aggregation (\cref{sec:aggregation}) is replaced by an MLP over the mean and max
+    of the hypothesis node states, followed by a log-softmax; this controls for the capacity of the head.
+\end{description}
+The \cls{} baseline (\cref{eq:cls} alone) is trained with the same hyperparameters.
+
+\subsection{Knowledge-graph baselines}
+\label{sec:baselines}
+
+We also compare with three knowledge-enhanced NLI architectures, re-implemented on the same encoders
+and trained under the same protocol and seeds. K-BERT-style injection~\citep{liu2020kbert} appends the
+retrieved relations to the premise as text, with a 160-token window so that they are not truncated.
+\todo{add KGAnet and KGNLI references.}
+
+The KGAnet-style model encodes a relation-labelled word graph with a relation-aware graph attention
+network, and the KGNLI-style model keeps separate semantic and knowledge branches. All three take their
+knowledge from rule-based relations (numbers, operators, scope) and English WordNet, so on Portuguese
+text their lexical evidence reduces to word identity.
+
+\subsection{Experimental protocol}
+\label{sec:protocol}
+% Values below follow configs/experiment_0011.yaml and configs/experiment_0012.yaml.
+% Update if the final runs change.
+
+\subsubsection{Settings and data}
+\label{sec:data}
+
+We evaluate three settings (\cref{tab:data}).
+\emph{English}: RoBERTa-large~\citep{liu2019roberta} trained on SICK~\citep{marelli2014sick}, tested on
+the SICK test set, on the SuperGLUE diagnostic AX-b~\citep{wang2019superglue}, which annotates pairs
+with linguistic phenomena (lexical semantics, predicate--argument structure, logic, knowledge), and on
+five challenge sets described below.
+
+\emph{Portuguese}: BERTimbau-base~\citep{souza2020bertimbau} trained on InferBR~\citep{inferbr2024}
+\todo{check InferBR citation}, tested on the InferBR test set and, out of distribution, on the ASSIN
+\citep{fonseca2016assin}, ASSIN~2 \citep{real2020assin2} and SICK-BR~\citep{real2018sickbr} test sets.
+
+\emph{Cross-lingual}: XLM-R-base~\citep{conneau2020unsupervised} trained on SICK or on InferBR and tested on
+all eleven test sets, with the union of the English and Portuguese lexicons in both directions. Relation
+types are shared across languages, so relation parameters learned in one language are applied to edges
+of the other.
+
+The English challenge sets each isolate one kind of inference. Breaking NLI~\citep{glockner2018breaking}
+changes a single word of an SNLI premise (antonyms, co-hyponyms, hypernyms), a direct test of lexical
+knowledge and of the conflict detector. HANS~\citep{mccoy2019right} targets the lexical-overlap heuristic
+that a coverage-based decision could learn: every hypothesis word occurs in the premise, but half of the
+pairs are not entailments.
+
+ConjNLI~\citep{saha2020conjnli} tests conjunctive sentences; we use its labelled development set, since the
+test labels are not public. MED~\citep{yanaka2019can} tests upward and downward monotonicity, which
+\model{} does not model explicitly. The FraCaS suite~\citep{cooper1996fracas} covers formal semantic
+phenomena such as quantifiers, plurals and attitudes; multiple premises are concatenated, and the 11
+problems without a definite answer are discarded.
+
+SICK-BR is the Portuguese translation of SICK; its test partition is aligned pair by pair with the SICK
+test set, so the same pairs can be compared in both languages. ASSIN~2 was built from SICK-BR, and about
+36\% of its test pairs (870 of 2{,}448) are translations of SICK training or trial pairs. Models trained on
+SICK are therefore scored on the remaining 1{,}578 pairs of ASSIN~2.
+
+\begin{table}[t]
+  \centering\small
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}l l r r r l@{}}
+    \toprule
+    Dataset & Lang. & Train & Dev & Test & Labels \\
+    \midrule
+    SICK         & EN & 4{,}439 & 495 & 4{,}906 & 3-way \\
+    AX-b         & EN & -- & -- & 1{,}104 & 2-way \\
+    Breaking NLI & EN & -- & -- & 8{,}193 & 3-way \\
+    HANS         & EN & -- & -- & 30{,}000 & 2-way \\
+    ConjNLI      & EN & -- & -- & 623 & 3-way \\
+    MED          & EN & -- & -- & 5{,}382 & 2-way \\
+    FraCaS       & EN & -- & -- & 335 & 3-way \\
+    \midrule
+    InferBR      & PT & 8{,}190 & 633 & 1{,}705 & 3-way \\
+    ASSIN        & PT & -- & -- & 4{,}000 & 2-way$^{\dagger}$ \\
+    ASSIN~2      & PT & -- & -- & 2{,}448$^{\ddagger}$ & 2-way \\
+    SICK-BR      & PT & -- & -- & 4{,}906 & 3-way \\
+    \bottomrule
+  \end{tabular}
+  \caption{Datasets. Only SICK and InferBR are used for training; all other sets are used for testing
+  only. $^{\dagger}$Paraphrase pairs are counted as entailment. $^{\ddagger}$1{,}578 pairs for models
+  trained on SICK (pairs translated from SICK training or trial data removed).}
+  \label{tab:data}
+\end{table}
+
+\subsubsection{Training details}
+\label{sec:hyper}
+
+Hyperparameters are fixed in advance and shared by all variants of a setting; no per-variant tuning is
+performed, so that differences reflect architecture rather than search budget. We train for at most 8
+epochs with batch size 32, weight decay $3.5\times10^{-4}$, dropout $0.103$, gradient clipping at $1.0$,
+and select the checkpoint with the best development macro-F1, with early stopping after 3 epochs without
+improvement.
+
+The learning rate is $10^{-5}$ with 6\% warm-up for RoBERTa-large, which is unstable at larger rates
+on small datasets \citep{mosbach2021stability}, $2.04\times10^{-5}$ with 2.75\% warm-up for BERTimbau,
+and $2\times10^{-5}$ with 6\% warm-up for XLM-R. \todo{max lengths;
+gradient accumulation for RoBERTa-large (2$\times$16, same effective batch).}
+
+\subsubsection{Evaluation}
+\label{sec:evaluation}
+
+For three-way test sets we report macro-F1. Because AX-b, HANS, MED, ASSIN and ASSIN~2 only distinguish
+entailment from non-entailment, we also report, for every test set, the Matthews correlation coefficient
+(MCC) of the binary decision \E{} \emph{vs.} $\neg$\E{} obtained by merging \N{} and \C{} predictions. MCC
+is the official AX-b metric and is robust to the label imbalance of these sets.
+
+We further break results down by the annotations of each set: phenomenon in AX-b, substitution category
+in Breaking NLI, heuristic and subcase in HANS, monotonicity direction in MED and section in FraCaS. With
+few pairs in some groups (18--140 per AX-b phenomenon), these breakdowns are exploratory.
+
+Every system is trained with the same 10 seeds (1001--1010), and results are paired by seed. The seed
+fixes all random number generators at the start of a run; because variants create different numbers of
+parameters, initialisation and data order are not identical across variants for the same seed, so pairing
+blocks run-level variance only partially.
+
+We compare two systems
+with the two-sided exact Wilcoxon signed-rank test on the 10 per-seed differences~\citep{wilcoxon1945individual}
+and report the mean paired difference with a 95\% percentile bootstrap interval over seeds. Within the
+ablation family, $p$-values are corrected with Holm's method~\citep{holm1979simple}. Rankings of more than
+two systems use the Friedman test with the Nemenyi post-hoc test~\citep{demsar2006statistical}.

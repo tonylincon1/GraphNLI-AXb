@@ -1,0 +1,365 @@
+[
+  {
+    "split": "assin2_test",
+    "metric": "binary/macro_f1",
+    "status": "ok",
+    "alpha": 0.05,
+    "blocks": [
+      "seed_1001",
+      "seed_1002",
+      "seed_1003",
+      "seed_1004",
+      "seed_1005",
+      "seed_1006",
+      "seed_1007"
+    ],
+    "models": [
+      "K-BERT",
+      "KGAnet",
+      "KGNLI",
+      "TRIAL-NLI (no transformations)",
+      "TRIAL-NLI",
+      "Pair classifier"
+    ],
+    "friedman": {
+      "statistic": null,
+      "p_value": 0.06856011980506378
+    },
+    "pairwise_wilcoxon": {
+      "p_value": null,
+      "significant_at_0_05": null
+    },
+    "autorank": {
+      "omnibus": "friedman",
+      "posthoc": "nemenyi",
+      "all_normal": true,
+      "homoscedastic": true,
+      "effect_size": "cohen_d",
+      "report": "The statistical analysis was conducted for 6 populations with 7 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.116). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and failed to reject the null hypothesis (p=0.259) that the data is homoscedastic. Thus, we assume that our data is homoscedastic.\nBecause we have more than two populations and all populations are normal and homoscedastic, we should use repeated measures ANOVA as omnibus test to determine if there are any significant differences between the mean values of the populations. However, the user decided to force the use of the less powerful Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=2.850 of the Nemenyi test.\nWe failed to reject the null hypothesis (p=0.069) of the Friedman test that there is no difference in the central tendency of the populations K-BERT (MD=0.892+-0.008, MAD=0.004, MR=5.000), KGAnet (MD=0.891+-0.010, MAD=0.002, MR=4.214), Pair classifier (MD=0.896+-0.008, MAD=0.004, MR=3.786), KGNLI (MD=0.900+-0.006, MAD=0.003, MR=3.000), TRIAL-NLI (MD=0.901+-0.004, MAD=0.002, MR=2.571), and TRIAL-NLI (no transformations) (MD=0.900+-0.004, MAD=0.002, MR=2.429). Therefore, we assume that there is no statistically significant difference between the median values of the populations."
+    },
+    "nemenyi_critical_difference": 2.849668809217878,
+    "average_ranks": {
+      "K-BERT": 5.0,
+      "KGAnet": 4.214285714285714,
+      "Pair classifier": 3.7857142857142856,
+      "KGNLI": 3.0,
+      "TRIAL-NLI": 2.5714285714285716,
+      "TRIAL-NLI (no transformations)": 2.4285714285714284
+    },
+    "non_significant_groups": [
+      [
+        "TRIAL-NLI (no transformations)",
+        "TRIAL-NLI",
+        "KGNLI",
+        "Pair classifier",
+        "KGAnet",
+        "K-BERT"
+      ]
+    ],
+    "block_values": {
+      "seed_1001": {
+        "K-BERT": 0.8854705730546162,
+        "KGAnet": 0.8905366603612905,
+        "KGNLI": 0.905632704009986,
+        "TRIAL-NLI (no transformations)": 0.89580779323496,
+        "TRIAL-NLI": 0.9008466967979236,
+        "Pair classifier": 0.8928090103966115
+      },
+      "seed_1002": {
+        "K-BERT": 0.8918423906494759,
+        "KGAnet": 0.9055179206484064,
+        "KGNLI": 0.9017324604685237,
+        "TRIAL-NLI (no transformations)": 0.9037190701613301,
+        "TRIAL-NLI": 0.9045633996059617,
+        "Pair classifier": 0.8963714167395205
+      },
+      "seed_1003": {
+        "K-BERT": 0.8897486163577926,
+        "KGAnet": 0.8907453953637801,
+        "KGNLI": 0.9025028263979207,
+        "TRIAL-NLI (no transformations)": 0.9003460207612457,
+        "TRIAL-NLI": 0.8975407091522264,
+        "Pair classifier": 0.8943278943278943
+      },
+      "seed_1004": {
+        "K-BERT": 0.8997609176883306,
+        "KGAnet": 0.8992990154109589,
+        "KGNLI": 0.8993550250288795,
+        "TRIAL-NLI (no transformations)": 0.901294930182452,
+        "TRIAL-NLI": 0.8960001873291876,
+        "Pair classifier": 0.8992990154109589
+      },
+      "seed_1005": {
+        "K-BERT": 0.8852013130568768,
+        "KGAnet": 0.8902502919124363,
+        "KGNLI": 0.8996891628470576,
+        "TRIAL-NLI (no transformations)": 0.8980433861561253,
+        "TRIAL-NLI": 0.9016297923496536,
+        "Pair classifier": 0.90125197527684
+      },
+      "seed_1006": {
+        "K-BERT": 0.8915172154881282,
+        "KGAnet": 0.8886752701488367,
+        "KGNLI": 0.8959919067347528,
+        "TRIAL-NLI (no transformations)": 0.9033925513698631,
+        "TRIAL-NLI": 0.9025951488831838,
+        "Pair classifier": 0.8885549649960132
+      },
+      "seed_1007": {
+        "K-BERT": 0.8959392697915411,
+        "KGAnet": 0.9003858043943755,
+        "KGNLI": 0.8942316258799462,
+        "TRIAL-NLI (no transformations)": 0.9004758009723479,
+        "TRIAL-NLI": 0.9009580925618929,
+        "Pair classifier": 0.905057399937946
+      }
+    }
+  },
+  {
+    "split": "assin_test",
+    "metric": "binary/macro_f1",
+    "status": "ok",
+    "alpha": 0.05,
+    "blocks": [
+      "seed_1001",
+      "seed_1002",
+      "seed_1003",
+      "seed_1004",
+      "seed_1005",
+      "seed_1006",
+      "seed_1007"
+    ],
+    "models": [
+      "K-BERT",
+      "KGAnet",
+      "KGNLI",
+      "TRIAL-NLI (no transformations)",
+      "TRIAL-NLI",
+      "Pair classifier"
+    ],
+    "friedman": {
+      "statistic": null,
+      "p_value": 0.001352884801207604
+    },
+    "pairwise_wilcoxon": {
+      "p_value": null,
+      "significant_at_0_05": null
+    },
+    "autorank": {
+      "omnibus": "friedman",
+      "posthoc": "nemenyi",
+      "all_normal": true,
+      "homoscedastic": false,
+      "effect_size": "cohen_d",
+      "report": "The statistical analysis was conducted for 6 populations with 7 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.017). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and reject the null hypothesis (p=0.021) that thedata is homoscedastic. Thus, we assume that our data is heteroscedastic.\nBecause we have more than two populations and the populations are normal but heteroscedastic, we use the non-parametric Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We use the post-hoc Nemenyi test to infer which differences are significant. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=2.850 of the Nemenyi test.\nWe reject the null hypothesis (p=0.001) of the Friedman test that there is no difference in the central tendency of the populations K-BERT (MD=0.847+-0.007, MAD=0.003, MR=6.000), KGNLI (MD=0.868+-0.010, MAD=0.002, MR=3.714), KGAnet (MD=0.869+-0.011, MAD=0.007, MR=3.571), Pair classifier (MD=0.872+-0.021, MAD=0.011, MR=3.286), TRIAL-NLI (MD=0.874+-0.007, MAD=0.003, MR=2.571), and TRIAL-NLI (no transformations) (MD=0.871+-0.007, MAD=0.001, MR=1.857). Therefore, we assume that there is a statistically significant difference between the median values of the populations.\nBased on the post-hoc Nemenyi test, we assume that there are no significant differences within the following groups: K-BERT, KGNLI, KGAnet, and Pair classifier; KGNLI, KGAnet, Pair classifier, TRIAL-NLI, and TRIAL-NLI (no transformations). All other differences are significant."
+    },
+    "nemenyi_critical_difference": 2.849668809217878,
+    "average_ranks": {
+      "K-BERT": 6.0,
+      "KGNLI": 3.7142857142857144,
+      "KGAnet": 3.5714285714285716,
+      "Pair classifier": 3.2857142857142856,
+      "TRIAL-NLI": 2.5714285714285716,
+      "TRIAL-NLI (no transformations)": 1.8571428571428572
+    },
+    "non_significant_groups": [
+      [
+        "TRIAL-NLI (no transformations)",
+        "TRIAL-NLI",
+        "Pair classifier",
+        "KGAnet",
+        "KGNLI"
+      ],
+      [
+        "Pair classifier",
+        "KGAnet",
+        "KGNLI",
+        "K-BERT"
+      ]
+    ],
+    "block_values": {
+      "seed_1001": {
+        "K-BERT": 0.8473955254879248,
+        "KGAnet": 0.869081688432793,
+        "KGNLI": 0.8547925051171299,
+        "TRIAL-NLI (no transformations)": 0.8796556345984033,
+        "TRIAL-NLI": 0.8740289453701404,
+        "Pair classifier": 0.8555611259201292
+      },
+      "seed_1002": {
+        "K-BERT": 0.8503731737710873,
+        "KGAnet": 0.8762150175336899,
+        "KGNLI": 0.8699495850277045,
+        "TRIAL-NLI (no transformations)": 0.8812484014658143,
+        "TRIAL-NLI": 0.87214410507764,
+        "Pair classifier": 0.8731696462306513
+      },
+      "seed_1003": {
+        "K-BERT": 0.8419721871049305,
+        "KGAnet": 0.8548393237892171,
+        "KGNLI": 0.8650309310330428,
+        "TRIAL-NLI (no transformations)": 0.8701258903307996,
+        "TRIAL-NLI": 0.8641944304626983,
+        "Pair classifier": 0.8465282748747316
+      },
+      "seed_1004": {
+        "K-BERT": 0.8509282338589066,
+        "KGAnet": 0.8597326851877338,
+        "KGNLI": 0.869616609502863,
+        "TRIAL-NLI (no transformations)": 0.869668160655714,
+        "TRIAL-NLI": 0.8783747167208592,
+        "Pair classifier": 0.879277144126796
+      },
+      "seed_1005": {
+        "K-BERT": 0.8463153145647813,
+        "KGAnet": 0.862236088950318,
+        "KGNLI": 0.8681693978167763,
+        "TRIAL-NLI (no transformations)": 0.8705523896178526,
+        "TRIAL-NLI": 0.8736054731487068,
+        "Pair classifier": 0.883334316559495
+      },
+      "seed_1006": {
+        "K-BERT": 0.8460481059539253,
+        "KGAnet": 0.8705371428571429,
+        "KGNLI": 0.8770773804508971,
+        "TRIAL-NLI (no transformations)": 0.8707946245949354,
+        "TRIAL-NLI": 0.8692461303186124,
+        "Pair classifier": 0.8504759283235972
+      },
+      "seed_1007": {
+        "K-BERT": 0.8570212759432834,
+        "KGAnet": 0.8724127619962108,
+        "KGNLI": 0.8659025464400656,
+        "TRIAL-NLI (no transformations)": 0.8724487835763209,
+        "TRIAL-NLI": 0.8770552510739149,
+        "Pair classifier": 0.872332783825948
+      }
+    }
+  },
+  {
+    "split": "inferbr_test",
+    "metric": "binary/macro_f1",
+    "status": "ok",
+    "alpha": 0.05,
+    "blocks": [
+      "seed_1001",
+      "seed_1002",
+      "seed_1003",
+      "seed_1004",
+      "seed_1005",
+      "seed_1006",
+      "seed_1007"
+    ],
+    "models": [
+      "K-BERT",
+      "KGAnet",
+      "KGNLI",
+      "TRIAL-NLI (no transformations)",
+      "TRIAL-NLI",
+      "Pair classifier"
+    ],
+    "friedman": {
+      "statistic": null,
+      "p_value": 0.0004497594788885727
+    },
+    "pairwise_wilcoxon": {
+      "p_value": null,
+      "significant_at_0_05": null
+    },
+    "autorank": {
+      "omnibus": "friedman",
+      "posthoc": "nemenyi",
+      "all_normal": true,
+      "homoscedastic": true,
+      "effect_size": "cohen_d",
+      "report": "The statistical analysis was conducted for 6 populations with 7 paired samples.\nThe family-wise significance level of the tests is alpha=0.050.\nWe failed to reject the null hypothesis that the population is normal for all populations (minimal observed p-value=0.075). Therefore, we assume that all populations are normal.\nWe applied Bartlett's test for homogeneity and failed to reject the null hypothesis (p=0.549) that the data is homoscedastic. Thus, we assume that our data is homoscedastic.\nBecause we have more than two populations and all populations are normal and homoscedastic, we should use repeated measures ANOVA as omnibus test to determine if there are any significant differences between the mean values of the populations. However, the user decided to force the use of the less powerful Friedman test as omnibus test to determine if there are any significant differences between the mean values of the populations. We report the mean value (M), the standard deviation (SD) and the mean rank (MR) among all populations over the samples. Differences between populations are significant, if the difference of the mean rank is greater than the critical distance CD=2.850 of the Nemenyi test.\nWe reject the null hypothesis (p=0.000) of the Friedman test that there is no difference in the central tendency of the populations K-BERT (MD=0.938+-0.008, MAD=0.003, MR=5.286), Pair classifier (MD=0.938+-0.006, MAD=0.004, MR=5.000), KGAnet (MD=0.943+-0.007, MAD=0.002, MR=4.000), TRIAL-NLI (no transformations) (MD=0.946+-0.005, MAD=0.001, MR=2.714), KGNLI (MD=0.950+-0.010, MAD=0.004, MR=2.429), and TRIAL-NLI (MD=0.948+-0.005, MAD=0.002, MR=1.571). Therefore, we assume that there is a statistically significant difference between the median values of the populations.\nBased on the post-hoc Nemenyi test, we assume that there are no significant differences within the following groups: K-BERT, Pair classifier, KGAnet, and TRIAL-NLI (no transformations); Pair classifier, KGAnet, TRIAL-NLI (no transformations), and KGNLI; KGAnet, TRIAL-NLI (no transformations), KGNLI, and TRIAL-NLI. All other differences are significant."
+    },
+    "nemenyi_critical_difference": 2.849668809217878,
+    "average_ranks": {
+      "K-BERT": 5.285714285714286,
+      "Pair classifier": 5.0,
+      "KGAnet": 4.0,
+      "TRIAL-NLI (no transformations)": 2.7142857142857144,
+      "KGNLI": 2.4285714285714284,
+      "TRIAL-NLI": 1.5714285714285714
+    },
+    "non_significant_groups": [
+      [
+        "TRIAL-NLI",
+        "KGNLI",
+        "TRIAL-NLI (no transformations)",
+        "KGAnet"
+      ],
+      [
+        "KGNLI",
+        "TRIAL-NLI (no transformations)",
+        "KGAnet",
+        "Pair classifier"
+      ],
+      [
+        "TRIAL-NLI (no transformations)",
+        "KGAnet",
+        "Pair classifier",
+        "K-BERT"
+      ]
+    ],
+    "block_values": {
+      "seed_1001": {
+        "K-BERT": 0.9373808554554139,
+        "KGAnet": 0.9427041066016102,
+        "KGNLI": 0.9343670261573463,
+        "TRIAL-NLI (no transformations)": 0.9388058958444045,
+        "TRIAL-NLI": 0.9437728735462931,
+        "Pair classifier": 0.931538159792684
+      },
+      "seed_1002": {
+        "K-BERT": 0.937757486489945,
+        "KGAnet": 0.941815553287398,
+        "KGNLI": 0.9460204721442316,
+        "TRIAL-NLI (no transformations)": 0.9480628898078796,
+        "TRIAL-NLI": 0.9481076303877894,
+        "Pair classifier": 0.9384698431004741
+      },
+      "seed_1003": {
+        "K-BERT": 0.9328541250465985,
+        "KGAnet": 0.9428034356112092,
+        "KGNLI": 0.9547538199360104,
+        "TRIAL-NLI (no transformations)": 0.9459367255492762,
+        "TRIAL-NLI": 0.9496781988179733,
+        "Pair classifier": 0.9333675385514864
+      },
+      "seed_1004": {
+        "K-BERT": 0.9417870190173785,
+        "KGAnet": 0.9444033327694065,
+        "KGNLI": 0.9496359602734623,
+        "TRIAL-NLI (no transformations)": 0.9447995485911975,
+        "TRIAL-NLI": 0.9470196465214344,
+        "Pair classifier": 0.9423192845192403
+      },
+      "seed_1005": {
+        "K-BERT": 0.9256524772562448,
+        "KGAnet": 0.9353182640256668,
+        "KGNLI": 0.9507350921403065,
+        "TRIAL-NLI (no transformations)": 0.9468395300953967,
+        "TRIAL-NLI": 0.9423192845192403,
+        "Pair classifier": 0.9416885926063694
+      },
+      "seed_1006": {
+        "K-BERT": 0.9399504474430513,
+        "KGAnet": 0.9321741897776268,
+        "KGNLI": 0.9506499160035521,
+        "TRIAL-NLI (no transformations)": 0.9395423627427402,
+        "TRIAL-NLI": 0.9517547786859732,
+        "Pair classifier": 0.9343416605821988
+      },
+      "seed_1007": {
+        "K-BERT": 0.9404788621413647,
+        "KGAnet": 0.9450342796965334,
+        "KGNLI": 0.9412558724986371,
+        "TRIAL-NLI (no transformations)": 0.945619698722794,
+        "TRIAL-NLI": 0.9503938478877381,
+        "Pair classifier": 0.9408566592048545
+      }
+    }
+  }
+]

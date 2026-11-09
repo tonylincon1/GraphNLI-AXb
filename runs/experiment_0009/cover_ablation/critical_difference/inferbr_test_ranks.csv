@@ -1,0 +1,8 @@
+model,average_rank
+coverage_pl_v1,2.1
+coverage_pl_v1_mlp_head,3.0
+coverage_pl_v1_no_coverage,3.1
+coverage_pl_v1_no_conflict,4.7
+coverage_pl_v1_no_symbolic,4.7
+coverage_pl_v1_no_graph,4.8
+Pair classifier,5.6

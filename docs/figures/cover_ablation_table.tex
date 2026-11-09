@@ -1,0 +1,50 @@
+% Classic ablation table for COVER-PL (experiment_0009, InferBR test, 10 paired seeds).
+% Numbers: runs/experiment_0009 (pair_cls and coverage_pl_v1 copied from experiment_0008).
+% Build: pdflatex cover_ablation_table.tex
+% In a paper, copy the tabular into a table environment and move the notes to the caption.
+\documentclass[border=6pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage{booktabs,multirow,xcolor,array,graphicx}
+\definecolor{neg}{HTML}{C0392B}
+\definecolor{mute}{HTML}{6B6B6B}
+\newcommand{\dn}[1]{\textcolor{neg}{#1}}   % significant drop
+\newcommand{\ns}[1]{\textcolor{mute}{#1}}  % not significant
+\newcommand{\sd}[1]{{\scriptsize$\pm$#1}}
+
+\begin{document}
+\begin{minipage}{14.4cm}
+\centering
+\small
+\begin{tabular}{@{}l l c r c c r c@{}}
+\toprule
+& & \multicolumn{2}{c}{\textbf{Macro-F1} (3-way)} & & \multicolumn{3}{c}{\textbf{MCC} (binary: E vs.\ $\neg$E)} \\
+\cmidrule(lr){3-4}\cmidrule(l){6-8}
+& Variant & mean & $\Delta$ & & mean & $\Delta$ & W/L \\
+\midrule
+& \textbf{COVER-PL (full)} & \textbf{92.23}\sd{0.49} & -- & & \textbf{90.54}\sd{0.70} & -- & -- \\
+\midrule
+\multirow{2}{*}{\rotatebox{90}{\scriptsize Know.}}
+& \quad w/o lexical relations ($r_{ij}$, $o_i$) & 91.87\sd{0.41} & \ns{$-$0.36} & & 89.50\sd{0.62} & \dn{$-$1.04$^{*}$} & 1/9 \\
+& \quad w/o graph layers (c) & 91.75\sd{1.00} & \ns{$-$0.48} & & 89.22\sd{1.25} & \dn{$-$1.32$^{*}$} & 2/8 \\
+\midrule
+\multirow{3}{*}{\rotatebox{90}{\scriptsize Head}}
+& \quad w/o conflict branch ($c_k$, noisy-OR) & 91.45\sd{0.99} & \dn{$-$0.79$^{*}$} & & 89.42\sd{1.24} & \dn{$-$1.11$^{**\dagger}$} & 0/10 \\
+& \quad w/o coverage branch ($s_k$, weakest link) & 92.04\sd{0.38} & \ns{$-$0.20} & & 90.16\sd{0.76} & \ns{$-$0.38} & 4/6 \\
+& \quad logical head $\rightarrow$ MLP head & 91.71\sd{1.34} & \ns{$-$0.52} & & 89.81\sd{1.57} & \ns{$-$0.73} & 4/6 \\
+\midrule
+& BERTimbau [CLS] baseline (\texttt{pair\_cls}) & 91.76\sd{0.60} & \ns{$-$0.47} & & 88.99\sd{0.92} & \dn{$-$1.55$^{**}$} & 0/10 \\
+\bottomrule
+\end{tabular}
+
+\vspace{4pt}
+\begin{minipage}{14.4cm}
+\scriptsize\raggedright
+InferBR test set (1{,}705 pairs), BERTimbau-base, same fixed hyperparameters for every row, 10 paired seeds; mean $\pm$ s.d.\ in \%.
+$\Delta$: mean paired difference to the full model (percentage points).
+W/L: seeds where the variant wins/loses against the full model.
+Two-sided Wilcoxon signed-rank test: $^{*}p<0.05$, $^{**}p<0.01$; $^{\dagger}$significant after Holm correction over the five ablations.
+\emph{Know.}: knowledge injection; \emph{Head}: coverage/conflict head and logical aggregation (panels (d)--(e)).
+\end{minipage}
+\end{minipage}
+\end{document}

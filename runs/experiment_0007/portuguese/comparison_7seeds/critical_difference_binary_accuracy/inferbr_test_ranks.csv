@@ -1,0 +1,7 @@
+model,average_rank
+TRIAL-NLI,1.6428571428571428
+KGNLI,2.5
+TRIAL-NLI (no transformations),2.5714285714285716
+KGAnet,4.0
+Pair classifier,5.0
+K-BERT,5.285714285714286

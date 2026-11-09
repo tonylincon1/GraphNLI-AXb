@@ -1,0 +1,47 @@
+% Paper draft: COVER (knowledge-grounded coverage/conflict NLI).
+% Build:  cd paper && latexmk -pdf main.tex      (clean: latexmk -C)
+% Generic two-column layout. For a venue template (ACL, LREC-COLING, PROPOR...), replace the
+% preamble below by the venue style and keep \input{sections/...} unchanged.
+\documentclass[10pt,twocolumn,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=2cm,columnsep=0.7cm]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,bm}
+\usepackage{graphicx}
+\usepackage{tikz}
+% TikZ figures in figures/*.tex are standalone documents; their preambles (colours, styles) are
+% loaded automatically, so each figure can also be compiled on its own.
+\usepackage[subpreambles=true]{standalone}
+\usepackage{booktabs,multirow,array}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+% ---------------------------------------------------------------- notation
+\input{macros}
+
+\title{\model: Knowledge-Grounded Coverage and Conflict Reasoning\\for Natural Language Inference in English and Portuguese}
+\author{Antonio \textit{et al.}\\ \small\todo{affiliations}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\todo{Write last.}
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/methodology}
+\input{sections/results}
+\input{sections/conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

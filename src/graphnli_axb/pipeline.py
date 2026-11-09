@@ -6,6 +6,8 @@ import argparse
 import copy
 import json
 import math
+import time
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import optuna
@@ -14,6 +16,109 @@ import yaml
 from .data import NLIExample, load_axb, load_mnli, load_xnli, project_root
 from .labels import LABEL_TO_ID_3, normalize_label
 from .train import build_arg_parser, maybe_limit, resolve_eval_languages, train_one
+
+DEFAULT_EST_MINUTES_PER_RUN = 30.0
+
+
+class ExperimentProgress:
+    """Experiment-wide progress bar with an ETA (date and time).
+
+    Every run (pipeline x model x variant x seed) is weighted by the pipeline's
+    ``est_minutes_per_run`` (YAML), so a long roberta-large run moves the bar more than a
+    short base-model run. The ETA rescales the remaining estimate by the ratio
+    actual/estimated time of the runs finished in this session, so it self-corrects after the
+    first runs. The same information is written to <experiment>/progress.txt after every run.
+    """
+
+    def __init__(self, config: dict, experiment_dir: Path):
+        from tqdm.auto import tqdm
+
+        self.path = experiment_dir / "progress.txt"
+        self.runs = []  # (pipeline, est_minutes, done)
+        for name, pipeline in config["pipelines"].items():
+            if not pipeline.get("enabled", True):
+                continue
+            est = float(pipeline.get("est_minutes_per_run", DEFAULT_EST_MINUTES_PER_RUN))
+            model_names = pipeline.get("model_names", [config.get("model_name", "roberta-base")])
+            variants = pipeline.get("variants", config.get("variants", []))
+            seeds = pipeline.get("seeds", config.get("seeds", [42]))
+            for model_name in model_names:
+                slug = model_name.replace("/", "__")
+                for variant in variants:
+                    for seed in seeds:
+                        done = (experiment_dir / name / slug / variant / f"seed_{int(seed)}" / "result.json").exists()
+                        self.runs.append((name, est, done))
+        self.total_runs = len(self.runs)
+        self.done_runs = sum(done for _, _, done in self.runs)
+        self.remaining_est = sum(est for _, est, done in self.runs if not done)
+        total_est = sum(est for _, est, _ in self.runs)
+        self.session_actual = 0.0
+        self.session_est = 0.0
+        self.started = None
+        self.bar = tqdm(
+            total=round(total_est),
+            initial=round(total_est - self.remaining_est),
+            unit="min",
+            position=0,
+            leave=True,
+            dynamic_ncols=True,
+            bar_format="experiment {percentage:3.0f}%|{bar}| {desc}",
+        )
+        self._refresh(current=None)
+
+    def ratio(self) -> float:
+        return self.session_actual / self.session_est if self.session_est > 0 else 1.0
+
+    def _refresh(self, current: str | None) -> None:
+        remaining_min = self.remaining_est * self.ratio()
+        eta = datetime.now() + timedelta(minutes=remaining_min)
+        days, rest = divmod(int(remaining_min), 60 * 24)
+        left = f"{days}d {rest // 60:02d}h{rest % 60:02d}" if days else f"{rest // 60}h{rest % 60:02d}"
+        postfix = (
+            f"runs {self.done_runs}/{self.total_runs} | left ~{left} | ETA {eta:%a %d/%m %H:%M}"
+            f" | speed x{self.ratio():.2f}"
+        )
+        self.bar.set_description_str(postfix, refresh=True)
+        lines = [
+            f"updated   {datetime.now():%Y-%m-%d %H:%M}",
+            f"runs      {self.done_runs}/{self.total_runs}",
+            f"progress  {100 * (1 - self.remaining_est / max(1e-9, self.bar.total)):.1f}% (weighted by est_minutes_per_run)",
+            f"left      ~{left} (estimate x{self.ratio():.2f} observed speed)",
+            f"ETA       {eta:%Y-%m-%d %H:%M} (machine local time)",
+        ]
+        if current:
+            lines.append(f"running   {current}")
+        per_pipeline = {}
+        for name, _, done in self.runs:
+            stats = per_pipeline.setdefault(name, [0, 0])
+            stats[0] += done
+            stats[1] += 1
+        lines.append("")
+        lines.extend(f"  {name:34s} {d:3d}/{t}" for name, (d, t) in per_pipeline.items())
+        try:
+            self.path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        except OSError:
+            pass
+
+    def start(self, pipeline: str, label: str) -> None:
+        self.started = time.time()
+        self._refresh(current=f"{pipeline}/{label}")
+
+    def finish(self, pipeline: str) -> None:
+        est = next(est for name, est, done in self.runs if name == pipeline and not done)
+        index = next(i for i, (name, _, done) in enumerate(self.runs) if name == pipeline and not done)
+        self.runs[index] = (pipeline, est, True)
+        if self.started is not None:
+            self.session_actual += (time.time() - self.started) / 60
+            self.session_est += est
+        self.started = None
+        self.done_runs += 1
+        self.remaining_est -= est
+        self.bar.update(round(est))
+        self._refresh(current=None)
+
+    def close(self) -> None:
+        self.bar.close()
 
 
 def _label_ids(value: object, dataset_name: str = "") -> tuple[int, int]:
@@ -200,7 +305,8 @@ def tune_variant(model_name: str, variant: str, train_rows, val_rows, base_confi
     }
 
 
-def run_pipeline(name: str, pipeline: dict, global_config: dict, experiment_dir: Path, data_root: Path) -> dict:
+def run_pipeline(name: str, pipeline: dict, global_config: dict, experiment_dir: Path, data_root: Path,
+                 progress: ExperimentProgress | None = None) -> dict:
     train_rows = load_dataset_spec(pipeline["train"], data_root)
     val_rows = load_dataset_spec(pipeline["validation"], data_root)
     eval_sets = {item["name"]: load_dataset_spec(item, data_root) for item in pipeline.get("test", [])}
@@ -280,7 +386,11 @@ def run_pipeline(name: str, pipeline: dict, global_config: dict, experiment_dir:
                 surrogate_variants = pipeline.get("surrogate_analysis_variants", [])
                 args.surrogate_analysis = variant in surrogate_variants
                 args.surrogate_split = pipeline.get("surrogate_split", "inferbr_test")
+                if progress is not None:
+                    progress.start(name, f"{variant}/seed_{seed}")
                 results.append(train_one(model_name, variant, seed, train_rows, val_rows, eval_sets, args))
+                if progress is not None:
+                    progress.finish(name)
             tuning_reports.append(report)
     summary = {"pipeline": name, "results": results, "tuning": tuning_reports}
     (pipeline_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
@@ -301,10 +411,12 @@ def main() -> None:
     (experiment_dir / "config.yaml").write_text(config_path.read_text(encoding="utf-8"), encoding="utf-8")
     data_root = project_root() / config.get("data_dir", "data")
     summaries = {}
+    progress = ExperimentProgress(config, experiment_dir)
     for name, pipeline in config["pipelines"].items():
         if pipeline.get("enabled", True):
-            print(f"\n=== pipeline: {name} ===")
-            summaries[name] = run_pipeline(name, pipeline, config, experiment_dir, data_root)
+            progress.bar.write(f"\n=== pipeline: {name} ===")
+            summaries[name] = run_pipeline(name, pipeline, config, experiment_dir, data_root, progress)
+    progress.close()
     (experiment_dir / "pipeline_summary.json").write_text(json.dumps(summaries, indent=2), encoding="utf-8")
     print(f"wrote {experiment_dir}")
 
