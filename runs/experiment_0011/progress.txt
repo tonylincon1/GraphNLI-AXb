@@ -1,0 +1,16 @@
+updated   2026-11-09 14:33
+runs      19/400
+progress  3.7% (weighted by est_minutes_per_run)
+left      ~7d 03h25 (estimate x0.77 observed speed)
+ETA       2026-11-16 17:59 (machine local time)
+running   sick_en_ablation/pair_cls/seed_1010
+
+  sick_en_ablation                    19/70
+  inferbr_pt_ablation                  0/70
+  xling_en_to_pt_ablation              0/70
+  xling_pt_to_en_ablation              0/70
+  sick_en_graph_baselines              0/20
+  sick_en_kbert                        0/10
+  inferbr_pt_graph_baselines           0/30
+  xling_en_to_pt_graph_baselines       0/30
+  xling_pt_to_en_graph_baselines       0/30
