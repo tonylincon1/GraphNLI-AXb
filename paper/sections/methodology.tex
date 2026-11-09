@@ -252,26 +252,23 @@ We evaluate three settings (\cref{tab:data}).
 \emph{English}: RoBERTa-large~\citep{liu2019roberta} trained on SICK~\citep{marelli2014sick}, tested on
 the SICK test set, on the SuperGLUE diagnostic AX-b~\citep{wang2019superglue}, which annotates pairs
 with linguistic phenomena (lexical semantics, predicate--argument structure, logic, knowledge), and on
-five challenge sets described below.
+three challenge sets described below.
 
 \emph{Portuguese}: BERTimbau-base~\citep{souza2020bertimbau} trained on InferBR~\citep{inferbr2024}
 \todo{check InferBR citation}, tested on the InferBR test set and, out of distribution, on the ASSIN
 \citep{fonseca2016assin}, ASSIN~2 \citep{real2020assin2} and SICK-BR~\citep{real2018sickbr} test sets.
 
 \emph{Cross-lingual}: XLM-R-base~\citep{conneau2020unsupervised} trained on SICK or on InferBR and tested on
-all eleven test sets, with the union of the English and Portuguese lexicons in both directions. Relation
+all nine test sets, with the union of the English and Portuguese lexicons in both directions. Relation
 types are shared across languages, so relation parameters learned in one language are applied to edges
 of the other.
 
 The English challenge sets each isolate one kind of inference. Breaking NLI~\citep{glockner2018breaking}
 changes a single word of an SNLI premise (antonyms, co-hyponyms, hypernyms), a direct test of lexical
-knowledge and of the conflict detector. HANS~\citep{mccoy2019right} targets the lexical-overlap heuristic
-that a coverage-based decision could learn: every hypothesis word occurs in the premise, but half of the
-pairs are not entailments.
+knowledge and of the conflict detector.
 
 ConjNLI~\citep{saha2020conjnli} tests conjunctive sentences; we use its labelled development set, since the
-test labels are not public. MED~\citep{yanaka2019can} tests upward and downward monotonicity, which
-\model{} does not model explicitly. The FraCaS suite~\citep{cooper1996fracas} covers formal semantic
+test labels are not public. The FraCaS suite~\citep{cooper1996fracas} covers formal semantic
 phenomena such as quantifiers, plurals and attitudes; multiple premises are concatenated, and the 11
 problems without a definite answer are discarded.
 
@@ -290,9 +287,7 @@ SICK are therefore scored on the remaining 1{,}578 pairs of ASSIN~2.
     SICK         & EN & 4{,}439 & 495 & 4{,}906 & 3-way \\
     AX-b         & EN & -- & -- & 1{,}104 & 2-way \\
     Breaking NLI & EN & -- & -- & 8{,}193 & 3-way \\
-    HANS         & EN & -- & -- & 30{,}000 & 2-way \\
     ConjNLI      & EN & -- & -- & 623 & 3-way \\
-    MED          & EN & -- & -- & 5{,}382 & 2-way \\
     FraCaS       & EN & -- & -- & 335 & 3-way \\
     \midrule
     InferBR      & PT & 8{,}190 & 633 & 1{,}705 & 3-way \\
@@ -324,13 +319,13 @@ gradient accumulation for RoBERTa-large (2$\times$16, same effective batch).}
 \subsubsection{Evaluation}
 \label{sec:evaluation}
 
-For three-way test sets we report macro-F1. Because AX-b, HANS, MED, ASSIN and ASSIN~2 only distinguish
+For three-way test sets we report macro-F1. Because AX-b, ASSIN and ASSIN~2 only distinguish
 entailment from non-entailment, we also report, for every test set, the Matthews correlation coefficient
 (MCC) of the binary decision \E{} \emph{vs.} $\neg$\E{} obtained by merging \N{} and \C{} predictions. MCC
 is the official AX-b metric and is robust to the label imbalance of these sets.
 
 We further break results down by the annotations of each set: phenomenon in AX-b, substitution category
-in Breaking NLI, heuristic and subcase in HANS, monotonicity direction in MED and section in FraCaS. With
+in Breaking NLI and section in FraCaS. With
 few pairs in some groups (18--140 per AX-b phenomenon), these breakdowns are exploratory.
 
 Every system is trained with the same 10 seeds (1001--1010), and results are paired by seed. The seed

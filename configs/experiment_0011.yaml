@@ -40,14 +40,13 @@ output_dir: runs
 # Challenge / out-of-distribution test sets (scripts/download_challenge_sets.py, run once on the
 # training machine before this experiment; written to data/raw/challenge/):
 #   English  breaking_nli  8,193  3-way   single-word substitutions (lexicon + conflict)
-#            hans         30,000  binary  lexical-overlap heuristic (risk for the coverage branch)
 #            conjnli_dev     623  3-way   conjunctions
-#            med           5,382  binary  upward / downward monotonicity
 #            fracas_en       335  3-way   formal semantics (quantifiers, plurals, attitudes...)
 #   Portuguese
 #            sick_br_test  4,906  3-way   SICK-BR, translation of sick_test (pair ids aligned)
-# Binary sets store non-entailment as neutral: report binary/* metrics only for hans, med,
-# assin_test and assin2_test. The `logic` column of each predictions file keeps the category /
+# HANS (30k) and MED (5.4k) are also produced by the script but not evaluated: with roberta-large
+# they more than doubled the run time (first run: 1.7x the estimate). Binary sets store
+# non-entailment as neutral: report binary/* metrics only for assin_test and assin2_test. The `logic` column of each predictions file keeps the category /
 # heuristic / phenomenon, for per-phenomenon analysis.
 # ASSIN 2 caveat: ~36% of assin2_test is translated from SICK TRAIN/TRIAL pairs
 # (data/raw/challenge/assin2_test_sick_provenance.json). For models trained on SICK
@@ -77,8 +76,8 @@ output_dir: runs
 #   xling_en_to_pt_ablation    ~26 h
 #   xling_pt_to_en_ablation    ~34 h
 #   xling_*_graph_baselines    ~38 h (rough: 160 tokens, ~1.5x the 0012 pair_cls time)
-#   challenge-set evaluation   ~+23 h over all runs (~50k extra test pairs per EN/xling run)
-#   total                      ~220 h (~9 days)
+#   challenge-set evaluation   ~+15 h over all runs (~14k extra test pairs per EN/xling run)
+#   total                      ~215 h (~9 days)
 model_name: neuralmind/bert-base-portuguese-cased
 seeds: [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
 
@@ -169,9 +168,7 @@ language_blocks:
     - {name: sick_test, dataset: sick, split: test}
     - {name: axb, dataset: axb, split: test}
     - &breaking_nli {name: breaking_nli, dataset: manifest, path: data/raw/challenge/breaking_nli.jsonl, split: test}
-    - &hans {name: hans, dataset: manifest, path: data/raw/challenge/hans.jsonl, split: test}
     - &conjnli {name: conjnli_dev, dataset: manifest, path: data/raw/challenge/conjnli_dev.jsonl, split: test}
-    - &med {name: med, dataset: manifest, path: data/raw/challenge/med.jsonl, split: test}
     - &fracas {name: fracas_en, dataset: manifest, path: data/raw/challenge/fracas_en.jsonl, split: test}
   pt_training: &pt_training
     lr: 0.0000204
@@ -214,9 +211,7 @@ language_blocks:
     - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: test}
     - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: test}
     - *breaking_nli
-    - *hans
     - *conjnli
-    - *med
     - *fracas
     - &sick_br {name: sick_br_test, dataset: manifest, path: data/raw/challenge/sick_br_test.jsonl, split: test}
   pt_train: &pt_train
@@ -238,7 +233,7 @@ pipelines:
   # ---------------------------------------------------------------- English (as experiment_0010)
   sick_en_ablation:
     enabled: true
-    est_minutes_per_run: 22   # progress bar / ETA weight (incl. test evaluation)
+    est_minutes_per_run: 27   # progress bar / ETA weight (incl. test evaluation)
     device: cuda
     batch_size: 32
     model_names: [roberta-large]
@@ -305,7 +300,7 @@ pipelines:
   # keys in their training blocks only keep the protocols aligned.
   sick_en_graph_baselines:
     enabled: true
-    est_minutes_per_run: 24   # progress bar / ETA weight (incl. test evaluation)
+    est_minutes_per_run: 29   # progress bar / ETA weight (incl. test evaluation)
     device: cuda
     batch_size: 32
     model_names: [roberta-large]
@@ -318,7 +313,7 @@ pipelines:
 
   sick_en_kbert:
     enabled: true
-    est_minutes_per_run: 54   # progress bar / ETA weight (incl. test evaluation)
+    est_minutes_per_run: 59   # progress bar / ETA weight (incl. test evaluation)
     device: cuda
     batch_size: 32
     model_names: [roberta-large]
