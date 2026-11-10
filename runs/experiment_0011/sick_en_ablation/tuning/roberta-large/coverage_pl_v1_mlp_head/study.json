@@ -1,0 +1,7 @@
+{
+  "model_name": "roberta-large",
+  "variant": "coverage_pl_v1_mlp_head",
+  "tuning_enabled": false,
+  "best_params": {},
+  "selection_metric": "nli3/macro_f1"
+}
