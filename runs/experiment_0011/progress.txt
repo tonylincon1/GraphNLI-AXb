@@ -1,12 +1,12 @@
-updated   2026-11-10 18:18
-runs      73/400
-progress  14.3% (weighted by est_minutes_per_run)
-left      ~8d 13h45 (estimate x1.04 observed speed)
-ETA       2026-11-19 08:04 (machine local time)
-running   inferbr_pt_ablation/coverage_pl_v1/seed_1004
+updated   2026-11-11 05:08
+runs      103/400
+progress  21.7% (weighted by est_minutes_per_run)
+left      ~6d 19h16 (estimate x0.90 observed speed)
+ETA       2026-11-18 00:24 (machine local time)
+running   inferbr_pt_ablation/coverage_pl_v1_no_symbolic/seed_1004
 
   sick_en_ablation                    70/70
-  inferbr_pt_ablation                  3/70
+  inferbr_pt_ablation                 33/70
   xling_en_to_pt_ablation              0/70
   xling_pt_to_en_ablation              0/70
   sick_en_graph_baselines              0/20
