@@ -1,0 +1,7 @@
+{
+  "model_name": "xlm-roberta-base",
+  "variant": "coverage_pl_v1_no_graph",
+  "tuning_enabled": false,
+  "best_params": {},
+  "selection_metric": "nli3/macro_f1"
+}
