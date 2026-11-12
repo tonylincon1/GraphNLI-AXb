@@ -30,10 +30,10 @@ class ExperimentProgress:
     first runs. The same information is written to <experiment>/progress.txt after every run.
     """
 
-    def __init__(self, config: dict, experiment_dir: Path):
+    def __init__(self, config: dict, experiment_dir: Path, filename: str = "progress.txt"):
         from tqdm.auto import tqdm
 
-        self.path = experiment_dir / "progress.txt"
+        self.path = experiment_dir / filename
         self.runs = []  # (pipeline, est_minutes, done)
         for name, pipeline in config["pipelines"].items():
             if not pipeline.get("enabled", True):
@@ -400,9 +400,23 @@ def run_pipeline(name: str, pipeline: dict, global_config: dict, experiment_dir:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run YAML-defined NLI pipelines with Optuna tuning.")
     parser.add_argument("config", help="YAML file named experiment_001, experiment_002, ...")
+    parser.add_argument("--only", default="",
+                        help="comma-separated pipeline names to run (to split one experiment across machines); "
+                             "progress and summary files then get the host name, so machines do not overwrite "
+                             "each other's files when results are merged with git")
     parsed = parser.parse_args()
     config_path = Path(parsed.config).resolve()
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    suffix = ""
+    if parsed.only:
+        import socket
+
+        wanted = [name.strip() for name in parsed.only.split(",") if name.strip()]
+        unknown = [name for name in wanted if name not in config["pipelines"]]
+        if unknown:
+            raise ValueError(f"unknown pipelines in --only: {unknown}; available: {list(config['pipelines'])}")
+        config["pipelines"] = {name: p for name, p in config["pipelines"].items() if name in wanted}
+        suffix = "_" + socket.gethostname().split(".")[0]
     experiment_name = config_path.stem
     if not experiment_name.startswith("experiment_"):
         raise ValueError("The YAML filename must be experiment_001, experiment_002, ...")
@@ -411,13 +425,13 @@ def main() -> None:
     (experiment_dir / "config.yaml").write_text(config_path.read_text(encoding="utf-8"), encoding="utf-8")
     data_root = project_root() / config.get("data_dir", "data")
     summaries = {}
-    progress = ExperimentProgress(config, experiment_dir)
+    progress = ExperimentProgress(config, experiment_dir, f"progress{suffix}.txt")
     for name, pipeline in config["pipelines"].items():
         if pipeline.get("enabled", True):
             progress.bar.write(f"\n=== pipeline: {name} ===")
             summaries[name] = run_pipeline(name, pipeline, config, experiment_dir, data_root, progress)
     progress.close()
-    (experiment_dir / "pipeline_summary.json").write_text(json.dumps(summaries, indent=2), encoding="utf-8")
+    (experiment_dir / f"pipeline_summary{suffix}.json").write_text(json.dumps(summaries, indent=2), encoding="utf-8")
     print(f"wrote {experiment_dir}")
 
 

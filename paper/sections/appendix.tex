@@ -1,0 +1,17 @@
+\appendix
+\section{Cross-lingual models on their training language}
+\label{sec:appendix-xl}
+
+\begin{table*}[h]
+  \centering\small
+  \textit{(a) XLM-R-base trained on SICK, English tests}\\[2pt]
+  \input{tables/appendix_xl_sick_en}
+  \vspace{6pt}
+
+  \textit{(b) XLM-R-base trained on InferBR, Portuguese tests}\\[2pt]
+  \input{tables/appendix_xl_inferbr_pt}
+  \caption{Cross-lingual models of \cref{tab:main}~(c,\,d) evaluated on the test sets of their training
+  language (same format as \cref{tab:main}: accuracy and MCC of the binary decision, $\times100$, mean
+  over 10 seeds). $^{\dagger}$Paired Wilcoxon $p<0.05$ against \cls{} on the same metric.}
+  \label{tab:xl-same-language}
+\end{table*}

@@ -1,0 +1,27 @@
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccccccccc@{}}
+\toprule
+ & \multicolumn{5}{c}{English tests} & \multicolumn{4}{c}{Portuguese tests} \\
+\cmidrule(lr){2-6}\cmidrule(l){7-10}
+System & SICK & AX-b & Break. & Conj. & FraCaS & InferBR & ASSIN & ASSIN\,2 & SICK-BR \\
+\midrule
+\multicolumn{10}{@{}l}{\textit{Train SICK (EN)}} \\
+\model{} (full) & -- & -- & -- & -- & -- & 52.6\,{\tiny$\pm$2.7} & 46.1\,{\tiny$\pm$5.4} & 71.7\,{\tiny$\pm$1.4} & 65.8\,{\tiny$\pm$1.2} \\
+$-$ conflict & -- & -- & -- & -- & -- & \textcolor{red}{$-$2.4} & $+$0.2 & \textcolor{red}{$-$0.5} & $+$0.3 \\
+$-$ lexicon & -- & -- & -- & -- & -- & \textcolor{red}{$-$1.9} & $+$1.5 & $+$1.3 & $+$2.1$^{*}$ \\
+$-$ graph & -- & -- & -- & -- & -- & $+$0.9 & $+$1.2 & $+$1.0 & $+$2.1$^{*}$ \\
+$-$ coverage & -- & -- & -- & -- & -- & \textcolor{red}{$-$1.0} & \textcolor{red}{$-$0.9} & \textcolor{red}{$-$1.4} & $+$0.9 \\
+MLP head & -- & -- & -- & -- & -- & $+$2.1 & $+$2.1 & $+$0.6 & $+$0.6 \\
+\midrule
+\cls{} & -- & -- & -- & -- & -- & \textcolor{red}{$-$0.8} & $+$1.3 & \textcolor{red}{$-$0.8} & $+$0.7 \\
+\midrule
+\multicolumn{10}{@{}l}{\textit{Train InferBR (PT)}} \\
+\model{} (full) &  &  &  &  &  & -- & -- & -- & -- \\
+$-$ conflict &  &  &  &  &  & -- & -- & -- & -- \\
+$-$ lexicon &  &  &  &  &  & -- & -- & -- & -- \\
+$-$ graph &  &  &  &  &  & -- & -- & -- & -- \\
+$-$ coverage &  &  &  &  &  & -- & -- & -- & -- \\
+MLP head &  &  &  &  &  & -- & -- & -- & -- \\
+\midrule
+\cls{} &  &  &  &  &  & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular*}

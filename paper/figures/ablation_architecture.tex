@@ -1,0 +1,257 @@
+% Ablation map: copy of cover_architecture.tex with the components removed or replaced by each
+% ablation (Sec. 3.4) framed by red dashed boxes. Keep in sync with cover_architecture.tex.
+% Included with \includestandalone (sections/methodology.tex); also compiles alone.
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}
+\usetikzlibrary{positioning,arrows.meta,calc}
+
+% Palette (colour-blind safe: blue / orange / green / grey)
+\definecolor{neural}{HTML}{2F6DB5}
+\definecolor{neuralbg}{HTML}{E8F0FA}
+\definecolor{symb}{HTML}{D9822B}
+\definecolor{symbbg}{HTML}{FCF0E3}
+\definecolor{logic}{HTML}{2E8B57}
+\definecolor{logicbg}{HTML}{E6F4EC}
+\definecolor{lossc}{HTML}{6B6B6B}
+\definecolor{relneg}{HTML}{C0392B}
+
+\tikzset{
+  >={Stealth[length=2.2mm]},
+  flow/.style={->, line width=0.7pt, draw=black!75},
+  block/.style={draw, rounded corners=3pt, line width=0.8pt, inner sep=5pt},
+  nblock/.style={block, draw=neural, fill=neuralbg},
+  sblock/.style={block, draw=symb, fill=symbbg},
+  lblock/.style={block, draw=logic, fill=logicbg},
+  title/.style={font=\bfseries\small, anchor=south west, inner sep=1pt},
+  tok/.style={draw=black!55, fill=white, rounded corners=1.5pt, inner sep=1.4pt, font=\scriptsize, minimum height=3.8mm},
+  ptok/.style={tok, draw=neural!80},
+  htok/.style={tok, draw=neural!80, fill=neural!12},
+  stok/.style={tok, draw=black!25, text=black!45},
+  nullnode/.style={draw=black!60, dashed, circle, inner sep=1pt, font=\scriptsize, minimum size=5.5mm, fill=white},
+  edgepos/.style={line width=1.3pt, draw=logic},
+  edgelearn/.style={line width=0.9pt, draw=neural, densely dashed},
+  edgenull/.style={line width=0.9pt, draw=black!55, densely dotted},
+  lab/.style={font=\tiny, fill=white, inner sep=0.8pt},
+  eq/.style={font=\scriptsize, anchor=north west, align=left, inner sep=1pt},
+}
+
+\begin{document}
+\begin{tikzpicture}[font=\small]
+
+\def\ptop{6.55}   % top edge of the main panels
+\def\pbot{0.95}   % bottom edge of the main panels
+
+% =====================================================================
+% (a) Input + symbolic preprocessing          x in [0, 4.5]
+% =====================================================================
+\node[title] at (0,\ptop+0.05) {(a) Input \& symbolic graph};
+
+\node[font=\scriptsize\itshape, anchor=west] at (0,6.2) {Premise $P$};
+\tikzset{itok/.style={font=\tiny, inner sep=1.1pt, minimum height=3.2mm}}
+\node[stok, itok, anchor=west] (p1) at (0,5.8) {A};
+\node[ptok, itok, right=0.7mm of p1] (p2) {man};
+\node[stok, itok, right=0.7mm of p2] (p3) {is};
+\node[ptok, itok, right=0.7mm of p3] (p4) {chopping};
+\node[stok, itok, right=0.7mm of p4] (p5) {a};
+\node[ptok, itok, right=0.7mm of p5] (p6) {tomato};
+
+\node[font=\scriptsize\itshape, anchor=west] at (0,5.3) {Hypothesis $H$};
+\node[stok, itok, anchor=west] (h1) at (0,4.9) {A};
+\node[htok, itok, right=0.7mm of h1] (h2) {person};
+\node[stok, itok, right=0.7mm of h2] (h3) {is};
+\node[htok, itok, right=0.7mm of h3] (h4) {slicing};
+\node[stok, itok, right=0.7mm of h4] (h5) {a};
+\node[htok, itok, right=0.7mm of h5] (h6) {red};
+\node[htok, itok, right=0.7mm of h6] (h7) {tomato};
+
+\node[sblock, anchor=north west, text width=4.25cm, font=\scriptsize, align=left] (symb) at (0,4.35) {%
+  \textbf{Lexical relations} $r_{ij}$\\
+  WordNet, PT-LKB, Wiktionary, stems:\\
+  \textit{identical, synonym, hypernym,}\\
+  \textit{hyponym, antonym, number conflict,}\ldots\\[3pt]
+  \textbf{Operators} $o_i$ + scope (13 types):\\
+  \textit{negation, quantifiers, modals,}\ldots\\[3pt]
+  \textbf{Nodes}: content words and operators};
+
+% =====================================================================
+% (b) Encoder                                  x in [5.05, 6.05]
+% =====================================================================
+\node[nblock, minimum width=1.0cm, minimum height=\ptop cm-\pbot cm, anchor=north west] (enc) at (5.05,\ptop) {};
+\node[rotate=90, align=center] at (enc.center) {\textbf{Pretrained encoder}\\[-1pt]\scriptsize RoBERTa / BERTimbau / XLM-R};
+\node[title] at (5.05,\ptop+0.05) {(b)};
+
+\draw[flow] (4.35,5.35) -- (5.05,5.35);
+\node[font=\tiny, align=center, anchor=south] at (4.6,5.45) {[CLS] $P$\\[-1pt][SEP] $H$};
+
+% =====================================================================
+% (c) Bipartite relational attention           x in [6.65, 11.75]
+% =====================================================================
+\node[nblock, minimum width=5.1cm, minimum height=\ptop cm-\pbot cm, anchor=north west] (gnn) at (6.65,\ptop) {};
+\node[title] at (6.65,\ptop+0.05) {(c) Bipartite relational attention ($\times 2$)};
+
+\node[eq] at (6.75,6.4) {$x_i^{(0)}=\mathrm{LN}\big(W_p h_i + E_{\mathrm{op}}[o_i]\big)\in\mathbb{R}^{256}$};
+
+\node[ptok] (gp1) at (7.65,5.45) {man};
+\node[ptok] (gp2) at (8.95,5.45) {chopping};
+\node[ptok] (gp3) at (10.2,5.45) {tomato};
+\node[nullnode] (gnull) at (11.2,5.45) {$\varnothing$};
+\node[font=\tiny\itshape, anchor=east] at ($(gp1.west)+(-0.05,0)$) {$P$};
+\node[htok] (gh1) at (7.6,4.05) {person};
+\node[htok] (gh2) at (8.8,4.05) {slicing};
+\node[htok] (gh3) at (9.85,4.05) {tomato};
+\node[htok] (gh4) at (10.95,4.05) {red};
+\node[font=\tiny\itshape, anchor=east] at ($(gh1.west)+(-0.05,0)$) {$H$};
+
+\draw[edgepos] (gh1.north) -- node[lab] {hypernym} (gp1.south);
+\draw[edgelearn] (gh2.north) -- node[lab] {learned} (gp2.south);
+\draw[edgepos, line width=1.8pt] (gh3.north) -- node[lab] {identical} (gp3.south);
+\draw[edgenull] (gh4.north) -- node[lab, pos=0.45] {null} (gnull.south);
+
+\node[eq] at (6.75,3.45) {%
+  $s_{ij}=(W_q x_i)^{\!\top}W_k x_j/\sqrt{d}\;+\;b[r_{ij}]$\\[1pt]
+  {\tiny\color{black!60}cross-sentence pairs only ($H\!\to\!P$ and $P\!\to\!H$)}\\[3pt]
+  $\alpha_i=\mathrm{softmax}\big([\,s_{i1},\ldots,s_{iL},\;s_\varnothing\,]\big)$\\[3pt]
+  $m_i=\textstyle\sum_j \alpha_{ij}\big(W_v x_j+e[r_{ij}]\big)+\alpha_{i\varnothing}\,v_\varnothing$\\[3pt]
+  $x_i\leftarrow\mathrm{LN}\big(x_i+\mathrm{MLP}(u_i)\big)$\\[1pt]
+  $u_i=[x_i;\,m_i;\,x_i\!\odot\! m_i;\,|x_i\!-\!m_i|]$};
+
+\draw[flow] (6.05,4.75) -- (6.65,4.75) node[midway, above, font=\scriptsize] {$h_i$};
+
+% symbolic inputs: below the encoder into the graph panel
+\draw[flow, draw=symb, line width=0.9pt] (symb.east) -| (4.78,0.62) -- (7.2,0.62) -- (7.2,\pbot);
+\node[font=\tiny, text=symb, anchor=north] at (5.75,0.6) {$r_{ij},\ o_i$, nodes};
+
+% =====================================================================
+% (d) Coverage head                            x in [12.35, 15.25]
+% =====================================================================
+\node[lblock, minimum width=3.1cm, minimum height=\ptop cm-\pbot cm, anchor=north west] (cov) at (12.35,\ptop) {};
+\node[title] at (12.35,\ptop+0.05) {(d) Coverage head};
+
+\node[eq] at (12.45,6.4) {%
+  for each hypothesis node $k$:\\[2pt]
+  support\hspace{0.55em}$s_k=\sigma(w_s^{\top}x_k)$\\[1pt]
+  conflict\hspace{0.4em}$c_k=\sigma(w_c^{\top}x_k)$\\[1pt]
+  weight\hspace{0.75em}$\omega_k=\mathrm{softplus}(w_\omega^{\top}x_k)$};
+
+\def\barw{0.5}
+\newcommand{\covrow}[5]{%
+  \node[font=\tiny, anchor=east] at (13.42,#1) {#2};
+  \fill[logic!85]  (13.5,#1-0.09) rectangle ++(#3*\barw,0.18);
+  \draw[black!30]  (13.5,#1-0.09) rectangle ++(\barw,0.18);
+  \fill[relneg!80] (14.08,#1-0.09) rectangle ++(#4*\barw,0.18);
+  \draw[black!30]  (14.08,#1-0.09) rectangle ++(\barw,0.18);
+  \fill[black!45]  (14.66,#1-0.09) rectangle ++(#5*\barw,0.18);
+  \draw[black!30]  (14.66,#1-0.09) rectangle ++(\barw,0.18);
+}
+\node[font=\scriptsize, text=logic]    at (13.75,4.35) {$s_k$};
+\node[font=\scriptsize, text=relneg]   at (14.33,4.35) {$c_k$};
+\node[font=\scriptsize, text=black!60] at (14.91,4.35) {$\omega_k$};
+\covrow{3.95}{person}{0.92}{0.05}{0.80}
+\covrow{3.5}{slicing}{0.85}{0.07}{0.90}
+\covrow{3.05}{tomato}{0.97}{0.03}{0.70}
+\covrow{2.6}{red}{0.18}{0.06}{0.85}
+\node[font=\tiny\itshape, text=black!55, anchor=north] at (13.8,2.3) {illustrative values};
+\node[font=\tiny, text=black!60, align=left, anchor=north west] at (12.45,1.85) {%
+  \textit{red} has no support in $P$\\ $\Rightarrow$ low $s_k$, low $c_k$};
+
+\draw[flow] (11.75,3.3) -- (12.35,3.3) node[midway, above, font=\scriptsize] {$x_k$};
+
+% =====================================================================
+% (e) Logical aggregation                      x in [16.2, 19.95]
+% =====================================================================
+\node[lblock, minimum width=4.1cm, minimum height=\ptop cm-\pbot cm, anchor=north west] (agg) at (16.2,\ptop) {};
+\node[title] at (16.2,\ptop+0.05) {(e) Logical aggregation};
+
+\node[eq] at (16.3,6.4) {%
+  \textit{weakest link: every word covered}\\
+  $\log P_{\mathrm{cov}}=\sum_k \omega_k\log s_k$\\[3pt]
+  \textit{noisy-OR: no word in conflict}\\
+  $\log P_{\neg\mathrm{conf}}=\sum_k \omega_k\log(1-c_k)$};
+
+\node[draw=logic, rounded corners=2pt, fill=white, font=\tiny, inner sep=2pt] (q1) at (18.1,4.0) {any conflict?};
+\node[draw=relneg, fill=relneg!10, rounded corners=2pt, font=\scriptsize\bfseries, inner sep=2pt] (lc) at (16.95,3.15) {C};
+\node[draw=logic, rounded corners=2pt, fill=white, font=\tiny, inner sep=2pt] (q2) at (18.95,3.15) {all covered?};
+\node[draw=logic, fill=logic!15, rounded corners=2pt, font=\scriptsize\bfseries, inner sep=2pt] (le) at (18.35,2.3) {E};
+\node[draw=black!50, fill=black!8, rounded corners=2pt, font=\scriptsize\bfseries, inner sep=2pt] (ln) at (19.55,2.3) {N};
+\draw[-{Stealth[length=1.5mm]}, black!70] (q1) -- node[lab] {yes} (lc);
+\draw[-{Stealth[length=1.5mm]}, black!70] (q1) -- node[lab] {no} (q2);
+\draw[-{Stealth[length=1.5mm]}, black!70] (q2) -- node[lab] {yes} (le);
+\draw[-{Stealth[length=1.5mm]}, black!70] (q2) -- node[lab] {no} (ln);
+
+\node[eq, anchor=south west] at (16.3,1.05) {%
+  $z_E=\log P_{\neg\mathrm{conf}}+\log P_{\mathrm{cov}}$\\
+  $z_N=\log P_{\neg\mathrm{conf}}+\log(1-P_{\mathrm{cov}})$\\
+  $z_C=\log(1-P_{\neg\mathrm{conf}})$};
+
+\draw[flow] (15.45,3.3) -- (16.2,3.3) node[midway, above, font=\tiny] {$s,c,\omega$};
+
+% =====================================================================
+% Neural [CLS] path + fusion (top band)
+% =====================================================================
+\def\band{7.65}
+\node[nblock, font=\scriptsize, inner sep=3pt] (wc) at (9.2,\band) {$\ell_{\mathrm{CLS}}=W_c\,h_{[\mathrm{CLS}]}$};
+\node[draw, circle, line width=0.8pt, inner sep=0pt, minimum size=5.5mm] (plus) at (19.95,\band) {$+$};
+\node[nblock, font=\scriptsize, inner sep=3pt, right=0.5cm of plus] (soft) {softmax};
+\node[font=\scriptsize, anchor=north, align=center] (out) at ($(soft.south)+(0,-0.15)$) {\{\textbf{E}, \textbf{N}, \textbf{C}\}};
+
+\draw[flow] (enc.north) |- node[pos=0.3, right, font=\scriptsize] {$h_{[\mathrm{CLS}]}$} (wc.west);
+\draw[flow] (wc.east) -- (plus.west);
+\draw[flow, draw=logic, line width=0.9pt] (19.95,\ptop) -- (plus.south) node[midway, right, font=\scriptsize, text=logic] {$\lambda z$};
+\draw[flow] (plus.east) -- (soft.west) node[midway, above, font=\tiny] {$\ell$};
+\draw[flow] (soft.south) -- (out.north);
+
+
+% =====================================================================
+% Legend
+% =====================================================================
+\begin{scope}[shift={(0,1.2)}]
+  \node[font=\scriptsize\bfseries, anchor=west, inner sep=0] at (0,0) {Legend};
+  \draw[edgepos]   (0,-0.32) -- ++(0.45,0); \node[font=\tiny, anchor=west] at (0.5,-0.32) {lexicon edge};
+  \draw[edgelearn] (0,-0.6)  -- ++(0.45,0); \node[font=\tiny, anchor=west] at (0.5,-0.6)  {learned alignment};
+  \draw[edgenull]  (0,-0.88) -- ++(0.45,0); \node[font=\tiny, anchor=west] at (0.5,-0.88) {null target ($\varnothing$)};
+  \node[stok, anchor=west, font=\tiny, minimum height=3mm] at (0,-1.18) {a}; \node[font=\tiny, anchor=west] at (0.5,-1.18) {not a node};
+  \fill[neuralbg, draw=neural] (2.3,-0.41) rectangle ++(0.3,0.18); \node[font=\tiny, anchor=west] at (2.65,-0.32) {neural};
+  \fill[symbbg, draw=symb]     (2.3,-0.69) rectangle ++(0.3,0.18); \node[font=\tiny, anchor=west] at (2.65,-0.6)  {symbolic};
+  \fill[logicbg, draw=logic]   (2.3,-0.97) rectangle ++(0.3,0.18); \node[font=\tiny, anchor=west] at (2.65,-0.88) {probabilistic logic};
+\end{scope}
+
+% =====================================================================
+% Ablation overlay: what each variant removes (red dashed) or replaces
+% =====================================================================
+\tikzset{
+  abl/.style={draw=relneg, dashed, line width=1.0pt, rounded corners=4pt, dash pattern=on 3pt off 2pt},
+  num/.style={circle, fill=relneg, text=white, font=\scriptsize\bfseries, inner sep=0pt, minimum size=4mm},
+}
+% (1) w/o lexicon: symbolic relations and operators
+\draw[abl] (-0.14,1.72) rectangle (4.56,4.48);
+\node[num] at (4.56,4.48) {1};
+% (2) w/o graph: the relational attention layers (which also carry the lexicon)
+\draw[abl] (6.53,0.83) rectangle (11.87,7.02);
+\node[num] at (11.87,7.02) {2};
+% (3) w/o coverage: support s_k and the weakest-link term
+\draw[abl] (13.46,2.42) rectangle (14.04,4.55);
+\node[num] at (13.75,4.75) {3};
+\draw[abl] (16.24,5.74) rectangle (19.78,6.5);
+\node[num] at (19.78,6.5) {3};
+% (4) w/o conflict: conflict c_k and the noisy-OR term
+\draw[abl] (14.04,2.42) rectangle (14.62,4.55);
+\node[num] at (14.33,4.75) {4};
+\draw[abl] (16.24,4.95) rectangle (19.78,5.7);
+\node[num] at (19.78,4.95) {4};
+% (5) MLP head: node scores and logical aggregation replaced by an MLP over the hypothesis nodes
+\draw[abl, dash pattern=on 6pt off 2pt, line width=1.2pt] (12.2,0.7) rectangle (20.45,7.1);
+\node[num] at (20.45,0.7) {5};
+
+% key
+\begin{scope}[shift={(0,-0.45)}]
+  \tikzset{key/.style={font=\scriptsize, anchor=west, inner sep=1pt}}
+  \node[num] at (0.2,0) {1};  \node[key] at (0.45,0) {$-$\,lexicon: no relations $r_{ij}$ or operators $o_i$};
+  \node[num] at (5.6,0) {2};  \node[key] at (5.85,0) {$-$\,graph: no relational attention (removes the lexicon too)};
+  \node[num] at (13.0,0) {3}; \node[key] at (13.25,0) {$-$\,coverage: no $s_k$, no $\log P_{\mathrm{cov}}$};
+  \node[num] at (0.2,-0.45) {4}; \node[key] at (0.45,-0.45) {$-$\,conflict: no $c_k$, no $\log P_{\neg\mathrm{conf}}$};
+  \node[num] at (5.6,-0.45) {5}; \node[key] at (5.85,-0.45) {MLP head: panels (d) and (e) replaced by an MLP over the hypothesis nodes $x_k$};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

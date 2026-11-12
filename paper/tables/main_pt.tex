@@ -1,0 +1,13 @@
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccccccc@{}}
+\toprule
+ & \multicolumn{4}{c}{Accuracy} & \multicolumn{4}{c}{MCC} \\
+\cmidrule(lr){2-5}\cmidrule(l){6-9}
+System & InferBR & ASSIN & ASSIN\,2 & SICK-BR & InferBR & ASSIN & ASSIN\,2 & SICK-BR \\
+\midrule
+\cls{} & 95.2\,{\tiny$\pm$0.5} & 82.1\,{\tiny$\pm$2.1} & 83.9\,{\tiny$\pm$1.6} & 82.5\,{\tiny$\pm$1.5} & 89.2\,{\tiny$\pm$1.2} & 57.2\,{\tiny$\pm$3.4} & 68.0\,{\tiny$\pm$3.0} & 58.7\,{\tiny$\pm$3.2} \\
+K-BERT &  &  &  &  &  &  &  &  \\
+KGAnet &  &  &  &  &  &  &  &  \\
+KGNLI &  &  &  &  &  &  &  &  \\
+\model{} & \textbf{95.7}\,{\tiny$\pm$0.5} & \textbf{83.1}\,{\tiny$\pm$2.0} & \textbf{86.3}$^{\dagger}$\,{\tiny$\pm$0.4} & \textbf{84.6}$^{\dagger}$\,{\tiny$\pm$0.5} & \textbf{90.4}\,{\tiny$\pm$1.0} & \textbf{60.5}$^{\dagger}$\,{\tiny$\pm$3.7} & \textbf{72.6}$^{\dagger}$\,{\tiny$\pm$0.9} & \textbf{64.0}$^{\dagger}$\,{\tiny$\pm$0.8} \\
+\bottomrule
+\end{tabular*}

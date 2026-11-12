@@ -1,0 +1,14 @@
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccc@{}}
+\toprule
+System & InferBR & ASSIN & ASSIN\,2 & SICK-BR \\
+\midrule
+\model{} (full) & 90.4\,{\tiny$\pm$1.0} & 60.5\,{\tiny$\pm$3.7} & 72.6\,{\tiny$\pm$0.9} & 64.0\,{\tiny$\pm$0.8} \\
+$-$ conflict & \textcolor{red}{$-$0.1} & $+$2.4 & $+$1.1$^{*}$ & $+$1.0$^{*}$ \\
+$-$ lexicon & \textcolor{red}{$-$0.9} & $+$1.5 & \textcolor{red}{$-$1.5$^{*}$} & \textcolor{red}{$-$1.3$^{*}$} \\
+$-$ graph & \textcolor{red}{$-$0.6} & \textcolor{red}{$-$0.3} & \textcolor{red}{$-$2.1$^{*}$} & \textcolor{red}{$-$1.8$^{*}$} \\
+$-$ coverage & \textcolor{red}{$-$0.6} & \textcolor{red}{$-$11.9$^{*}$} & \textcolor{red}{$-$4.0$^{*}$} & \textcolor{red}{$-$4.2$^{*}$} \\
+MLP head & \textcolor{red}{$-$0.1} & \textcolor{red}{$-$2.4} & \textcolor{red}{$-$1.4} & \textcolor{red}{$-$0.8} \\
+\midrule
+\cls{} & \textcolor{red}{$-$1.2} & \textcolor{red}{$-$3.3$^{\dagger}$} & \textcolor{red}{$-$4.6$^{\dagger}$} & \textcolor{red}{$-$5.3$^{\dagger}$} \\
+\bottomrule
+\end{tabular*}

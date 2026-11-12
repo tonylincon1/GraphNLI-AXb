@@ -213,7 +213,7 @@ the encoder's, since they start from scratch.
 \label{sec:ablations}
 
 To identify which components produce the effect, we compare \model{} with five variants that remove one
-component each while keeping everything else, including the auxiliary loss, identical:
+component each while keeping everything else, including the auxiliary loss, identical (\cref{fig:ablation-map}):
 \begin{description}\itemsep0pt
   \item[w/o lexicon] all relations and operators are set to \emph{none}
     ($r_{ij}\!=\!\textit{none}$, $o_i\!=\!\textit{none}$): the graph and head remain, but alignment is
@@ -226,6 +226,15 @@ component each while keeping everything else, including the auxiliary loss, iden
     of the hypothesis node states, followed by a log-softmax; this controls for the capacity of the head.
 \end{description}
 The \cls{} baseline (\cref{eq:cls} alone) is trained with the same hyperparameters.
+
+\begin{figure*}[t]
+  \centering
+  \includestandalone[width=\textwidth]{figures/ablation_architecture}
+  \caption{What each ablation removes (red dashed boxes), drawn on the architecture of
+  \cref{fig:architecture}; the numbers refer to the key below the diagram. The \cls{} baseline keeps only
+  the encoder and the top $\ell_{\mathrm{CLS}}$ path.}
+  \label{fig:ablation-map}
+\end{figure*}
 
 \subsection{Knowledge-graph baselines}
 \label{sec:baselines}
@@ -245,10 +254,22 @@ text their lexical evidence reduces to word identity.
 % Values below follow configs/experiment_0011.yaml and configs/experiment_0012.yaml.
 % Update if the final runs change.
 
+\begin{figure*}[t]
+  \centering
+  \includestandalone[width=\textwidth]{figures/experimental_design}
+  \caption{Experimental design. (a)~Three settings, each with its own encoder, training data and lexicon;
+  the cross-lingual setting is run in both directions. (b)~All systems of a setting share the same fixed
+  hyperparameters. (c)~Each system is trained with 10 seeds; a run keeps the checkpoint with the best
+  development macro-F1 and stops after 3 epochs without improvement (at most 8). (d)~The selected
+  checkpoint is evaluated once on every test set of its setting. (e)~Systems are compared with paired
+  tests over the seeds.}
+  \label{fig:design}
+\end{figure*}
+
 \subsubsection{Settings and data}
 \label{sec:data}
 
-We evaluate three settings (\cref{tab:data}).
+We evaluate three settings (\cref{fig:design,tab:data}).
 \emph{English}: RoBERTa-large~\citep{liu2019roberta} trained on SICK~\citep{marelli2014sick}, tested on
 the SICK test set, on the SuperGLUE diagnostic AX-b~\citep{wang2019superglue}, which annotates pairs
 with linguistic phenomena (lexical semantics, predicate--argument structure, logic, knowledge), and on
@@ -319,14 +340,18 @@ gradient accumulation for RoBERTa-large (2$\times$16, same effective batch).}
 \subsubsection{Evaluation}
 \label{sec:evaluation}
 
-For three-way test sets we report macro-F1. Because AX-b, ASSIN and ASSIN~2 only distinguish
-entailment from non-entailment, we also report, for every test set, the Matthews correlation coefficient
-(MCC) of the binary decision \E{} \emph{vs.} $\neg$\E{} obtained by merging \N{} and \C{} predictions. MCC
-is the official AX-b metric and is robust to the label imbalance of these sets.
+Our main metric, for every test set, is the Matthews correlation coefficient (MCC) of the binary
+decision \E{} \emph{vs.} $\neg$\E{}, obtained by merging \N{} and \C{} predictions. It is the only metric
+defined for all our test sets: AX-b, ASSIN and ASSIN~2 only distinguish entailment from non-entailment,
+and MCC is the official AX-b metric. It is also robust to the label imbalance of these sets.
 
-We further break results down by the annotations of each set: phenomenon in AX-b, substitution category
-in Breaking NLI and section in FraCaS. With
-few pairs in some groups (18--140 per AX-b phenomenon), these breakdowns are exploratory.
+The binary view is also required for Breaking NLI: models trained on SICK label most of its
+contradictions as neutral, following the annotation convention of SICK, so only the entailment decision
+is comparable across training sets. For the in-distribution test sets (SICK and InferBR) we additionally
+report three-way macro-F1 in the text.
+
+We further break AX-b results down by the coarse categories of the diagnostic and their fine-grained
+phenomena. With 18--140 pairs per phenomenon, these breakdowns are exploratory.
 
 Every system is trained with the same 10 seeds (1001--1010), and results are paired by seed. The seed
 fixes all random number generators at the start of a run; because variants create different numbers of

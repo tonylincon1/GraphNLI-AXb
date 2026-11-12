@@ -21,6 +21,11 @@ Written to data/raw/challenge/:
     sick_br_test.jsonl   SICK-BR (Real et al., 2018), SemEval TEST partition, 4,906 pairs,
                          3-way. Translation of the SICK test set: id = SICK pair_ID, so every
                          pair is aligned with sick_test.
+  Annotations
+    axb_categories.json  For each AX-b idx, the four coarse GLUE diagnostic categories (Lexical
+                         Semantics, Predicate-Argument Structure, Logic, Knowledge) and their
+                         fine-grained labels, from the GLUE diagnostic-full.tsv (same pairs, same
+                         order as SuperGLUE AX-b; checked on load).
   Provenance
     assin2_test_sick_provenance.json
                          For each ASSIN 2 test id, the SICK partition of its source pair in
@@ -54,6 +59,7 @@ URLS = {
     "conj_dev.tsv": "https://raw.githubusercontent.com/swarnaHub/ConjNLI/master/data/NLI/conj_dev.tsv",
     "med.tsv": "https://raw.githubusercontent.com/verypluming/MED/master/MED.tsv",
     "fracas_en_fr.tsv": "https://huggingface.co/datasets/maximoss/fracas/resolve/main/fracas_in_english_and_french.tsv",
+    "glue_diagnostic_full.tsv": "https://dl.fbaipublicfiles.com/glue/data/diagnostic-full.tsv",
     "sick_br.txt": "https://raw.githubusercontent.com/livyreal/SICK-BR/master/SICK_BR.txt",
 }
 
@@ -122,6 +128,23 @@ def fracas() -> None:
     write("fracas_en.jsonl", rows)
 
 
+def axb_categories() -> None:
+    axb_path = ROOT / "data" / "raw" / "superglue_axb" / "AX-b" / "AX-b.jsonl"
+    if not axb_path.exists():
+        print(f"skipping AX-b categories: {axb_path} not found")
+        return
+    axb = [json.loads(line) for line in axb_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    diag = tsv(fetch("glue_diagnostic_full.tsv"))
+    assert len(axb) == len(diag), (len(axb), len(diag))
+    coarse = ["Lexical Semantics", "Predicate-Argument Structure", "Logic", "Knowledge"]
+    out = {}
+    for a, d in zip(axb, diag):
+        assert a["sentence1"].strip() == d["Premise"].strip() and a["sentence2"].strip() == d["Hypothesis"].strip()
+        out[str(a["idx"])] = {c: d[c].strip() for c in coarse if d[c].strip()}
+    (OUT / "axb_categories.json").write_text(json.dumps(out, indent=0), encoding="utf-8")
+    print(f"axb_categories.json: {dict(Counter(c for v in out.values() for c in v))}")
+
+
 def sick_br() -> list[dict]:
     data = tsv(fetch("sick_br.txt"))
     test = [row(int(d["pair_ID"]), d["sentence_A"], d["sentence_B"], d["entailment_label"], "pt", "sick_br")
@@ -164,6 +187,7 @@ def main() -> None:
     conjnli()
     med()
     fracas()
+    axb_categories()
     assin2_provenance(sick_br())
 
 
