@@ -157,24 +157,31 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \begin{frame}{Ablação na transferência EN$\to$PT (XLM-R treinado em SICK)}
 \textit{\small Testes em português; $\Delta$ MCC contra o \model{} completo} \hfill {\scriptsize $^*$Holm $p<.05$; $^\dagger$ $p<.05$ contra o completo}\\[3pt]
 \tbl[0.85]{12cm}{pres_ablation_xl_en_to_pt}
-\take{Ablação completa. Na transferência para o português \textbf{nenhum componente ajuda}: nenhuma variante é significativamente pior que o \model{} completo, e tirar o grafo ou o léxico até melhora o SICK-BR (\up{+2.1}, Holm). As relações aprendidas em inglês não parecem transferir para as arestas em português. PT$\to$EN em execução.}
+\take{Ablação completa. Na transferência para o português \textbf{nenhum componente ajuda}: nenhuma variante é significativamente pior que o \model{} completo, e tirar o grafo ou o léxico até melhora o SICK-BR (\up{+2.1}, Holm). As relações aprendidas em inglês não parecem transferir para as arestas em português.}
+\end{frame}
+
+% --------------------------------------------------------------------------
+\begin{frame}{Ablação na transferência PT$\to$EN (XLM-R treinado em InferBR)}
+\textit{\small Testes em inglês; $\Delta$ MCC contra o \model{} completo} \hfill {\scriptsize $^*$Holm $p<.05$; $^\dagger$ $p<.05$ contra o completo}\\[3pt]
+\tbl[0.85]{12cm}{pres_ablation_xl_pt_to_en}
+\take{Parcial (2 de 5 ablações completas). Aqui o \textbf{léxico é essencial}: sem ele o modelo perde SICK \down{$-$4.5} e ConjNLI \down{$-$6.8} (Holm, 10/10 seeds), quase todo o ganho do \model{} sobre o [CLS]. Sem o conflito: melhor em 4 de 5 testes (n.s.), pior no FraCaS. Restante em execução.}
 \end{frame}
 
 % --------------------------------------------------------------------------
 \begin{frame}{Ablação: o que aprendemos}
 \small
-\footnotesize\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{4.1cm}>{\raggedright\arraybackslash}p{4.1cm}>{\raggedright\arraybackslash}p{3.1cm}@{}}
+\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{2.7cm}@{}}
 \toprule
-Componente & Inglês (RoBERTa-large) & Português (BERTimbau) & EN$\to$PT (XLM-R) \\
+Componente & Inglês (RoBERTa-large) & Português (BERTimbau) & EN$\to$PT (XLM-R) & PT$\to$EN (XLM-R) \\
 \midrule
-\textbf{Cobertura} & \down{essencial}: sem ela AX-b $-$6.7, Conj.\ $-$8.5, FraCaS $-$9.6 & \down{essencial}: ASSIN $-$11.9, ASSIN\,2 $-$4.0, SICK-BR $-$4.2 & n.s. \\
-\textbf{Regra lógica} & \down{essencial}: MLP head AX-b $-$5.1, Conj.\ $-$11.8 & secundária: MLP head $-$0.8 a $-$2.4 (n.s.) & n.s. \\
-\textbf{Grafo} & ajuda no ConjNLI ($-$4.8) & ajuda fora da distribuição ($-$1.8 a $-$2.1) & \down{atrapalha} (sem ele: SICK-BR +2.1) \\
-\textbf{Léxico} & não faz diferença & ajuda ($-$1.3 a $-$1.5) & \down{atrapalha} (sem ele: SICK-BR +2.1) \\
-\textbf{Conflito} & \up{dispensável} (sem ele: +2.0 AX-b) & \up{dispensável} (sem ele: +1.0 a +2.4) & n.s. \\
+\textbf{Cobertura} & \down{essencial}: sem ela AX-b $-$6.7, Conj.\ $-$8.5, FraCaS $-$9.6 & \down{essencial}: ASSIN $-$11.9, ASSIN\,2 $-$4.0, SICK-BR $-$4.2 & n.s. & \textit{em execução} \\
+\textbf{Regra lógica} & \down{essencial}: MLP head AX-b $-$5.1, Conj.\ $-$11.8 & secundária: MLP head $-$0.8 a $-$2.4 (n.s.) & n.s. & \textit{em execução} \\
+\textbf{Grafo} & ajuda no ConjNLI ($-$4.8) & ajuda fora da distribuição ($-$1.8 a $-$2.1) & \down{atrapalha} (sem ele: SICK-BR +2.1) & \textit{em execução} \\
+\textbf{Léxico} & não faz diferença & ajuda ($-$1.3 a $-$1.5) & \down{atrapalha} (sem ele: SICK-BR +2.1) & \down{essencial}: SICK $-$4.5, Conj.\ $-$6.8 \\
+\textbf{Conflito} & \up{dispensável} (sem ele: +2.0 AX-b) & \up{dispensável} (sem ele: +1.0 a +2.4) & n.s. & n.s. (sem ele: $+$1.6 a $+$6.0; FraCaS $-$3.1) \\
 \bottomrule
 \end{tabular}
-\take{O ganho vem da \textbf{cobertura}; o conflito não ajuda em nenhuma configuração (nos testes preliminares em português parecia ajudar). Na transferência EN$\to$PT nenhum componente ajuda. Pergunta em aberto: retirar o conflito do modelo principal?}
+\take{O ganho vem da \textbf{cobertura}; o conflito não ajuda em nenhuma configuração (nos testes preliminares em português parecia ajudar). Na transferência EN$\to$PT nenhum componente ajuda; na PT$\to$EN o léxico (EN+PT) é o que carrega a transferência. Pergunta em aberto: retirar o conflito do modelo principal?}
 \end{frame}
 
 % --------------------------------------------------------------------------
