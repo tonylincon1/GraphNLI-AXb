@@ -1,0 +1,9 @@
+updated   2026-11-13 04:37
+runs      27/100
+progress  21.7% (weighted by est_minutes_per_run)
+left      ~1d 19h33 (estimate x0.81 observed speed)
+ETA       2026-11-15 00:11 (machine local time)
+running   xling_pt_to_en_ablation/coverage_pl_v1_no_conflict/seed_1008
+
+  xling_pt_to_en_ablation             27/70
+  inferbr_pt_graph_baselines           0/30

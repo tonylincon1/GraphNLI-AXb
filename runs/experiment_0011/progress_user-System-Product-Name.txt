@@ -1,0 +1,11 @@
+updated   2026-11-13 04:28
+runs      25/90
+progress  23.7% (weighted by est_minutes_per_run)
+left      ~1d 08h02 (estimate x0.68 observed speed)
+ETA       2026-11-14 12:31 (machine local time)
+running   sick_en_kbert/kbert_injection/seed_1006
+
+  sick_en_graph_baselines             20/20
+  sick_en_kbert                        5/10
+  xling_en_to_pt_graph_baselines       0/30
+  xling_pt_to_en_graph_baselines       0/30

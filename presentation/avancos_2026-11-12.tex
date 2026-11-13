@@ -117,7 +117,7 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \begin{frame}{Resultados principais --- inglês}
 \textit{\small (a) English: RoBERTa-large trained on SICK} \hfill {\scriptsize $^\dagger$ $p<.05$ contra [CLS]}\\[3pt]
 \tbl{18.5cm}{main_en}
-\take{SICK: \textbf{empate}. Fora da distribuição: \up{+4.9} AX-b, \up{+5.9} ConjNLI, \up{+8.6} FraCaS (MCC). Breaking NLI: empate. Linhas vazias: baselines de grafo ainda rodando.}
+\take{SICK: \textbf{empate}. Fora da distribuição: \up{+4.9} AX-b, \up{+5.9} ConjNLI, \up{+8.6} FraCaS (MCC). Breaking NLI: empate. \textbf{Baselines de grafo}: KGAnet e KGNLI empatam no SICK mas caem fora dele; \model{} os supera em \up{+14} a \up{+21} MCC em AX-b e ConjNLI (10/10 seeds). K-BERT: 5/10 seeds, linha vazia até concluir.}
 \end{frame}
 
 % --------------------------------------------------------------------------
@@ -134,7 +134,7 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \tbl{16.5cm}{main_xl_en_to_pt}\\[5pt]
 \textit{(d) Cross-lingual PT$\to$EN: XLM-R-base trained on InferBR, English tests}\\[1pt]
 \tbl{18.5cm}{main_xl_pt_to_en}
-\take{EN$\to$PT: \textbf{empate} nos testes em português (ASSIN\,2 avaliado só nos pares que não vêm do treino do SICK). PT$\to$EN em execução --- foi a direção promissora nos testes preliminares.}
+\take{EN$\to$PT: \textbf{empate} nos testes em português (ASSIN\,2 avaliado só nos pares que não vêm do treino do SICK). PT$\to$EN (10 seeds): \model{} ganha no SICK \up{+4.7} e no ConjNLI \up{+6.3}; AX-b e FraCaS positivos mas n.s.; Breaking NLI empate. Confirma a direção promissora dos testes preliminares.}
 \end{frame}
 
 % --------------------------------------------------------------------------
@@ -241,7 +241,8 @@ Symmetry/Collectivity & 28 & \down{$-$8.7} \\
 \item \textbf{O mecanismo é a cobertura}; a regra lógica pesa no inglês; grafo e léxico ajudam no português.
 \item \textbf{O conflito não ajuda} (diferente dos testes preliminares em português).
 \item \model{} tem \textbf{menor variância entre seeds} (ex.: SICK-BR $\pm$0.8 vs.\ $\pm$3.2).
-\item \textbf{Cross-lingual:} EN$\to$PT não transfere; PT$\to$EN é a direção promissora (em execução).
+\item \textbf{Cross-lingual:} EN$\to$PT não transfere; PT$\to$EN transfere (SICK \up{+4.7}, ConjNLI \up{+6.3}).
+\item \textbf{Baselines de grafo} (KGAnet, KGNLI): empatam no SICK, mas ficam abaixo até do [CLS] fora da distribuição.
 \item Correção metodológica: 36\% do teste do ASSIN\,2 vem do treino do SICK; modelos treinados em SICK são avaliados só no restante.
 \end{enumerate}
 \end{frame}
@@ -274,7 +275,7 @@ Symmetry/Collectivity & 28 & \down{$-$8.7} \\
 \begin{frame}{Próximos passos}
 \small
 \begin{itemize}
-\item Concluir as experimentações: ablação cross-lingual (EN$\to$PT e PT$\to$EN) e baselines de grafo (K-BERT, KGAnet, KGNLI).
+\item Concluir as experimentações (duas máquinas, previsão 14--15/11): ablação PT$\to$EN e baselines de grafo no português e no cross-lingual; K-BERT no inglês.
 \item Decidir o papel do conflito: manter, tornar opcional ou retirar do modelo principal.
 \item Corrigir o viés de numerais (\texttt{number\_conflict}) numa versão 2.
 \item Artigo: escrever o texto dos resultados; exportar valores reais para a figura de interpretabilidade; calibração (ECE melhor fora da distribuição).
