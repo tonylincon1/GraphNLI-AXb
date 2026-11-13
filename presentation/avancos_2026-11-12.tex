@@ -117,7 +117,7 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \begin{frame}{Resultados principais --- inglês}
 \textit{\small (a) English: RoBERTa-large trained on SICK} \hfill {\scriptsize $^\dagger$ $p<.05$ contra [CLS]}\\[3pt]
 \tbl{18.5cm}{main_en}
-\take{SICK: \textbf{empate}. Fora da distribuição: \up{+4.9} AX-b, \up{+5.9} ConjNLI, \up{+8.6} FraCaS (MCC). Breaking NLI: empate. \textbf{Baselines de grafo}: KGAnet e KGNLI empatam no SICK mas caem fora dele; \model{} os supera em \up{+14} a \up{+21} MCC em AX-b e ConjNLI (10/10 seeds). K-BERT: 5/10 seeds, linha vazia até concluir.}
+\take{SICK: \textbf{empate}. Fora da distribuição: \up{+4.9} AX-b, \up{+5.9} ConjNLI, \up{+8.6} FraCaS (MCC). Breaking NLI: empate. \textbf{Baselines de grafo}: empatam (ou quase) no SICK mas caem fora dele; \model{} supera KGAnet, KGNLI e K-BERT em \up{+10} a \up{+21} MCC em AX-b e ConjNLI (10/10 seeds).}
 \end{frame}
 
 % --------------------------------------------------------------------------
@@ -134,7 +134,7 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \tbl{16.5cm}{main_xl_en_to_pt}\\[5pt]
 \textit{(d) Cross-lingual PT$\to$EN: XLM-R-base trained on InferBR, English tests}\\[1pt]
 \tbl{18.5cm}{main_xl_pt_to_en}
-\take{EN$\to$PT: \textbf{empate} nos testes em português (ASSIN\,2 avaliado só nos pares que não vêm do treino do SICK). PT$\to$EN (10 seeds): \model{} ganha no SICK \up{+4.7} e no ConjNLI \up{+6.3}; AX-b e FraCaS positivos mas n.s.; Breaking NLI empate. Confirma a direção promissora dos testes preliminares.}
+\take{EN$\to$PT: \textbf{empate} com o [CLS] nos testes em português (ASSIN\,2 só nos pares que não vêm do treino do SICK); K-BERT e KGAnet ficam $\sim$20--27 MCC abaixo no InferBR e no SICK-BR (KGNLI em execução). PT$\to$EN (10 seeds): \model{} ganha no SICK \up{+4.7} e no ConjNLI \up{+6.3}; AX-b e FraCaS positivos mas n.s.; Breaking NLI empate. Confirma a direção promissora dos testes preliminares.}
 \end{frame}
 
 % --------------------------------------------------------------------------
