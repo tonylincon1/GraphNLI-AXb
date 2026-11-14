@@ -50,6 +50,7 @@ from .metrics import (
     grouped_binary_metrics,
     grouped_direct_binary_metrics,
 )
+from .labels import LABELS_3
 from .models import build_model
 from .models_tokgraph import TOKGRAPH_VARIANTS
 from .critical_difference import generate_critical_difference_reports
@@ -897,6 +898,111 @@ def save_logicpath_explanations(model, loader, device: torch.device, output_dir:
         (transformation_dir / "index.json").write_text(json.dumps(transformation_manifest, indent=2), encoding="utf-8")
 
 
+COVER_EXPLAIN_VARIANTS = {
+    "coverage_pl_v1", "coverage_pl_v1_no_conflict", "coverage_pl_v1_no_coverage",
+    "coverage_pl_v1_no_symbolic", "coverage_pl_v1_no_graph",
+}
+
+
+@torch.no_grad()
+def save_cover_explanations(model, loader, device: torch.device, output_path: Path) -> None:
+    """Write one JSON line per test pair with everything a COVER decision is made of.
+
+    Per hypothesis word: support s_j, conflict c_j, weight w_j and its top premise alignments
+    (last graph layer) with the lexical relation of each edge. Per pair: the [CLS] and structured
+    probabilities, the fused prediction, and P_cov / P_noconf as aggregated by the logical head.
+    Rendering and example selection: scripts/make_explanation_figures.py.
+    """
+    from .token_graph import TOKGRAPH_RELATIONS
+
+    model.eval()
+    dataset = loader.dataset
+    rows = {row.uid: row for row in dataset.rows}
+    tokenizer, max_len = dataset.tokenizer, dataset.max_len
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    def words_by_position(row):
+        enc = tokenizer(row.sentence1, row.sentence2, truncation=True, max_length=max_len,
+                        padding="max_length", return_offsets_mapping=True)
+        seq_ids, word_ids, offsets = enc.sequence_ids(0), enc.word_ids(0), enc["offset_mapping"]
+        spans, first = {}, {}
+        for pos, (seq, wid) in enumerate(zip(seq_ids, word_ids)):
+            if seq is None or wid is None:
+                continue
+            start, end = offsets[pos]
+            span = spans.setdefault((seq, wid), [start, end])
+            span[0], span[1] = min(span[0], start), max(span[1], end)
+            first.setdefault((seq, wid), pos)
+        texts = (row.sentence1, row.sentence2)
+        out = {}
+        for pos, (seq, wid) in enumerate(zip(seq_ids, word_ids)):
+            if seq is not None and wid is not None:
+                start, end = spans[(seq, wid)]
+                out[pos] = texts[seq][start:end]
+        return out
+
+    with output_path.open("w", encoding="utf-8") as handle:
+        for batch in loader:
+            batch = move_batch(batch, device)
+            batch["return_tokgraph_details"] = True
+            output = model(batch)
+            details = output.graph_details
+            if not details or "support" not in details:
+                raise RuntimeError("COVER explanation needs the logical head (graph_details with support).")
+            probs = output.logits.float().softmax(dim=-1).cpu()
+            cls_probs = output.diagnostics["cls_logits"].softmax(dim=-1).cpu()
+            struct_probs = details["structured_probs"].float().cpu()
+            align, null = details["alignments"][-1] if details["alignments"] else (None, None)
+            support, conflict, weight = (details[k].float().cpu() for k in ("support", "conflict", "weight"))
+            rel = details["rel"].cpu()
+            premise_mask, hyp_mask = details["premise"].cpu(), details["hypothesis"].cpu()
+            if align is not None:
+                align, null = align.float().cpu(), null.float().cpu()
+            for i, uid in enumerate(batch["uid"]):
+                row = rows[uid]
+                words = words_by_position(row)
+                prem_pos = [int(p) for p in premise_mask[i].nonzero().flatten()]
+                hyp_pos = [int(p) for p in hyp_mask[i].nonzero().flatten()]
+                w = weight[i]
+                log_s = torch.log(support[i].clamp_min(1e-12))
+                log_nc = torch.log((1.0 - conflict[i]).clamp_min(1e-12))
+                hyp = []
+                for pos in hyp_pos:
+                    entry = {
+                        "pos": pos, "word": words.get(pos, "?"),
+                        "support": round(float(support[i, pos]), 4),
+                        "conflict": round(float(conflict[i, pos]), 4),
+                        "weight": round(float(w[pos]), 4),
+                        "relations": sorted({TOKGRAPH_RELATIONS[int(rel[i, pos, q])] for q in prem_pos
+                                             if int(rel[i, pos, q]) > 1}),
+                    }
+                    if align is not None:
+                        scores = sorted(((float(align[i, pos, q]), q) for q in prem_pos), reverse=True)[:3]
+                        entry["align"] = [
+                            {"pos": q, "word": words.get(q, "?"), "attn": round(a, 4),
+                             "relation": TOKGRAPH_RELATIONS[int(rel[i, pos, q])]}
+                            for a, q in scores
+                        ]
+                        entry["null"] = round(float(null[i, pos]), 4)
+                    hyp.append(entry)
+                record = {
+                    "uid": uid, "dataset": row.dataset, "logic": row.logic, "language": row.language,
+                    "premise": row.sentence1, "hypothesis": row.sentence2,
+                    "premise_words": [{"pos": q, "word": words.get(q, "?")} for q in prem_pos],
+                    "gold_3": LABELS_3[row.label_3] if 0 <= row.label_3 < 3 else None,
+                    "gold_binary": int(row.label_binary),
+                    "prediction_3": LABELS_3[int(probs[i].argmax())],
+                    "probs": [round(float(v), 4) for v in probs[i]],
+                    "cls_probs": [round(float(v), 4) for v in cls_probs[i]],
+                    "struct_probs": [round(float(v), 4) for v in struct_probs[i]],
+                    "struct_scale": round(float(details["struct_scale"]), 4),
+                    "log_p_cov": round(float((w * log_s).sum()), 4),
+                    "log_p_noconf": round(float((w * log_nc).sum()), 4),
+                    "hypothesis_words": hyp,
+                }
+                handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+
 def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, eval_sets: dict, args) -> dict:
     set_seed(seed)
     device = resolve_device(args.device)
@@ -1017,6 +1123,8 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
             save_piig_explanations(model, loader, device, out_dir / "explanations" / name)
         if include_logicpath and args.save_piig_explanations and name == args.piig_explain_split:
             save_logicpath_explanations(model, loader, device, out_dir / "explanations" / name)
+        if getattr(args, "save_cover_explanations", False) and variant in COVER_EXPLAIN_VARIANTS:
+            save_cover_explanations(model, loader, device, out_dir / "cover_explanations" / f"{name}.jsonl")
         if (
             getattr(args, "surrogate_analysis", False)
             and variant == "logicpath_v2"

@@ -383,6 +383,7 @@ def run_pipeline(name: str, pipeline: dict, global_config: dict, experiment_dir:
                     continue
                 args = _namespace(tuned, model_dir)
                 args.save_piig_explanations = bool(pipeline.get("save_explanations", False))
+                args.save_cover_explanations = bool(pipeline.get("save_cover_explanations", False))
                 surrogate_variants = pipeline.get("surrogate_analysis_variants", [])
                 args.surrogate_analysis = variant in surrogate_variants
                 args.surrogate_split = pipeline.get("surrogate_split", "inferbr_test")
