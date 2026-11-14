@@ -1,0 +1,7 @@
+{
+  "model_name": "xlm-roberta-base",
+  "variant": "kganet_rel_gat",
+  "tuning_enabled": false,
+  "best_params": {},
+  "selection_metric": "nli3/macro_f1"
+}

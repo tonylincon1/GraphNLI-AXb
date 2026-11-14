@@ -1,0 +1,7 @@
+{
+  "model_name": "xlm-roberta-base",
+  "variant": "kgnli_dual",
+  "tuning_enabled": false,
+  "best_params": {},
+  "selection_metric": "nli3/macro_f1"
+}

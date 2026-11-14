@@ -124,7 +124,7 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \begin{frame}{Resultados principais --- português}
 \textit{\small (b) Portuguese: BERTimbau-base trained on InferBR} \hfill {\scriptsize $^\dagger$ $p<.05$ contra [CLS]}\\[3pt]
 \tbl{16.5cm}{main_pt}
-\take{InferBR: \textbf{empate} (+1.2 MCC, n.s.). Fora da distribuição: \up{+3.3} ASSIN, \up{+4.6} ASSIN\,2, \up{+5.3} SICK-BR (MCC), com $\sim$1/3 do desvio entre seeds.}
+\take{InferBR: \textbf{empate} (+1.2 MCC, n.s.). Fora da distribuição: \up{+3.3} ASSIN, \up{+4.6} ASSIN\,2, \up{+5.3} SICK-BR (MCC), com $\sim$1/3 do desvio entre seeds. \textbf{Baselines de grafo}: \model{} supera K-BERT e KGAnet em \up{+2} a \up{+9} fora da distribuição. KGNLI: 6/10 seeds, linha vazia até concluir.}
 \end{frame}
 
 % --------------------------------------------------------------------------
@@ -134,7 +134,7 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \tbl{16.5cm}{main_xl_en_to_pt}\\[5pt]
 \textit{(d) Cross-lingual PT$\to$EN: XLM-R-base trained on InferBR, English tests}\\[1pt]
 \tbl{18.5cm}{main_xl_pt_to_en}
-\take{EN$\to$PT: \textbf{empate} com o [CLS] nos testes em português (ASSIN\,2 só nos pares que não vêm do treino do SICK); K-BERT e KGAnet ficam $\sim$20--27 MCC abaixo no InferBR e no SICK-BR (KGNLI em execução). PT$\to$EN (10 seeds): \model{} ganha no SICK \up{+4.7} e no ConjNLI \up{+6.3}; AX-b e FraCaS positivos mas n.s.; Breaking NLI empate. Confirma a direção promissora dos testes preliminares.}
+\take{EN$\to$PT: \textbf{empate} com o [CLS] nos testes em português (ASSIN\,2 só nos pares que não vêm do treino do SICK); os três baselines de grafo ficam $\sim$20--28 MCC abaixo no InferBR e no SICK-BR. PT$\to$EN: \model{} ganha no SICK \up{+4.7} e no ConjNLI \up{+6.3}, e supera os três baselines de grafo no SICK (\up{+4.6} a \up{+6.5}).}
 \end{frame}
 
 % --------------------------------------------------------------------------
@@ -164,7 +164,7 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \begin{frame}{Ablação na transferência PT$\to$EN (XLM-R treinado em InferBR)}
 \textit{\small Testes em inglês; $\Delta$ MCC contra o \model{} completo} \hfill {\scriptsize $^*$Holm $p<.05$; $^\dagger$ $p<.05$ contra o completo}\\[3pt]
 \tbl[0.85]{12cm}{pres_ablation_xl_pt_to_en}
-\take{Parcial (2 de 5 ablações completas). Aqui o \textbf{léxico é essencial}: sem ele o modelo perde SICK \down{$-$4.5} e ConjNLI \down{$-$6.8} (Holm, 10/10 seeds), quase todo o ganho do \model{} sobre o [CLS]. Sem o conflito: melhor em 4 de 5 testes (n.s.), pior no FraCaS. Restante em execução.}
+\take{Ablação completa. Ao contrário do EN$\to$PT, aqui \textbf{todos os componentes ajudam, menos o conflito}: sem léxico, grafo ou cobertura o modelo perde de \down{$-$3.7} a \down{$-$4.7} no SICK (Holm, 10/10 seeds) e até \down{$-$7.0} no ConjNLI; a regra lógica pesa no ConjNLI (\down{$-$5.2}). Sem o conflito: n.s., melhor em 4 de 5 testes.}
 \end{frame}
 
 % --------------------------------------------------------------------------
@@ -174,14 +174,14 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \toprule
 Componente & Inglês (RoBERTa-large) & Português (BERTimbau) & EN$\to$PT (XLM-R) & PT$\to$EN (XLM-R) \\
 \midrule
-\textbf{Cobertura} & \down{essencial}: sem ela AX-b $-$6.7, Conj.\ $-$8.5, FraCaS $-$9.6 & \down{essencial}: ASSIN $-$11.9, ASSIN\,2 $-$4.0, SICK-BR $-$4.2 & n.s. & \textit{em execução} \\
-\textbf{Regra lógica} & \down{essencial}: MLP head AX-b $-$5.1, Conj.\ $-$11.8 & secundária: MLP head $-$0.8 a $-$2.4 (n.s.) & n.s. & \textit{em execução} \\
-\textbf{Grafo} & ajuda no ConjNLI ($-$4.8) & ajuda fora da distribuição ($-$1.8 a $-$2.1) & \down{atrapalha} (sem ele: SICK-BR +2.1) & \textit{em execução} \\
+\textbf{Cobertura} & \down{essencial}: sem ela AX-b $-$6.7, Conj.\ $-$8.5, FraCaS $-$9.6 & \down{essencial}: ASSIN $-$11.9, ASSIN\,2 $-$4.0, SICK-BR $-$4.2 & n.s. & \down{essencial}: SICK $-$4.7, FraCaS $-$3.8 \\
+\textbf{Regra lógica} & \down{essencial}: MLP head AX-b $-$5.1, Conj.\ $-$11.8 & secundária: MLP head $-$0.8 a $-$2.4 (n.s.) & n.s. & ajuda: MLP head Conj.\ $-$5.2 \\
+\textbf{Grafo} & ajuda no ConjNLI ($-$4.8) & ajuda fora da distribuição ($-$1.8 a $-$2.1) & \down{atrapalha} (sem ele: SICK-BR +2.1) & \down{essencial}: SICK $-$3.7, Conj.\ $-$7.0 \\
 \textbf{Léxico} & não faz diferença & ajuda ($-$1.3 a $-$1.5) & \down{atrapalha} (sem ele: SICK-BR +2.1) & \down{essencial}: SICK $-$4.5, Conj.\ $-$6.8 \\
 \textbf{Conflito} & \up{dispensável} (sem ele: +2.0 AX-b) & \up{dispensável} (sem ele: +1.0 a +2.4) & n.s. & n.s. (sem ele: $+$1.6 a $+$6.0; FraCaS $-$3.1) \\
 \bottomrule
 \end{tabular}
-\take{O ganho vem da \textbf{cobertura}; o conflito não ajuda em nenhuma configuração (nos testes preliminares em português parecia ajudar). Na transferência EN$\to$PT nenhum componente ajuda; na PT$\to$EN o léxico (EN+PT) é o que carrega a transferência. Pergunta em aberto: retirar o conflito do modelo principal?}
+\take{O ganho vem da \textbf{cobertura}; o conflito não ajuda em nenhuma configuração (nos testes preliminares em português parecia ajudar). Na transferência EN$\to$PT nenhum componente ajuda; na PT$\to$EN cobertura, grafo e léxico são todos necessários. Pergunta em aberto: retirar o conflito do modelo principal?}
 \end{frame}
 
 % --------------------------------------------------------------------------
@@ -245,11 +245,11 @@ Symmetry/Collectivity & 28 & \down{$-$8.7} \\
 \small
 \begin{enumerate}
 \item \textbf{Padrão robusto:} \model{} empata no conjunto de treino e ganha fora dele, em inglês e em português, com três encoders.
-\item \textbf{O mecanismo é a cobertura}; a regra lógica pesa no inglês; grafo e léxico ajudam no português.
+\item \textbf{O mecanismo é a cobertura}; a regra lógica pesa no inglês; grafo e léxico ajudam no português e na transferência PT$\to$EN.
 \item \textbf{O conflito não ajuda} (diferente dos testes preliminares em português).
 \item \model{} tem \textbf{menor variância entre seeds} (ex.: SICK-BR $\pm$0.8 vs.\ $\pm$3.2).
-\item \textbf{Cross-lingual:} EN$\to$PT não transfere; PT$\to$EN transfere (SICK \up{+4.7}, ConjNLI \up{+6.3}).
-\item \textbf{Baselines de grafo} (KGAnet, KGNLI): empatam no SICK, mas ficam abaixo até do [CLS] fora da distribuição.
+\item \textbf{Cross-lingual:} EN$\to$PT não transfere; PT$\to$EN transfere (SICK \up{+4.7}, ConjNLI \up{+6.3}), e o ganho some sem léxico, grafo ou cobertura.
+\item \textbf{Baselines de grafo} (K-BERT, KGAnet, KGNLI): \model{} os supera fora da distribuição nas quatro configurações; no inglês e no EN$\to$PT ficam em geral abaixo até do [CLS].
 \item Correção metodológica: 36\% do teste do ASSIN\,2 vem do treino do SICK; modelos treinados em SICK são avaliados só no restante.
 \end{enumerate}
 \end{frame}
@@ -282,7 +282,7 @@ Symmetry/Collectivity & 28 & \down{$-$8.7} \\
 \begin{frame}{Próximos passos}
 \small
 \begin{itemize}
-\item Concluir as experimentações (duas máquinas, previsão 14--15/11): ablação PT$\to$EN e baselines de grafo no português e no cross-lingual; K-BERT no inglês.
+\item Experimentações praticamente concluídas (falta KGNLI no português, 4 seeds).
 \item Decidir o papel do conflito: manter, tornar opcional ou retirar do modelo principal.
 \item Corrigir o viés de numerais (\texttt{number\_conflict}) numa versão 2.
 \item Artigo: escrever o texto dos resultados; exportar valores reais para a figura de interpretabilidade; calibração (ECE melhor fora da distribuição).

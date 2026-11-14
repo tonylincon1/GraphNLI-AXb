@@ -1,9 +1,9 @@
-updated   2026-11-13 15:03
-runs      43/100
-progress  34.5% (weighted by est_minutes_per_run)
-left      ~1d 20h51 (estimate x1.00 observed speed)
-ETA       2026-11-15 11:54 (machine local time)
-running   xling_pt_to_en_ablation/coverage_pl_v1_no_graph/seed_1004
+updated   2026-11-14 15:17
+runs      96/100
+progress  94.2% (weighted by est_minutes_per_run)
+left      ~2h22 (estimate x0.59 observed speed)
+ETA       2026-11-14 17:39 (machine local time)
+running   inferbr_pt_graph_baselines/kgnli_dual/seed_1007
 
-  xling_pt_to_en_ablation             43/70
-  inferbr_pt_graph_baselines           0/30
+  xling_pt_to_en_ablation             70/70
+  inferbr_pt_graph_baselines          26/30
