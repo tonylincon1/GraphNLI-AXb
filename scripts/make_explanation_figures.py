@@ -151,7 +151,8 @@ def x_positions(words: list[tuple[str, int | None]], gap: float = 0.12) -> list[
     return xs
 
 
-def figure_tex(rec: dict, model_label: str, use_conflict: bool, title: str) -> str:
+def figure_tex(rec: dict, model_label: str, use_conflict: bool, title: str, compact: bool = False) -> str:
+    """compact: narrower layout for a one-column paper figure (short box lines, no title)."""
     hyp_nodes = {h["pos"]: h for h in rec["hypothesis_words"]}
     prem_words = layout(rec["premise"], rec["premise_words"])
     hyp_words = layout(rec["hypothesis"], rec["hypothesis_words"])
@@ -160,8 +161,9 @@ def figure_tex(rec: dict, model_label: str, use_conflict: bool, title: str) -> s
     for i in range(1, len(hx)):
         if hyp_words[i][1] is not None:
             prev = max((hx[j] for j in range(i) if hyp_words[j][1] is not None), default=-9)
-            if hx[i] - prev < 0.62:
-                shift = 0.62 - (hx[i] - prev)
+            min_gap = 0.95 if compact else 0.62
+            if hx[i] - prev < min_gap:
+                shift = min_gap - (hx[i] - prev)
                 for j in range(i, len(hx)):
                     hx[j] += shift
     width = max(px[-1] if px else 0, hx[-1] if hx else 0) + 0.6
@@ -231,13 +233,23 @@ def figure_tex(rec: dict, model_label: str, use_conflict: bool, title: str) -> s
     cls_side = BINARY[rec["cls_prediction_binary"]]
     agg.append(rf"\textcolor{{relneg}}{{\textsc{{[cls]}} baseline model: {LABELS[rec['cls_prediction_3']]}"
                rf" ({cls_side}) \texttimes}}")
-    box_width = max(width - 0.1, 8.6)
+    if compact:
+        agg = [rf"coverage: $\Pcov=\prod_j s_j^{{\omega_j}}={num(p_cov)}$"]
+        if use_conflict:
+            agg.append(rf"no conflict: $\Pnc=\prod_j (1-c_j)^{{\omega_j}}={num(p_nc)}$")
+        agg.append(rf"structured $p(\E,\N,\C)={triple(struct)}$")
+        agg.append(rf"\textsc{{[cls]}} term\phantom{{d}} $p(\E,\N,\C)={triple(cls_probs)}$")
+        agg.append(rf"fused\phantom{{u}} $p(\E,\N,\C)={triple(probs)}$")
+        agg.append(rf"$\Rightarrow$ \textbf{{{pred3}}}\quad (gold: {tex(gold)})")
+        agg.append(rf"\textcolor{{relneg}}{{\textsc{{[cls]}} baseline: {LABELS[rec['cls_prediction_3']]} \texttimes}}")
+    box_width = max(width - 0.1, 5.3) if compact else max(width - 0.1, 8.6)
     lines.append(
         r"\node[draw=logic, fill=logicbg, rounded corners=3pt, line width=0.8pt, font=\scriptsize, "
         rf"align=left, anchor=north west, text width={box_width:.2f}cm, inner sep=4pt] (agg) at (-0.3,-0.85) {{%"
     )
     lines.append("  " + r"\\[1pt]".join(agg) + "};")
-    lines.append(rf"\node[font=\scriptsize\bfseries, anchor=south west] at (-0.75,2.85) {{{title}}};")
+    if not compact:
+        lines.append(rf"\node[font=\scriptsize\bfseries, anchor=south west] at (-0.75,2.85) {{{title}}};")
 
     return TEMPLATE.replace("%BODY%", "\n".join(lines)).replace("%MODEL%", model_label)
 
@@ -316,6 +328,8 @@ def main() -> None:
     parser.add_argument("--tests", default="", help="override the out-of-distribution test list")
     parser.add_argument("--out", default=str(ROOT / "paper" / "figures" / "explanations"))
     parser.add_argument("--no-compile", action="store_true")
+    parser.add_argument("--compact", default="en_cover_1",
+                        help="figures also drawn in the compact one-column layout (<name>_compact; paper/slides)")
     args = parser.parse_args()
 
     out_dir = Path(args.out)
@@ -345,6 +359,12 @@ def main() -> None:
                                 encoding="utf-8")
                 if not args.no_compile:
                     compile_figure(path)
+                if name in args.compact.split(","):
+                    compact = out_dir / f"{name}_compact.tex"
+                    compact.write_text(figure_tex(rec, label, variant != "coverage_pl_v1_no_conflict", title,
+                                                  compact=True), encoding="utf-8")
+                    if not args.no_compile:
+                        compile_figure(compact)
                 index.append({
                     "figure": path.name, "pipeline": pipeline, "variant": variant, "seed": args.seed,
                     "test": rec["test"], "uid": rec["uid"], "premise": rec["premise"],
