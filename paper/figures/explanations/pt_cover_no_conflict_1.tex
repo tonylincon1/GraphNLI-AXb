@@ -44,6 +44,7 @@
 
 \begin{document}
 \begin{tikzpicture}
+\begin{scope}[xshift=1.33cm]
 \node[font=\scriptsize\itshape, anchor=east] at (-0.35,2.45) {$P$};
 \node[font=\scriptsize\itshape, anchor=east] at (-0.35,1.15) {$H$};
 \node[stok] (pw0) at (0.21,2.45) {Um};
@@ -70,6 +71,7 @@
 \sbar{1.08}{1.0}{0.10}
 \sbar{2.97}{.01}{2.42}
 \sbar{5.30}{1.0}{0.08}
+\end{scope}
 \node[draw=logic, fill=logicbg, rounded corners=3pt, line width=0.8pt, font=\scriptsize, align=left, anchor=north west, text width=8.60cm, inner sep=4pt] (agg) at (-0.3,-0.85) {%
   $\log\Pcov=\sum_j\omega_j\log s_j=-10.48$\quad($\Pcov=.00$)\\[1pt]conflict head removed: $z_\E=\log\Pcov$, \N{} and \C{} share $\log(1-\Pcov)$\\[1pt]structured $p(\E,\N,\C)=(.00,\ .50,\ .50)$;\ \ \textsc{[cls]} term $(.41,\ .53,\ .06)$\\[1pt]fused $p(\E,\N,\C)=(.00,\ .90,\ .10)$ $\Rightarrow$ \textbf{neutral}\quad gold: neutral\\[1pt]\textcolor{relneg}{\textsc{[cls]} baseline model: entailment (entailment) \texttimes}};
 \node[font=\scriptsize\bfseries, anchor=south west] at (-0.75,2.85) {COVER $-$conflict --- ASSIN 2};

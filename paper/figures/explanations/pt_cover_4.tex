@@ -44,6 +44,7 @@
 
 \begin{document}
 \begin{tikzpicture}
+\begin{scope}[xshift=1.93cm]
 \node[font=\scriptsize\itshape, anchor=east] at (-0.35,2.45) {$P$};
 \node[font=\scriptsize\itshape, anchor=east] at (-0.35,1.15) {$H$};
 \node[stok] (pw0) at (0.21,2.45) {Um};
@@ -62,6 +63,7 @@
 \draw[black!40] (-0.1,0.05) -- (4.34,0.05);
 \bars{0.87}{.99}{.01}{0.00}
 \bars{2.81}{.99}{.01}{0.00}
+\end{scope}
 \node[draw=logic, fill=logicbg, rounded corners=3pt, line width=0.8pt, font=\scriptsize, align=left, anchor=north west, text width=8.60cm, inner sep=4pt] (agg) at (-0.3,-0.85) {%
   $\log\Pcov=\sum_j\omega_j\log s_j=-0.00$\quad($\Pcov=1.0$)\\[1pt]$\log\Pnc=\sum_j\omega_j\log(1-c_j)=-0.00$\quad($\Pnc=1.0$)\\[1pt]structured $p(\E,\N,\C)=(1.0,\ .00,\ .00)$;\ \ \textsc{[cls]} term $(.34,\ .38,\ .29)$\\[1pt]fused $p(\E,\N,\C)=(1.0,\ .00,\ .00)$ $\Rightarrow$ \textbf{entailment}\quad gold: entailment\\[1pt]\textcolor{relneg}{\textsc{[cls]} baseline model: neutral (non-entailment) \texttimes}};
 \node[font=\scriptsize\bfseries, anchor=south west] at (-0.75,2.85) {COVER --- ASSIN 2};

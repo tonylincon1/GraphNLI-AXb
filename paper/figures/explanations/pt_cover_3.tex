@@ -44,6 +44,7 @@
 
 \begin{document}
 \begin{tikzpicture}
+\begin{scope}[xshift=1.16cm]
 \node[font=\scriptsize\itshape, anchor=east] at (-0.35,2.45) {$P$};
 \node[font=\scriptsize\itshape, anchor=east] at (-0.35,1.15) {$H$};
 \node[stok] (pw0) at (0.16,2.45) {O};
@@ -74,6 +75,7 @@
 \bars{2.55}{1.0}{.03}{0.00}
 \bars{3.46}{.94}{.57}{0.23}
 \bars{5.59}{.99}{.25}{0.02}
+\end{scope}
 \node[draw=logic, fill=logicbg, rounded corners=3pt, line width=0.8pt, font=\scriptsize, align=left, anchor=north west, text width=8.60cm, inner sep=4pt] (agg) at (-0.3,-0.85) {%
   $\log\Pcov=\sum_j\omega_j\log s_j=-14.01$\quad($\Pcov=.00$)\\[1pt]$\log\Pnc=\sum_j\omega_j\log(1-c_j)=-0.26$\quad($\Pnc=.77$)\\[1pt]structured $p(\E,\N,\C)=(.00,\ .77,\ .23)$;\ \ \textsc{[cls]} term $(.26,\ .53,\ .21)$\\[1pt]fused $p(\E,\N,\C)=(.00,\ .90,\ .10)$ $\Rightarrow$ \textbf{neutral}\quad gold: neutral\\[1pt]\textcolor{relneg}{\textsc{[cls]} baseline model: entailment (entailment) \texttimes}};
 \node[font=\scriptsize\bfseries, anchor=south west] at (-0.75,2.85) {COVER --- SICK-BR};

@@ -243,6 +243,13 @@ def figure_tex(rec: dict, model_label: str, use_conflict: bool, title: str, comp
         agg.append(rf"$\Rightarrow$ \textbf{{{pred3}}}\quad (gold: {tex(gold)})")
         agg.append(rf"\textcolor{{relneg}}{{\textsc{{[cls]}} baseline: {LABELS[rec['cls_prediction_3']]} \texttimes}}")
     box_width = max(width - 0.1, 5.3) if compact else max(width - 0.1, 8.6)
+    # centre the graph (word rows, edges, bars) over the aggregation box
+    node_w = lambda w: 0.105 * len(w) + 0.22
+    right = max([x + node_w(w) / 2 for (w, _), x in zip(prem_words, px)] +
+                [x + node_w(w) / 2 for (w, _), x in zip(hyp_words, hx)] + [0.0])
+    box_centre = -0.3 + (box_width + 2 * 0.14) / 2
+    dx = max(box_centre - right / 2, 0.0)
+    lines = [rf"\begin{{scope}}[xshift={dx:.2f}cm]"] + lines + [r"\end{scope}"]
     lines.append(
         r"\node[draw=logic, fill=logicbg, rounded corners=3pt, line width=0.8pt, font=\scriptsize, "
         rf"align=left, anchor=north west, text width={box_width:.2f}cm, inner sep=4pt] (agg) at (-0.3,-0.85) {{%"
