@@ -47,7 +47,7 @@ BINARY = ["entailment", "non-entailment"]
 LEXICAL = {"identical", "same_stem", "synonym", "antonym", "hypernym", "hyponym", "number_equal",
            "number_conflict"}
 CONFLICT_RELATIONS = {"antonym", "number_conflict"}
-WORD_RE = re.compile(r"\w+(?:[-'’]\w+)*|[^\w\s]", re.UNICODE)
+WORD_RE = re.compile(r"\w+|[^\w\s]", re.UNICODE)  # same split as the encoder's pre-tokenizer (hyphens apart)
 
 
 # ---------------------------------------------------------------- data
@@ -180,6 +180,9 @@ def figure_tex(rec: dict, model_label: str, use_conflict: bool, title: str) -> s
         lines.append(rf"\node[{style}] ({name}) at ({x:.2f},1.15) {{{tex(word)}}};")
 
     # alignment edges: top premise word of every hypothesis node
+    labels: list[str] = []
+    # labels sit above their hypothesis node, staggered over two rows so crossing edges stay legible
+    label_row = 0
     for (word, pos), x in zip(hyp_words, hx):
         if pos is None:
             continue
@@ -192,10 +195,16 @@ def figure_tex(rec: dict, model_label: str, use_conflict: bool, title: str) -> s
         conflicting = use_conflict and (h["conflict"] >= 0.5 or rel in CONFLICT_RELATIONS)
         style = "cedge" if conflicting else ("aedge" if rel in LEXICAL else "ledge")
         label = (rel.replace("_", " ") if rel in LEXICAL else "learned") + r"\," + num(top["attn"])
-        lines.append(rf"\draw[{style}={line:.2f}pt] (h{pos}.north) -- node[rlab, pos=0.5] {{{label}}} (p{top['pos']}.south);")
+        lines.append(rf"\draw[{style}={line:.2f}pt] (h{pos}.north) -- (p{top['pos']}.south);")
+        labels.append(rf"\node[rlab, anchor=south] at ({x:.2f},{1.47 + 0.36 * (label_row % 2):.2f}) {{{label}}};")
+        label_row += 1
+
+    lines.extend(labels)  # drawn after all edges so their white fill masks crossings
 
     # support / conflict bars
     lines.append(rf"\draw[black!40] (-0.1,0.05) -- ({width - 0.3:.2f},0.05);")
+    # labels sit above their hypothesis node, staggered over two rows so crossing edges stay legible
+    label_row = 0
     for (word, pos), x in zip(hyp_words, hx):
         if pos is None:
             continue
@@ -222,7 +231,7 @@ def figure_tex(rec: dict, model_label: str, use_conflict: bool, title: str) -> s
     cls_side = BINARY[rec["cls_prediction_binary"]]
     agg.append(rf"\textcolor{{relneg}}{{\textsc{{[cls]}} baseline model: {LABELS[rec['cls_prediction_3']]}"
                rf" ({cls_side}) \texttimes}}")
-    box_width = max(width - 0.1, 7.6)
+    box_width = max(width - 0.1, 8.6)
     lines.append(
         r"\node[draw=logic, fill=logicbg, rounded corners=3pt, line width=0.8pt, font=\scriptsize, "
         rf"align=left, anchor=north west, text width={box_width:.2f}cm, inner sep=4pt] (agg) at (-0.3,-0.85) {{%"
@@ -330,7 +339,7 @@ def main() -> None:
             short = "cover" if variant == "coverage_pl_v1" else "cover_no_conflict"
             for k, rec in enumerate(chosen, 1):
                 name = f"{setting}_{short}_{k}"
-                title = f"{label} --- {TEST_NAMES.get(rec['test'], rec['test'])} ({tex(rec['uid'])})"
+                title = f"{label} --- {TEST_NAMES.get(rec['test'], rec['test'])}"
                 path = out_dir / f"{name}.tex"
                 path.write_text(figure_tex(rec, label, variant != "coverage_pl_v1_no_conflict", title),
                                 encoding="utf-8")

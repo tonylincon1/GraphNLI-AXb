@@ -1,9 +1,8 @@
-updated   2026-11-14 15:17
-runs      96/100
-progress  94.2% (weighted by est_minutes_per_run)
-left      ~2h22 (estimate x0.59 observed speed)
-ETA       2026-11-14 17:39 (machine local time)
-running   inferbr_pt_graph_baselines/kgnli_dual/seed_1007
+updated   2026-11-14 17:02
+runs      100/100
+progress  100.0% (weighted by est_minutes_per_run)
+left      ~0h00 (estimate x0.58 observed speed)
+ETA       2026-11-14 17:02 (machine local time)
 
   xling_pt_to_en_ablation             70/70
-  inferbr_pt_graph_baselines          26/30
+  inferbr_pt_graph_baselines          30/30

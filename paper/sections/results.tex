@@ -87,13 +87,14 @@
 
 \begin{figure}[t]
   \centering
-  \includestandalone[width=\columnwidth]{figures/interpretability_example}
-  \caption{Reading a \model{} decision. Each content word of the hypothesis is aligned to a premise word
-  (line width: attention weight; colour and label: lexical relation, dashed when no relation is
-  available). Bars give the support $s_j$ and conflict $c_j$ of each hypothesis word, and $\omega_j$ its
-  weight; the box applies the aggregation of \cref{sec:architecture}. The antonym edge
-  \emph{small}--\emph{large} produces a high conflict that alone determines the contradiction.
-  \todo{Illustrative values: replace with node-level scores exported from a trained model.}}
+  \includegraphics[width=\columnwidth]{figures/explanations/en_cover_1.pdf}
+  \caption{Reading a \model{} decision on an AX-b pair that swaps the arguments of the verb (SICK-trained
+  RoBERTa-large, seed 1001). Each hypothesis word is aligned to a premise word (line width: attention
+  weight; colour and label: lexical relation, dashed when no relation is available). Bars give the support
+  $s_j$ and conflict $c_j$ of each hypothesis word, and $\omega_j$ its weight; the box applies the
+  aggregation of \cref{sec:architecture}. Every word finds its identical counterpart, yet none is
+  supported in its role, so $\Pcov\approx0$ and the pair is not entailed; the \cls{} baseline, trained
+  identically, predicts entailment. Values are those computed by the trained model.}
   \label{fig:interpretability}
 \end{figure}
 

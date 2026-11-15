@@ -124,7 +124,7 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \begin{frame}{Resultados principais --- português}
 \textit{\small (b) Portuguese: BERTimbau-base trained on InferBR} \hfill {\scriptsize $^\dagger$ $p<.05$ contra [CLS]}\\[3pt]
 \tbl{16.5cm}{main_pt}
-\take{InferBR: \textbf{empate} (+1.2 MCC, n.s.). Fora da distribuição: \up{+3.3} ASSIN, \up{+4.6} ASSIN\,2, \up{+5.3} SICK-BR (MCC), com $\sim$1/3 do desvio entre seeds. \textbf{Baselines de grafo}: \model{} supera K-BERT e KGAnet em \up{+2} a \up{+9} fora da distribuição. KGNLI: 6/10 seeds, linha vazia até concluir.}
+\take{InferBR: \textbf{empate} (+1.2 MCC, n.s.). Fora da distribuição: \up{+3.3} ASSIN, \up{+4.6} ASSIN\,2, \up{+5.3} SICK-BR (MCC), com $\sim$1/3 do desvio entre seeds. \textbf{Baselines de grafo}: \model{} supera K-BERT e KGAnet em \up{+2} a \up{+9} e KGNLI em \up{+2} a \up{+4} fora da distribuição (todas $p<.05$).}
 \end{frame}
 
 % --------------------------------------------------------------------------
@@ -228,14 +228,84 @@ Symmetry/Collectivity & 28 & \down{$-$8.7} \\
 \begin{columns}[c]
 \column{0.55\textwidth}
 \centering
-\includegraphics[width=\linewidth]{../paper/figures/interpretability_example.pdf}\\
-{\tiny valores ilustrativos}
+\includegraphics[width=\linewidth]{../paper/figures/explanations/en_cover_1.pdf}\\
+{\tiny valores reais do modelo (exp.\ 0013, AX-b)}
 \column{0.43\textwidth}
 \small
 \begin{itemize}
 \item Cada decisão se lê palavra por palavra: quem cobre, quem contradiz.
+\item Exemplo (AX-b, papéis trocados): toda palavra tem sua idêntica na premissa, mas nenhuma é coberta no seu papel ($\Pcov\approx0$) $\Rightarrow$ $\neg$\E{}; o [CLS] prevê \emph{entailment}.
 \item A parte estruturada é quem decide de fato: sozinha, MCC \textbf{.84} no SICK contra \textbf{.45} da parte \cls{}.
 \item Ela muda 29\% das decisões do \cls{}: corrige 25\%, estraga 3\%.
+\end{itemize}
+\end{columns}
+\end{frame}
+
+
+% --------------------------------------------------------------------------
+\begin{frame}{Explicações reais: \model{} acerta, [CLS] erra (1/4)}
+\begin{columns}[c]
+\column{0.64\textwidth}
+\centering
+\includegraphics[width=\linewidth]{../paper/figures/explanations/en_cover_5.pdf}
+\column{0.34\textwidth}
+\small
+\begin{itemize}
+\item Breaking NLI: \emph{two} $\to$ \emph{six}.
+\item O léxico marca \texttt{number\_conflict}, mas o conflito fica em $c\approx0$.
+\item Quem decide é a \textbf{cobertura}: \emph{six} tem $s=.41$, e $\Pcov\approx0$ $\Rightarrow$ $\neg$\E{}.
+\item O [CLS] prevê \emph{entailment}.
+\end{itemize}
+\end{columns}
+\take{Exp.\ 0013 (seed 1001, testes fora da distribuição): \model{} acerta e [CLS] erra em 260 pares no inglês e 564 no português. Geradas 5 figuras por modelo e língua (\model{} e $-$conflito), 20 no total.}
+\end{frame}
+
+% --------------------------------------------------------------------------
+\begin{frame}{Explicações reais: \model{} $-$conflito (2/4)}
+\begin{columns}[c]
+\column{0.64\textwidth}
+\centering
+\includegraphics[width=\linewidth]{../paper/figures/explanations/en_cover_no_conflict_4.pdf}
+\column{0.34\textwidth}
+\small
+\begin{itemize}
+\item Breaking NLI: \emph{lemonade} $\to$ \emph{juice}.
+\item Sem relação no léxico; alinhamento aprendido.
+\item \emph{juice} quase não é coberto ($s=.19$, $\omega=1.9$) $\Rightarrow$ neutro, binário correto.
+\item Sem cabeça de conflito, N e C ficam empatados na parte estruturada.
+\end{itemize}
+\end{columns}
+\end{frame}
+
+% --------------------------------------------------------------------------
+\begin{frame}{Explicações reais: português (3/4)}
+\begin{columns}[c]
+\column{0.64\textwidth}
+\centering
+\includegraphics[width=\linewidth]{../paper/figures/explanations/pt_cover_2.pdf}
+\column{0.34\textwidth}
+\small
+\begin{itemize}
+\item SICK-BR: \emph{pessoas} não implica \emph{mulheres}.
+\item \emph{mulheres} tem $s=.05$ com o maior peso ($\omega=3.5$).
+\item As demais palavras são cobertas (sinônimo, idêntico), mas uma lacuna basta.
+\item O [CLS] prevê \emph{entailment}.
+\end{itemize}
+\end{columns}
+\end{frame}
+
+% --------------------------------------------------------------------------
+\begin{frame}{Explicações reais: português (4/4)}
+\begin{columns}[c]
+\column{0.64\textwidth}
+\centering
+\includegraphics[width=\linewidth]{../paper/figures/explanations/pt_cover_4.pdf}
+\column{0.34\textwidth}
+\small
+\begin{itemize}
+\item ASSIN\,2: retirar um modificador (\emph{feliz}) preserva a implicação.
+\item As duas palavras de conteúdo da hipótese são cobertas ($s=.99$) $\Rightarrow$ \E{}.
+\item O [CLS] prevê \emph{neutral}.
 \end{itemize}
 \end{columns}
 \end{frame}
@@ -282,10 +352,10 @@ Symmetry/Collectivity & 28 & \down{$-$8.7} \\
 \begin{frame}{Próximos passos}
 \small
 \begin{itemize}
-\item Experimentações praticamente concluídas (falta KGNLI no português, 4 seeds).
+\item Experimentações concluídas: 400 runs do protocolo oficial.
 \item Decidir o papel do conflito: manter, tornar opcional ou retirar do modelo principal.
 \item Corrigir o viés de numerais (\texttt{number\_conflict}) numa versão 2.
-\item Artigo: escrever o texto dos resultados; exportar valores reais para a figura de interpretabilidade; calibração (ECE melhor fora da distribuição).
+\item Artigo: escrever o texto dos resultados; calibração (ECE melhor fora da distribuição).
 \item Pendências do artigo: referências de KGAnet/KGNLI e do InferBR.
 \end{itemize}
 \end{frame}

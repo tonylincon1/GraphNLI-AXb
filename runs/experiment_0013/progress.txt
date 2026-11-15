@@ -1,0 +1,8 @@
+updated   2026-11-14 18:09
+runs      6/6
+progress  100.0% (weighted by est_minutes_per_run)
+left      ~0h00 (estimate x0.71 observed speed)
+ETA       2026-11-14 18:09 (machine local time)
+
+  sick_en_explain                      3/3
+  inferbr_pt_explain                   3/3
