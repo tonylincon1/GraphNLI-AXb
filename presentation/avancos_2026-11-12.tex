@@ -7,6 +7,7 @@
 \usepackage[brazil]{babel}
 \usepackage{booktabs,multirow,array,graphicx,amsmath,bm}
 \usepackage{xcolor}
+\usepackage{tikz}
 \input{../paper/macros}
 \renewcommand{\todo}[1]{}
 \renewcommand{\cls}{[CLS]}
@@ -224,24 +225,42 @@ Symmetry/Collectivity & 28 & \down{$-$8.7} \\
 
 
 % --------------------------------------------------------------------------
-\begin{frame}{Interpretabilidade: lendo uma decisão do \model{}}
+\newcommand{\stepmark}[1]{\tikz[baseline=(c.base)]\node[circle,fill=orange!85!black,text=white,font=\scriptsize\bfseries,inner sep=1.2pt](c){#1};}
+\begin{frame}{Interpretabilidade: como ler uma decisão do \model{}}
 \begin{columns}[c]
 \column{0.46\textwidth}
 \centering
-\vspace{4pt}\includegraphics[height=0.80\textheight]{../paper/figures/explanations/en_cover_1_compact.pdf}\\
-{\tiny AX-b, valores reais do modelo}
+\begin{tikzpicture}
+\node[inner sep=0, anchor=south west] (img) at (0,0)
+  {\includegraphics[height=0.78\textheight]{../paper/figures/explanations/en_cover_1_compact.pdf}};
+\begin{scope}[x={(img.south east)}, y={(img.north west)}]
+  \node at (-0.06,0.83) {\stepmark{1}};
+  \node at (-0.06,0.55) {\stepmark{2}};
+  \node at (-0.06,0.22) {\stepmark{3}};
+\end{scope}
+\end{tikzpicture}\\
+{\tiny exemplo real do AX-b}
 \column{0.53\textwidth}
+\small
+\textbf{Premissa:} \emph{A janela quebrou o John.}\\
+\textbf{Hipótese:} \emph{O John quebrou a janela.}\\[2pt]
+{\footnotesize Mesmas palavras, sentido diferente: a resposta certa é \textbf{não implica}.}
+
+\vspace{6pt}
 \footnotesize
-\textbf{P:} \emph{The window broke John.}\quad \textbf{H:} \emph{John broke the window.}\\
-Mesmas palavras, papéis trocados $\Rightarrow$ \textbf{não} há implicação.
-\begin{enumerate}
-\item \textbf{Alinhar:} cada palavra de H procura sua par em P (linhas). Todas acham a palavra idêntica.
-\item \textbf{Cobrir:} a barra verde ($s$) diz se P garante a palavra \emph{no papel em que ela aparece}. \emph{John} quebrou algo? Não ($s=.18$). \emph{window} foi quebrada? Não ($s=.19$).
-\item \textbf{Regra lógica:} só há implicação se \emph{todas} as palavras forem cobertas; uma falha basta. Aqui $\Pcov\approx0$.
-\item \textbf{Resultado:} o \model{} diz \emph{não-implicação} (acerta); o [CLS] vê as mesmas palavras e diz \emph{implicação} (erra).
-\end{enumerate}
+\stepmark{1} \textbf{Liga as palavras.} Cada palavra da hipótese encontra a mesma palavra na premissa (linhas verdes).
+
 \vspace{4pt}
-{\scriptsize\color{black!65} A explicação é o próprio cálculo da decisão, não uma análise feita depois. Sozinha, essa parte tem MCC \textbf{.84} no SICK (\textbf{.45} da parte [CLS]).}
+\stepmark{2} \textbf{Pergunta, palavra por palavra: ``a premissa garante isto?''} Barra verde alta = sim. Aqui todas ficam baixas: na premissa quem quebra é a janela, não o John.
+
+\vspace{4pt}
+\stepmark{3} \textbf{Aplica a regra:} só implica se a premissa garantir \emph{todas} as palavras. Nenhuma é garantida $\Rightarrow$ \textbf{não implica} \textcolor{green!50!black}{(certo)}.
+
+\vspace{6pt}
+O [CLS] vê as mesmas palavras e responde \textbf{implica} \textcolor{red!70!black}{(errado)}.
+
+\vspace{6pt}
+{\scriptsize\color{black!60} Barra verde: o quanto a premissa garante a palavra; vermelha: o quanto a contradiz; $\omega$: importância da palavra.}
 \end{columns}
 \end{frame}
 
