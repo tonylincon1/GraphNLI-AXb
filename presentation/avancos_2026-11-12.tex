@@ -55,9 +55,10 @@
 
 
 % --------------------------------------------------------------------------
-\begin{frame}{\model{}: a ideia}
+\begin{frame}{\model{}: Knowledge-Grounded \textcolor{neural}{COVE}rage and Conflict \textcolor{neural}{R}easoning}
 \centering
-\includegraphics[width=0.86\linewidth]{../paper/figures/cover_architecture.pdf}\\[3pt]
+{\footnotesize Implica só se a premissa \textcolor{logic}{\textbf{garante cada palavra}} da hipótese (cobertura) e \textcolor{relneg}{\textbf{nenhuma é contradita}} (conflito).}\\[2pt]
+\includegraphics[width=0.74\linewidth]{../paper/figures/cover_architecture.pdf}\\[3pt]
 \raggedright\scriptsize\setlength{\parskip}{2.5pt}
 \begin{columns}[T]
 \column{0.49\textwidth}
@@ -66,10 +67,12 @@
 \textcolor{neural}{\textbf{(b) Encoder:}} RoBERTa ou BERTimbau lê as duas frases juntas; gera um vetor por palavra e o vetor [CLS].
 
 \textcolor{neural}{\textbf{(c) Atenção relacional:}} cada palavra da hipótese procura sua par na premissa, preferindo as ligadas pelo dicionário; sem par, aponta para o vazio $\varnothing$.
-\column{0.49\textwidth}
-\textcolor{neural}{\textbf{(d) Cobertura:}} cada palavra da hipótese recebe \textcolor{logic}{\textbf{suporte}} (a premissa garante?), \textcolor{relneg}{\textbf{conflito}} (contradiz?) e \textbf{peso} (importância). \emph{red} tem suporte baixo: a premissa não diz a cor.
 
-\textcolor{neural}{\textbf{(e) Regra lógica:}} \E{} se todas são garantidas e nenhuma contradiz; \C{} se alguma contradiz; \N{} se falta garantir alguma. Aqui \emph{red} $\Rightarrow$ \N{}. Combina com a previsão do [CLS].
+{\color{black!65} \textbf{Tamanho:} a parte nova (a, c, d, e) tem $\approx$\,2M parâmetros, 0,6\% do RoBERTa-large (355M), 1,8\% do BERTimbau-base (109M) e 0,7\% do XLM-R-base (278M).}
+\column{0.49\textwidth}
+\textcolor{neural}{\textbf{(d) Cobertura:}} cada palavra da hipótese recebe \textcolor{logic}{\textbf{suporte}} (a premissa garante?), \textcolor{relneg}{\textbf{conflito}} (contradiz?) e \textbf{peso} (importância). \emph{red}: suporte baixo, a premissa não diz a cor.
+
+\textcolor{neural}{\textbf{(e) Regra lógica:}} \E{} se todas são garantidas e nenhuma contradiz; \C{} se alguma contradiz; \N{} se falta garantir alguma. Aqui \emph{red} $\Rightarrow$ \N{}. \textbf{Combinação:} pontuação do [CLS] $+\,\lambda\,\times$ pontuação da regra ($\lambda$ aprendido); quando a regra tem certeza, ela domina.
 \end{columns}
 \end{frame}
 
