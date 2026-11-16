@@ -115,7 +115,7 @@ def cell(values: list[float], bold: bool, mark: str) -> str:
     mean, sd = 100 * np.mean(values), 100 * np.std(values, ddof=1)
     text = f"{mean:.1f}"
     if bold:
-        text = f"\\textbf{{{text}}}"
+        text = f"\\best{{{text}}}"
     return f"{text}{mark}\\,{{\\tiny$\\pm${sd:.1f}}}"
 
 

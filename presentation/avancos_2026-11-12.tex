@@ -11,6 +11,9 @@
 \input{../paper/macros}
 \renewcommand{\todo}[1]{}
 \renewcommand{\cls}{[CLS]}
+\usepackage{amssymb}
+% best value of each column in the result tables: bold with a red box
+\renewcommand{\best}[1]{{\setlength{\fboxsep}{0.8pt}\setlength{\fboxrule}{0.7pt}\fcolorbox{red}{white}{\textbf{#1}}}}
 
 \definecolor{neural}{HTML}{2F6DB5}
 \definecolor{symb}{HTML}{D9822B}
@@ -77,8 +80,14 @@ Para cada palavra da hipótese: \textcolor{logic}{\textbf{suporte}} (a premissa 
 % --------------------------------------------------------------------------
 \begin{frame}{Desenho das experimentações}
 \centering
-\includegraphics[width=\linewidth]{../paper/figures/experimental_design.pdf}
-\small
+\includegraphics[width=0.94\linewidth]{../paper/figures/experimental_design.pdf}\\[2pt]
+\raggedright\scriptsize
+\textbf{Painel (d), como ler:} colunas = configuração (EN, PT, XL = entre línguas); linhas = conjunto de teste.
+\begin{itemize}\setlength{\itemsep}{0pt}
+\item[{\tikz\node[draw=black, fill=black, inner sep=0pt, minimum size=1.6mm]{};}] \textbf{in-distribution}: testa no \emph{mesmo} conjunto do treino (ex.: treina e testa no SICK).
+\item[{\tikz\node[circle, draw=black, inner sep=0pt, minimum size=1.6mm]{};}] \textbf{fora da distribuição} (OOD): conjunto \emph{diferente} do treino; mede se o modelo generaliza.
+\item[{\tikz\node[circle, draw=black, inner sep=0pt, minimum size=1.6mm, path picture={\fill[black] (path picture bounding box.south west) rectangle (path picture bounding box.north);}]{};}] \textbf{depende da direção}: no XL, o SICK é do treino em EN$\to$PT mas OOD em PT$\to$EN; o InferBR, o contrário.
+\end{itemize}
 Hiperparâmetros fixos por configuração, sem ajuste por variante; tudo pareado por seed.
 \end{frame}
 
@@ -107,7 +116,6 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \small
 \begin{itemize}
 \item Em negrito: conjuntos de desafio adicionados.
-\item HANS e MED foram testados e retirados (tempo de avaliação).
 \item SICK-BR é alinhado par a par com o SICK.
 \item \textbf{Métricas}: acurácia e MCC da decisão binária \E{} vs.\ $\neg$\E{}, as únicas definidas em todos os conjuntos.
 \end{itemize}
@@ -175,13 +183,14 @@ ASSIN\,2 & PT & 2.448 & OOD \\
 \toprule
 Componente & Inglês (RoBERTa-large) & Português (BERTimbau) & EN$\to$PT (XLM-R) & PT$\to$EN (XLM-R) \\
 \midrule
-\textbf{Cobertura} & \down{essencial}: sem ela AX-b $-$6.7, Conj.\ $-$8.5, FraCaS $-$9.6 & \down{essencial}: ASSIN $-$11.9, ASSIN\,2 $-$4.0, SICK-BR $-$4.2 & n.s. & \down{essencial}: SICK $-$4.7, FraCaS $-$3.8 \\
-\textbf{Regra lógica} & \down{essencial}: MLP head AX-b $-$5.1, Conj.\ $-$11.8 & secundária: MLP head $-$0.8 a $-$2.4 (n.s.) & n.s. & ajuda: MLP head Conj.\ $-$5.2 \\
-\textbf{Grafo} & ajuda no ConjNLI ($-$4.8) & ajuda fora da distribuição ($-$1.8 a $-$2.1) & \down{atrapalha} (sem ele: SICK-BR +2.1) & \down{essencial}: SICK $-$3.7, Conj.\ $-$7.0 \\
-\textbf{Léxico} & não faz diferença & ajuda ($-$1.3 a $-$1.5) & \down{atrapalha} (sem ele: SICK-BR +2.1) & \down{essencial}: SICK $-$4.5, Conj.\ $-$6.8 \\
-\textbf{Conflito} & \up{dispensável} (sem ele: +2.0 AX-b) & \up{dispensável} (sem ele: +1.0 a +2.4) & n.s. & n.s. (sem ele: $+$1.6 a $+$6.0; FraCaS $-$3.1) \\
+\textbf{Cobertura} & \up{essencial}: sem ela AX-b $-$6.7, Conj.\ $-$8.5, FraCaS $-$9.6 & \up{essencial}: ASSIN $-$11.9, ASSIN\,2 $-$4.0, SICK-BR $-$4.2 & n.s. & \up{essencial}: SICK $-$4.7, FraCaS $-$3.8 \\
+\textbf{Regra lógica} & \up{essencial}: MLP head AX-b $-$5.1, Conj.\ $-$11.8 & \down{secundária}: MLP head $-$0.8 a $-$2.4 (n.s.) & n.s. & \up{ajuda}: MLP head Conj.\ $-$5.2 \\
+\textbf{Grafo} & \up{ajuda} no ConjNLI ($-$4.8) & \up{ajuda} fora da distribuição ($-$1.8 a $-$2.1) & \down{atrapalha} (sem ele: SICK-BR +2.1) & \up{essencial}: SICK $-$3.7, Conj.\ $-$7.0 \\
+\textbf{Léxico} & \down{não faz diferença} & \up{ajuda} ($-$1.3 a $-$1.5) & \down{atrapalha} (sem ele: SICK-BR +2.1) & \up{essencial}: SICK $-$4.5, Conj.\ $-$6.8 \\
+\textbf{Conflito} & \down{dispensável} (sem ele: +2.0 AX-b) & \down{dispensável} (sem ele: +1.0 a +2.4) & n.s. & n.s. (sem ele: $+$1.6 a $+$6.0; FraCaS $-$3.1) \\
 \bottomrule
 \end{tabular}
+{\scriptsize\textcolor{logic}{\textbf{verde}}: o componente faz falta quando é retirado; \textcolor{relneg}{\textbf{vermelho}}: não faz falta ou atrapalha; n.s.: sem diferença significativa.}
 \take{O ganho vem da \textbf{cobertura}; o conflito não ajuda em nenhuma configuração (nos testes preliminares em português parecia ajudar). Na transferência EN$\to$PT nenhum componente ajuda; na PT$\to$EN cobertura, grafo e léxico são todos necessários. Pergunta em aberto: retirar o conflito do modelo principal?}
 \end{frame}
 
@@ -218,7 +227,9 @@ Symmetry/Collectivity & 28 & \down{$-$8.7} \\
 \bottomrule
 \end{tabular}
 \end{columns}
-\take{Ganho concentrado em estrutura e lógica, não em conhecimento lexical. Fenômenos com $n<40$ são exploratórios (tabela completa no artigo).}
+\take{\textbf{Onde ganha:} em \emph{quem faz o quê} (predicado--argumento, nominalização, genitivos) e em operadores lógicos (negação dupla, negação morfológica, ordem temporal), justamente o que se percebe conferindo a hipótese palavra por palavra.
+\textbf{Onde perde:} quantificador universal, modificadores restritivos e simetria, casos em que tirar ou acrescentar uma palavra inverte a implicação (``todos os cães'' $\Rightarrow$ ``todos os cães pequenos''), o que a regra de cobertura não prevê.
+Conhecimento lexical quase não muda (+2), como na ablação. {\scriptsize Fenômenos com $n<40$: exploratórios.}}
 \end{frame}
 
 % --------------------------------------------------------------------------
@@ -242,25 +253,25 @@ Symmetry/Collectivity & 28 & \down{$-$8.7} \\
 {\tiny exemplo real do AX-b}
 \column{0.53\textwidth}
 \small
+\textbf{A ideia:} a hipótese só é verdadeira se a premissa \textbf{garantir cada palavra} dela, como num checklist.
+
+\vspace{6pt}
 \textbf{Premissa:} \emph{A janela quebrou o John.}\\
-\textbf{Hipótese:} \emph{O John quebrou a janela.}\\[2pt]
-{\footnotesize Mesmas palavras, sentido diferente: a resposta certa é \textbf{não implica}.}
+\textbf{Hipótese:} \emph{O John quebrou a janela.}
 
 \vspace{6pt}
-\footnotesize
-\stepmark{1} \textbf{Liga as palavras.} Cada palavra da hipótese encontra a mesma palavra na premissa (linhas verdes).
+\stepmark{1} Acha cada palavra da hipótese na premissa.
 
 \vspace{4pt}
-\stepmark{2} \textbf{Pergunta, palavra por palavra: ``a premissa garante isto?''} Barra verde alta = sim. Aqui todas ficam baixas: na premissa quem quebra é a janela, não o John.
+\stepmark{2} Confere se a premissa garante cada uma (barra verde):\\[2pt]
+\hspace*{1.4em}O John quebrou algo? \textbf{Não} \textcolor{relneg}{$\boldsymbol{\times}$}\\
+\hspace*{1.4em}A janela foi quebrada? \textbf{Não} \textcolor{relneg}{$\boldsymbol{\times}$}
 
 \vspace{4pt}
-\stepmark{3} \textbf{Aplica a regra:} só implica se a premissa garantir \emph{todas} as palavras. Nenhuma é garantida $\Rightarrow$ \textbf{não implica} \textcolor{green!50!black}{(certo)}.
+\stepmark{3} Faltou garantir alguma $\Rightarrow$ \textbf{não implica} \textcolor{logic}{\textbf{(certo)}}.
 
-\vspace{6pt}
-O [CLS] vê as mesmas palavras e responde \textbf{implica} \textcolor{red!70!black}{(errado)}.
-
-\vspace{6pt}
-{\scriptsize\color{black!60} Barra verde: o quanto a premissa garante a palavra; vermelha: o quanto a contradiz; $\omega$: importância da palavra.}
+\vspace{8pt}
+O [CLS] só vê que as palavras são as mesmas e responde \textbf{implica} \textcolor{relneg}{\textbf{(errado)}}.
 \end{columns}
 \end{frame}
 
@@ -270,11 +281,10 @@ O [CLS] vê as mesmas palavras e responde \textbf{implica} \textcolor{red!70!bla
 \begin{enumerate}
 \item \textbf{Padrão robusto:} \model{} empata no conjunto de treino e ganha fora dele, em inglês e em português, com três encoders.
 \item \textbf{O mecanismo é a cobertura}; a regra lógica pesa no inglês; grafo e léxico ajudam no português e na transferência PT$\to$EN.
-\item \textbf{O conflito não ajuda} (diferente dos testes preliminares em português).
-\item \model{} tem \textbf{menor variância entre seeds} (ex.: SICK-BR $\pm$0.8 vs.\ $\pm$3.2).
+\item \textbf{O conflito não ajuda.}
+\item \model{} é \textbf{mais estável entre seeds} que o [CLS] (ex.: SICK-BR, desvio padrão do MCC: $\pm$0.8 no \model{} contra $\pm$3.2 no [CLS]).
 \item \textbf{Cross-lingual:} EN$\to$PT não transfere; PT$\to$EN transfere (SICK \up{+4.7}, ConjNLI \up{+6.3}), e o ganho some sem léxico, grafo ou cobertura.
 \item \textbf{Baselines de grafo} (K-BERT, KGAnet, KGNLI): \model{} os supera fora da distribuição nas quatro configurações; no inglês e no EN$\to$PT ficam em geral abaixo até do [CLS].
-\item Correção metodológica: 36\% do teste do ASSIN\,2 vem do treino do SICK; modelos treinados em SICK são avaliados só no restante.
 \end{enumerate}
 \end{frame}
 
@@ -292,7 +302,7 @@ O [CLS] vê as mesmas palavras e responde \textbf{implica} \textcolor{red!70!bla
 \begin{itemize}
 \item Trabalhos relacionados
 \item Metodologia: arquitetura, treino, ablações, baselines, protocolo
-\item 4 figuras e as tabelas de resultados, geradas automaticamente dos experimentos
+\item 4 figuras e as tabelas de resultados
 \end{itemize}
 \textbf{A fazer}
 \begin{itemize}
@@ -308,9 +318,7 @@ O [CLS] vê as mesmas palavras e responde \textbf{implica} \textcolor{red!70!bla
 \begin{itemize}
 \item Experimentações concluídas: 400 runs do protocolo oficial.
 \item Decidir o papel do conflito: manter, tornar opcional ou retirar do modelo principal.
-\item Corrigir o viés de numerais (\texttt{number\_conflict}) numa versão 2.
 \item Artigo: escrever o texto dos resultados; calibração (ECE melhor fora da distribuição).
-\item Pendências do artigo: referências de KGAnet/KGNLI e do InferBR.
 \end{itemize}
 \end{frame}
 
