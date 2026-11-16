@@ -57,12 +57,20 @@
 % --------------------------------------------------------------------------
 \begin{frame}{\model{}: a ideia}
 \centering
-\includegraphics[width=\linewidth]{../paper/figures/cover_architecture.pdf}
-\vspace{2pt}
-\small
-Para cada palavra da hipótese: \textcolor{logic}{\textbf{suporte}} (a premissa cobre?) e
-\textcolor{relneg}{\textbf{conflito}} (a premissa contradiz?) $\Rightarrow$ regra lógica:
-\E{} = tudo coberto e sem conflito; \N{} = algo não coberto; \C{} = algum conflito.
+\includegraphics[width=0.86\linewidth]{../paper/figures/cover_architecture.pdf}\\[3pt]
+\raggedright\scriptsize\setlength{\parskip}{2.5pt}
+\begin{columns}[T]
+\column{0.49\textwidth}
+\textcolor{neural}{\textbf{(a) Grafo simbólico:}} um dicionário (WordNet, PT-LKB, Wiktionary) liga palavras das duas frases: \emph{chopping}--\emph{slicing} (sinônimos), \emph{man}--\emph{person} (hiperônimo).
+
+\textcolor{neural}{\textbf{(b) Encoder:}} RoBERTa ou BERTimbau lê as duas frases juntas; gera um vetor por palavra e o vetor [CLS].
+
+\textcolor{neural}{\textbf{(c) Atenção relacional:}} cada palavra da hipótese procura sua par na premissa, preferindo as ligadas pelo dicionário; sem par, aponta para o vazio $\varnothing$.
+\column{0.49\textwidth}
+\textcolor{neural}{\textbf{(d) Cobertura:}} cada palavra da hipótese recebe \textcolor{logic}{\textbf{suporte}} (a premissa garante?), \textcolor{relneg}{\textbf{conflito}} (contradiz?) e \textbf{peso} (importância). \emph{red} tem suporte baixo: a premissa não diz a cor.
+
+\textcolor{neural}{\textbf{(e) Regra lógica:}} \E{} se todas são garantidas e nenhuma contradiz; \C{} se alguma contradiz; \N{} se falta garantir alguma. Aqui \emph{red} $\Rightarrow$ \N{}. Combina com a previsão do [CLS].
+\end{columns}
 \end{frame}
 
 % --------------------------------------------------------------------------
@@ -82,11 +90,11 @@ Para cada palavra da hipótese: \textcolor{logic}{\textbf{suporte}} (a premissa 
 \centering
 \includegraphics[width=0.94\linewidth]{../paper/figures/experimental_design.pdf}\\[2pt]
 \raggedright\scriptsize
-\textbf{Painel (d), como ler:} colunas = configuração (EN, PT, XL = entre línguas); linhas = conjunto de teste.
-\begin{itemize}\setlength{\itemsep}{0pt}
-\item[{\tikz\node[draw=black, fill=black, inner sep=0pt, minimum size=1.6mm]{};}] \textbf{in-distribution}: testa no \emph{mesmo} conjunto do treino (ex.: treina e testa no SICK).
-\item[{\tikz\node[circle, draw=black, inner sep=0pt, minimum size=1.6mm]{};}] \textbf{fora da distribuição} (OOD): conjunto \emph{diferente} do treino; mede se o modelo generaliza.
-\item[{\tikz\node[circle, draw=black, inner sep=0pt, minimum size=1.6mm, path picture={\fill[black] (path picture bounding box.south west) rectangle (path picture bounding box.north);}]{};}] \textbf{depende da direção}: no XL, o SICK é do treino em EN$\to$PT mas OOD em PT$\to$EN; o InferBR, o contrário.
+\textbf{Legenda do painel (d):}
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item[{\tikz\node[draw=black, fill=black, inner sep=0pt, minimum size=1.6mm]{};}] \textbf{in-distribution} = ``prova parecida com os exercícios''. O teste vem do mesmo conjunto usado no treino: mesmo estilo de frases e mesma forma de anotar (ex.: treina no SICK, testa em outras frases do SICK).
+\item[{\tikz\node[circle, draw=black, inner sep=0pt, minimum size=1.6mm]{};}] \textbf{out-of-distribution} (OOD) = ``prova com questões novas''. O teste vem de outro conjunto, que o modelo nunca viu, com outro estilo e outros fenômenos. É aqui que se mede se o modelo realmente generaliza.
+\item[{\tikz\node[circle, draw=black, inner sep=0pt, minimum size=1.6mm, path picture={\fill[black] (path picture bounding box.south west) rectangle (path picture bounding box.north);}]{};}] \textbf{in-distribution for one direction only} = depende de onde o modelo treinou. Só ocorre no cenário entre línguas: o SICK é ``prova parecida'' para quem treinou no SICK (EN$\to$PT) e ``prova nova'' para quem treinou no InferBR (PT$\to$EN); com o InferBR é o contrário.
 \end{itemize}
 Hiperparâmetros fixos por configuração, sem ajuste por variante; tudo pareado por seed.
 \end{frame}
