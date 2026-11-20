@@ -1062,7 +1062,14 @@ def train_one(model_name: str, variant: str, seed: int, train_rows, val_rows, ev
         parameters = model.optimizer_groups(args.lr, args.weight_decay, float(getattr(args, "graph_lr_multiplier", 1.0)))
     else:
         parameters = model.parameters()
-    optimizer = torch.optim.AdamW(parameters, lr=args.lr, weight_decay=args.weight_decay)
+    if getattr(args, "gradient_checkpointing", False) and hasattr(model, "encoder"):
+        model.encoder.gradient_checkpointing_enable()
+    if getattr(args, "optimizer", "adamw") == "adamw8bit":
+        import bitsandbytes as bnb  # GPU machines only: pip install bitsandbytes
+
+        optimizer = bnb.optim.AdamW8bit(parameters, lr=args.lr, weight_decay=args.weight_decay)
+    else:
+        optimizer = torch.optim.AdamW(parameters, lr=args.lr, weight_decay=args.weight_decay)
     steps_per_epoch = -(-len(train_loader) // grad_accum)
     total_steps = max(1, steps_per_epoch * args.epochs)
     warmup_steps = int(total_steps * args.warmup_ratio)
@@ -1310,6 +1317,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-grad-norm", type=float, default=1.0)
     parser.add_argument("--grad-accum-steps", type=int, default=1,
                         help="Split each batch into this many micro-batches (same effective batch_size).")
+    parser.add_argument("--optimizer", choices=["adamw", "adamw8bit"], default="adamw",
+                        help="adamw8bit = bitsandbytes AdamW with 8-bit states (same update rule, ~1/4 of the "
+                             "optimizer memory); needed to fine-tune 900M-parameter encoders on 12 GB GPUs.")
+    parser.add_argument("--gradient-checkpointing", action="store_true",
+                        help="Recompute encoder activations in the backward pass (less memory, ~30%% slower).")
     parser.add_argument(
         "--surrogate-analysis",
         action=argparse.BooleanOptionalAction,

@@ -1,0 +1,435 @@
+data_dir: data
+output_dir: runs
+
+# Experiment 0014: experiment_0011 with large encoders + lexicon ablation (one lexicon at a time)
+# + ConceptNet as a new lexicon (English and Portuguese).
+#
+# Encoders
+#   English        roberta-large (as 0011, so sick_en_ablation is NOT re-run: the lexicon pipelines
+#                  below are paired by seed with runs/experiment_0011/sick_en_ablation)
+#   Portuguese     PORTULAN/albertina-900m-portuguese-ptbr-encoder (DeBERTa-v2, 887M params,
+#                  PT-BR; the most recent large PT-BR encoder in the survey arXiv:2608.18138).
+#                  Does not fit in 12 GB with fp32 AdamW (weights + grads + states ~14 GB), so it
+#                  trains with bitsandbytes AdamW8bit (same update rule, 8-bit states) and gradient
+#                  checkpointing: peak 10.3 GB, ~1.0 s per micro-batch of 8 on the RTX 3060.
+#                  Every Albertina variant (incl. pair_cls) uses the same optimizer, so comparisons
+#                  stay paired. Needs `pip install bitsandbytes` in the venv (done on A and B).
+#                  albertina-1b5 (48 layers) does not fit in 11-12 GB even with 8-bit states.
+#   Cross-lingual  FacebookAI/xlm-roberta-large (561M), AdamW8bit + checkpointing, micro-batches of 8
+#                  (fp32 AdamW alone takes ~9 GB; KGAnet ran out of memory on 12 GB).
+#
+# Lexicon ablation (variant coverage_pl_v1 only, 10 paired seeds each; one pipeline per lexicon set,
+# because the lexicon is a data setting, not a model variant):
+#   English   WordNet only | Wiktionary only | ConceptNet only | WordNet + Wiktionary + ConceptNet
+#             (0011 full = WordNet + Wiktionary; 0011 no_symbolic = no lexicon)
+#   Portuguese PT-LKB only | Wiktionary only | ConceptNet only | PT-LKB + Wiktionary + ConceptNet
+#             (full = PT-LKB + Wiktionary; no_symbolic = no lexicon)
+# ConceptNet 5.7: Synonym, Antonym, DistinctFrom (-> antonym), IsA (-> hypernym), single words,
+# weight >= 1 (scripts/build_conceptnet_cache.py -> data/cache/conceptnet_relations_{en,pt}.jsonl).
+#
+# Hyperparameters: as 0011, except the large-encoder learning rate (1e-5, the 0011 roberta-large
+# value, for Albertina and XLM-R-large; 0011 used 2.04e-5 / 2e-5 for the base encoders) and
+# micro-batching (effective batch stays 32).
+#
+# Analysis: as 0011 (paired Wilcoxon, Holm over the five ablations; lexicon pipelines vs. full).
+model_name: PORTULAN/albertina-900m-portuguese-ptbr-encoder
+seeds: [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
+
+# Shared settings. Language-specific values are overridden per pipeline under `training:`.
+training:
+  epochs: 8
+  batch_size: 32
+  weight_decay: 0.00035
+  dropout: 0.103
+  max_nodes: 32
+  max_node_len: 8
+  max_wikidata_entities: 8
+  max_wikidata_len: 32
+  max_proof_nodes: 12
+  max_proof_len: 32
+  max_logicpath_nodes: 32
+  max_logicpath_len: 24
+  wikidata_cache: data/cache/wikidata_entities.jsonl
+  max_wiktionary_entries: 2
+  graph_layers: 2
+  aux_weight: 0.15
+  graph_lr_multiplier: 10.0
+  selection_metric: nli3/macro_f1
+  patience: 3
+  cd_metric: binary/mcc
+  cd_alpha: 0.05
+  num_workers: 0
+  device: cuda
+  max_grad_norm: 1.0
+
+tuning:
+  enabled: false
+  selection_metric: nli3/macro_f1
+
+variant_blocks:
+  cover: &cover_variants
+    - coverage_pl_v1
+    - pair_cls
+    - coverage_pl_v1_no_conflict
+    - coverage_pl_v1_no_symbolic
+    - coverage_pl_v1_no_graph
+    - coverage_pl_v1_no_coverage
+    - coverage_pl_v1_mlp_head
+
+  baselines: &graph_baselines
+    - kbert_injection
+    - kganet_rel_gat
+    - kgnli_dual
+  baselines_en_short: &graph_baselines_en_short
+    - kganet_rel_gat
+    - kgnli_dual
+
+# Shared language blocks (anchors keep the ablation and baseline pipelines identical).
+language_blocks:
+  en_training: &en_training
+    # 11 GB GPU: two micro-batches of 16 per optimizer step (effective batch stays 32).
+    grad_accum_steps: 2
+    lr: 0.00001
+    warmup_ratio: 0.06
+    max_len: 64          # every SICK pair fits in 62 tokens
+    eval_max_len: 168    # AX-b <= 115 tokens; Breaking NLI <= 162 (10 pairs > 128)
+    wiktionary_cache: data/cache/wiktionary_entries_sick_train_en.jsonl
+    wordnet_cache: data/cache/wordnet_relations_en.jsonl
+    pt_lkb_cache: ""     # no Portuguese relations in English runs
+    partial_label_datasets: []
+  # K-BERT appends the retrieved knowledge to the premise inside the same max_len window,
+  # so it needs the longer window of experiments 0001-0003 (160); at 64 the knowledge text
+  # would be truncated away. roberta-large at 160 tokens needs micro-batches of 8.
+  en_training_kbert: &en_training_kbert
+    grad_accum_steps: 4
+    lr: 0.00001
+    warmup_ratio: 0.06
+    max_len: 160
+    eval_max_len: 160
+    wiktionary_cache: data/cache/wiktionary_entries_sick_train_en.jsonl
+    wordnet_cache: data/cache/wordnet_relations_en.jsonl
+    pt_lkb_cache: ""
+    partial_label_datasets: []
+  pt_training_kbert: &pt_training_kbert
+    lr: 0.0000204
+    warmup_ratio: 0.0275
+    max_len: 160         # K-BERT window, as in 0001-0003 and 0008/0009
+    wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+    pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
+    wordnet_cache: ""
+    partial_label_datasets: [assin, assin2]
+  en_test: &en_test
+    - {name: sick_test, dataset: sick, split: test}
+    - {name: axb, dataset: axb, split: test}
+    - &breaking_nli {name: breaking_nli, dataset: manifest, path: data/raw/challenge/breaking_nli.jsonl, split: test}
+    - &conjnli {name: conjnli_dev, dataset: manifest, path: data/raw/challenge/conjnli_dev.jsonl, split: test}
+    - &fracas {name: fracas_en, dataset: manifest, path: data/raw/challenge/fracas_en.jsonl, split: test}
+  pt_training: &pt_training
+    lr: 0.0000204
+    warmup_ratio: 0.0275
+    # BERTimbau tokens: InferBR <= 72, ASSIN/ASSIN2 <= 74. Inputs are padded to max_len, so
+    # 96 instead of the 160 of 0008/0009 removes only masked padding, at ~60% of the cost.
+    # (Runs are not bit-identical to 160: dropout masks have a different shape per seed.)
+    max_len: 96
+    wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+    pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
+    wordnet_cache: ""
+    partial_label_datasets: [assin, assin2]   # inactive with InferBR-only training (kept as in 0008/0009)
+  # Cross-lingual protocol = experiment_0012 (XLM-R-base, bilingual lexicon in both
+  # directions); only eval_max_len grows, for the challenge sets.
+  xling_training: &xling_training
+    lr: 0.00002
+    warmup_ratio: 0.06
+    max_len: 96          # XLM-R tokens: SICK <= 62, InferBR <= 79
+    eval_max_len: 192    # AX-b <= 132; Breaking NLI <= 187 (10 pairs > 136)
+    pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
+    wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+    wordnet_cache: data/cache/wordnet_relations_en.jsonl
+    extra_lexicon_caches: [data/cache/wiktionary_entries_sick_train_en.jsonl]
+    partial_label_datasets: []
+  xling_training_kbert: &xling_training_kbert
+    lr: 0.00002
+    warmup_ratio: 0.06
+    max_len: 160         # K-BERT window, as in the Portuguese baseline pipeline
+    eval_max_len: 160
+    pt_lkb_cache: data/cache/pt_lkb_relations.jsonl
+    wiktionary_cache: data/cache/wiktionary_entries_pt.jsonl
+    wordnet_cache: data/cache/wordnet_relations_en.jsonl
+    extra_lexicon_caches: [data/cache/wiktionary_entries_sick_train_en.jsonl]
+    partial_label_datasets: []
+  xling_test: &xling_test
+    - {name: sick_test, dataset: sick, split: test}
+    - {name: axb, dataset: axb, split: test}
+    - {name: inferbr_test, dataset: manifest, path: data/raw/portuguese/inferbr_test.jsonl, split: test}
+    # binary/* metrics only for the two ASSIN sets (gold is entailment vs. none)
+    - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: test}
+    - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: test}
+    - *breaking_nli
+    - *conjnli
+    - *fracas
+    - &sick_br {name: sick_br_test, dataset: manifest, path: data/raw/challenge/sick_br_test.jsonl, split: test}
+  # ---------------------------------------------------------------- 0014 large-encoder blocks
+  pt_large_training: &pt_large_training
+    <<: *pt_training
+    lr: 0.00001
+    warmup_ratio: 0.06
+    max_len: 96          # Albertina tokens: InferBR train <= 99 (1 pair > 96)
+    eval_max_len: 128    # ASSIN <= 117, ASSIN 2 / SICK-BR <= 100
+    grad_accum_steps: 4  # micro-batches of 8
+    optimizer: adamw8bit
+    gradient_checkpointing: true
+  pt_large_training_kbert: &pt_large_training_kbert
+    <<: *pt_training_kbert
+    lr: 0.00001
+    warmup_ratio: 0.06
+    max_len: 160         # K-BERT window, as in 0011
+    eval_max_len: 160
+    grad_accum_steps: 4
+    optimizer: adamw8bit
+    gradient_checkpointing: true
+  xling_large_training_kbert: &xling_large_training_kbert
+    <<: *xling_training_kbert
+    lr: 0.00001
+    grad_accum_steps: 4
+    optimizer: adamw8bit
+    gradient_checkpointing: true
+  xling_large_training: &xling_large_training
+    <<: *xling_training
+    lr: 0.00001
+    grad_accum_steps: 4  # micro-batches of 8
+    # fp32 AdamW needs ~9 GB for XLM-R-large alone (KGAnet OOM in the smoke test, and A is shared):
+    # 8-bit states + checkpointing, as for Albertina, for every XLM-R-large pipeline.
+    optimizer: adamw8bit
+    gradient_checkpointing: true
+  pt_train: &pt_train
+    datasets:
+      - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_train.jsonl, split: train}
+  pt_validation: &pt_validation
+    datasets:
+      - {dataset: manifest, name: inferbr, path: data/raw/portuguese/inferbr_dev.jsonl, split: dev}
+  pt_test: &pt_test
+    - {name: inferbr_test, dataset: manifest, path: data/raw/portuguese/inferbr_test.jsonl, split: test}
+    # Out-of-distribution Portuguese tests (never used for training or selection).
+    # Gold labels are entailment vs. none ("none" is stored as neutral), so only the
+    # binary/* metrics are meaningful here; ignore nli3/* for these two sets.
+    - {name: assin2_test, dataset: manifest, path: data/raw/portuguese/assin2_test.jsonl, split: test}
+    - {name: assin_test, dataset: manifest, path: data/raw/portuguese/assin_test.jsonl, split: test}
+    - *sick_br
+
+pipelines:
+  # ---------------------------------------------------------------- Portuguese, Albertina 900M
+  # Estimated ~2 h per run on the RTX 3060 (17 min/epoch + evaluation); needs >= 10.5 GB free.
+  inferbr_pt_large_ablation:
+    enabled: true
+    est_minutes_per_run: 120
+    device: cuda
+    batch_size: 32
+    model_names: [PORTULAN/albertina-900m-portuguese-ptbr-encoder]
+    variants: *cover_variants
+    training: *pt_large_training
+    train: *pt_train
+    validation: *pt_validation
+    test: *pt_test
+    save_explanations: false
+
+  # ---------------------------------------------------------------- Lexicon ablation, Portuguese
+  inferbr_pt_large_lex_ptlkb:
+    enabled: true
+    est_minutes_per_run: 120
+    device: cuda
+    batch_size: 32
+    model_names: [PORTULAN/albertina-900m-portuguese-ptbr-encoder]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *pt_large_training
+      pt_lkb_cache: "data/cache/pt_lkb_relations.jsonl"
+      wiktionary_cache: ""
+      extra_lexicon_caches: []
+    train: *pt_train
+    validation: *pt_validation
+    test: *pt_test
+    save_explanations: false
+  inferbr_pt_large_lex_wiktionary:
+    enabled: true
+    est_minutes_per_run: 120
+    device: cuda
+    batch_size: 32
+    model_names: [PORTULAN/albertina-900m-portuguese-ptbr-encoder]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *pt_large_training
+      pt_lkb_cache: ""
+      wiktionary_cache: "data/cache/wiktionary_entries_pt.jsonl"
+      extra_lexicon_caches: []
+    train: *pt_train
+    validation: *pt_validation
+    test: *pt_test
+    save_explanations: false
+  inferbr_pt_large_lex_conceptnet:
+    enabled: true
+    est_minutes_per_run: 120
+    device: cuda
+    batch_size: 32
+    model_names: [PORTULAN/albertina-900m-portuguese-ptbr-encoder]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *pt_large_training
+      pt_lkb_cache: ""
+      wiktionary_cache: ""
+      extra_lexicon_caches: [data/cache/conceptnet_relations_pt.jsonl]
+    train: *pt_train
+    validation: *pt_validation
+    test: *pt_test
+    save_explanations: false
+  inferbr_pt_large_lex_all:
+    enabled: true
+    est_minutes_per_run: 120
+    device: cuda
+    batch_size: 32
+    model_names: [PORTULAN/albertina-900m-portuguese-ptbr-encoder]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *pt_large_training
+      pt_lkb_cache: "data/cache/pt_lkb_relations.jsonl"
+      wiktionary_cache: "data/cache/wiktionary_entries_pt.jsonl"
+      extra_lexicon_caches: [data/cache/conceptnet_relations_pt.jsonl]
+    train: *pt_train
+    validation: *pt_validation
+    test: *pt_test
+    save_explanations: false
+
+  # ---------------------------------------------------------------- Lexicon ablation, English
+  # roberta-large as in 0011: compare with runs/experiment_0011/sick_en_ablation (same seeds).
+  sick_en_lex_wordnet:
+    enabled: true
+    est_minutes_per_run: 27
+    device: cuda
+    batch_size: 32
+    model_names: [roberta-large]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *en_training
+      wordnet_cache: "data/cache/wordnet_relations_en.jsonl"
+      wiktionary_cache: ""
+      extra_lexicon_caches: []
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *en_test
+    save_explanations: false
+  sick_en_lex_wiktionary:
+    enabled: true
+    est_minutes_per_run: 27
+    device: cuda
+    batch_size: 32
+    model_names: [roberta-large]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *en_training
+      wordnet_cache: ""
+      wiktionary_cache: "data/cache/wiktionary_entries_sick_train_en.jsonl"
+      extra_lexicon_caches: []
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *en_test
+    save_explanations: false
+  sick_en_lex_conceptnet:
+    enabled: true
+    est_minutes_per_run: 27
+    device: cuda
+    batch_size: 32
+    model_names: [roberta-large]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *en_training
+      wordnet_cache: ""
+      wiktionary_cache: ""
+      extra_lexicon_caches: [data/cache/conceptnet_relations_en.jsonl]
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *en_test
+    save_explanations: false
+  sick_en_lex_all:
+    enabled: true
+    est_minutes_per_run: 27
+    device: cuda
+    batch_size: 32
+    model_names: [roberta-large]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *en_training
+      wordnet_cache: "data/cache/wordnet_relations_en.jsonl"
+      wiktionary_cache: "data/cache/wiktionary_entries_sick_train_en.jsonl"
+      extra_lexicon_caches: [data/cache/conceptnet_relations_en.jsonl]
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *en_test
+    save_explanations: false
+
+  # ---------------------------------------------------------------- Cross-lingual, XLM-R-large
+  xling_large_en_to_pt_ablation:
+    enabled: true
+    est_minutes_per_run: 30
+    device: cuda
+    batch_size: 32
+    model_names: [FacebookAI/xlm-roberta-large]
+    variants: *cover_variants
+    training: *xling_large_training
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *xling_test
+    save_explanations: false
+
+  xling_large_pt_to_en_ablation:
+    enabled: true
+    est_minutes_per_run: 45
+    device: cuda
+    batch_size: 32
+    model_names: [FacebookAI/xlm-roberta-large]
+    variants: *cover_variants
+    training: *xling_large_training
+    train: *pt_train
+    validation: *pt_validation
+    test: *xling_test
+    save_explanations: false
+
+  # ---------------------------------------------------------------- Graph baselines (large encoders)
+  # As in 0011: K-BERT / KGAnet / KGNLI at 160 tokens, paired by seed with the ablation pipelines.
+  # English baselines are not re-run (0011 already used roberta-large).
+  inferbr_pt_large_graph_baselines:
+    enabled: true
+    est_minutes_per_run: 150
+    device: cuda
+    batch_size: 32
+    model_names: [PORTULAN/albertina-900m-portuguese-ptbr-encoder]
+    variants: *graph_baselines
+    training: *pt_large_training_kbert
+    train: *pt_train
+    validation: *pt_validation
+    test: *pt_test
+    save_explanations: false
+
+  xling_large_en_to_pt_graph_baselines:
+    enabled: true
+    est_minutes_per_run: 60
+    device: cuda
+    batch_size: 32
+    model_names: [FacebookAI/xlm-roberta-large]
+    variants: *graph_baselines
+    training: *xling_large_training_kbert
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *xling_test
+    save_explanations: false
+
+  xling_large_pt_to_en_graph_baselines:
+    enabled: true
+    est_minutes_per_run: 90
+    device: cuda
+    batch_size: 32
+    model_names: [FacebookAI/xlm-roberta-large]
+    variants: *graph_baselines
+    training: *xling_large_training_kbert
+    train: *pt_train
+    validation: *pt_validation
+    test: *xling_test
+    save_explanations: false
