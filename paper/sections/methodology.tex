@@ -114,7 +114,8 @@ target $\nullnode$ for words without a counterpart. For a node $i$ and a node $j
   \label{eq:align}\\
   \vect{m}_i &= \sum_j \alpha_{ij}\big(\vect{W}_v\vect{x}_j + \vect{e}[r_{ij}]\big) + \alpha_{i\nullnode}\,\vect{v}_{\nullnode},
   \label{eq:message}\\
-  \vect{x}_i &\leftarrow \LN\!\big(\vect{x}_i + \MLP([\vect{x}_i;\vect{m}_i;\vect{x}_i\odot\vect{m}_i;|\vect{x}_i-\vect{m}_i|])\big).
+  \vect{x}_i &\leftarrow \LN\!\big(\vect{x}_i + \MLP([\vect{x}_i;\vect{m}_i;\nonumber\\
+  &\hphantom{{}\leftarrow \LN\!\big(\vect{x}_i + \MLP([}\vect{x}_i\odot\vect{m}_i;|\vect{x}_i-\vect{m}_i|])\big).
   \label{eq:update}
 \end{align}
 The relation enters twice: as a scalar bias $b[r]$ on the alignment score, which steers \emph{where} a
