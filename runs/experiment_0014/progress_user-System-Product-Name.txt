@@ -1,0 +1,13 @@
+updated   2026-11-21 05:13
+runs      5/140
+progress  3.4% (weighted by est_minutes_per_run)
+left      ~14d 19h32 (estimate x1.25 observed speed)
+ETA       2026-12-06 00:45 (machine local time)
+running   inferbr_pt_large_ablation/coverage_pl_v1/seed_1006
+
+  inferbr_pt_large_ablation            5/70
+  inferbr_pt_large_lex_ptlkb           0/10
+  inferbr_pt_large_lex_wiktionary      0/10
+  inferbr_pt_large_lex_conceptnet      0/10
+  inferbr_pt_large_lex_all             0/10
+  inferbr_pt_large_graph_baselines     0/30

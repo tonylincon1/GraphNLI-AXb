@@ -1,0 +1,15 @@
+updated   2026-11-21 05:40
+runs      33/240
+progress  8.2% (weighted by est_minutes_per_run)
+left      ~6d 00h09 (estimate x0.87 observed speed)
+ETA       2026-11-27 05:49 (machine local time)
+running   sick_en_lex_all/coverage_pl_v1/seed_1004
+
+  sick_en_lex_wordnet                 10/10
+  sick_en_lex_wiktionary              10/10
+  sick_en_lex_conceptnet              10/10
+  sick_en_lex_all                      3/10
+  xling_large_en_to_pt_ablation        0/70
+  xling_large_pt_to_en_ablation        0/70
+  xling_large_en_to_pt_graph_baselines   0/30
+  xling_large_pt_to_en_graph_baselines   0/30
