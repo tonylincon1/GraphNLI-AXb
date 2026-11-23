@@ -96,6 +96,7 @@ def main() -> None:
             ("XLM-R-large \\model{}", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1"),
             ("XLM-R-large $-$ conflito", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_no_conflict"),
             ("XLM-R-large $-$ léxico", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_no_symbolic"),
+            ("XLM-R-large $-$ grafo", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_no_graph"),
         ], PT, ref=2, midrules=(2,)),
     }
     for name, tex in tables.items():

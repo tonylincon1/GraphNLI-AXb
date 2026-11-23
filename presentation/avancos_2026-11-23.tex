@@ -62,7 +62,7 @@
   \item Entre línguas: \textbf{XLM-R-large} no lugar do XLM-R-base.
   \item Ablação de \textbf{cada léxico separado} e um léxico novo: \textbf{ConceptNet} (inglês e português).
   \end{itemize}
-\item \textbf{Resultados parciais:} 110 de 380 runs prontos.
+\item \textbf{Resultados parciais:} 120 de 380 runs prontos.
 \item \textbf{Artigo} adaptado ao template do \textbf{ACL 2027} (submissão via ARR).
 \end{enumerate}
 \end{frame}
@@ -75,11 +75,11 @@
 Bloco & Encoder & Treino & O que compara & Runs & Status \\
 \midrule
 Ablação de léxicos & RoBERTa-large & SICK & WordNet / Wikt. / ConceptNet / todos & 40 & \done{} \\
-Ablação PT & Albertina-900M & InferBR & 7 variantes (como no 0011) & 70 & \running{} (29) \\
+Ablação PT & Albertina-900M & InferBR & 7 variantes (como no 0011) & 70 & \running{} (31) \\
 Léxicos PT & Albertina-900M & InferBR & PT-LKB / Wikt. / ConceptNet / todos & 40 & \queued{} \\
 Baselines de grafo PT & Albertina-900M & InferBR & K-BERT, KGAnet, KGNLI & 30 & \queued{} \\
 \midrule
-Ablação EN$\to$PT & XLM-R-large & SICK & 7 variantes & 70 & \running{} (51) \\
+Ablação EN$\to$PT & XLM-R-large & SICK & 7 variantes & 70 & \running{} (49) \\
 Ablação PT$\to$EN & XLM-R-large & InferBR & 7 variantes & 70 & \queued{} \\
 Baselines de grafo XL & XLM-R-large & ambos & K-BERT, KGAnet, KGNLI & 60 & \queued{} \\
 \bottomrule
@@ -149,7 +149,7 @@ PT-LKB + Wikt.\ (0011) & 48,2\% & 316 \\
 \begin{frame}{Entre línguas EN$\to$PT com XLM-R-large (MCC)}
 \textit{\small Treino no SICK (inglês), sem nenhum exemplo em português} \hfill {\scriptsize $^\dagger$ $p<.05$ contra o XLM-R-large [CLS]}\\[3pt]
 \centering\tab[0.85]{xl_large_pt}
-\take{\textbf{Na transferência para o português o \model{} perde:} InferBR \down{$-$3.3} e ASSIN \down{$-$4.1} ($p<.05$); empata no ASSIN\,2 e no SICK-BR. Com o XLM-R-base (0011) era empate. Tirar o léxico \textbf{não recupera} a perda, então o problema não são as arestas em português: a cabeça de cobertura aprendida em inglês é que não transfere. Vai para as \textbf{limitações} do artigo.}
+\take{\textbf{Na transferência para o português o \model{} perde:} InferBR \down{$-$3.3} e ASSIN \down{$-$4.1} ($p<.05$); empata no ASSIN\,2 e no SICK-BR. Com o XLM-R-base (0011) era empate. Tirar o léxico não recupera nada; \textbf{tirar o grafo recupera o ASSIN} (71.1, igual ao [CLS]), mas não o InferBR: a atenção relacional aprendida em inglês transfere mal para o português. Vai para as \textbf{limitações} do artigo.}
 \end{frame}
 
 % --------------------------------------------------------------------------
