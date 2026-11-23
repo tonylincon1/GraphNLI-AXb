@@ -91,31 +91,6 @@ Baselines de grafo XL & XLM-R-large & ambos & K-BERT, KGAnet, KGNLI & 60 & \queu
 \end{itemize}
 \end{frame}
 
-% --------------------------------------------------------------------------
-\begin{frame}{Albertina-900M: como coube na GPU}
-\begin{columns}[T]
-\column{0.5\textwidth}
-\small
-\textbf{O modelo}
-\begin{itemize}\setlength{\itemsep}{2pt}
-\item Albertina PT-BR 900M (PORTULAN): DeBERTa-v2 treinado em português do Brasil, 887M parâmetros.
-\item 8$\times$ maior que o BERTimbau-base (110M) do 0011.
-\end{itemize}
-\vspace{6pt}
-\textbf{O problema:} não cabe na RTX 3060 (12 GB) com o treino padrão.
-\column{0.46\textwidth}
-\small
-\textbf{A solução}
-\begin{itemize}\setlength{\itemsep}{2pt}
-\item \textbf{AdamW de 8 bits} (bitsandbytes): estado do otimizador ocupa $\sim$1/4.
-\item \textbf{Gradient checkpointing}: recalcula ativações em vez de guardá-las.
-\item Batch efetivo \textbf{32} mantido: 4 passos acumulados de 8 pares.
-\end{itemize}
-\vspace{6pt}
-\textbf{Custo:} pico de 10,3 GB; $\sim$2,5 h por run.\\
-O XLM-R-large usa a mesma configuração.
-\end{columns}
-\end{frame}
 
 % --------------------------------------------------------------------------
 \begin{frame}{Léxicos: quanto cada um cobre}
@@ -169,15 +144,9 @@ PT-LKB + Wikt.\ (0011) & 48,2\% & 316 \\
 \take{\textbf{Encoder maior ajuda muito:} o [CLS] sobe de 4 a 10 pontos. \textbf{O \model{} continua ajudando} em cima dele: \up{+2.3} no ASSIN\,2 e \up{+2.3} no SICK-BR ($p<.05$), e \textbf{metade do desvio entre seeds} (ASSIN $\pm$5.9$\to\pm$3.5; SICK-BR $\pm$2.4$\to\pm$1.2). Destaque: o BERTimbau-base + \model{} (110M) \textbf{empata com o Albertina [CLS] (900M)} no ASSIN\,2 e no SICK-BR. Sem o conflito: igual ou melhor, de novo.}
 \end{frame}
 
-% --------------------------------------------------------------------------
-\begin{frame}{Entre línguas EN$\to$PT com XLM-R-large: testes em inglês (MCC)}
-\textit{\small Treino no SICK; SICK é in-distribution, os demais são OOD} \hfill {\scriptsize $^\dagger$ $p<.05$ contra o XLM-R-large [CLS]}\\[3pt]
-\centering\tab[0.9]{xl_large_en}
-\take{\textbf{O resultado mais forte do 0014.} Com o encoder grande, o \model{} ganha do [CLS] fora da distribuição com folga: AX-b \up{+9.3}, ConjNLI \up{+12.8}, FraCaS \up{+6.3} ($p<.05$), empatando no SICK. \textbf{Exceção:} Breaking NLI \down{$-$5.4} (troca de uma palavra), único teste em que perde.}
-\end{frame}
 
 % --------------------------------------------------------------------------
-\begin{frame}{Entre línguas EN$\to$PT com XLM-R-large: testes em português (MCC)}
+\begin{frame}{Entre línguas EN$\to$PT com XLM-R-large (MCC)}
 \textit{\small Treino no SICK (inglês), sem nenhum exemplo em português} \hfill {\scriptsize $^\dagger$ $p<.05$ contra o XLM-R-large [CLS]}\\[3pt]
 \centering\tab[0.85]{xl_large_pt}
 \take{\textbf{Na transferência para o português o \model{} perde:} InferBR \down{$-$3.3} e ASSIN \down{$-$4.1} ($p<.05$); empata no ASSIN\,2 e no SICK-BR. Com o XLM-R-base (0011) era empate. Tirar o léxico \textbf{não recupera} a perda, então o problema não são as arestas em português: a cabeça de cobertura aprendida em inglês é que não transfere. Vai para as \textbf{limitações} do artigo.}
@@ -212,10 +181,9 @@ PT-LKB + Wikt.\ (0011) & 48,2\% & 316 \\
 \begin{frame}{Conclusões parciais do 0014}
 \small
 \begin{enumerate}\setlength{\itemsep}{5pt}
-\item \textbf{O padrão do 0011 se mantém com encoders grandes:} o \model{} empata in-distribution e ganha fora dela (RoBERTa-large, Albertina-900M, XLM-R-large nos testes em inglês).
+\item \textbf{O padrão do 0011 se mantém com encoders grandes:} o \model{} empata in-distribution e ganha fora dela (RoBERTa-large e Albertina-900M).
 \item \textbf{O léxico importa pouco no inglês:} qualquer dicionário dá o mesmo ganho; ConceptNet não muda o resultado.
 \item \textbf{Albertina:} o ganho do \model{} diminui com o encoder grande, mas continua significativo em 2 de 4 testes, e a variância cai pela metade.
-\item \textbf{O conflito continua sem efeito claro:} no Albertina tirá-lo melhora um pouco; no XLM-R-large piora um pouco.
 \item \textbf{Ponto fraco:} transferência EN$\to$PT com XLM-R-large; o \model{} perde no InferBR e no ASSIN.
 \end{enumerate}
 \end{frame}
@@ -225,7 +193,6 @@ PT-LKB + Wikt.\ (0011) & 48,2\% & 316 \\
 \small
 \begin{itemize}\setlength{\itemsep}{5pt}
 \item Terminar o 0014: ablação completa do Albertina, léxicos PT, PT$\to$EN e baselines de grafo com encoders grandes.
-\item Decidir o papel do conflito no modelo principal (o 0014 confirma: efeito pequeno e sem direção clara).
 \item Artigo: escrever resultados e discussão; cortar para 8 páginas; escrever as limitações.
 \item Atualizar as tabelas do artigo com os encoders grandes quando o 0014 terminar.
 \end{itemize}
