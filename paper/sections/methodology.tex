@@ -33,7 +33,7 @@ hypothesis span and combine them with logical rules~\citep{stacey2022logical,wu2
   \caption{\model{}. (a)~Token graph with typed lexical relations $r_{ij}$. (b)~Pretrained encoder.
   (c)~Bipartite relational attention, with a \emph{null} target. (d)~Support $s_k$, conflict $c_k$ and
   importance $\omega_k$ per hypothesis node. (e)~Coverage and noisy-OR conflict give a distribution $z$,
-  added to the \cls{} logits. \todo{update panel (a): operator scope edges are built but not used by \model.}}
+  added to the \cls{} logits.}
   \label{fig:architecture}
 \end{figure*}
 
@@ -223,13 +223,23 @@ component each while keeping everything else, including the auxiliary loss, iden
   \item[MLP head] the logical aggregation (\cref{sec:aggregation}) is replaced by an MLP over the mean and max
     of the hypothesis node states, followed by a log-softmax; this controls for the capacity of the head.
 \end{description}
-The \cls{} baseline (\cref{eq:cls} alone) is trained with the same hyperparameters.
+
+A sixth family varies the \emph{source} of the lexical relations rather than removing them
+(\cref{fig:ablation-map}, 6). \model{} is trained with relations from a single resource, WordNet,
+Wiktionary or ConceptNet~5.7~\citep{speer2017conceptnet} for English and PT-LKB, Wiktionary or
+ConceptNet for Portuguese, and with all three combined. Rule-based relations (identity, numbers, stems)
+and operators are kept in every variant.
+
+From ConceptNet we keep single-word edges within one language with weight at least 1, and map
+\textit{Synonym} to synonym, \textit{Antonym} and \textit{DistinctFrom} to antonym, and \textit{IsA} to
+hypernym and hyponym. The \cls{} baseline (\cref{eq:cls} alone) is trained with the same hyperparameters.
+\todo{add the lexicon-source results (experiment 0014) to \cref{sec:ablation-results}.}
 
 \begin{figure*}[t]
   \centering
   \includestandalone[width=\textwidth]{figures/ablation_architecture}
-  \caption{What each ablation removes (red dashed boxes). The \cls{} baseline keeps only the encoder and
-  the $\ell_{\mathrm{CLS}}$ path.}
+  \caption{What each ablation removes or changes (red dashed boxes; 6: lexicon source). The \cls{}
+  baseline keeps only the encoder and the $\ell_{\mathrm{CLS}}$ path.}
   \label{fig:ablation-map}
 \end{figure*}
 
