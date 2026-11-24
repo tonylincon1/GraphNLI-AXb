@@ -313,6 +313,7 @@ def predictions(pipeline: str, variant: str, test: str) -> list[list[dict]] | No
     return out
 
 
+AXB_TOP_GAINS, AXB_TOP_LOSSES = 8, 5
 AXB_COARSE = [("Lexical Semantics", "Lexical semantics"), ("Predicate-Argument Structure", "Predicate--argument structure"),
               ("Logic", "Logic"), ("Knowledge", "Knowledge")]
 
@@ -349,12 +350,28 @@ def axb_table(pipeline: str) -> str:
             cells.append("")
         return f"{label} & {n} & " + " & ".join(cells) + " \\\\"
 
+    # Compact view: the four coarse categories, then the fine-grained phenomena with the largest
+    # gains and losses of COVER over [CLS] (AXB_TOP_GAINS / AXB_TOP_LOSSES of them).
+    lines.append("\\midrule")
+    lines.append("\\multicolumn{5}{@{}l}{\\textit{Categories}} \\\\")
     for key, label in AXB_COARSE:
-        lines.append("\\midrule")
-        lines.append(row(f"\\textbf{{{label}}}", lambda c, k=key: k in c))
-        fine = sorted({f for c in cats.values() if key in c for f in c[key].split(";")})
-        for f in fine:
-            lines.append(row(f"\\quad {f}", lambda c, k=key, f=f: f in c.get(k, "").split(";")))
+        lines.append(row(label, lambda c, k=key: k in c))
+    if complete:
+        fine = []
+        for key, _ in AXB_COARSE:
+            for f in sorted({f for c in cats.values() if key in c for f in c[key].split(";")}):
+                member = lambda c, k=key, f=f: f in c.get(k, "").split(";")
+                deltas = []
+                for v, _ in ANALYSIS_SYSTEMS:
+                    deltas.append(np.mean([binary_mcc([r for r in rows if member(cats.get(r["uid"].split("-", 1)[1], {}))])
+                                           for rows in preds[v]]))
+                fine.append((deltas[1] - deltas[0], f, member))
+        fine.sort(key=lambda t: -t[0])
+        for title, part in (("Largest gains", fine[:AXB_TOP_GAINS]), ("Largest losses", fine[::-1][:AXB_TOP_LOSSES])):
+            lines.append("\\midrule")
+            lines.append(f"\\multicolumn{{5}}{{@{{}}l}}{{\\textit{{{title}}}}} \\\\")
+            for _, f, member in part:
+                lines.append(row(f, member))
     lines += ["\\bottomrule", "\\end{tabular}"]
     return "\n".join(lines) + "\n"
 
