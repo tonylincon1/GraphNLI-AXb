@@ -555,7 +555,7 @@ def write_combined() -> None:
     # Display: ablations, with the lexicon-source variants right below "- lexicon"; Holm stays per family.
     lex_pos = [v for v, _ in abl].index("coverage_pl_v1_no_symbolic")
     mono_order = ([("row", 0, j, False) for j in range(lex_pos)]
-                  + [("sub", "Lexicon used (full model: WordNet or PT-LKB, + Wiktionary):"),
+                  + [("sub", "$-$ lexicon"),
                      ("row", 0, lex_pos, True, "none")]
                   + [("row", 1, j, True) for j in range(len(lex))]
                   + [("row", 0, j, False) for j in range(lex_pos + 1, len(abl))]
