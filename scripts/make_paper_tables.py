@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Build the LaTeX result tables of the paper from runs/experiment_0011.
+"""Build the LaTeX result tables of the paper.
 
     python scripts/make_paper_tables.py            # writes paper/tables/*.tex
 
-Cells are filled only when all seeds of a system are finished (10 by default); otherwise
-they are left blank, so the script can be rerun after every pull.
+Sources: English = runs/experiment_0011 (RoBERTa-large); Portuguese = runs/experiment_0014
+(Albertina-900M); cross-lingual = runs/experiment_0014 (XLM-R-large).
+Systems with fewer than 10 finished seeds are reported on the seeds available, and their label
+carries the seed count (n=k); systems with no finished seed are left blank. Rerun after every pull.
 
 Metric (x100): Matthews correlation (MCC) of the binary decision entailment vs. non-entailment,
 for every test set. It is the only metric defined for all of them (AX-b, ASSIN and ASSIN 2 are
@@ -29,9 +31,10 @@ from scipy.stats import wilcoxon
 from sklearn.metrics import matthews_corrcoef
 
 ROOT = Path(__file__).resolve().parents[1]
-EXP = ROOT / "runs" / "experiment_0011"
+EXP = ROOT / "runs"  # pipelines below are "<experiment>/<pipeline>"
 OUT = ROOT / "paper" / "tables"
 N_SEEDS = 10
+MIN_SEEDS = 1  # partial seed sets are reported, with their n in the row label
 PROVENANCE = ROOT / "data" / "raw" / "challenge" / "assin2_test_sick_provenance.json"
 
 # (key, header, metric); key "assin2_clean" is computed from predictions.
@@ -56,10 +59,14 @@ SAME_LANGUAGE = {"Train SICK (EN)": {k for k, _, _ in EN_TESTS},
 
 # setting -> list of (row-group label, [pipelines that may hold a system], tests)
 SETTINGS = {
-    "en": [(None, ["sick_en_ablation", "sick_en_graph_baselines", "sick_en_kbert"], EN_TESTS)],
-    "pt": [(None, ["inferbr_pt_ablation", "inferbr_pt_graph_baselines"], PT_TESTS)],
-    "xl": [("Train SICK (EN)", ["xling_en_to_pt_ablation", "xling_en_to_pt_graph_baselines"], EN_TESTS + PT_TESTS),
-           ("Train InferBR (PT)", ["xling_pt_to_en_ablation", "xling_pt_to_en_graph_baselines"], EN_TESTS + PT_TESTS)],
+    "en": [(None, ["experiment_0011/sick_en_ablation", "experiment_0011/sick_en_graph_baselines",
+                   "experiment_0011/sick_en_kbert"], EN_TESTS)],
+    "pt": [(None, ["experiment_0014/inferbr_pt_large_ablation", "experiment_0014/inferbr_pt_large_graph_baselines"],
+            PT_TESTS)],
+    "xl": [("Train SICK (EN)", ["experiment_0014/xling_large_en_to_pt_ablation",
+                                "experiment_0014/xling_large_en_to_pt_graph_baselines"], EN_TESTS + PT_TESTS),
+           ("Train InferBR (PT)", ["experiment_0014/xling_large_pt_to_en_ablation",
+                                   "experiment_0014/xling_large_pt_to_en_graph_baselines"], EN_TESTS + PT_TESTS)],
 }
 
 
@@ -94,7 +101,7 @@ def scores(pipelines: list[str], variant: str, tests) -> dict | None:
         done = [d for d in seed_dirs if (d / "result.json").exists()]
         if not done:
             continue
-        if len(done) < N_SEEDS:
+        if len(done) < MIN_SEEDS:
             return None
         out = {}
         sick_trained = "sick" in pipeline or "en_to_pt" in pipeline
@@ -111,6 +118,13 @@ def scores(pipelines: list[str], variant: str, tests) -> dict | None:
     return None
 
 
+def with_n(label: str, data: dict | None) -> str:
+    """Row label, with the seed count when a system has fewer than N_SEEDS finished seeds."""
+    if data and len(data) < N_SEEDS:
+        return f"{label}\\textsuperscript{{\\,$n{{=}}{len(data)}$}}"
+    return label
+
+
 def cell(values: list[float], bold: bool, mark: str) -> str:
     mean, sd = 100 * np.mean(values), 100 * np.std(values, ddof=1)
     text = f"{mean:.1f}"
@@ -125,6 +139,8 @@ def delta_cell(variant: dict, full: dict, key: str, mark: str) -> str:
     delta = 100 * np.mean([variant[s][key] - full[s][key] for s in seeds])
     if round(delta, 1) < 0:
         return f"\\textcolor{{red}}{{$-${abs(delta):.1f}{mark}}}"
+    if round(delta, 1) == 0:
+        return f"0.0{mark}"
     return f"$+${delta:.1f}{mark}"
 
 
@@ -195,7 +211,7 @@ def main_table(groups, tests, systems) -> str:
         cells = main_cells(pipelines, tests, systems)
         for v, label in systems:
             row = [c for metric, _ in MAIN_METRICS for c in cells[(v, metric)]]
-            lines.append(f"{label} & " + " & ".join(row) + " \\\\")
+            lines.append(f"{with_n(label, scores(pipelines, v, tests))} & " + " & ".join(row) + " \\\\")
     lines += ["\\bottomrule", "\\end{tabular*}"]
     return "\n".join(lines) + "\n"
 
@@ -247,7 +263,7 @@ def block(group, pipelines, tests, systems, mode: str) -> list[str]:
                 cells.append(cell([s[key] for s in d.values()], False, ""))
             else:
                 cells.append(cell([s[key] for s in d.values()], best[key] == v, marks[v].get(key, "")))
-        lines.append(f"{label} & " + " & ".join(cells) + " \\\\")
+        lines.append(f"{with_n(label, data[v])} & " + " & ".join(cells) + " \\\\")
     return lines
 
 
@@ -288,7 +304,7 @@ def predictions(pipeline: str, variant: str, test: str) -> list[list[dict]] | No
     """Per-seed prediction rows; None unless all seeds are finished."""
     seed_dirs = sorted((EXP / pipeline).glob(f"*/{variant}/seed_*"))
     done = [d for d in seed_dirs if (d / "result.json").exists() and (d / f"predictions_{test}.csv").exists()]
-    if len(done) < N_SEEDS:
+    if len(done) < MIN_SEEDS:
         return None
     out = []
     for d in done:
@@ -400,25 +416,15 @@ def main() -> None:
             (group, pipelines, tests), = SETTINGS[setting]
             (OUT / f"main_{setting}.tex").write_text(main_table([(group, pipelines)], tests, MAIN_SYSTEMS), encoding="utf-8")
         (OUT / f"ablation_{setting}.tex").write_text(table(setting, ABLATIONS, "ablation"), encoding="utf-8")
-    # Cross-lingual: main table = transfer to the other language; appendix = same-language tests.
+    # Cross-lingual: transfer to the other language only.
     (_, en_to_pt, _), (_, pt_to_en, _) = SETTINGS["xl"]
-    for name, pipelines, tests in [("main_xl_en_to_pt", en_to_pt, PT_TESTS), ("main_xl_pt_to_en", pt_to_en, EN_TESTS),
-                                   ("appendix_xl_sick_en", en_to_pt, EN_TESTS),
-                                   ("appendix_xl_inferbr_pt", pt_to_en, PT_TESTS)]:
+    for name, pipelines, tests in [("main_xl_en_to_pt", en_to_pt, PT_TESTS), ("main_xl_pt_to_en", pt_to_en, EN_TESTS)]:
         (OUT / f"{name}.tex").write_text(main_table([(None, pipelines)], tests, MAIN_SYSTEMS), encoding="utf-8")
-    # Presentation: cross-lingual ablation, one direction and only the other language's tests.
-    for name, (group, pipelines, _), tests in [("pres_ablation_xl_en_to_pt", SETTINGS["xl"][0], PT_TESTS),
-                                               ("pres_ablation_xl_pt_to_en", SETTINGS["xl"][1], EN_TESTS)]:
-        body = block(None, pipelines, tests, ABLATIONS, "ablation")
-        head = [f"\\begin{{tabular*}}{{\\textwidth}}{{@{{\\extracolsep{{\\fill}}}}l{'c' * len(tests)}@{{}}}}",
-                "\\toprule", "System & " + " & ".join(h for _, h, _ in tests) + " \\\\", "\\midrule"]
-        (OUT / f"{name}.tex").write_text("\n".join(head + body + ["\\bottomrule", "\\end{tabular*}"]) + "\n",
-                                         encoding="utf-8")
-    (OUT / "analysis_axb_en.tex").write_text(axb_table("sick_en_ablation"), encoding="utf-8")
+    (OUT / "analysis_axb_en.tex").write_text(axb_table("experiment_0011/sick_en_ablation"), encoding="utf-8")
     (OUT / "analysis_confusion.tex").write_text(confusion_table([
-        ("SICK (EN)", "sick_en_ablation", "sick_test"),
-        ("FraCaS (EN)", "sick_en_ablation", "fracas_en"),
-        ("InferBR (PT)", "inferbr_pt_ablation", "inferbr_test")]), encoding="utf-8")
+        ("SICK (EN)", "experiment_0011/sick_en_ablation", "sick_test"),
+        ("FraCaS (EN)", "experiment_0011/sick_en_ablation", "fracas_en"),
+        ("InferBR (PT)", "experiment_0014/inferbr_pt_large_ablation", "inferbr_test")]), encoding="utf-8")
     print(f"wrote {OUT}")
 
 

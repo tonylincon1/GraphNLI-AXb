@@ -46,9 +46,9 @@
 \node[setting, anchor=north west] (en) at (0,\ptop-1.2) {%
   \textbf{English}\\ encoder: RoBERTa-large\\ train / dev: SICK\\ lexicon: WordNet, Wiktionary\textsubscript{EN}};
 \node[setting, anchor=north west] (pt) at ($(en.south west)+(0,-0.22)$) {%
-  \textbf{Portuguese}\\ encoder: BERTimbau-base\\ train / dev: InferBR\\ lexicon: PT-LKB, Wiktionary\textsubscript{PT}};
+  \textbf{Portuguese}\\ encoder: Albertina-900M\\ train / dev: InferBR\\ lexicon: PT-LKB, Wiktionary\textsubscript{PT}};
 \node[setting, anchor=north west] (xl) at ($(pt.south west)+(0,-0.22)$) {%
-  \textbf{Cross-lingual} (two directions)\\ encoder: XLM-R-base\\ train / dev: SICK \emph{or} InferBR\\ lexicon: union of EN and PT};
+  \textbf{Cross-lingual} (two directions)\\ encoder: XLM-R-large\\ train / dev: SICK \emph{or} InferBR\\ lexicon: union of EN and PT};
 
 % =====================================================================
 % (b) Systems

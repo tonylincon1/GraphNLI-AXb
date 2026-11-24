@@ -58,7 +58,7 @@ token). The baseline classifier is
   \label{eq:cls}
 \end{equation}
 \model{} is encoder-agnostic; we use RoBERTa~\citep{liu2019roberta} for English,
-BERTimbau~\citep{souza2020bertimbau} for Portuguese and XLM-R~\citep{conneau2020unsupervised} for the
+Albertina~\citep{rodrigues2023albertina} for Portuguese and XLM-R~\citep{conneau2020unsupervised} for the
 cross-lingual setting (\cref{sec:protocol}).
 
 \subsubsection{Token graph}
@@ -252,8 +252,8 @@ text their lexical evidence reduces to word identity.
 
 \subsection{Experimental protocol}
 \label{sec:protocol}
-% Values below follow configs/experiment_0011.yaml and configs/experiment_0012.yaml.
-% Update if the final runs change.
+% Values below follow configs/experiment_0011.yaml (English) and configs/experiment_0014.yaml
+% (Portuguese: Albertina-900M; cross-lingual: XLM-R-large). Update if the final runs change.
 
 \begin{figure*}[t]
   \centering
@@ -276,11 +276,12 @@ the SICK test set, on the SuperGLUE diagnostic AX-b~\citep{wang2019superglue}, w
 with linguistic phenomena (lexical semantics, predicate--argument structure, logic, knowledge), and on
 three challenge sets described below.
 
-\emph{Portuguese}: BERTimbau-base~\citep{souza2020bertimbau} trained on InferBR~\citep{inferbr2024}
+\emph{Portuguese}: Albertina PT-BR 900M~\citep{rodrigues2023albertina}, a DeBERTa-v2 encoder pretrained on
+Brazilian Portuguese, trained on InferBR~\citep{inferbr2024}
 \todo{check InferBR citation}, tested on the InferBR test set and, out of distribution, on the ASSIN
 \citep{fonseca2016assin}, ASSIN~2 \citep{real2020assin2} and SICK-BR~\citep{real2018sickbr} test sets.
 
-\emph{Cross-lingual}: XLM-R-base~\citep{conneau2020unsupervised} trained on SICK or on InferBR and tested on
+\emph{Cross-lingual}: XLM-R-large~\citep{conneau2020unsupervised} trained on SICK or on InferBR and tested on
 all nine test sets, with the union of the English and Portuguese lexicons in both directions. Relation
 types are shared across languages, so relation parameters learned in one language are applied to edges
 of the other.
@@ -333,10 +334,18 @@ epochs with batch size 32, weight decay $3.5\times10^{-4}$, dropout $0.103$, gra
 and select the checkpoint with the best development macro-F1, with early stopping after 3 epochs without
 improvement.
 
-The learning rate is $10^{-5}$ with 6\% warm-up for RoBERTa-large, which is unstable at larger rates
-on small datasets \citep{mosbach2021stability}, $2.04\times10^{-5}$ with 2.75\% warm-up for BERTimbau,
-and $2\times10^{-5}$ with 6\% warm-up for XLM-R. \todo{max lengths;
-gradient accumulation for RoBERTa-large (2$\times$16, same effective batch).}
+All three encoders are large (355M parameters for RoBERTa-large, 560M for XLM-R-large and 900M for
+Albertina), and all use a learning rate of $10^{-5}$ with 6\% warm-up, since large encoders are unstable at
+larger rates on small datasets \citep{mosbach2021stability}. The effective batch of 32 is reached by
+gradient accumulation: two micro-batches of 16 for RoBERTa-large and four of 8 for Albertina and XLM-R-large.
+To fit the latter two in 12\,GB of GPU memory, they are trained with 8-bit AdamW optimizer
+states~\citep{dettmers2022optimizers} and gradient checkpointing, for every system of their setting,
+\cls{} baseline included.
+
+Inputs are truncated to 64 tokens for training on SICK and 96 on InferBR, which keeps every training pair
+whole except one InferBR pair under the Albertina tokenizer; evaluation uses longer windows (up to
+192 tokens) so that no test pair is truncated. K-BERT uses a 160-token window in every setting so that
+the injected relations are not truncated.
 
 \subsubsection{Evaluation}
 \label{sec:evaluation}
