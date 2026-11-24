@@ -243,10 +243,9 @@ The \cls{} baseline (\cref{eq:cls} alone) is trained with the same hyperparamete
 We also compare with three knowledge-enhanced NLI architectures, re-implemented on the same encoders
 and trained under the same protocol and seeds. K-BERT-style injection~\citep{liu2020kbert} appends the
 retrieved relations to the premise as text, with a 160-token window so that they are not truncated.
-\todo{add KGAnet and KGNLI references.}
 
-The KGAnet-style model encodes a relation-labelled word graph with a relation-aware graph attention
-network, and the KGNLI-style model keeps separate semantic and knowledge branches. All three take their
+The KGAnet-style model~\citep{song2020kganet} encodes a relation-labelled word graph with a relation-aware graph attention
+network, and the KGNLI-style model~\citep{wang2020knowledge} keeps separate semantic and knowledge branches. All three take their
 knowledge from rule-based relations (numbers, operators, scope) and English WordNet, so on Portuguese
 text their lexical evidence reduces to word identity.
 

@@ -19,7 +19,9 @@ mentions to knowledge-base entity embeddings.
 
 Graph-based approaches retrieve a subgraph for the pair
 and encode it with a graph neural network whose output is fused with the sentence representation
-\citep{kapanipathi2020infusing}. \todo{add the references of the KGAnet and KGNLI baselines.}
+\citep{kapanipathi2020infusing}. KGAnet~\citep{song2020kganet} encodes the retrieved knowledge graph with
+graph attention, and KGNLI~\citep{wang2020knowledge} processes the sentence pair and its knowledge in
+separate semantic and knowledge branches.
 
 A common limitation is that the retrieved evidence is used as an additional feature vector: it does not
 change \emph{how} the decision is reached, and its effect on strong pretrained encoders is often small.
