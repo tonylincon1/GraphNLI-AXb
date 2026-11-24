@@ -1,3 +1,21 @@
 \section{Conclusion}
 \label{sec:conclusion}
-\todo{}
+
+We presented \model{}, which decides NLI from the coverage of each hypothesis word by the premise and
+from conflicts between them, using contextual token states aligned through typed lexical relations. The
+structured decision is added to the logits of the standard classifier, at a cost of about 2M parameters.
+
+Across English and Portuguese, with large encoders, 10 seeds and paired tests, \model{} matches the
+\cls{} baseline in distribution and improves on it out of distribution, by up to 8.6 MCC points in English
+and 2.3 in Portuguese, with lower variance across seeds. In English it also outperforms three
+knowledge-graph baselines, which fall below \cls{} out of distribution.
+
+The ablation locates the effect in the coverage term and the logical aggregation; the conflict term,
+the lexicon and its source contribute little. The AX-b analysis shows where the rule helps, on argument
+structure and logical operators, and where it fails, on restrictivity, universal quantifiers and
+downward monotonicity.
+
+Two directions follow. Extending coverage with the monotonicity of the context would address its main
+failure mode, and the conflict term needs either a different training signal or removal. Cross-lingual
+transfer is the weak point: the structured branch learned in English does not transfer to Portuguese.
+\todo{revise when experiment 0014 finishes (PT$\to$EN, Portuguese and cross-lingual baselines).}
