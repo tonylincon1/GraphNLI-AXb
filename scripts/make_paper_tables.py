@@ -535,10 +535,11 @@ def rows_for(half, systems):
 
 
 LEXICON_SOURCES = [
-    ("WordNet / PT-LKB only", "sick_en_lex_wordnet", "inferbr_pt_large_lex_ptlkb"),
-    ("Wiktionary only", "sick_en_lex_wiktionary", "inferbr_pt_large_lex_wiktionary"),
-    ("ConceptNet only", "sick_en_lex_conceptnet", "inferbr_pt_large_lex_conceptnet"),
-    ("all three", "sick_en_lex_all", "inferbr_pt_large_lex_all"),
+    # Read as changes to the full model (WordNet or PT-LKB, + Wiktionary): removing Wiktionary leaves
+    # WordNet / PT-LKB only, and vice versa; "+ ConceptNet" uses all three resources.
+    ("Wiktionary", "sick_en_lex_wordnet", "inferbr_pt_large_lex_ptlkb"),
+    ("WordNet / PT-LKB", "sick_en_lex_wiktionary", "inferbr_pt_large_lex_wiktionary"),
+    ("$+$ ConceptNet", "sick_en_lex_all", "inferbr_pt_large_lex_all"),
 ]
 
 
@@ -556,8 +557,9 @@ def write_combined() -> None:
     lex_pos = [v for v, _ in abl].index("coverage_pl_v1_no_symbolic")
     mono_order = ([("row", 0, j, False) for j in range(lex_pos)]
                   + [("sub", "$-$ lexicon"),
-                     ("row", 0, lex_pos, True, "none")]
-                  + [("row", 1, j, True) for j in range(len(lex))]
+                     ("row", 0, lex_pos, True, "all")]
+                  + [("row", 1, j, True) for j in range(len(lex) - 1)]
+                  + [("row", 1, len(lex) - 1, False)]
                   + [("row", 0, j, False) for j in range(lex_pos + 1, len(abl))]
                   + [("rule",), ("row", 2, 0, False)])
     xl_order = [("row", 0, j, False) for j in range(len(abl))] + [("rule",), ("row", 1, 0, False)]
