@@ -578,12 +578,20 @@ def write_combined() -> None:
                   + [("row", 1, j, True) for j in range(len(lex))]
                   + [("row", 0, j, False) for j in range(lex_pos + 1, len(abl))]
                   + [("rule",), ("row", 2, 0, False)])
-    xl_order = [("row", 0, j, False) for j in range(len(abl))] + [("rule",), ("row", 1, 0, False)]
+    # Cross-lingual lexicon ablation: EN half from the model trained on InferBR, PT half from SICK.
+    xl_lex = [(label, ([f"{E14}/xling_large_pt_to_en_lex_{name}"], "coverage_pl_v1"),
+               ([f"{E14}/xling_large_en_to_pt_lex_{name}"], "coverage_pl_v1"))
+              for label, name in (("Wiktionary", "no_wiktionary"), ("WordNet / PT-LKB", "no_wordnet_ptlkb"))]
+    xl_order = ([("row", 0, j, False) for j in range(lex_pos)]
+                + [("sub", "$-$ lexicon"), ("row", 0, lex_pos, True, "all")]
+                + [("row", 2, j, True) for j in range(len(xl_lex))]
+                + [("row", 0, j, False) for j in range(lex_pos + 1, len(abl))]
+                + [("rule",), ("row", 1, 0, False)])
     (OUT / "ablation.tex").write_text(combined_ablation([
         ("Monolingual: RoBERTa-large (EN) / Albertina-900M (PT)", rows_for("mono", [ABLATIONS[0]])[0],
          [(rows_for("mono", abl), "holm"), (lex, "holm"), (rows_for("mono", cls), "raw")], mono_order),
         ("Cross-lingual, XLM-R-large", rows_for("xl", [ABLATIONS[0]])[0],
-         [(rows_for("xl", abl), "holm"), (rows_for("xl", cls), "raw")], xl_order),
+         [(rows_for("xl", abl), "holm"), (rows_for("xl", cls), "raw"), (xl_lex, "holm")], xl_order),
     ]), encoding="utf-8")
 
 
