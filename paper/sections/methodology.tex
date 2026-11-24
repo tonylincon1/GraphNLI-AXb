@@ -224,20 +224,15 @@ component each while keeping everything else, including the auxiliary loss, iden
     of the hypothesis node states, followed by a log-softmax; this controls for the capacity of the head.
 \end{description}
 
-A sixth family varies the \emph{source} of the lexical relations rather than removing them
-(\cref{fig:ablation-map}, 6). \model{} is trained with relations from a single resource, WordNet,
-Wiktionary or ConceptNet~5.7~\citep{speer2017conceptnet} for English and PT-LKB, Wiktionary or
-ConceptNet for Portuguese, and with all three combined. Rule-based relations (identity, numbers, stems)
-and operators are kept in every variant.
-
-From ConceptNet we keep single-word edges within one language with weight at least 1, and map
-\textit{Synonym} to synonym, \textit{Antonym} and \textit{DistinctFrom} to antonym, and \textit{IsA} to
-hypernym and hyponym. The \cls{} baseline (\cref{eq:cls} alone) is trained with the same hyperparameters.
+We also remove the lexical resources one at a time (\cref{fig:ablation-map}, 6): \model{} is trained
+without Wiktionary, keeping WordNet (English) or PT-LKB (Portuguese), and without WordNet or PT-LKB,
+keeping Wiktionary. Rule-based relations (identity, numbers, stems) and operators are kept in both
+variants. The \cls{} baseline (\cref{eq:cls} alone) is trained with the same hyperparameters.
 
 \begin{figure*}[t]
   \centering
   \includestandalone[width=\textwidth]{figures/ablation_architecture}
-  \caption{What each ablation removes or changes (red dashed boxes; 6: lexicon source). The \cls{}
+  \caption{What each ablation removes (red dashed boxes; 6: one lexical resource at a time). The \cls{}
   baseline keeps only the encoder and the $\ell_{\mathrm{CLS}}$ path.}
   \label{fig:ablation-map}
 \end{figure*}

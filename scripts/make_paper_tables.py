@@ -535,11 +535,11 @@ def rows_for(half, systems):
 
 
 LEXICON_SOURCES = [
-    # Read as changes to the full model (WordNet or PT-LKB, + Wiktionary): removing Wiktionary leaves
-    # WordNet / PT-LKB only, and vice versa; "+ ConceptNet" uses all three resources.
+    # Read as removals from the full model (WordNet or PT-LKB, + Wiktionary): removing Wiktionary leaves
+    # WordNet / PT-LKB only, and vice versa. The ConceptNet variants of experiment 0014
+    # (sick_en_lex_conceptnet/_all, inferbr_pt_large_lex_conceptnet/_all) are left out of the paper for now.
     ("Wiktionary", "sick_en_lex_wordnet", "inferbr_pt_large_lex_ptlkb"),
     ("WordNet / PT-LKB", "sick_en_lex_wiktionary", "inferbr_pt_large_lex_wiktionary"),
-    ("$+$ ConceptNet", "sick_en_lex_all", "inferbr_pt_large_lex_all"),
 ]
 
 
@@ -558,8 +558,7 @@ def write_combined() -> None:
     mono_order = ([("row", 0, j, False) for j in range(lex_pos)]
                   + [("sub", "$-$ lexicon"),
                      ("row", 0, lex_pos, True, "all")]
-                  + [("row", 1, j, True) for j in range(len(lex) - 1)]
-                  + [("row", 1, len(lex) - 1, False)]
+                  + [("row", 1, j, True) for j in range(len(lex))]
                   + [("row", 0, j, False) for j in range(lex_pos + 1, len(abl))]
                   + [("rule",), ("row", 2, 0, False)])
     xl_order = [("row", 0, j, False) for j in range(len(abl))] + [("rule",), ("row", 1, 0, False)]

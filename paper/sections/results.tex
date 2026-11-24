@@ -49,7 +49,7 @@ The opposite direction, trained on InferBR and tested in English, is still runni
   \centering\footnotesize\setlength{\tabcolsep}{3pt}
   \input{tables/ablation}
   \caption{Ablation (binary MCC $\times100$): full model, then mean paired difference to it (decreases in
-  red; variants in \cref{sec:ablations}). $-$\,lexicon: removes all lexical resources, or only the one named (the full model uses WordNet or PT-LKB, plus Wiktionary); $+$\,ConceptNet adds a third resource.
+  red; variants in \cref{sec:ablations}). $-$\,lexicon: removes all lexical resources, or only the one named (the full model uses WordNet or PT-LKB, plus Wiktionary).
   $^{*}$Holm-corrected (within each block) and $^{\dagger}$uncorrected paired Wilcoxon $p<0.05$ against
   the full model. \todo{$^{\S}$ as in \cref{tab:main}.}}
   \label{tab:ablation}
@@ -70,10 +70,10 @@ The lexicon and the graph matter less. Without lexical relations the English mod
 significant after Holm correction. In Portuguese, removing the lexicon changes every score by less than one point.
 \todo{Portuguese $-$coverage and MLP head, $-$graph with 10 seeds (experiment 0014).}
 
-No single resource is responsible either. In English, removing Wiktionary or WordNet, or adding
-ConceptNet as a third resource, changes AX-b, ConjNLI and FraCaS by at most 1.4 points (none significant),
-and every variant remains above \cls{} on these three sets ($p<0.05$); the same holds for ConceptNet
-alone (not shown). Wiktionary alone links only 19\% of the training pairs, against 52\% for the default.
+No single resource is responsible either. In English, removing Wiktionary or WordNet changes AX-b,
+ConjNLI and FraCaS by at most 1.4 points (none significant), and both variants remain above \cls{} on
+these three sets ($p<0.05$). Wiktionary alone links only 19\% of the training pairs, against 52\% for
+the default.
 \todo{Portuguese lexicon-source variants (experiment 0014, queued).}
 
 In cross-lingual transfer to Portuguese, no ablation closes the gap to \cls{}: every variant stays 3 to
