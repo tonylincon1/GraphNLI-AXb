@@ -80,6 +80,7 @@ def main() -> None:
             ("Albertina-900M \\cls{}", E14, "inferbr_pt_large_ablation", "pair_cls"),
             ("Albertina-900M \\model{}", E14, "inferbr_pt_large_ablation", "coverage_pl_v1"),
             ("Albertina-900M \\model{} $-$ conflito", E14, "inferbr_pt_large_ablation", "coverage_pl_v1_no_conflict"),
+            ("Albertina-900M \\model{} $-$ léxico", E14, "inferbr_pt_large_ablation", "coverage_pl_v1_no_symbolic"),
         ], PT, ref=2, midrules=(2,)),
         "xl_large_en": table([
             ("XLM-R-base \\cls{} (0011)", E11, "xling_en_to_pt_ablation", "pair_cls"),
@@ -97,6 +98,8 @@ def main() -> None:
             ("XLM-R-large $-$ conflito", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_no_conflict"),
             ("XLM-R-large $-$ léxico", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_no_symbolic"),
             ("XLM-R-large $-$ grafo", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_no_graph"),
+            ("XLM-R-large $-$ cobertura", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_no_coverage"),
+            ("XLM-R-large MLP no lugar da regra", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_mlp_head"),
         ], PT, ref=2, midrules=(2,)),
     }
     for name, tex in tables.items():
