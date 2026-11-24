@@ -60,9 +60,9 @@
   \begin{itemize}\small
   \item Português: \textbf{Albertina-900M} (sugestão do survey de modelos para o português).
   \item Entre línguas: \textbf{XLM-R-large} no lugar do XLM-R-base.
-  \item Ablação de \textbf{cada léxico separado} e um léxico novo: \textbf{ConceptNet} (inglês e português).
+  \item Ablação de \textbf{cada léxico separado} (inglês, português e entre línguas).
   \end{itemize}
-\item \textbf{Resultados parciais:} 157 de 420 runs prontos.
+\item \textbf{Resultados parciais:} 137 de 380 runs prontos.
 \item \textbf{Artigo} adaptado ao template do \textbf{ACL 2027} (submissão via ARR).
 \end{enumerate}
 \end{frame}
@@ -74,9 +74,9 @@
 \toprule
 Bloco & Encoder & Treino & O que compara & Runs & Status \\
 \midrule
-Ablação de léxicos & RoBERTa-large & SICK & WordNet / Wikt. / ConceptNet / todos & 40 & \done{} \\
+Ablação de léxicos & RoBERTa-large & SICK & só WordNet / só Wikt. & 20 & \done{} \\
 Ablação PT & Albertina-900M & InferBR & 7 variantes (como no 0011) & 70 & \running{} (43) \\
-Léxicos PT & Albertina-900M & InferBR & PT-LKB / Wikt. / ConceptNet / todos & 40 & \queued{} \\
+Léxicos PT & Albertina-900M & InferBR & só PT-LKB / só Wikt. & 20 & \queued{} \\
 Baselines de grafo PT & Albertina-900M & InferBR & K-BERT, KGAnet, KGNLI & 30 & \queued{} \\
 \midrule
 Ablação EN$\to$PT & XLM-R-large & SICK & 7 variantes & 70 & \done{} \\
@@ -106,10 +106,8 @@ Léxico & Pares & Antônimos \\
 \midrule
 WordNet & 49,3\% & 538 \\
 Wiktionary & 19,2\% & 232 \\
-ConceptNet & 42,8\% & 805 \\
 \midrule
-WordNet + Wikt.\ (0011) & 52,1\% & 611 \\
-+ ConceptNet & \textbf{57,9\%} & \textbf{851} \\
+WordNet + Wikt.\ (modelo) & \textbf{52,1\%} & \textbf{611} \\
 \bottomrule
 \end{tabular}
 \column{0.5\textwidth}
@@ -121,21 +119,19 @@ Léxico & Pares & Antônimos \\
 \midrule
 PT-LKB & 46,7\% & 0 \\
 Wiktionary & 5,4\% & 316 \\
-ConceptNet & 16,5\% & 333 \\
 \midrule
-PT-LKB + Wikt.\ (0011) & 48,2\% & 316 \\
-+ ConceptNet & \textbf{48,4\%} & \textbf{410} \\
+PT-LKB + Wikt.\ (modelo) & \textbf{48,2\%} & \textbf{316} \\
 \bottomrule
 \end{tabular}
 \end{columns}
-\take{\textbf{ConceptNet} (5.7): sinônimos, antônimos, ``é um'' (hiperônimo) e ``diferente de'' (tratado como antônimo). No inglês aumenta a cobertura (+5,8) e os antônimos (+40\%). No português o \textbf{PT-LKB faz quase tudo}, mas não tem nenhum antônimo: eles vêm só do Wiktionary e do ConceptNet.}
+\take{No inglês o \textbf{WordNet faz quase tudo}: o Wiktionary acrescenta só +2,8 de cobertura. No português o \textbf{PT-LKB faz quase tudo}, mas não tem nenhum antônimo: eles vêm só do Wiktionary.}
 \end{frame}
 
 % --------------------------------------------------------------------------
 \begin{frame}{Inglês: qual léxico importa? (RoBERTa-large, MCC)}
 \textit{\small Treino no SICK; cada linha é o \model{} com um léxico diferente} \hfill {\scriptsize $^\dagger$ $p<.05$ contra o [CLS]}\\[3pt]
 \centering\tab[0.92]{lex_en}
-\take{\textbf{O léxico quase não importa.} Com qualquer um deles o \model{} ganha do [CLS] fora da distribuição (AX-b \up{+4.7 a +5.8}, ConjNLI \up{+4.5 a +7.1}, FraCaS \up{+8.6 a +10.0}, todos $p<.05$), e as diferenças entre léxicos ficam dentro do desvio entre seeds. Até o Wiktionary, que cobre só 19\% dos pares, basta. O ganho vem da \textbf{estrutura} (cobertura), não da quantidade de conhecimento.}
+\take{\textbf{O léxico quase não importa.} Com qualquer um deles o \model{} ganha do [CLS] fora da distribuição (AX-b \up{+4.7 a +5.3}, ConjNLI \up{+4.5 a +5.9}, FraCaS \up{+8.6 a +10.0}, todos $p<.05$), e as diferenças entre léxicos ficam dentro do desvio entre seeds. Até o Wiktionary, que cobre só 19\% dos pares, basta. O ganho vem da \textbf{estrutura} (cobertura), não da quantidade de conhecimento.}
 \end{frame}
 
 % --------------------------------------------------------------------------
@@ -183,7 +179,7 @@ PT-LKB + Wikt.\ (0011) & 48,2\% & 316 \\
 \small
 \begin{enumerate}\setlength{\itemsep}{5pt}
 \item \textbf{O padrão do 0011 se mantém com encoders grandes:} o \model{} empata in-distribution e ganha fora dela (RoBERTa-large e Albertina-900M).
-\item \textbf{O léxico importa pouco no inglês:} qualquer dicionário dá o mesmo ganho; ConceptNet não muda o resultado.
+\item \textbf{O léxico importa pouco no inglês:} qualquer dicionário dá o mesmo ganho.
 \item \textbf{Albertina:} o ganho do \model{} diminui com o encoder grande, mas continua significativo em 2 de 4 testes, e a variância cai pela metade.
 \item \textbf{Ponto fraco:} transferência EN$\to$PT com XLM-R-large; o \model{} perde no InferBR e no ASSIN.
 \end{enumerate}

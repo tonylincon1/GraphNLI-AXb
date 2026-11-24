@@ -71,8 +71,6 @@ def main() -> None:
             ("WordNet + Wiktionary (0011)", E11, "sick_en_ablation", "coverage_pl_v1"),
             ("só WordNet", E14, "sick_en_lex_wordnet", "coverage_pl_v1"),
             ("só Wiktionary", E14, "sick_en_lex_wiktionary", "coverage_pl_v1"),
-            ("só ConceptNet", E14, "sick_en_lex_conceptnet", "coverage_pl_v1"),
-            ("WordNet + Wikt.\\ + ConceptNet", E14, "sick_en_lex_all", "coverage_pl_v1"),
         ], EN, ref=0, midrules=(1, 2)),
         "pt_large": table([
             ("BERTimbau-base \\cls{} (0011)", E11, "inferbr_pt_ablation", "pair_cls"),
