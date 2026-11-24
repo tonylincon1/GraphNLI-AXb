@@ -511,8 +511,11 @@ def combined_ablation(groups) -> str:
             if item[0] == "rule":
                 lines.append("\\cmidrule(l){1-%d}" % (len(TESTS) + 1))
                 continue
-            _, f, j, indent = item
-            label = families[f][0][j][0]
+            if item[0] == "sub":
+                lines.append(f"\\multicolumn{{{len(TESTS) + 1}}}{{@{{}}l}}{{{item[1]}}} \\\\")
+                continue
+            _, f, j, indent, *override = item
+            label = override[0] if override else families[f][0][j][0]
             row = []
             for key, _, _ in TESTS:
                 d = data[f][j]
@@ -532,10 +535,10 @@ def rows_for(half, systems):
 
 
 LEXICON_SOURCES = [
-    ("only WordNet / PT-LKB", "sick_en_lex_wordnet", "inferbr_pt_large_lex_ptlkb"),
-    ("only Wiktionary", "sick_en_lex_wiktionary", "inferbr_pt_large_lex_wiktionary"),
-    ("only ConceptNet", "sick_en_lex_conceptnet", "inferbr_pt_large_lex_conceptnet"),
-    ("all three (+ ConceptNet)", "sick_en_lex_all", "inferbr_pt_large_lex_all"),
+    ("WordNet / PT-LKB only", "sick_en_lex_wordnet", "inferbr_pt_large_lex_ptlkb"),
+    ("Wiktionary only", "sick_en_lex_wiktionary", "inferbr_pt_large_lex_wiktionary"),
+    ("ConceptNet only", "sick_en_lex_conceptnet", "inferbr_pt_large_lex_conceptnet"),
+    ("all three", "sick_en_lex_all", "inferbr_pt_large_lex_all"),
 ]
 
 
@@ -546,13 +549,14 @@ def write_combined() -> None:
         ("Cross-lingual, XLM-R-large: trained on InferBR (EN tests) / on SICK (PT tests)", rows_for("xl", main_systems)),
     ]), encoding="utf-8")
     abl = [a for a in ABLATIONS if a[0] not in ("coverage_pl_v1", "pair_cls")]
-    abl = [(v, "$-$ lexicon (all resources)" if v == "coverage_pl_v1_no_symbolic" else label) for v, label in abl]
     cls = [a for a in ABLATIONS if a[0] == "pair_cls"]
     lex = [(label, ([f"{E14}/{en}"], "coverage_pl_v1"), ([f"{E14}/{pt}"], "coverage_pl_v1"))
            for label, en, pt in LEXICON_SOURCES]
     # Display: ablations, with the lexicon-source variants right below "- lexicon"; Holm stays per family.
     lex_pos = [v for v, _ in abl].index("coverage_pl_v1_no_symbolic")
-    mono_order = ([("row", 0, j, False) for j in range(lex_pos + 1)]
+    mono_order = ([("row", 0, j, False) for j in range(lex_pos)]
+                  + [("sub", "Lexicon used (full model: WordNet or PT-LKB, + Wiktionary):"),
+                     ("row", 0, lex_pos, True, "none")]
                   + [("row", 1, j, True) for j in range(len(lex))]
                   + [("row", 0, j, False) for j in range(lex_pos + 1, len(abl))]
                   + [("rule",), ("row", 2, 0, False)])
