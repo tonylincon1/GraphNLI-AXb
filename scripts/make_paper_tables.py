@@ -409,17 +409,151 @@ def confusion_table(panels: list[tuple[str, str, str]]) -> str:
     return "\n".join(lines) + "\n"
 
 
+# ----------------------------------------------------------------------------- combined tables
+# One table* with the five English and the four Portuguese test sets side by side. Each half of a row
+# comes from the model trained for that half: monolingual rows read the English half from the English
+# setting and the Portuguese half from the Portuguese one; cross-lingual rows read the English half from
+# the model trained on InferBR and the Portuguese half from the model trained on SICK.
+E11, E14 = "experiment_0011", "experiment_0014"
+HALVES = {
+    "mono": (SETTINGS["en"][0][1], SETTINGS["pt"][0][1]),
+    "xl": (SETTINGS["xl"][1][1], SETTINGS["xl"][0][1]),
+}
+TESTS = EN_TESTS + PT_TESTS
+PARTIAL = "$^{\\S}$"  # fewer than N_SEEDS seeds finished
+
+
+def half_scores(src, tests):
+    """src: (pipelines, variant) or None."""
+    return scores(*src, tests) if src else None
+
+
+def row_data(row):
+    """row: (label, en_src, pt_src) -> {test key: {seed: value}}."""
+    _, en, pt = row
+    out = {}
+    for src, tests in ((en, EN_TESTS), (pt, PT_TESTS)):
+        d = half_scores(src, tests)
+        for key, _, _ in tests:
+            if d and all(v.get(key) is not None for v in d.values()):
+                out[key] = {seed: {key: v[key]} for seed, v in d.items()}
+    return out
+
+
+def header() -> list[str]:
+    n_en, n_pt = len(EN_TESTS), len(PT_TESTS)
+    return [f"\\begin{{tabular*}}{{\\textwidth}}{{@{{\\extracolsep{{\\fill}}}}l{'c' * (n_en + n_pt)}@{{}}}}",
+            "\\toprule",
+            f" & \\multicolumn{{{n_en}}}{{c}}{{English tests}} & \\multicolumn{{{n_pt}}}{{c}}{{Portuguese tests}} \\\\",
+            f"\\cmidrule(lr){{2-{n_en + 1}}}\\cmidrule(l){{{n_en + 2}-{n_en + n_pt + 1}}}",
+            "System & " + " & ".join(h for _, h, _ in TESTS) + " \\\\"]
+
+
+def group_title(text: str) -> str:
+    return f"\\multicolumn{{{len(TESTS) + 1}}}{{@{{}}l}}{{\\textit{{{text}}}}} \\\\"
+
+
+def combined_main(groups) -> str:
+    """groups: (title, rows); row = (label, en_src, pt_src); the first row of a group is \\cls{}."""
+    lines = header()
+    for title, rows in groups:
+        lines += ["\\midrule", group_title(title)]
+        data = [row_data(r) for r in rows]
+        for i, (label, _, _) in enumerate(rows):
+            cells = []
+            for key, _, _ in TESTS:
+                means = {j: np.mean([v[key] for v in d[key].values()]) for j, d in enumerate(data) if key in d}
+                if key not in data[i]:
+                    cells.append("")
+                    continue
+                d = data[i][key]
+                mark = ""
+                if i and key in data[0]:
+                    p = paired_p(d, data[0][key], key)
+                    mark = "$^{\\dagger}$" if p is not None and p < 0.05 else ""
+                if len(d) < N_SEEDS:
+                    mark += PARTIAL
+                cells.append(cell([v[key] for v in d.values()], max(means, key=means.get) == i, mark))
+            lines.append(f"{label} & " + " & ".join(cells) + " \\\\")
+    lines += ["\\bottomrule", "\\end{tabular*}"]
+    return "\n".join(lines) + "\n"
+
+
+def combined_ablation(groups) -> str:
+    """groups: (title, full_row, families); families: list of (subtitle or None, rows, marker).
+    marker "holm": Holm over the family (asterisk); "raw": uncorrected (dagger)."""
+    lines = header()
+    for title, full_row, families in groups:
+        lines += ["\\midrule", group_title(title)]
+        full = row_data(full_row)
+        cells = []
+        for key, _, _ in TESTS:
+            if key not in full:
+                cells.append("")
+                continue
+            mark = PARTIAL if len(full[key]) < N_SEEDS else ""
+            cells.append(cell([v[key] for v in full[key].values()], False, mark))
+        lines.append(f"{full_row[0]} & " + " & ".join(cells) + " \\\\")
+        for subtitle, rows, marker in families:
+            if subtitle:
+                lines.append(f"\\multicolumn{{{len(TESTS) + 1}}}{{@{{}}l}}{{\\quad\\textit{{{subtitle}}}}} \\\\")
+            elif marker == "raw":
+                lines.append("\\cmidrule(l){1-%d}" % (len(TESTS) + 1))
+            data = [row_data(r) for r in rows]
+            marks = [{} for _ in rows]
+            for key, _, _ in TESTS:
+                raw = {j: paired_p(d[key], full[key], key) for j, d in enumerate(data) if key in d and key in full}
+                adj = holm(raw, len(rows)) if marker == "holm" else raw
+                for j, p in adj.items():
+                    if p is not None and p < 0.05:
+                        marks[j][key] = "$^{*}$" if marker == "holm" else "$^{\\dagger}$"
+            for j, (label, _, _) in enumerate(rows):
+                row = []
+                for key, _, _ in TESTS:
+                    if key not in data[j] or key not in full:
+                        row.append("")
+                        continue
+                    mark = marks[j].get(key, "") + (PARTIAL if len(data[j][key]) < N_SEEDS else "")
+                    row.append(delta_cell(data[j][key], full[key], key, mark))
+                lines.append(f"{label} & " + " & ".join(row) + " \\\\")
+    lines += ["\\bottomrule", "\\end{tabular*}"]
+    return "\n".join(lines) + "\n"
+
+
+def rows_for(half, systems):
+    en, pt = HALVES[half]
+    return [(label, (en, v), (pt, v)) for v, label in systems]
+
+
+LEXICON_SOURCES = [
+    ("only WordNet / PT-LKB", "sick_en_lex_wordnet", "inferbr_pt_large_lex_ptlkb"),
+    ("only Wiktionary", "sick_en_lex_wiktionary", "inferbr_pt_large_lex_wiktionary"),
+    ("only ConceptNet", "sick_en_lex_conceptnet", "inferbr_pt_large_lex_conceptnet"),
+    ("all three", "sick_en_lex_all", "inferbr_pt_large_lex_all"),
+]
+
+
+def write_combined() -> None:
+    main_systems = [MAIN_SYSTEMS[0], *MAIN_SYSTEMS[1:]]  # [CLS] first: reference of the daggers
+    (OUT / "main.tex").write_text(combined_main([
+        ("Monolingual: RoBERTa-large on SICK (EN) / Albertina-900M on InferBR (PT)", rows_for("mono", main_systems)),
+        ("Cross-lingual, XLM-R-large: trained on InferBR (EN tests) / on SICK (PT tests)", rows_for("xl", main_systems)),
+    ]), encoding="utf-8")
+    abl = [a for a in ABLATIONS if a[0] not in ("coverage_pl_v1", "pair_cls")]
+    cls = [a for a in ABLATIONS if a[0] == "pair_cls"]
+    lex = [(label, ([f"{E14}/{en}"], "coverage_pl_v1"), ([f"{E14}/{pt}"], "coverage_pl_v1"))
+           for label, en, pt in LEXICON_SOURCES]
+    (OUT / "ablation.tex").write_text(combined_ablation([
+        ("Monolingual: RoBERTa-large (EN) / Albertina-900M (PT)", rows_for("mono", [ABLATIONS[0]])[0],
+         [(None, rows_for("mono", abl), "holm"), ("Lexicon source", lex, "holm"), (None, rows_for("mono", cls), "raw")]),
+        ("Cross-lingual, XLM-R-large", rows_for("xl", [ABLATIONS[0]])[0],
+         [(None, rows_for("xl", abl), "holm"), (None, rows_for("xl", cls), "raw")]),
+    ]), encoding="utf-8")
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    for setting in SETTINGS:
-        if setting != "xl":
-            (group, pipelines, tests), = SETTINGS[setting]
-            (OUT / f"main_{setting}.tex").write_text(main_table([(group, pipelines)], tests, MAIN_SYSTEMS), encoding="utf-8")
-        (OUT / f"ablation_{setting}.tex").write_text(table(setting, ABLATIONS, "ablation"), encoding="utf-8")
-    # Cross-lingual: transfer to the other language only.
-    (_, en_to_pt, _), (_, pt_to_en, _) = SETTINGS["xl"]
-    for name, pipelines, tests in [("main_xl_en_to_pt", en_to_pt, PT_TESTS), ("main_xl_pt_to_en", pt_to_en, EN_TESTS)]:
-        (OUT / f"{name}.tex").write_text(main_table([(None, pipelines)], tests, MAIN_SYSTEMS), encoding="utf-8")
+    write_combined()
     (OUT / "analysis_axb_en.tex").write_text(axb_table("experiment_0011/sick_en_ablation"), encoding="utf-8")
     print(f"wrote {OUT}")
 

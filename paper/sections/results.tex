@@ -7,26 +7,13 @@
 \subsection{Main results}
 \label{sec:main-results}
 
-\begin{table*}[tp]
-  \centering\footnotesize\setlength{\tabcolsep}{4pt}
-  \textit{(a) English: RoBERTa-large trained on SICK}\\[2pt]
-  \input{tables/main_en}
-  \vspace{6pt}
-
-  \textit{(b) Portuguese: Albertina-900M trained on InferBR}\\[2pt]
-  \input{tables/main_pt}
-  \vspace{6pt}
-
-  \textit{(c) Cross-lingual EN$\to$PT: XLM-R-large trained on SICK, Portuguese tests}\\[2pt]
-  \input{tables/main_xl_en_to_pt}
-  \vspace{6pt}
-
-  \textit{(d) Cross-lingual PT$\to$EN: XLM-R-large trained on InferBR, English tests}\\[2pt]
-  \input{tables/main_xl_pt_to_en}
-  \caption{Main results: accuracy and MCC of \E{} \emph{vs.} $\neg$\E{} ($\times100$), mean and seed
-  standard deviation over 10 seeds; best in bold. (c,\,d): zero-shot transfer. $^{\dagger}$Paired Wilcoxon
-  $p<0.05$ against \cls{}. \todo{Partial results: $^{n=k}$ marks systems with only $k$ of 10 seeds finished; empty rows
-  are still running.}}
+\begin{table*}[t]
+  \centering\footnotesize\setlength{\tabcolsep}{3pt}
+  \input{tables/main}
+  \caption{Main results: MCC of \E{} \emph{vs.} $\neg$\E{} ($\times100$), mean and seed standard deviation
+  over 10 seeds; best per group in bold. Each half of a row comes from the model trained for that half;
+  cross-lingual rows are zero-shot transfer. $^{\dagger}$Paired Wilcoxon $p<0.05$ against \cls{}.
+  \todo{$^{\S}$Partial: fewer than 10 seeds finished; empty cells still running.}}
   \label{tab:main}
 \end{table*}
 
@@ -48,31 +35,23 @@ standard deviation over seeds is about half that of \cls{} or less on all three 
 
 Cross-lingual transfer gives a mixed picture. Trained on SICK and tested in Portuguese, \model{} is
 below \cls{} on InferBR ($-3.3$) and ASSIN ($-4.1$, both $p<0.05$) and tied on ASSIN~2 and SICK-BR
-(\cref{tab:main}c). On the English test sets, the same SICK-trained XLM-R-large models reproduce the
+(cross-lingual rows of \cref{tab:main}). On the English test sets, the same SICK-trained XLM-R-large models reproduce the
 monolingual pattern: tied on SICK, +9.3 on AX-b, +12.8 on ConjNLI and +6.3 on FraCaS, but $-5.4$ on
 Breaking NLI.
 
-The opposite direction, trained on InferBR and tested in English, is still running (\cref{tab:main}d).
+The opposite direction, trained on InferBR and tested in English, is still running.
 \todo{PT$\to$EN results and cross-lingual knowledge-graph baselines (experiment 0014).}
 
 \subsection{Ablation}
 \label{sec:ablation-results}
 
-\begin{table*}[tp]
-  \centering\footnotesize\setlength{\tabcolsep}{4pt}
-  \textit{(a) English: RoBERTa-large trained on SICK}\\[2pt]
-  \input{tables/ablation_en}
-  \vspace{6pt}
-
-  \textit{(b) Portuguese: Albertina-900M trained on InferBR}\\[2pt]
-  \input{tables/ablation_pt}
-  \vspace{6pt}
-
-  \textit{(c) Cross-lingual: XLM-R-large}\\[2pt]
-  \input{tables/ablation_xl}
+\begin{table*}[t]
+  \centering\footnotesize\setlength{\tabcolsep}{3pt}
+  \input{tables/ablation}
   \caption{Ablation (binary MCC $\times100$): full model, then mean paired difference to it (decreases in
-  red; variants in \cref{sec:ablations}). (c): transfer only. $^{*}$Holm-corrected and $^{\dagger}$uncorrected
-  paired Wilcoxon $p<0.05$ against the full model. \todo{Partial results: $^{n=k}$ as in \cref{tab:main}.}}
+  red; variants in \cref{sec:ablations}). Lexicon source: EN uses WordNet, PT uses PT-LKB in the first row.
+  $^{*}$Holm-corrected (within each block) and $^{\dagger}$uncorrected paired Wilcoxon $p<0.05$ against
+  the full model. \todo{$^{\S}$ as in \cref{tab:main}.}}
   \label{tab:ablation}
 \end{table*}
 
@@ -95,7 +74,7 @@ The source of the lexicon is equally unimportant. In English, \model{} trained w
 Wiktionary or ConceptNet alone, or with all three, stays within 1.4 points of the default lexicon on
 AX-b, ConjNLI and FraCaS (no difference significant), and every variant remains above \cls{} on these
 three sets ($p<0.05$). Wiktionary alone links only 19\% of the training pairs, against 52\% for the default.
-\todo{table for the lexicon-source ablation; Portuguese variants (experiment 0014, queued).}
+\todo{Portuguese lexicon-source variants (experiment 0014, queued).}
 
 In cross-lingual transfer to Portuguese, no ablation closes the gap to \cls{}: every variant stays 3 to
 7 points below it on InferBR. The loss is therefore not due to one component, such as edges built
