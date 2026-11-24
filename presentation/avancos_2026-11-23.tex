@@ -62,7 +62,7 @@
   \item Entre línguas: \textbf{XLM-R-large} no lugar do XLM-R-base.
   \item Ablação de \textbf{cada léxico separado} e um léxico novo: \textbf{ConceptNet} (inglês e português).
   \end{itemize}
-\item \textbf{Resultados parciais:} 157 de 380 runs prontos.
+\item \textbf{Resultados parciais:} 157 de 420 runs prontos.
 \item \textbf{Artigo} adaptado ao template do \textbf{ACL 2027} (submissão via ARR).
 \end{enumerate}
 \end{frame}
@@ -82,12 +82,13 @@ Baselines de grafo PT & Albertina-900M & InferBR & K-BERT, KGAnet, KGNLI & 30 & 
 Ablação EN$\to$PT & XLM-R-large & SICK & 7 variantes & 70 & \done{} \\
 Ablação PT$\to$EN & XLM-R-large & InferBR & 7 variantes & 70 & \running{} (4) \\
 Baselines de grafo XL & XLM-R-large & ambos & K-BERT, KGAnet, KGNLI & 60 & \queued{} \\
+Léxicos XL & XLM-R-large & ambos & $-$ Wikt. / $-$ WordNet e PT-LKB & 40 & \queued{} \\
 \bottomrule
 \end{tabular}}\\[8pt]
 \raggedright\footnotesize
 \begin{itemize}\setlength{\itemsep}{2pt}
 \item Mesmo protocolo do 0011: 10 seeds por sistema, pareado por seed, mesmos conjuntos de teste e mesma métrica (MCC).
-\item Previsão: máquina A (inglês e XLM-R) $\sim$28/11; máquina B (Albertina) $\sim$5/12.
+\item Previsão: máquina A (inglês e XLM-R) $\sim$30/11; máquina B (Albertina) $\sim$5/12.
 \end{itemize}
 \end{frame}
 

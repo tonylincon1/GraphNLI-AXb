@@ -392,6 +392,74 @@ pipelines:
     test: *xling_test
     save_explanations: false
 
+  # ---------------------------------------------------------------- Lexicon ablation, cross-lingual
+  # Added 2026-11-25 for coherence with the monolingual lexicon ablation: the cross-lingual model uses
+  # the union WordNet + Wiktionary EN + PT-LKB + Wiktionary PT; remove one resource family at a time.
+  # Paired by seed with xling_large_*_ablation/coverage_pl_v1 (machine A, after its main queue).
+  xling_large_en_to_pt_lex_no_wiktionary:   # keeps WordNet (EN) + PT-LKB (PT)
+    enabled: true
+    est_minutes_per_run: 30
+    device: cuda
+    batch_size: 32
+    model_names: [FacebookAI/xlm-roberta-large]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *xling_large_training
+      wiktionary_cache: ""
+      extra_lexicon_caches: []
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *xling_test
+    save_explanations: false
+
+  xling_large_en_to_pt_lex_no_wordnet_ptlkb:   # keeps Wiktionary EN + Wiktionary PT
+    enabled: true
+    est_minutes_per_run: 30
+    device: cuda
+    batch_size: 32
+    model_names: [FacebookAI/xlm-roberta-large]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *xling_large_training
+      wordnet_cache: ""
+      pt_lkb_cache: ""
+    train: {dataset: sick, split: train}
+    validation: {dataset: sick, split: dev}
+    test: *xling_test
+    save_explanations: false
+
+  xling_large_pt_to_en_lex_no_wiktionary:   # keeps WordNet (EN) + PT-LKB (PT)
+    enabled: true
+    est_minutes_per_run: 45
+    device: cuda
+    batch_size: 32
+    model_names: [FacebookAI/xlm-roberta-large]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *xling_large_training
+      wiktionary_cache: ""
+      extra_lexicon_caches: []
+    train: *pt_train
+    validation: *pt_validation
+    test: *xling_test
+    save_explanations: false
+
+  xling_large_pt_to_en_lex_no_wordnet_ptlkb:   # keeps Wiktionary EN + Wiktionary PT
+    enabled: true
+    est_minutes_per_run: 45
+    device: cuda
+    batch_size: 32
+    model_names: [FacebookAI/xlm-roberta-large]
+    variants: [coverage_pl_v1]
+    training:
+      <<: *xling_large_training
+      wordnet_cache: ""
+      pt_lkb_cache: ""
+    train: *pt_train
+    validation: *pt_validation
+    test: *xling_test
+    save_explanations: false
+
   # ---------------------------------------------------------------- Graph baselines (large encoders)
   # As in 0011: K-BERT / KGAnet / KGNLI at 160 tokens, paired by seed with the ablation pipelines.
   # English baselines are not re-run (0011 already used roberta-large).
