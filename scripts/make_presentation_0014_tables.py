@@ -85,9 +85,11 @@ def main() -> None:
             ("XLM-R-large \\model{}", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1"),
         ], EN, ref=2, midrules=(2,)),
         "xl_large_pt": table([
+            ("XLM-R-base \\cls{} (0011)", E11, "xling_en_to_pt_ablation", "pair_cls"),
+            ("XLM-R-base \\model{} (0011)", E11, "xling_en_to_pt_ablation", "coverage_pl_v1"),
             ("XLM-R-large \\cls{}", E14, "xling_large_en_to_pt_ablation", "pair_cls"),
             ("XLM-R-large \\model{}", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1"),
-        ], PT, ref=0),
+        ], PT, ref=2, midrules=(2,)),
     }
     for name, tex in tables.items():
         (OUT / f"{name}.tex").write_text(tex, encoding="utf-8")
