@@ -138,7 +138,7 @@ PT-LKB + Wikt.\ (modelo) & \textbf{48,2\%} & \textbf{316} \\
 \begin{frame}{Português: Albertina-900M (MCC)}
 \textit{\small Treino no InferBR} \hfill {\scriptsize $^\dagger$ $p<.05$ contra o Albertina [CLS]}\\[3pt]
 \centering\tab[0.85]{pt_large}
-\take{\textbf{Encoder maior ajuda muito:} o [CLS] sobe de 4 a 10 pontos. \textbf{O \model{} continua ajudando} em cima dele: \up{+2.3} no ASSIN\,2 e \up{+2.3} no SICK-BR ($p<.05$), e \textbf{metade do desvio entre seeds} (ASSIN $\pm$5.9$\to\pm$3.5; SICK-BR $\pm$2.4$\to\pm$1.2). Destaque: o BERTimbau-base + \model{} (110M) \textbf{empata com o Albertina [CLS] (900M)} no ASSIN\,2 e no SICK-BR. Sem o conflito ou sem o léxico: sem perda.}
+\take{\textbf{Encoder maior ajuda muito:} o [CLS] sobe de 4 a 10 pontos. \textbf{O \model{} continua ajudando} em cima dele: \up{+2.3} no ASSIN\,2 e \up{+2.3} no SICK-BR ($p<.05$), e \textbf{metade do desvio entre seeds} (ASSIN $\pm$5.9$\to\pm$3.5; SICK-BR $\pm$2.4$\to\pm$1.2). Destaque: o BERTimbau-base + \model{} (110M) \textbf{empata com o Albertina [CLS] (900M)} no ASSIN\,2 e no SICK-BR.}
 \end{frame}
 
 
@@ -146,7 +146,7 @@ PT-LKB + Wikt.\ (modelo) & \textbf{48,2\%} & \textbf{316} \\
 \begin{frame}{Entre línguas EN$\to$PT com XLM-R-large (MCC)}
 \textit{\small Treino no SICK (inglês), sem nenhum exemplo em português} \hfill {\scriptsize $^\dagger$ $p<.05$ contra o XLM-R-large [CLS]}\\[3pt]
 \centering\tab[0.85]{xl_large_pt}
-\take{\textbf{Na transferência para o português o \model{} perde:} InferBR \down{$-$3.3} e ASSIN \down{$-$4.1} ($p<.05$); empata no ASSIN\,2 e no SICK-BR. Com o XLM-R-base (0011) era empate. \textbf{Nenhuma variante da ablação recupera o [CLS]:} sem léxico, grafo, cobertura ou com MLP no lugar da regra, todas ficam 2,5 a 5 pontos abaixo no InferBR (sem contar 1 seed da MLP que não convergiu). Não é um componente: é o ramo estruturado como um todo, aprendido em inglês, que transfere mal. Vai para as \textbf{limitações} do artigo.}
+\take{\textbf{Na transferência para o português o \model{} perde:} InferBR \down{$-$3.3} e ASSIN \down{$-$4.1} ($p<.05$); empata no ASSIN\,2 e no SICK-BR. Com o XLM-R-base (0011) era empate. Vai para as \textbf{limitações} do artigo.}
 \end{frame}
 
 % --------------------------------------------------------------------------
