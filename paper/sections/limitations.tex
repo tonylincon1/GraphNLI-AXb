@@ -1,5 +1,32 @@
 % Required by ACL Rolling Review: unnumbered, after the conclusion and before the references;
 % does not count towards the page limit.
 \section*{Limitations}
-\todo{Required by ARR. E.g.: two languages only; lexicon coverage differs across languages;
-large Portuguese encoder trained with 8-bit optimizer states; binary metrics on the ASSIN sets.}
+
+We study two languages, and the lexical resources differ between
+them: the Portuguese lexicon links fewer pairs, and PT-LKB contains no antonyms, so antonymy comes only
+from Wiktionary and ConceptNet. Results may differ for languages with poorer resources or a different
+morphology, and the lexical relations are looked up without word-sense disambiguation.
+
+Coverage treats every hypothesis word as a requirement. It cannot represent
+downward-monotone contexts, restrictive modifiers or universal quantifiers, where removing or adding a
+word preserves the inference, and \model{} loses to the baseline on these AX-b phenomena. The conflict
+term, motivated by the label semantics, brought no measurable benefit in our experiments.
+
+The structured branch learned on English data does not transfer to
+Portuguese: in that direction \model{} is below the \cls{} baseline on two of four test sets, and no
+ablation removes the gap. We do not claim that the method helps zero-shot transfer.
+
+Training uses only SICK and InferBR, two small corpora; we have not
+tested larger training sets such as MNLI. Several test sets are only binary, so out-of-distribution
+results use the entailment decision, and ASSIN~2 overlaps with SICK, which we handle by removing the
+overlapping pairs. The AX-b phenomenon groups are small, and their differences are exploratory.
+
+The knowledge-graph baselines are re-implementations under our
+protocol, not the original systems, and they take their knowledge from English WordNet. Hyperparameters
+are fixed in advance and not tuned per encoder, which may favour some systems. Albertina and XLM-R-large
+are trained with 8-bit optimizer states and gradient checkpointing to fit a 12\,GB GPU.
+
+The per-word scores explain the structured branch exactly, but the final
+prediction also includes the \cls{} logits, which are not explained. The scores show which words drive
+the structured decision, not why the encoder assigns them.
+\todo{update when experiment 0014 finishes (Portuguese and cross-lingual baselines, PT$\to$EN).}
