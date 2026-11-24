@@ -81,6 +81,7 @@ def main() -> None:
             ("Albertina-900M \\model{}", E14, "inferbr_pt_large_ablation", "coverage_pl_v1"),
             ("Albertina-900M \\model{} $-$ conflito", E14, "inferbr_pt_large_ablation", "coverage_pl_v1_no_conflict"),
             ("Albertina-900M \\model{} $-$ léxico", E14, "inferbr_pt_large_ablation", "coverage_pl_v1_no_symbolic"),
+            ("Albertina-900M \\model{} $-$ grafo", E14, "inferbr_pt_large_ablation", "coverage_pl_v1_no_graph"),
         ], PT, ref=2, midrules=(2,)),
         "xl_large_en": table([
             ("XLM-R-base \\cls{} (0011)", E11, "xling_en_to_pt_ablation", "pair_cls"),
@@ -91,8 +92,6 @@ def main() -> None:
             ("XLM-R-large $-$ léxico", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_no_symbolic"),
         ], EN, ref=2, midrules=(2,)),
         "xl_large_pt": table([
-            ("XLM-R-base \\cls{} (0011)", E11, "xling_en_to_pt_ablation", "pair_cls"),
-            ("XLM-R-base \\model{} (0011)", E11, "xling_en_to_pt_ablation", "coverage_pl_v1"),
             ("XLM-R-large \\cls{}", E14, "xling_large_en_to_pt_ablation", "pair_cls"),
             ("XLM-R-large \\model{}", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1"),
             ("XLM-R-large $-$ conflito", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_no_conflict"),
@@ -100,7 +99,7 @@ def main() -> None:
             ("XLM-R-large $-$ grafo", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_no_graph"),
             ("XLM-R-large $-$ cobertura", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_no_coverage"),
             ("XLM-R-large MLP no lugar da regra", E14, "xling_large_en_to_pt_ablation", "coverage_pl_v1_mlp_head"),
-        ], PT, ref=2, midrules=(2,)),
+        ], PT, ref=0, midrules=(1,)),
     }
     for name, tex in tables.items():
         (OUT / f"{name}.tex").write_text(tex, encoding="utf-8")
