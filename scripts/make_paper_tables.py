@@ -480,10 +480,11 @@ def combined_main(groups) -> str:
 
 
 def combined_ablation(groups) -> str:
-    """groups: (title, full_row, families); families: list of (subtitle or None, rows, marker).
-    marker "holm": Holm over the family (asterisk); "raw": uncorrected (dagger)."""
+    """groups: (title, full_row, families, order).
+    families: list of (rows, marker); marker "holm": Holm over the family (asterisk), "raw": uncorrected
+    (dagger). order: display items ("row", family, index, indent) or ("rule",)."""
     lines = header()
-    for title, full_row, families in groups:
+    for title, full_row, families, order in groups:
         lines += ["\\midrule", group_title(title)]
         full = row_data(full_row)
         cells = []
@@ -494,28 +495,33 @@ def combined_ablation(groups) -> str:
             mark = PARTIAL if len(full[key]) < N_SEEDS else ""
             cells.append(cell([v[key] for v in full[key].values()], False, mark))
         lines.append(f"{full_row[0]} & " + " & ".join(cells) + " \\\\")
-        for subtitle, rows, marker in families:
-            if subtitle:
-                lines.append(f"\\multicolumn{{{len(TESTS) + 1}}}{{@{{}}l}}{{\\quad\\textit{{{subtitle}}}}} \\\\")
-            elif marker == "raw":
-                lines.append("\\cmidrule(l){1-%d}" % (len(TESTS) + 1))
-            data = [row_data(r) for r in rows]
-            marks = [{} for _ in rows]
+        data, marks = [], []
+        for rows, marker in families:
+            fd = [row_data(r) for r in rows]
+            fm = [{} for _ in rows]
             for key, _, _ in TESTS:
-                raw = {j: paired_p(d[key], full[key], key) for j, d in enumerate(data) if key in d and key in full}
+                raw = {j: paired_p(d[key], full[key], key) for j, d in enumerate(fd) if key in d and key in full}
                 adj = holm(raw, len(rows)) if marker == "holm" else raw
                 for j, p in adj.items():
                     if p is not None and p < 0.05:
-                        marks[j][key] = "$^{*}$" if marker == "holm" else "$^{\\dagger}$"
-            for j, (label, _, _) in enumerate(rows):
-                row = []
-                for key, _, _ in TESTS:
-                    if key not in data[j] or key not in full:
-                        row.append("")
-                        continue
-                    mark = marks[j].get(key, "") + (PARTIAL if len(data[j][key]) < N_SEEDS else "")
-                    row.append(delta_cell(data[j][key], full[key], key, mark))
-                lines.append(f"{label} & " + " & ".join(row) + " \\\\")
+                        fm[j][key] = "$^{*}$" if marker == "holm" else "$^{\\dagger}$"
+            data.append(fd)
+            marks.append(fm)
+        for item in order:
+            if item[0] == "rule":
+                lines.append("\\cmidrule(l){1-%d}" % (len(TESTS) + 1))
+                continue
+            _, f, j, indent = item
+            label = families[f][0][j][0]
+            row = []
+            for key, _, _ in TESTS:
+                d = data[f][j]
+                if key not in d or key not in full:
+                    row.append("")
+                    continue
+                mark = marks[f][j].get(key, "") + (PARTIAL if len(d[key]) < N_SEEDS else "")
+                row.append(delta_cell(d[key], full[key], key, mark))
+            lines.append(("\\quad " if indent else "") + f"{label} & " + " & ".join(row) + " \\\\")
     lines += ["\\bottomrule", "\\end{tabular*}"]
     return "\n".join(lines) + "\n"
 
@@ -529,7 +535,7 @@ LEXICON_SOURCES = [
     ("only WordNet / PT-LKB", "sick_en_lex_wordnet", "inferbr_pt_large_lex_ptlkb"),
     ("only Wiktionary", "sick_en_lex_wiktionary", "inferbr_pt_large_lex_wiktionary"),
     ("only ConceptNet", "sick_en_lex_conceptnet", "inferbr_pt_large_lex_conceptnet"),
-    ("all three", "sick_en_lex_all", "inferbr_pt_large_lex_all"),
+    ("all three (+ ConceptNet)", "sick_en_lex_all", "inferbr_pt_large_lex_all"),
 ]
 
 
@@ -540,14 +546,22 @@ def write_combined() -> None:
         ("Cross-lingual, XLM-R-large: trained on InferBR (EN tests) / on SICK (PT tests)", rows_for("xl", main_systems)),
     ]), encoding="utf-8")
     abl = [a for a in ABLATIONS if a[0] not in ("coverage_pl_v1", "pair_cls")]
+    abl = [(v, "$-$ lexicon (all resources)" if v == "coverage_pl_v1_no_symbolic" else label) for v, label in abl]
     cls = [a for a in ABLATIONS if a[0] == "pair_cls"]
     lex = [(label, ([f"{E14}/{en}"], "coverage_pl_v1"), ([f"{E14}/{pt}"], "coverage_pl_v1"))
            for label, en, pt in LEXICON_SOURCES]
+    # Display: ablations, with the lexicon-source variants right below "- lexicon"; Holm stays per family.
+    lex_pos = [v for v, _ in abl].index("coverage_pl_v1_no_symbolic")
+    mono_order = ([("row", 0, j, False) for j in range(lex_pos + 1)]
+                  + [("row", 1, j, True) for j in range(len(lex))]
+                  + [("row", 0, j, False) for j in range(lex_pos + 1, len(abl))]
+                  + [("rule",), ("row", 2, 0, False)])
+    xl_order = [("row", 0, j, False) for j in range(len(abl))] + [("rule",), ("row", 1, 0, False)]
     (OUT / "ablation.tex").write_text(combined_ablation([
         ("Monolingual: RoBERTa-large (EN) / Albertina-900M (PT)", rows_for("mono", [ABLATIONS[0]])[0],
-         [(None, rows_for("mono", abl), "holm"), ("Lexicon source", lex, "holm"), (None, rows_for("mono", cls), "raw")]),
+         [(rows_for("mono", abl), "holm"), (lex, "holm"), (rows_for("mono", cls), "raw")], mono_order),
         ("Cross-lingual, XLM-R-large", rows_for("xl", [ABLATIONS[0]])[0],
-         [(None, rows_for("xl", abl), "holm"), (None, rows_for("xl", cls), "raw")]),
+         [(rows_for("xl", abl), "holm"), (rows_for("xl", cls), "raw")], xl_order),
     ]), encoding="utf-8")
 
 
