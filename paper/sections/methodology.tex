@@ -30,13 +30,10 @@ hypothesis span and combine them with logical rules~\citep{stacey2022logical,wu2
 \begin{figure*}[t]
   \centering
   \includestandalone[width=\textwidth]{figures/cover_architecture}
-  \caption{\model{} architecture. (a)~Content words and logical operators of $\Prem$ and $\Hyp$
-  become graph nodes; typed lexical relations $r_{ij}$ link premise and hypothesis nodes.
-  (b)~A pretrained encoder reads the pair jointly. (c)~Two bipartite relational attention layers
-  refine each node with its evidence on the other side, including a learned \emph{null} target.
-  (d)~Every hypothesis node $k$ receives a support $s_k$, a conflict $c_k$ and an importance $\omega_k$.
-  (e)~A weakest-link coverage and a noisy-OR conflict define a structured distribution $z$, added to
-  the \cls{} logits. \todo{update panel (a): operator scope edges are built but not used by \model.}}
+  \caption{\model{}. (a)~Token graph with typed lexical relations $r_{ij}$. (b)~Pretrained encoder.
+  (c)~Bipartite relational attention, with a \emph{null} target. (d)~Support $s_k$, conflict $c_k$ and
+  importance $\omega_k$ per hypothesis node. (e)~Coverage and noisy-OR conflict give a distribution $z$,
+  added to the \cls{} logits. \todo{update panel (a): operator scope edges are built but not used by \model.}}
   \label{fig:architecture}
 \end{figure*}
 
@@ -231,9 +228,8 @@ The \cls{} baseline (\cref{eq:cls} alone) is trained with the same hyperparamete
 \begin{figure*}[t]
   \centering
   \includestandalone[width=\textwidth]{figures/ablation_architecture}
-  \caption{What each ablation removes (red dashed boxes), drawn on the architecture of
-  \cref{fig:architecture}; the numbers refer to the key below the diagram. The \cls{} baseline keeps only
-  the encoder and the top $\ell_{\mathrm{CLS}}$ path.}
+  \caption{What each ablation removes (red dashed boxes). The \cls{} baseline keeps only the encoder and
+  the $\ell_{\mathrm{CLS}}$ path.}
   \label{fig:ablation-map}
 \end{figure*}
 
@@ -257,12 +253,8 @@ text their lexical evidence reduces to word identity.
 \begin{figure*}[t]
   \centering
   \includestandalone[width=\textwidth]{figures/experimental_design}
-  \caption{Experimental design. (a)~Three settings, each with its own encoder, training data and lexicon;
-  the cross-lingual setting is run in both directions. (b)~All systems of a setting share the same fixed
-  hyperparameters. (c)~Each system is trained with 10 seeds; a run keeps the checkpoint with the best
-  development macro-F1 and stops after 3 epochs without improvement (at most 8). (d)~The selected
-  checkpoint is evaluated once on every test set of its setting. (e)~Systems are compared with paired
-  tests over the seeds.}
+  \caption{Experimental design: three settings (cross-lingual in both directions), fixed hyperparameters,
+  10 seeds per system, one evaluation per selected checkpoint, and paired tests over seeds.}
   \label{fig:design}
 \end{figure*}
 
@@ -318,9 +310,8 @@ SICK are therefore scored on the remaining 1{,}578 pairs of ASSIN~2.
     SICK-BR      & PT & -- & -- & 4{,}906 & 3-way \\
     \bottomrule
   \end{tabular}
-  \caption{Datasets. Only SICK and InferBR are used for training; all other sets are used for testing
-  only. $^{\dagger}$Paraphrase pairs are counted as entailment. $^{\ddagger}$1{,}578 pairs for models
-  trained on SICK (pairs translated from SICK training or trial data removed).}
+  \caption{Datasets; only SICK and InferBR are used for training. $^{\dagger}$Paraphrase counted as
+  entailment. $^{\ddagger}$1{,}578 pairs for SICK-trained models (see \cref{sec:data}).}
   \label{tab:data}
 \end{table}
 

@@ -1,3 +1,50 @@
 \section{Introduction}
 \label{sec:intro}
-\todo{Motivation; gap; contributions.}
+
+Natural language inference (NLI) asks whether a premise entails, contradicts or is neutral to a
+hypothesis. Fine-tuned Transformer encoders reach high accuracy on standard benchmarks, but much of it
+comes from annotation artifacts and shallow heuristics such as lexical overlap
+\citep{gururangan2018annotation,mccoy2019right}; accuracy drops on diagnostic and challenge sets that
+isolate a single phenomenon \citep{glockner2018breaking,wang2019superglue}.
+
+The labels themselves have a simple logical reading. A hypothesis is entailed when \emph{every} part of
+it is supported by the premise and \emph{no} part conflicts with it; one conflicting part makes it a
+contradiction; otherwise it is neutral. A cross-encoder that classifies the pair from a single pooled
+vector is free to ignore this structure, and nothing in its output shows which words drove the decision.
+
+Two lines of work address these problems separately. Knowledge-enhanced models inject lexical or
+knowledge-graph relations into the encoder \citep{chen2018neural,liu2020kbert,song2020kganet,wang2020knowledge},
+but the evidence enters as an extra feature and does not change how the label is reached. Atomic-inference
+models decide the label from per-span predictions and logical rules \citep{stacey2022logical,wu2023weakly},
+but rely on span segmentation and use no external knowledge.
+
+We propose \model{} (Knowledge-Grounded \emph{COVE}rage and Conflict \emph{R}easoning), which combines
+both ideas on top of any pretrained encoder. Content words of the pair become nodes of a token graph whose
+edges are typed lexical relations (synonymy, hypernymy, antonymy, numbers) from WordNet, PT-LKB,
+Wiktionary and rules. Relation-aware attention lets each hypothesis word look for its counterpart in the
+premise, or for none.
+
+Each hypothesis word then receives a support, a conflict and an importance score. A weighted product of
+supports (coverage) and a noisy-OR of conflicts define a structured distribution over the three labels,
+which is added to the logits of the standard \cls{} classifier. The new modules add about 2M parameters,
+and their per-word scores explain each decision (\cref{fig:interpretability}).
+
+We evaluate \model{} in English and Portuguese with large encoders: RoBERTa-large trained on SICK,
+Albertina-900M trained on InferBR, and XLM-R-large transferred across the two languages. Every system,
+including three re-implemented knowledge-graph baselines, is trained with the same fixed hyperparameters
+and 10 seeds, and compared with paired tests on in-distribution, out-of-distribution and challenge sets.
+
+\model{} matches the \cls{} baseline in distribution and improves on it out of distribution: by 4.9 to
+8.6 MCC points on AX-b, ConjNLI and FraCaS in English, and by 2.3 points on ASSIN~2 and SICK-BR in
+Portuguese, with about half the standard deviation across seeds. In English it also outperforms the
+three knowledge-graph baselines out of distribution. \todo{cross-lingual summary when experiment 0014 finishes.}
+
+Our contributions are:
+(i)~\model{}, an encoder-agnostic architecture that grounds a coverage--conflict decision rule in typed
+lexical relations over contextual token states;
+(ii)~a controlled evaluation in English, Portuguese and cross-lingual transfer, with 10 seeds, paired
+tests and knowledge-graph baselines;
+(iii)~an ablation showing that coverage, not conflict, produces the gains, and an AX-b analysis of the
+phenomena where coverage helps and fails;
+(iv)~word-level explanations read directly from the model.
+\todo{code and data release.}

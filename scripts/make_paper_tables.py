@@ -421,10 +421,6 @@ def main() -> None:
     for name, pipelines, tests in [("main_xl_en_to_pt", en_to_pt, PT_TESTS), ("main_xl_pt_to_en", pt_to_en, EN_TESTS)]:
         (OUT / f"{name}.tex").write_text(main_table([(None, pipelines)], tests, MAIN_SYSTEMS), encoding="utf-8")
     (OUT / "analysis_axb_en.tex").write_text(axb_table("experiment_0011/sick_en_ablation"), encoding="utf-8")
-    (OUT / "analysis_confusion.tex").write_text(confusion_table([
-        ("SICK (EN)", "experiment_0011/sick_en_ablation", "sick_test"),
-        ("FraCaS (EN)", "experiment_0011/sick_en_ablation", "fracas_en"),
-        ("InferBR (PT)", "experiment_0014/inferbr_pt_large_ablation", "inferbr_test")]), encoding="utf-8")
     print(f"wrote {OUT}")
 
 

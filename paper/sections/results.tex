@@ -23,12 +23,9 @@
 
   \textit{(d) Cross-lingual PT$\to$EN: XLM-R-large trained on InferBR, English tests}\\[2pt]
   \input{tables/main_xl_pt_to_en}
-  \caption{Main results (mean over 10 seeds, seed standard deviation in small type; best per column in
-  bold). Left block: accuracy; right block: MCC; both for the binary decision entailment \emph{vs.}
-  non-entailment, $\times100$. Break.: Breaking NLI; Conj.: ConjNLI. (c) and (d) evaluate zero-shot transfer
-  to the other language. For models trained on SICK, ASSIN~2 excludes
-  pairs translated from SICK training data. $^{\dagger}$Paired Wilcoxon $p<0.05$ against \cls{} on the
-  same metric. \todo{Partial results: $^{n=k}$ marks systems with only $k$ of 10 seeds finished; empty rows
+  \caption{Main results: accuracy and MCC of \E{} \emph{vs.} $\neg$\E{} ($\times100$), mean and seed
+  standard deviation over 10 seeds; best in bold. (c,\,d): zero-shot transfer. $^{\dagger}$Paired Wilcoxon
+  $p<0.05$ against \cls{}. \todo{Partial results: $^{n=k}$ marks systems with only $k$ of 10 seeds finished; empty rows
   are still running.}}
   \label{tab:main}
 \end{table*}
@@ -48,13 +45,9 @@
 
   \textit{(c) Cross-lingual: XLM-R-large}\\[2pt]
   \input{tables/ablation_xl}
-  \caption{Ablation of \model{} (binary MCC $\times100$, same seeds as \cref{tab:main}). The first row
-  gives the full model (mean, seed standard deviation in small type); the other rows give the mean paired
-  difference to it over seeds, with decreases in red. $-$\,conflict: coverage only; $-$\,lexicon: no lexical
-  relations or operator lexicon; $-$\,graph: no relational attention layers; $-$\,coverage: conflict only;
-  MLP head: an MLP over the hypothesis nodes replaces the logical aggregation. In (c) only transfer to the other language is reported (--: test sets in the training language). $^{*}$Holm-corrected paired
-  Wilcoxon $p<0.05$ against the full model (over the five ablations); $^{\dagger}$paired Wilcoxon $p<0.05$
-  against the full model. \todo{Partial results: $^{n=k}$ as in \cref{tab:main}.}}
+  \caption{Ablation (binary MCC $\times100$): full model, then mean paired difference to it (decreases in
+  red; variants in \cref{sec:ablations}). (c): transfer only. $^{*}$Holm-corrected and $^{\dagger}$uncorrected
+  paired Wilcoxon $p<0.05$ against the full model. \todo{Partial results: $^{n=k}$ as in \cref{tab:main}.}}
   \label{tab:ablation}
 \end{table*}
 
@@ -65,22 +58,9 @@
   \centering\footnotesize
   \setlength{\tabcolsep}{2pt}
   \input{tables/analysis_axb_en}
-  \caption{AX-b by phenomenon (binary MCC $\times100$, English setting, mean over 10 seeds): the four
-  coarse categories of the diagnostic (bold) and their fine-grained phenomena. A pair can carry several
-  phenomena. $\Delta$: \model{} minus \cls{}, decreases in red. Groups with fewer than 40 pairs are
-  exploratory.}
+  \caption{AX-b by category (bold) and phenomenon, English setting (binary MCC $\times100$, mean over 10
+  seeds). $\Delta$: \model{} $-$ \cls{}. Groups with $n<40$ are exploratory.}
   \label{tab:axb-categories}
-\end{table}
-
-\begin{table}[t]
-  \centering\footnotesize
-  \setlength{\tabcolsep}{3pt}
-  \input{tables/analysis_confusion}
-  \caption{Confusion matrices on the in-distribution test sets and on FraCaS (mean counts per seed; rows:
-  gold label, columns: prediction; diagonal in bold). Left: \cls{}. Right: difference \model{} $-$ \cls{}
-  in each cell; red marks where \model{} is worse, i.e.\ fewer correct predictions on the diagonal or more
-  errors off the diagonal.}
-  \label{tab:confusion}
 \end{table}
 
 \subsection{Interpretability}
@@ -89,13 +69,10 @@
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/explanations/en_cover_1_compact.pdf}
-  \caption{Reading a \model{} decision on an AX-b pair that swaps the arguments of the verb (SICK-trained
-  RoBERTa-large, seed 1001). Each hypothesis word is aligned to a premise word (line width: attention
-  weight; colour and label: lexical relation, dashed when no relation is available). Bars give the support
-  $s_j$ and conflict $c_j$ of each hypothesis word, and $\omega_j$ its weight; the box applies the
-  aggregation of \cref{sec:architecture}. Every word finds its identical counterpart, yet none is
-  supported in its role, so $\Pcov\approx0$ and the pair is not entailed; the \cls{} baseline, trained
-  identically, predicts entailment. Values are those computed by the trained model.}
+  \caption{A \model{} decision on an AX-b pair that swaps the verb's arguments (RoBERTa-large, seed 1001).
+  Lines: alignment (width: attention; label: relation). Bars: support $s_j$, conflict $c_j$, weight
+  $\omega_j$. No word is supported in its role, so $\Pcov\approx0$ (not entailed); \cls{} predicts
+  entailment.}
   \label{fig:interpretability}
 \end{figure}
 
