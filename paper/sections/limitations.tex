@@ -14,7 +14,7 @@ term, motivated by the label semantics, brought no measurable benefit in our exp
 
 The structured branch learned on English data does not transfer to
 Portuguese: in that direction \model{} is below the \cls{} baseline on two of four test sets, and no
-ablation removes the gap. We do not claim that the method helps zero-shot transfer.
+ablation removes the gap; from Portuguese to English the gains are limited to ConjNLI. We do not claim that the method helps zero-shot transfer.
 
 Training uses only SICK and InferBR, two small corpora; we have not
 tested larger training sets such as MNLI. Several test sets are only binary, so out-of-distribution
@@ -29,4 +29,4 @@ are trained with 8-bit optimizer states and gradient checkpointing to fit a 12\,
 The per-word scores explain the structured branch exactly, but the final
 prediction also includes the \cls{} logits, which are not explained. The scores show which words drive
 the structured decision, not why the encoder assigns them.
-\todo{update when experiment 0014 finishes (Portuguese and cross-lingual baselines, PT$\to$EN).}
+\todo{update when experiment 0014 finishes (Portuguese and cross-lingual baselines).}

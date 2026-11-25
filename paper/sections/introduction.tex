@@ -37,7 +37,9 @@ and 10 seeds, and compared with paired tests on in-distribution, out-of-distribu
 \model{} matches the \cls{} baseline in distribution and improves on it out of distribution: by 4.9 to
 8.6 MCC points on AX-b, ConjNLI and FraCaS in English, and by 2.3 points on ASSIN~2 and SICK-BR in
 Portuguese, with about half the standard deviation across seeds. In English it also outperforms the
-three knowledge-graph baselines out of distribution. \todo{cross-lingual summary when experiment 0014 finishes.}
+three knowledge-graph baselines out of distribution. Cross-lingual transfer is mixed: from Portuguese to
+English \model{} still improves ConjNLI, but from English to Portuguese it falls below \cls{} on two of four
+test sets.
 
 Our contributions are:
 (i)~\model{}, an encoder-agnostic architecture that grounds a coverage--conflict decision rule in typed

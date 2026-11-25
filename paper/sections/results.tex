@@ -42,8 +42,10 @@ below \cls{} on InferBR ($-3.3$) and ASSIN ($-4.1$, both $p<0.05$) and tied on A
 monolingual pattern: tied on SICK, +9.3 on AX-b, +12.8 on ConjNLI and +6.3 on FraCaS, but $-5.4$ on
 Breaking NLI.
 
-The opposite direction, trained on InferBR and tested in English, is still running.
-\todo{PT$\to$EN results and cross-lingual knowledge-graph baselines (experiment 0014).}
+In the opposite direction, trained on InferBR and tested in English, the gains are smaller than in
+the monolingual setting: \model{} ties \cls{} on SICK, improves ConjNLI (+3.4, $p<0.05$), AX-b (+2.0) and
+FraCaS (+0.9, both not significant), and again loses on Breaking NLI ($-6.0$, $p<0.05$).
+\todo{Cross-lingual knowledge-graph baselines (experiment 0014).}
 
 \subsection{Ablation}
 \label{sec:ablation-results}
@@ -70,8 +72,8 @@ measurable, even on Breaking NLI, which was designed to test lexical contradicti
 
 The lexicon and the graph matter less. Without lexical relations the English model changes by at most
 1.6 points, and without the relational attention it loses 1.8 on AX-b and 4.8 on ConjNLI, neither
-significant after Holm correction. In Portuguese, removing the lexicon changes every score by less than one point.
-\todo{Portuguese $-$coverage and MLP head, $-$graph with 10 seeds (experiment 0014).}
+significant after Holm correction. In Portuguese, removing the lexicon or the graph changes every score by at most one point.
+\todo{Portuguese $-$coverage and MLP head; PT$\to$EN ablation (experiment 0014, running).}
 
 No single resource is responsible either. In English, removing Wiktionary or WordNet changes AX-b,
 ConjNLI and FraCaS by at most 1.4 points (none significant), and both variants remain above \cls{} on

@@ -62,7 +62,7 @@
   \item Entre línguas: \textbf{XLM-R-large} no lugar do XLM-R-base.
   \item Ablação de \textbf{cada léxico separado} (inglês, português e entre línguas).
   \end{itemize}
-\item \textbf{Resultados parciais:} 137 de 380 runs prontos.
+\item \textbf{Resultados parciais:} 166 de 380 runs prontos.
 \item \textbf{Artigo} adaptado ao template do \textbf{ACL 2027} (submissão via ARR).
 \end{enumerate}
 \end{frame}
@@ -75,12 +75,12 @@
 Bloco & Encoder & Treino & O que compara & Runs & Status \\
 \midrule
 Ablação de léxicos & RoBERTa-large & SICK & só WordNet / só Wikt. & 20 & \done{} \\
-Ablação PT & Albertina-900M & InferBR & 7 variantes (como no 0011) & 70 & \running{} (43) \\
+Ablação PT & Albertina-900M & InferBR & 7 variantes (como no 0011) & 70 & \running{} (53) \\
 Léxicos PT & Albertina-900M & InferBR & só PT-LKB / só Wikt. & 20 & \queued{} \\
 Baselines de grafo PT & Albertina-900M & InferBR & K-BERT, KGAnet, KGNLI & 30 & \queued{} \\
 \midrule
 Ablação EN$\to$PT & XLM-R-large & SICK & 7 variantes & 70 & \done{} \\
-Ablação PT$\to$EN & XLM-R-large & InferBR & 7 variantes & 70 & \running{} (4) \\
+Ablação PT$\to$EN & XLM-R-large & InferBR & 7 variantes & 70 & \running{} (23) \\
 Baselines de grafo XL & XLM-R-large & ambos & K-BERT, KGAnet, KGNLI & 60 & \queued{} \\
 Léxicos XL & XLM-R-large & ambos & $-$ Wikt. / $-$ WordNet e PT-LKB & 40 & \queued{} \\
 \bottomrule
@@ -150,6 +150,13 @@ PT-LKB + Wikt.\ (modelo) & \textbf{48,2\%} & \textbf{316} \\
 \end{frame}
 
 % --------------------------------------------------------------------------
+\begin{frame}{Entre línguas PT$\to$EN com XLM-R-large (MCC)}
+\textit{\small Treino no InferBR (português), sem nenhum exemplo em inglês} \hfill {\scriptsize $^\dagger$ $p<.05$ contra o XLM-R-large [CLS]}\\[3pt]
+\centering\tab[0.85]{xl_large_pt_to_en}
+\take{\textbf{Nesta direção o \model{} ainda ajuda, mas menos:} empata no SICK, ganha no ConjNLI \up{+3.4} ($p<.05$), AX-b \up{+2.0} e FraCaS \up{+0.9} (n.s.), e perde no Breaking NLI \down{$-$6.0} ($p<.05$), como no EN$\to$PT. Com o XLM-R-base (0011) o ganho era maior: SICK \up{+4.7} e ConjNLI \up{+6.3} ($p<.05$). O ganho da estrutura diminui com o encoder grande.}
+\end{frame}
+
+% --------------------------------------------------------------------------
 \begin{frame}{Artigo no template do ACL 2027}
 \begin{columns}[c]
 \column{0.42\textwidth}
@@ -181,7 +188,7 @@ PT-LKB + Wikt.\ (modelo) & \textbf{48,2\%} & \textbf{316} \\
 \item \textbf{O padrão do 0011 se mantém com encoders grandes:} o \model{} empata in-distribution e ganha fora dela (RoBERTa-large e Albertina-900M).
 \item \textbf{O léxico importa pouco no inglês:} qualquer dicionário dá o mesmo ganho.
 \item \textbf{Albertina:} o ganho do \model{} diminui com o encoder grande, mas continua significativo em 2 de 4 testes, e a variância cai pela metade.
-\item \textbf{Ponto fraco:} transferência EN$\to$PT com XLM-R-large; o \model{} perde no InferBR e no ASSIN.
+\item \textbf{Ponto fraco:} transferência com XLM-R-large; EN$\to$PT perde no InferBR e no ASSIN, PT$\to$EN só ganha no ConjNLI.
 \end{enumerate}
 \end{frame}
 
