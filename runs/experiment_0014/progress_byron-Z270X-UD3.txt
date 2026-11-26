@@ -1,15 +1,15 @@
-updated   2026-11-26 08:11
-runs      146/240
-progress  44.3% (weighted by est_minutes_per_run)
-left      ~7d 02h08 (estimate x1.69 observed speed)
-ETA       2026-12-03 10:20 (machine local time)
-running   xling_large_pt_to_en_ablation/coverage_pl_v1_no_symbolic/seed_1007
+updated   2026-11-26 14:45
+runs      151/240
+progress  46.4% (weighted by est_minutes_per_run)
+left      ~6d 20h02 (estimate x1.70 observed speed)
+ETA       2026-12-03 10:47 (machine local time)
+running   xling_large_pt_to_en_ablation/coverage_pl_v1_no_graph/seed_1002
 
   sick_en_lex_wordnet                 10/10
   sick_en_lex_wiktionary              10/10
   sick_en_lex_conceptnet              10/10
   sick_en_lex_all                     10/10
   xling_large_en_to_pt_ablation       70/70
-  xling_large_pt_to_en_ablation       36/70
+  xling_large_pt_to_en_ablation       41/70
   xling_large_en_to_pt_graph_baselines   0/30
   xling_large_pt_to_en_graph_baselines   0/30
