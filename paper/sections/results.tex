@@ -67,13 +67,16 @@ also hurts ($-5.1$ on AX-b, $-11.8$ on ConjNLI), so the gain is not explained by
 
 Removing the conflict term does not hurt in either monolingual setting: in English it is slightly better on AX-b
 ($+2.0$) and Breaking NLI ($+2.8$), and in Portuguese on all four sets ($+0.2$ to $+1.0$), none
-significant. The decisions of \model{} are driven by coverage, and the conflict detector adds nothing
-measurable, even on Breaking NLI, which was designed to test lexical contradictions.
+significant. The conflict detector adds nothing measurable, even on Breaking NLI, which was designed to
+test lexical contradictions; in transfer from Portuguese to English, removing it even improves Breaking NLI
+by 6.3 points (Holm-corrected $p<0.05$).
 
 The lexicon and the graph matter less. Without lexical relations the English model changes by at most
 1.6 points, and without the relational attention it loses 1.8 on AX-b and 4.8 on ConjNLI, neither
-significant after Holm correction. In Portuguese, removing the lexicon or the graph changes every score by at most one point.
-\todo{Portuguese $-$coverage and MLP head; PT$\to$EN ablation (experiment 0014, running).}
+significant after Holm correction. In Portuguese, with the larger encoder, no single component is needed: removing the lexicon, the graph
+or the coverage term changes every score by at most one point, although the full model stays above \cls{}
+on ASSIN~2 and SICK-BR.
+\todo{Portuguese MLP head; PT$\to$EN ablation (experiment 0014, running).}
 
 No single resource is responsible either. In English, removing Wiktionary or WordNet changes AX-b,
 ConjNLI and FraCaS by at most 1.4 points (none significant), and both variants remain above \cls{} on
