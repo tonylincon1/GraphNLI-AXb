@@ -74,9 +74,9 @@ by 6.3 points (Holm-corrected $p<0.05$).
 The lexicon and the graph matter less. Without lexical relations the English model changes by at most
 1.6 points, and without the relational attention it loses 1.8 on AX-b and 4.8 on ConjNLI, neither
 significant after Holm correction. In Portuguese, with the larger encoder, no single component is needed: removing the lexicon, the graph
-or the coverage term changes every score by at most one point, although the full model stays above \cls{}
-on ASSIN~2 and SICK-BR.
-\todo{Portuguese MLP head (3 of 10 seeds); PT$\to$EN graph, coverage and MLP head (experiment 0014, running).}
+or the coverage term, or replacing the rule by an MLP, changes every score by at most 1.3 points (none
+significant), although the full model stays above \cls{} on ASSIN~2 and SICK-BR.
+\todo{PT$\to$EN coverage and MLP head (experiment 0014, running).}
 
 No single resource is responsible either. In English, removing Wiktionary or WordNet changes AX-b,
 ConjNLI and FraCaS by at most 1.4 points (none significant), and both variants remain above \cls{} on
@@ -87,8 +87,8 @@ the default.
 In cross-lingual transfer to Portuguese, no ablation closes the gap to \cls{}: every variant stays 3 to
 7 points below it on InferBR. The loss is therefore not due to one component, such as edges built
 from the Portuguese lexicon, but to the structured branch as a whole, trained on English pairs. In the
-opposite direction, removing all lexical resources changes no English score significantly (at most
-4.5 points, on Breaking NLI), so the transferred gains do not depend on the lexicon either.
+opposite direction, removing all lexical resources or the relational attention changes no English score
+significantly (at most 4.5 points, on Breaking NLI), so the transferred gains depend on neither.
 
 \subsection{Error analysis}
 \label{sec:error-analysis}

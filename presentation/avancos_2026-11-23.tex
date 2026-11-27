@@ -62,7 +62,7 @@
   \item Entre línguas: \textbf{XLM-R-large} no lugar do XLM-R-base.
   \item Ablação de \textbf{cada léxico separado} (inglês, português e entre línguas).
   \end{itemize}
-\item \textbf{Resultados parciais:} 194 de 380 runs prontos.
+\item \textbf{Resultados parciais:} 215 de 380 runs prontos.
 \item \textbf{Artigo} adaptado ao template do \textbf{ACL 2027} (submissão via ARR).
 \end{enumerate}
 \end{frame}
@@ -75,12 +75,12 @@
 Bloco & Encoder & Treino & O que compara & Runs & Status \\
 \midrule
 Ablação de léxicos & RoBERTa-large & SICK & só WordNet / só Wikt. & 20 & \done{} \\
-Ablação PT & Albertina-900M & InferBR & 7 variantes (como no 0011) & 70 & \running{} (63) \\
-Léxicos PT & Albertina-900M & InferBR & só PT-LKB / só Wikt. & 20 & \queued{} \\
+Ablação PT & Albertina-900M & InferBR & 7 variantes (como no 0011) & 70 & \done{} \\
+Léxicos PT & Albertina-900M & InferBR & só PT-LKB / só Wikt. & 20 & \running{} (1) \\
 Baselines de grafo PT & Albertina-900M & InferBR & K-BERT, KGAnet, KGNLI & 30 & \queued{} \\
 \midrule
 Ablação EN$\to$PT & XLM-R-large & SICK & 7 variantes & 70 & \done{} \\
-Ablação PT$\to$EN & XLM-R-large & InferBR & 7 variantes & 70 & \running{} (41) \\
+Ablação PT$\to$EN & XLM-R-large & InferBR & 7 variantes & 70 & \running{} (54) \\
 Baselines de grafo XL & XLM-R-large & ambos & K-BERT, KGAnet, KGNLI & 60 & \queued{} \\
 Léxicos XL & XLM-R-large & ambos & $-$ Wikt. / $-$ WordNet e PT-LKB & 40 & \queued{} \\
 \bottomrule
@@ -196,7 +196,7 @@ PT-LKB + Wikt.\ (modelo) & \textbf{48,2\%} & \textbf{316} \\
 \begin{frame}{Próximos passos}
 \small
 \begin{itemize}\setlength{\itemsep}{5pt}
-\item Terminar o 0014: ablação completa do Albertina, léxicos PT, PT$\to$EN e baselines de grafo com encoders grandes.
+\item Terminar o 0014: léxicos PT, PT$\to$EN e baselines de grafo com encoders grandes.
 \item Artigo: escrever resultados e discussão; cortar para 8 páginas; escrever as limitações.
 \item Atualizar as tabelas do artigo com os encoders grandes quando o 0014 terminar.
 \end{itemize}

@@ -1,12 +1,12 @@
-updated   2026-11-26 13:24
-runs      63/140
-progress  42.7% (weighted by est_minutes_per_run)
-left      ~7d 20h40 (estimate x1.12 observed speed)
-ETA       2026-12-04 10:04 (machine local time)
-running   inferbr_pt_large_ablation/coverage_pl_v1_mlp_head/seed_1004
+updated   2026-11-27 07:19
+runs      71/140
+progress  48.1% (weighted by est_minutes_per_run)
+left      ~7d 02h51 (estimate x1.12 observed speed)
+ETA       2026-12-04 10:10 (machine local time)
+running   inferbr_pt_large_lex_ptlkb/coverage_pl_v1/seed_1002
 
-  inferbr_pt_large_ablation           63/70
-  inferbr_pt_large_lex_ptlkb           0/10
+  inferbr_pt_large_ablation           70/70
+  inferbr_pt_large_lex_ptlkb           1/10
   inferbr_pt_large_lex_wiktionary      0/10
   inferbr_pt_large_lex_conceptnet      0/10
   inferbr_pt_large_lex_all             0/10
